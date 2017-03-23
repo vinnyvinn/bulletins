@@ -1,0 +1,105 @@
+
+// Fonts
+@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
+
+// Variables
+@import "variables";
+
+// Bootstrap
+@import "node_modules/font-awesome/scss/font-awesome";
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+@import "./animate";
+@import "./libs/dataTables.bootstrap";
+@import "./libs/bootstrap-datepicker";
+
+body {
+  margin-top: 70px;
+}
+
+a.active {
+  background-color: #496684 !important;
+  color: #fff;
+}
+
+.panel, .form-control, .btn {
+  border-radius: 0 !important;
+}
+
+.truck:hover {
+  text-decoration: none;
+}
+
+.truck-awaiting {
+  color: #ffa547;
+}
+
+.bg-awaiting {
+  background-color: #ffa547;
+  color: #ffffff;
+}
+
+.truck-pre-loading {
+  color: #6eabff;
+}
+
+.bg-pre-loading {
+  background-color: #6eabff;
+  color: #fff;
+}
+
+.truck-loading {
+  color: #3effdd;
+}
+
+.bg-loading {
+  background-color: #3effdd;
+}
+
+.truck-enroute {
+  color: #c930ff;
+}
+
+.bg-enroute {
+  background-color: #c930ff;
+  color: #ffffff;
+}
+
+.truck-offloading {
+  color: #1ace11;
+}
+
+.bg-offloading {
+  background-color: #1ace11;
+  color: #ffffff;
+}
+
+.truck-in-yard {
+  color: #ce7e34;
+}
+
+.bg-in-yard {
+  background-color: #ce7e34;
+  color: #ffffff;
+}
+
+.truck-incident {
+  color: #ce0200;
+}
+
+.bg-incident {
+  background-color: #ce0200;
+  color: #ffffff;
+}
+
+.truck-workshop {
+  color: #000000;
+}
+
+.bg-workshop {
+  background-color: #000000;
+  color: #ffffff;
+}
+.nav .fa {
+  margin-right: 10px;
+}
