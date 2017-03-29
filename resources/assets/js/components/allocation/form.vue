@@ -13,15 +13,20 @@
                             <div class="form-group">
                                 <label for="contract_id">Contract</label>
                                 <select v-model="allocation.contract_id" name="contract_id" id="contract_id" class="form-control" required>
-                                    <option v-for="contract in this.sharedState.state.contracts" :value="contract.id">{{ contract.name }}</option>
+                                    <option v-for="contract in contracts" :value="contract.id">{{ contract.name }}</option>
                                 </select>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group" v-if="! editing">
                                 <label for="truck_id">Available Trucks</label>
                                 <select v-model="allocation.truck_id" name="truck_id" id="truck_id" class="form-control" required>
-                                    <option v-for="truck in this.sharedState.state.trucks" :value="truck.id">{{ truck.plate_number }}</option>
+                                    <option v-for="truck in trucks" :value="truck.id">{{ truck.plate_number }} ({{ truck.max_load }} Tonnes)</option>
                                 </select>
+                            </div>
+
+                            <div class="form-group" v-if="editing">
+                                <label for="truck_id">Truck</label>
+                                <h5>{{ allocation.plate_number }} ({{ allocation.max_load }} Tonnes)</h5>
                             </div>
 
                             <div class="form-group">
@@ -39,19 +44,18 @@
 
 <script>
     export default {
-        mounted() {
+        created() {
             this.checkState();
         },
 
         data() {
             return {
-                sharedState: window._mainState,
+                editing: false,
+                trucks: [],
+                contracts: [],
                 allocation: {
-                    id: null,
                     contract_id: null,
                     truck_id: null,
-                    contract: null,
-                    truck: null
                 }
             };
         },
@@ -59,36 +63,35 @@
         methods: {
             checkState() {
                 if (this.$route.params.id) {
-                    this.allocation = this.sharedState.state.allocations[this.$route.params.id];
+                    this.editing = true;
+                    http.get('/api/allocation/' + this.$route.params.id + '/edit').then((response) => {
+                        this.allocation = response.allocation;
+                        this.contracts = response.contracts;
+                    });
                     return;
                 }
 
-                this.allocation.id = this.sharedState.state.allocations.length;
+                http.get('/api/allocation/create').then((response) => {
+                    this.trucks = response.trucks;
+                    this.contracts = response.contracts;
+                });
             },
 
             store() {
+                let request = null;
+
                 if (this.$route.params.id) {
-                    this.sharedState.state.allocations[this.$route.params.id] = this.allocation;
-                    window._router.push({ path: '/contracts' });
-                    return;
+                    request = http.put('/api/allocation/' + this.$route.params.id, this.allocation);
+                } else {
+                    request = http.post('/api/allocation', this.allocation);
                 }
 
-                this.allocation.contract = this.sharedState.state.contracts.filter((rec) => {
-                    return rec.id == this.allocation.contract_id;
-                })[0];
-
-                let truck = this.sharedState.state.trucks.filter((rec) => {
-                    return rec.id == this.allocation.truck_id;
-                })[0];
-
-                truck.currentState = 'Pre-Loading';
-                this.sharedState.state.trucks[truck.id] = truck;
-
-                this.allocation.truck = truck;
-
-                this.sharedState.state.allocations.push(this.allocation);
-
-                window._router.push({ path: '/allocation' })
+                request.then((response) => {
+                    alert2(this.$root, [response.message], 'success');
+                    window._router.push({ path: '/allocation' });
+                }).catch((error) => {
+                    alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
+                });
             }
         }
     }

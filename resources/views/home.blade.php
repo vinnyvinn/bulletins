@@ -24,6 +24,8 @@
 <div id="app">
     @include('layouts.partials.nav')
 
+    <alert v-show="showAlert" :errors="errors" :level="level"></alert>
+
     <transition
         name="custom-classes-transition"
         enter-active-class="animated fadeIn"

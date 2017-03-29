@@ -18,23 +18,35 @@
                             <div class="form-group">
                                 <label for="client_id">Client</label>
                                 <select v-model="contract.client_id" name="client_id" id="client_id" class="form-control" required>
-                                    <option v-for="client in this.sharedState.state.clients" :value="client.id">{{ client.name }}</option>
+                                    <option v-for="client in clients" :value="client.DCLink">{{ client.Name }} ({{ client.Account }})</option>
                                 </select>
                             </div>
 
                             <div class="form-group">
-                                <label for="payment_terms">Payment Terms</label>
-                                <select v-model="contract.payment_terms" name="payment_terms" id="payment_terms" class="form-control" required>
-                                    <option value="Monthly">Monthly</option>
-                                    <option value="Weekly">Weekly</option>
-                                    <option value="Daily">Daily</option>
+                                <label for="rate">Rate</label>
+                                <select v-model="contract.rate" name="rate" id="rate" class="form-control" required>
+                                    <option value="Per Hour">Per Hour</option>
+                                    <option value="Per KM">Per KM</option>
+                                    <option value="Per Tonne">Per Tonne</option>
                                 </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="amount">Price {{ contract.rate }}</label>
+                                <input v-model="contract.amount" type="text" pattern="[0-9\.]+$" class="form-control" id="amount" name="amount" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="route_id">Route</label>
                                 <select v-model="contract.route_id" name="route_id" id="route_id" class="form-control" required>
-                                    <option v-for="route in sharedState.state.routes" :value="route.id">{{ route.source }} - {{ route.destination }}</option>
+                                    <option v-for="route in routes" :value="route.id">{{ route.source }} - {{ route.destination }} ({{ route.distance }} KM)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="stock_item_id">Billable Item</label>
+                                <select v-model="contract.stock_item_id" name="stock_item_id" id="stock_item_id" class="form-control" required>
+                                    <option v-for="item in stockItems" :value="item.StockLink">{{ item.Description_1 }}</option>
                                 </select>
                             </div>
 
@@ -71,25 +83,33 @@
 
 <script>
     export default {
+        created() {
+            http.get('/api/contract/create').then((response) => {
+                this.clients = response.clients;
+                this.stockItems = response.stockItems;
+                this.routes = response.routes;
+            });
+        },
+
         mounted() {
             this.checkState();
-            this.setupUI();
         },
 
         data() {
             return {
-                sharedState: window._mainState,
+                clients: [],
+                routes: [],
+                stockItems: [],
                 contract: {
-                    id: null,
                     name: null,
+                    rate: 'Per Tonne',
+                    amount: null,
                     client_id: null,
+                    stock_item_id: null,
                     route_id: null,
                     start_date: null,
                     end_date: null,
                     quantity: null,
-                    payment_terms: 'Monthly',
-                    client: null,
-                    route: null
                 }
             };
         },
@@ -97,11 +117,22 @@
         methods: {
             checkState() {
                 if (this.$route.params.id) {
-                    this.contract = this.sharedState.state.contracts[this.$route.params.id];
+                    http.get('/api/contract/' + this.$route.params.id).then((response) => {
+                        this.contract = response.contract;
+                        this.contract.start_date = this.formatDate(this.contract.start_date);
+                        this.contract.end_date = this.formatDate(this.contract.end_date);
+                        this.setupUI();
+                    });
+
                     return;
                 }
+                this.setupUI();
+            },
 
-                this.contract.id = this.sharedState.state.contracts.length;
+            formatDate(date) {
+                date = date.split('-');
+
+                return date[2] + '/' + date[1] + '/' + date[0];
             },
 
             setupUI() {
@@ -121,23 +152,20 @@
             },
 
             store() {
+                let request = null;
+
                 if (this.$route.params.id) {
-                    this.sharedState.state.contracts[this.$route.params.id] = this.contract;
-                    window._router.push({ path: '/contracts' });
-                    return;
+                    request = http.put('/api/contract/' + this.$route.params.id, this.contract);
+                } else {
+                    request = http.post('/api/contract', this.contract);
                 }
 
-                this.contract.client = this.sharedState.state.clients.filter(rec => {
-                    return rec.id == this.contract.client_id;
-                })[0];
-
-                this.contract.route = this.sharedState.state.routes.filter(rec => {
-                    return rec.id == this.contract.route_id;
-                })[0];
-
-                this.sharedState.state.contracts.push(this.contract);
-
-                window._router.push({ path: '/contracts' })
+                request.then((response) => {
+                    alert2(this.$root, [response.message], 'success');
+                    window._router.push({ path: '/contracts' });
+                }).catch((error) => {
+                    alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
+                });
             }
         }
     }

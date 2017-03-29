@@ -72,7 +72,10 @@ class MainRouter {
         return new Vue({
             router,
             data: {
-                mainState: window._mainState.state
+                currency: 'KES',
+                errors: [],
+                showAlert: false,
+                level: 'info'
             },
             watch: {
                 mainState(val) {

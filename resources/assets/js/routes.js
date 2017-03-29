@@ -17,6 +17,11 @@ module.exports = [
     { path: '/trucks/:id', component: require('./components/trucks/form.vue') },
     { path: '/trucks/:id/edit', component: require('./components/trucks/form.vue') },
 
+    { path: '/progress', component: require('./components/truck-progress/index.vue') },
+    { path: '/progress/create', component: require('./components/truck-progress/form.vue') },
+    { path: '/progress/:id', component: require('./components/truck-progress/form.vue') },
+    { path: '/progress/:id/edit', component: require('./components/truck-progress/form.vue') },
+
     { path: '/contracts', component: require('./components/contracts/index.vue') },
     { path: '/contracts/create', component: require('./components/contracts/form.vue') },
     { path: '/contracts/:id/edit', component: require('./components/contracts/form.vue') },

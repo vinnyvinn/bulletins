@@ -13,8 +13,6 @@
                             <tr>
                                 <th>Plate Number</th>
                                 <th>Driver</th>
-                                <th>Max Weight</th>
-                                <th>Status</th>
                                 <th>Current Stage</th>
                                 <th></th>
                             </tr>
@@ -24,12 +22,9 @@
                             <tr v-for="truck in trucks">
                                 <td>{{ truck.plate_number }}</td>
                                 <td>{{ truck.driver ? truck.driver.name : 'No Driver' }}</td>
-                                <td class="text-right">{{ Number(truck.max_load).toLocaleString() }} Tonnes</td>
-                                <td>{{ truck.status }}</td>
                                 <td>{{ truck.location }}</td>
                                 <td class="text-center">
-                                    <span @click="edit(truck)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
-                                    <span @click="destroy(truck)" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></span>
+                                    <span @click="progress(truck)" class="btn btn-xs btn-info"><i class="fa fa-check"></i> Next Step</span>
                                 </td>
                             </tr>
                             </tbody>
@@ -38,8 +33,6 @@
                             <tr>
                                 <th>Plate Number</th>
                                 <th>Driver</th>
-                                <th>Max Weight</th>
-                                <th>Status</th>
                                 <th>Current Stage</th>
                                 <th></th>
                             </tr>
@@ -55,7 +48,7 @@
 <script>
     export default {
         created() {
-            http.get('/api/truck').then(response => {
+            http.get('/api/progress').then(response => {
                 this.trucks = response.trucks;
                 prepareTable();
             });
@@ -67,13 +60,12 @@
         },
 
         methods: {
-            edit(truck) {
-                window._router.push({path: '/trucks/' + truck.id + '/edit'})
+            progress(truck) {
+                http.post('/api/progress/' + truck.id, {}).then(response => {
+                    alert2(this.$root, [response.message], 'success');
+                    this.trucks = response.trucks;
+                });
             },
-
-            destroy(truck) {
-                this.sharedState.state.trucks.splice(this.sharedState.state.trucks.indexOf(truck), 1);
-            }
         }
     }
 </script>

@@ -13,18 +13,20 @@
                             <tr>
                                 <th>From</th>
                                 <th>To</th>
-                                <th>Distance</th>
-                                <th>Billing</th>
+                                <th class="text-right">Distance</th>
+                                <th class="text-right">Fuel Required</th>
+                                <th class="text-right">Allowance Amount</th>
                                 <th></th>
                             </tr>
                             </thead>
 
                             <tbody>
-                            <tr v-for="route in sharedState.state.routes">
+                            <tr v-for="route in routes">
                                 <td>{{ route.source }}</td>
                                 <td>{{ route.destination }}</td>
-                                <td>{{ route.distance }}</td>
-                                <td>{{ route.payment_type }}</td>
+                                <td class="text-right">{{ route.distance }} KM</td>
+                                <td class="text-right">{{ Number(route.fuel_required).toLocaleString() }} Ltrs</td>
+                                <td class="text-right">KES {{ Number(route.allowance_amount).toLocaleString() }}</td>
                                 <td class="text-center">
                                     <span @click="edit(route)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
                                     <span @click="destroy(route)" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></span>
@@ -37,7 +39,8 @@
                                 <th>From</th>
                                 <th>To</th>
                                 <th>Distance</th>
-                                <th>Billing</th>
+                                <th>Fuel Required</th>
+                                <th>Allowance Amount</th>
                                 <th></th>
                             </tr>
                             </tfoot>
@@ -52,28 +55,21 @@
 <script>
     export default {
         created() {
-            // setup the routes
+            http.get('/api/route').then(response => {
+                this.routes = response.routes;
+                prepareTable();
+            });
         },
-        mounted() {
-            this.prepareTable();
-        },
+
         data() {
             return {
-                sharedState: window._mainState,
-                privateState: {
-
-                }
+                routes: [],
             };
         },
 
         methods: {
-            prepareTable() {
-                $('table').dataTable();
-            },
-
             edit(route) {
-                let routeIndex = this.sharedState.state.routes.indexOf(route);
-                window._router.push({path: '/routes/' + routeIndex + '/edit'})
+                window._router.push({path: '/routes/' + route.id + '/edit'})
             },
 
             destroy(route) {

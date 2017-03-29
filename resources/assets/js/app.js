@@ -13,7 +13,7 @@ require('./bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('trucks-index', require('./components/Example.vue'));
+Vue.component('alert', require('./components/core/alert.vue'));
 
 
 

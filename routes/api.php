@@ -16,3 +16,11 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::resource('driver', 'DriverController');
+Route::resource('route', 'RouteController');
+Route::resource('truck', 'TruckController');
+Route::resource('contract', 'ContractController');
+Route::resource('allocation', 'AllocationController');
+Route::post('progress/{id}', 'TruckController@progress');
+Route::get('progress', 'TruckController@allocated');

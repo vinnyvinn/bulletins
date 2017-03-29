@@ -29,37 +29,21 @@
                                             <span class="input-group-addon" id="distance-addon">KM</span>
                                         </div>
                                     </div>
-
-                                    <div class="form-group">
-                                        <label for="amount">Price</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon" id="amount-addon">KES</span>
-                                            <input v-model="route.amount" min="0" type="number" class="form-control" id="amount" name="amount" describedby="amount-addon" required>
-                                        </div>
-                                    </div>
                                 </div>
 
                                 <div class="col-sm-6">
 
                                     <div class="form-group">
-                                        <label for="fuel_required">Is Fuel Required</label>
+                                        <label for="fuel_required">Fuel Required</label>
                                         <div class="input-group">
-                                            <input v-model="route.fuel_required" min="1" type="number" class="form-control" id="fuel_required" name="fuel_required" describedby="fuel-addon" required>
+                                            <input onclick="this.select()" v-model="route.fuel_required" min="1" type="number" class="form-control" id="fuel_required" name="fuel_required" describedby="fuel-addon" required>
                                             <span class="input-group-addon" id="fuel-addon">Litres</span>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="payment_type">Billing Type</label>
-                                        <select v-model="route.payment_type" name="payment_type" id="payment_type" class="form-control" required>
-                                            <option value="Per KM">Per KM</option>
-                                            <option value="Flat Rate">Flat Rate</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group">
                                         <label for="allowance_amount">Allowance Amount</label>
-                                        <input v-model="route.allowance_amount" min="0" type="number" class="form-control" id="allowance_amount" name="allowance_amount" required>
+                                        <input onclick="this.select()" v-model="route.allowance_amount" min="0" type="number" class="form-control" id="allowance_amount" name="allowance_amount" required>
                                     </div>
 
                                     <div class="form-group">
@@ -84,15 +68,11 @@
         },
         data() {
             return {
-                sharedState: window._mainState,
                 route: {
-                    id: null,
                     source: '',
                     destination: '',
                     distance: '',
-                    amount: '',
                     fuel_required: 1,
-                    payment_type: 'Flat Rate',
                     allowance_amount: 0
                 }
             };
@@ -101,22 +81,81 @@
         methods: {
             checkState() {
                 if (this.$route.params.id) {
-                    this.route = this.sharedState.state.routes[this.$route.params.id];
-                    return;
+                    http.get('/api/route/' + this.$route.params.id).then((response) => {
+                        this.route = response.route;
+                    });
                 }
-
-                this.route.id = this.sharedState.state.routes.length;
             },
 
             store(route) {
+                let request = null;
+
                 if (this.$route.params.id) {
-                    this.sharedState.state.routes[this.$route.params.id] = this.route;
-                    window._router.push({ path: '/routes' });
-                    return;
+                    request = http.put('/api/route/' + this.$route.params.id, this.route);
+                } else {
+                    request = http.post('/api/route', this.route);
                 }
-                this.sharedState.state.routes.push(this.route);
-                window._router.push({ path: '/routes' })
+
+                request.then((response) => {
+                    alert2(this.$root, [response.message], 'success');
+                    window._router.push({ path: '/routes' });
+                }).catch((error) => {
+                    alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
+                });
             }
         }
     }
 </script>
+
+
+<!--export default {-->
+        <!--mounted() {-->
+            <!--this.checkState();-->
+        <!--},-->
+        <!--data() {-->
+            <!--return {-->
+                <!--sharedState: window._mainState,-->
+                <!--driver: {-->
+                    <!--_token: window.Laravel.csrfToken,-->
+                    <!--_method: 'POST',-->
+                    <!--name: '',-->
+                    <!--national_id: '',-->
+                    <!--dl_number: '',-->
+                    <!--mobile: ''-->
+                <!--},-->
+                <!--errors: [],-->
+                <!--level: 'danger',-->
+                <!--showError: false-->
+            <!--};-->
+        <!--},-->
+
+        <!--methods: {-->
+            <!--checkState() {-->
+                <!--if (this.$route.params.id) {-->
+                    <!--this.driver._method = 'PUT';-->
+                    <!--http.get('/api/driver/' + this.$route.params.id).then((response) => {-->
+                        <!--this.driver = response.driver;-->
+                    <!--});-->
+
+                    <!--return;-->
+                <!--}-->
+            <!--},-->
+
+            <!--store() {-->
+                <!--let request = null;-->
+
+                <!--if (this.$route.params.id) {-->
+                    <!--request = http.put('/api/driver/' + this.$route.params.id, this.driver);-->
+                <!--} else {-->
+                    <!--request = http.post('/api/driver', this.driver);-->
+                <!--}-->
+
+                <!--request.then((response) => {-->
+                    <!--alert2(this.$root, [response.message], 'success');-->
+                    <!--window._router.push({ path: '/drivers' });-->
+                <!--}).catch((error) => {-->
+                    <!--alert2(this.$root, Object.values(JSON.parse(error.message)), 'error');-->
+                <!--});-->
+            <!--}-->
+        <!--}-->
+    <!--}-->

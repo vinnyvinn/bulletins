@@ -20,10 +20,7 @@
                 <li><router-link to="/dashboard"><i class="fa fa-tachometer"></i> Dashboard</router-link></li>
                 <li><router-link to="/contracts"><i class="fa fa-file"></i> Contracts</router-link></li>
                 <li><router-link to="/allocation"><i class="fa fa-truck"></i> Truck Allocations</router-link></li>
-
-
-
-
+                <li><router-link to="/progress"><i class="fa fa-check"></i> Progress</router-link></li>
             </ul>
 
             <!-- Right Side Of Navbar -->

@@ -53,33 +53,44 @@
             return {
                 sharedState: window._mainState,
                 driver: {
-                    id: null,
-                    truck_id: null,
+                    _token: window.Laravel.csrfToken,
+                    _method: 'POST',
                     name: '',
                     national_id: '',
                     dl_number: '',
                     mobile: ''
-                }
+                },
+                errors: [],
+                level: 'danger',
+                showError: false
             };
         },
 
         methods: {
             checkState() {
                 if (this.$route.params.id) {
-                    this.driver = this.sharedState.state.drivers[this.$route.params.id];
-                    return;
+                    this.driver._method = 'PUT';
+                    http.get('/api/driver/' + this.$route.params.id).then((response) => {
+                        this.driver = response.driver;
+                    });
                 }
-                this.driver.id = this.sharedState.state.drivers.length;
             },
 
-            store(route) {
+            store() {
+                let request = null;
+
                 if (this.$route.params.id) {
-                    this.sharedState.state.drivers[this.$route.params.id] = this.driver;
-                    window._router.push({ path: '/drivers' });
-                    return;
+                    request = http.put('/api/driver/' + this.$route.params.id, this.driver);
+                } else {
+                    request = http.post('/api/driver', this.driver);
                 }
-                this.sharedState.state.drivers.push(this.driver);
-                window._router.push({ path: '/drivers' })
+
+                request.then((response) => {
+                    alert2(this.$root, [response.message], 'success');
+                    window._router.push({ path: '/drivers' });
+                }).catch((error) => {
+                    alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
+                });
             }
         }
     }

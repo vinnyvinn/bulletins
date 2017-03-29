@@ -20,7 +20,7 @@
                             </thead>
 
                             <tbody>
-                            <tr v-for="driver in sharedState.state.drivers">
+                            <tr v-for="driver in drivers">
                                 <td>{{ driver.name }}</td>
                                 <td>{{ driver.national_id }}</td>
                                 <td>{{ driver.dl_number }}</td>
@@ -52,28 +52,21 @@
 <script>
     export default {
         created() {
-            // setup the drivers
+            http.get('/api/driver').then(response => {
+                this.drivers = response;
+                prepareTable();
+            });
         },
-        mounted() {
-            this.prepareTable();
-        },
+
         data() {
             return {
-                sharedState: window._mainState,
-                privateState: {
-
-                }
+                drivers: [],
             };
         },
 
         methods: {
-            prepareTable() {
-                $('table').dataTable();
-            },
-
             edit(driver) {
-                let routeIndex = this.sharedState.state.drivers.indexOf(driver);
-                window._router.push({path: '/drivers/' + routeIndex + '/edit'})
+                window._router.push({path: '/drivers/' + driver.id + '/edit'})
             },
 
             destroy(driver) {

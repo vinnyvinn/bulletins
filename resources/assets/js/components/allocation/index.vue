@@ -5,7 +5,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>Truck Allocations</strong>
-                        <router-link to="/allocation/create" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i> Add New</router-link>
+                        <router-link to="/allocation/create" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i> Allocate</router-link>
                     </div>
                     <div class="panel-body">
                         <table class="table datatable">
@@ -21,15 +21,15 @@
                             </thead>
 
                             <tbody>
-                            <tr v-for="allocation in sharedState.state.allocations">
-                                <td>{{ allocation.contract.client.name }}</td>
+                            <tr v-for="allocation in allocations">
+                                <td>{{ allocation.contract.client.Name }} ({{ allocation.contract.client.Account }})</td>
                                 <td>{{ allocation.contract.name }}</td>
-                                <td>{{ allocation.truck.plate_number }}</td>
-                                <td>{{ allocation.contract.start_date }}</td>
-                                <td>{{ allocation.contract.end_date }}</td>
+                                <td>{{ allocation.plate_number }}</td>
+                                <td>{{ date2(allocation.contract.start_date) }}</td>
+                                <td>{{ date2(allocation.contract.end_date) }}</td>
                                 <td class="text-center">
-                                    <span @click="edit(allocation)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
-                                    <span @click="destroy(allocation)" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></span>
+                                    <span v-if="allocation.location == 'Pre-Loading'" @click="edit(allocation)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
+                                    <span v-if="allocation.location == 'Pre-Loading'" @click="destroy(allocation)" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></span>
                                 </td>
                             </tr>
                             </tbody>
@@ -55,32 +55,32 @@
 <script>
     export default {
         created() {
-            // setup the contracts
+            http.get('/api/allocation').then(response => {
+                this.allocations = response.allocations;
+                prepareTable();
+            });
         },
-        mounted() {
-            this.prepareTable();
-        },
+
         data() {
             return {
-                sharedState: window._mainState,
-                privateState: {
-
-                }
+                allocations: []
             };
         },
 
         methods: {
-            prepareTable() {
-                $('table').dataTable();
+            date2(value) {
+                return window._date2(value);
             },
 
             edit(allocation) {
-                let index = this.sharedState.state.allocations.indexOf(allocation);
-                window._router.push({path: '/allocation/' + index + '/edit'})
+                window._router.push({path: '/allocation/' + allocation.id + '/edit'})
             },
 
             destroy(allocation) {
-                this.sharedState.state.allocations.splice(this.sharedState.state.allocations.indexOf(allocation), 1);
+                http.destroy('/api/allocation/' + allocation.id, {}).then(response => {
+                    alert2(this.$root, [response.message], 'success');
+                    this.allocations = response.allocations;
+                });
             }
         }
     }
