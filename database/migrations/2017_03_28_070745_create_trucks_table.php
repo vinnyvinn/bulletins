@@ -17,12 +17,15 @@ class CreateTrucksTable extends Migration
         Schema::create('trucks', function (Blueprint $table) {
             $table->increments('id');
             $table->string('plate_number')->unique();
-            $table->float('max_load');
+            $table->string('make')->nullable();
+            $table->string('model')->nullable();
+            $table->integer('max_load')->nullable();
             $table->string('status')->default(Core::ACTIVE);
             $table->string('location')->default(Core::AWAITING_ALLOCATION);
             $table->integer('driver_id')->index()->unsigned()->nullable();
-            $table->integer('project_id')->index()->unsigned()->nullable();
             $table->integer('contract_id')->index()->unsigned()->nullable();
+            $table->integer('trailer_id')->index()->unsigned()->nullable();
+            $table->integer('project_id')->index()->unsigned()->nullable();
             $table->softDeletes();
             $table->timestamps();
 
@@ -30,6 +33,7 @@ class CreateTrucksTable extends Migration
                 ->references('id')
                 ->on('drivers')
                 ->onDelete('set null');
+
             $table->foreign('contract_id')
                 ->references('id')
                 ->on('contracts')

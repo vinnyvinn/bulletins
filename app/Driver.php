@@ -20,4 +20,9 @@ class Driver extends Model
 
         return $query->whereNotIn('id', $assigned);
     }
+
+    public function truck()
+    {
+        return $this->hasOne(Truck::class);
+    }
 }

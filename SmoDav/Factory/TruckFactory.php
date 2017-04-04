@@ -4,22 +4,59 @@ namespace SmoDav\Factory;
 
 use function abort;
 use App\Contract;
+use App\Support\Core;
+use App\Trailer;
+use App\Trip;
 use App\Truck;
+use Carbon\Carbon;
 use DB;
+use function json_decode;
+use function round;
 use SmoDav\SAGE\Cashier;
 use function strtoupper;
 
 class TruckFactory
 {
 
-    public static function allAssignedDrivers()
+    public static function atLocation($location)
     {
-        return Truck::whereNotNull('driver_id')->get(['driver_id']);
+        switch ($location) {
+            default:
+            case 'pre-loading':
+                return Truck::with(['driver'])->preLoading()->get();
+                break;
+            case 'loading':
+                return Truck::with(['driver'])->loading()->get();
+                break;
+            case 'enroute':
+                return Truck::with(['driver'])->enroute()->get();
+                break;
+            case 'offloading':
+                return Truck::with(['driver'])->offloading()->get();
+                break;
+            case 'in-yard':
+                return Truck::inYard()->get();
+                break;
+        }
+    }
+
+    public static function allAssignedDrivers($truckId = null)
+    {
+        return Truck::whereNotNull('driver_id')
+            ->when($truckId, function ($query) use ($truckId) {
+                return $query->where('id', '<>', $truckId);
+            })
+            ->get(['driver_id']);
+    }
+
+    public static function withTrash($columns = ['*'])
+    {
+        return Truck::withTrashed()->get($columns);
     }
 
     public static function all($columns = ['*'])
     {
-        return Truck::with(['driver'])->get($columns);
+        return Truck::with(['driver', 'trailer'])->get($columns);
     }
 
     public static function findOrFail($id)
@@ -56,7 +93,7 @@ class TruckFactory
             'Project_iBranchID' => 0,
             'ProjectCode' => $fields['plate_number'],
             'ProjectName' => $fields['plate_number'],
-            'ProjectDescription' => $fields['plate_number'] . ' carrying a maximum of ' . $fields['max_load'] . ' Tonnes',
+            'ProjectDescription' => $fields['plate_number'] . ' carrying a maximum of ' . $fields['max_load'] . ' KGs',
             'MasterSubProject' => $master->ProjectCode . '>' . $fields['plate_number'],
         ];
     }
@@ -64,7 +101,20 @@ class TruckFactory
     public static function update($attributes, $id)
     {
         $truck = self::findOrFail($id);
+        if (isset($attributes['trailer_id'])) {
+            if ($truck->trailer_id != $attributes['trailer_id']) {
+                if ($truck->trailer_id) {
+                    Trailer::findOrFail($truck->trailer_id)->update(['truck_id' => null]);
+                }
+
+                if ($attributes['trailer_id']) {
+                    Trailer::findOrFail($attributes['trailer_id'])->update(['truck_id' => $truck->id]);
+                }
+            }
+        }
+
         $truck->update($attributes);
+
         DB::table('Project')->where('ProjectLink', $truck->project_id)->update(self::mapSAGEFields($attributes));
 
         return $truck;
@@ -72,7 +122,10 @@ class TruckFactory
 
     public static function unassigned()
     {
-        return Truck::whereNull('contract_id')->whereNotNull('driver_id')->get();
+        return Truck::whereNull('contract_id')
+            ->whereNotNull('driver_id')
+            ->whereNotNull('trailer_id')
+            ->get();
     }
 
     public static function assigned()
@@ -86,26 +139,28 @@ class TruckFactory
             ->get(['id', 'plate_number', 'max_load', 'contract_id', 'driver_id', 'location']);
     }
 
-    public static function createBilling(Truck $truck)
+    public static function createBilling(Trip $trip)
     {
+        $truck = $trip->truck;
         $contract = $truck->contract;
         $route = $contract->route;
         $quantity = $route->distance;
+        $delNote = $trip->deliveryNote;
+        $receiveNote = $trip->receiveNote;
+        $receiveNote->fields = json_decode($receiveNote->fields);
 
         if ($contract->rate == Contract::PER_KM) {
             $quantity = $route->distance;
         }
 
         if ($contract->rate == Contract::PER_HR) {
-            $quantity = $route->distance;
+            $quantity = round((Carbon::parse($delNote->createdAt)->diffInMinutes($receiveNote->createdAt)) / 60);
         }
 
         if ($contract->rate == Contract::PER_TONNE) {
-            $quantity = $route->distance;
+            $quantity = $receiveNote->fields->gross_weight - $receiveNote->fields->tare_weight;
         }
 
         Cashier::invoice($contract, $contract->amount, $quantity, $truck->project_id);
     }
-
-
 }

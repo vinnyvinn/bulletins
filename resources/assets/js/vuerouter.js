@@ -73,16 +73,12 @@ class MainRouter {
             router,
             data: {
                 currency: 'KES',
+                isLoading: false,
                 errors: [],
                 showAlert: false,
+                csrf: window.Laravel.csrfToken,
                 level: 'info'
             },
-            watch: {
-                mainState(val) {
-                    // localStorage.setItem('STORAGE', JSON.parse(this.mainState));
-                    console.log(val);
-                }
-            }
         }).$mount('#app');
     }
 }

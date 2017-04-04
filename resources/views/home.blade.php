@@ -17,6 +17,8 @@
     <script>
         window.Laravel = {!! json_encode([
             'csrfToken' => csrf_token(),
+            'appname' => config('app.name'),
+            'user' => Auth::id()
         ]) !!};
     </script>
 </head>
@@ -25,6 +27,7 @@
     @include('layouts.partials.nav')
 
     <alert v-show="showAlert" :errors="errors" :level="level"></alert>
+    <loader v-if="isLoading"></loader>
 
     <transition
         name="custom-classes-transition"

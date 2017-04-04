@@ -19,7 +19,7 @@
 
                             <div class="form-group" v-if="! editing">
                                 <label for="truck_id">Available Trucks</label>
-                                <select v-model="allocation.truck_id" name="truck_id" id="truck_id" class="form-control" required>
+                                <select :multiple="! $route.params.id" v-model="allocation.truck_id" name="truck_id" id="truck_id" class="form-control" required>
                                     <option v-for="truck in trucks" :value="truck.id">{{ truck.plate_number }} ({{ truck.max_load }} Tonnes)</option>
                                 </select>
                             </div>
@@ -55,7 +55,7 @@
                 contracts: [],
                 allocation: {
                     contract_id: null,
-                    truck_id: null,
+                    truck_id: [],
                 }
             };
         },

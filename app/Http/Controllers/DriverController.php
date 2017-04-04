@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Driver;
 use App\Http\Requests\DriverRequest;
+use App\Http\Requests\UploadRequest;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Response;
+use function sleep;
 use SmoDav\Factory\DriverFactory;
+use SmoDav\Support\Excel;
 
 class DriverController extends Controller
 {
@@ -76,10 +81,65 @@ class DriverController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Driver  $driver
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
     public function destroy(Driver $driver)
     {
-        //
+        if ($driver->truck()->count()) {
+            return Response::json([
+                'status' => 'error',
+                'message' => 'The driver ia assigned to a truck. Reassign the truck first.',
+            ]);
+        }
+
+        $driver->delete();
+
+        return Response::json([
+            'status' => 'success',
+            'message' => 'Successfully deleted driver.',
+            'drivers' => Driver::all()
+        ]);
+    }
+
+    public function importDrivers(UploadRequest $request)
+    {
+        $file = $request->file('uploaded_file');
+        if (! Excel::validateExcel($file)) {
+            return Response::json([
+                'status' => 'error',
+                'message' => 'Please select a valid import file of type XLS or XLSX.'
+            ]);
+        }
+
+        $existingDrivers = Driver::all(['national_id'])->map(function ($driver) {
+            return $driver->national_id;
+        })->values()->toArray();
+
+        $rows = Excel::prepare($file)
+            ->usingHeaders([
+                'name', 'national_id', 'dl_number', 'mobile'
+            ])
+            ->includeColumns([
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ])
+            ->excludeRows('national_id', $existingDrivers)
+            ->get();
+
+        try {
+            Driver::insert($rows);
+        } catch (Exception $ex) {
+            return Response::json([
+                'status' => 'error',
+                'message' => 'Please use the sample file format provided and fill all the required fields.'
+            ]);
+        }
+
+        return Response::json([
+            'status' => 'success',
+            'message' => 'Successfully imported drivers.',
+            'drivers' => Driver::all()
+        ]);
     }
 }

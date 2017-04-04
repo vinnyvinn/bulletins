@@ -22,12 +22,12 @@
 
                             <div class="form-group">
                                 <label for="dl_number">Drivers License Number</label>
-                                <input v-model="driver.dl_number" type="text" class="form-control text-uppercase" id="dl_number" name="dl_number" required>
+                                <input v-model="driver.dl_number" type="text" class="form-control text-uppercase" id="dl_number" name="dl_number">
                             </div>
 
                             <div class="form-group">
                                 <label for="mobile">Mobile Number</label>
-                                <input v-model="driver.mobile" type="text" class="form-control" id="mobile" name="mobile" required>
+                                <input v-model="driver.mobile" type="text" class="form-control" id="mobile" name="mobile">
                             </div>
 
 
@@ -77,6 +77,7 @@
             },
 
             store() {
+                this.$root.isLoading = true;
                 let request = null;
 
                 if (this.$route.params.id) {
@@ -86,9 +87,11 @@
                 }
 
                 request.then((response) => {
+                    this.$root.isLoading = false;
                     alert2(this.$root, [response.message], 'success');
                     window._router.push({ path: '/drivers' });
                 }).catch((error) => {
+                    this.$root.isLoading = false;
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                 });
             }

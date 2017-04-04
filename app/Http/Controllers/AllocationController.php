@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Allocation;
 use App\Contract;
 use App\Support\Core;
+use App\Truck;
 use Illuminate\Http\Request;
 use Response;
 use SmoDav\Factory\TruckFactory;
@@ -45,8 +46,7 @@ class AllocationController extends Controller
      */
     public function store(Request $request)
     {
-        $truck = TruckFactory::findOrFail($request->get('truck_id'));
-        $truck->update([
+        Truck::whereIn('id', $request->get('truck_id'))->update([
             'contract_id' => $request->get('contract_id'),
             'location' =>  Core::PRE_LOADING
         ]);
@@ -55,7 +55,6 @@ class AllocationController extends Controller
             'message' => 'Successfully allocated truck.',
         ]);
     }
-
 
     public function edit($id)
     {

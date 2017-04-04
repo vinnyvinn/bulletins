@@ -16,10 +16,20 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="max_load">Max Load Weight</label>
+                                <label for="make">Make</label>
+                                <input v-model="truck.make" type="text" class="form-control text-uppercase" id="make" name="make" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="model">Model</label>
+                                <input v-model="truck.model" type="text" class="form-control text-uppercase" id="model" name="model" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="max_load">T/Weight</label>
                                 <div class="input-group">
                                     <input v-model="truck.max_load" min="0" type="number" class="form-control" id="max_load" name="max_load" describedby="max_load-addon" required>
-                                    <span class="input-group-addon" id="max_load-addon">Tonnes</span>
+                                    <span class="input-group-addon" id="max_load-addon">KGs</span>
                                 </div>
                             </div>
 
@@ -40,6 +50,14 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="trailer_id">Attached Trailer</label>
+                                <select v-model="truck.trailer_id" name="trailer_id" id="trailer_id" class="form-control">
+                                    <option value="">No Trailer</option>
+                                    <option v-for="trailer in trailers" :value="trailer.id">{{ trailer.trailer_number }}</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
                                 <button class="btn btn-success">Save</button>
                                 <router-link to="/trucks" class="btn btn-danger">Back</router-link>
                             </div>
@@ -55,8 +73,9 @@
 <script>
     export default {
         created() {
-            http.get('/api/truck/create').then((response) => {
+            http.get('/api/truck/create?truck_id=' + this.$route.params.id).then((response) => {
                 this.drivers = response.drivers;
+                this.trailers = response.trailers;
             });
         },
 
@@ -66,11 +85,15 @@
 
         data() {
             return {
+                trailers: [],
                 drivers: [],
                 truck: {
                     driver_id: '',
+                    trailer_id: '',
                     plate_number: '',
                     max_load: '',
+                    make: '',
+                    model: '',
                     status: 'Active',
                     location: 'Awaiting Allocation',
                 }

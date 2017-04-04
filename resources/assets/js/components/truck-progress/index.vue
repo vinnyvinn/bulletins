@@ -5,7 +5,6 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>Trucks</strong>
-                        <router-link to="/trucks/create" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i> Add New</router-link>
                     </div>
                     <div class="panel-body">
                         <table class="table datatable">
@@ -48,7 +47,9 @@
 <script>
     export default {
         created() {
-            http.get('/api/progress').then(response => {
+            let state = this.$route.params.id ? '/' + this.$route.params.id : '';
+
+            http.get('/api/progress' + state).then(response => {
                 this.trucks = response.trucks;
                 prepareTable();
             });
@@ -60,11 +61,25 @@
         },
 
         methods: {
-            progress(truck) {
-                http.post('/api/progress/' + truck.id, {}).then(response => {
+            progresssss(truck) {
+                http.post('/api/progress/' + truck.id + '/edit', {}).then(response => {
                     alert2(this.$root, [response.message], 'success');
                     this.trucks = response.trucks;
                 });
+            },
+            progress(truck) {
+                window._router.push({path: '/progress/' + this.$route.params.id + '/' + truck.id});
+//                let routes = [
+//                    'pre-loading', 'loading', 'enroute', 'offloading', 'in-yard'
+//                ];
+//
+//                if (routes.indexOf(this.$route.params.id) < 0) {
+//
+//                }
+//                http.post('/api/progress/' + this.$route.params.id + '/edit', {}).then(response => {
+//                    alert2(this.$root, [response.message], 'success');
+//                    this.trucks = response.trucks;
+//                });
             },
         }
     }

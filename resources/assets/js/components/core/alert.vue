@@ -1,13 +1,13 @@
 <template>
     <transition name="custom-classes-transition"
-                enter-active-class="animated flipInX"
-                leave-active-class="animated flipOutX"
+                enter-active-class="animated slideInLeft"
+                leave-active-class="animated slideOutLeft"
     >
-        <div id="alert-error">
+        <div id="smo-alert">
             <div :class="getErrorClass()">
                 <h3 v-if="level == 'danger'">Whoops!</h3>
                 <ul>
-                    <li v-for="error in errors">{{ error }}</li>
+                    <li v-for="error in errors"><h5>{{ error }}</h5></li>
                 </ul>
             </div>
         </div>
@@ -39,16 +39,28 @@
 </script>
 
 <style>
-    #alert-error {
+    #smo-alert {
         position: fixed;
-        bottom: 20px;
-        right: 10px;
+        top: 60px;
+        left: 10px;
         z-index: 10000;
         width: 300px;
     }
 
-    #alert-error ul {
+    #smo-alert ul {
         list-style-type: none;
         margin-left: -40px;
+    }
+
+    #smo-alert .alert {
+        padding: 5px 10px;
+        margin-bottom: 22px;
+        border: 1px solid transparent;
+        border-radius: 0 !important;
+    }
+
+    #smo-alert :hover {
+        pointer-events: none;
+        opacity: 0.4;
     }
 </style>

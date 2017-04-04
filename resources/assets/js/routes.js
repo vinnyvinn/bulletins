@@ -17,10 +17,25 @@ module.exports = [
     { path: '/trucks/:id', component: require('./components/trucks/form.vue') },
     { path: '/trucks/:id/edit', component: require('./components/trucks/form.vue') },
 
+    { path: '/trailers', component: require('./components/trailers/index.vue') },
+    { path: '/trailers/create', component: require('./components/trailers/form.vue') },
+    { path: '/trailers/:id', component: require('./components/trailers/form.vue') },
+    { path: '/trailers/:id/edit', component: require('./components/trailers/form.vue') },
+
     { path: '/progress', component: require('./components/truck-progress/index.vue') },
-    { path: '/progress/create', component: require('./components/truck-progress/form.vue') },
-    { path: '/progress/:id', component: require('./components/truck-progress/form.vue') },
-    { path: '/progress/:id/edit', component: require('./components/truck-progress/form.vue') },
+    { path: '/progress/pre-loading', component: require('./components/truck-progress/stage-preloading.vue') },
+    { path: '/progress/pre-loading/:id', component: require('./components/truck-progress/preloading.vue') },
+
+    { path: '/progress/loading', component: require('./components/truck-progress/stage-loading.vue') },
+    { path: '/progress/loading/:id', component: require('./components/truck-progress/loading.vue') },
+
+    { path: '/progress/enroute', component: require('./components/truck-progress/stage-enroute.vue') },
+    { path: '/progress/enroute/:id', component: require('./components/truck-progress/enroute.vue') },
+
+    { path: '/progress/offloading', component: require('./components/truck-progress/stage-offloading.vue') },
+    { path: '/progress/in-yard', component: require('./components/truck-progress/stage-inyard.vue') },
+
+
 
     { path: '/contracts', component: require('./components/contracts/index.vue') },
     { path: '/contracts/create', component: require('./components/contracts/form.vue') },

@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UploadRequest;
 use App\Route;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Response;
 use function sleep;
+use SmoDav\Support\Excel;
 
 class RouteController extends Controller
 {
@@ -77,5 +81,43 @@ class RouteController extends Controller
     public function destroy(Route $route)
     {
         //
+    }
+
+    public function importDrivers(UploadRequest $request)
+    {
+        $file = $request->file('uploaded_file');
+        if (! Excel::validateExcel($file)) {
+            return Response::json([
+                'status' => 'error',
+                'message' => 'Please select a valid import file of type XLS or XLSX.'
+            ]);
+        }
+
+        $rows = Excel::prepare($file)
+            ->usingHeaders([
+                'source', 'destination', 'distance', 'fuel_required', 'allowance_amount'
+            ])
+            ->whenNull(Excel::EXCLUDE_ROW)
+            ->includeColumns([
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ])
+            ->get();
+
+        try {
+            Route::insert($rows);
+        } catch (Exception $ex) {
+            echo $ex->getMessage();
+            return Response::json([
+                'status' => 'error',
+                'message' => 'Please use the sample file format provided and fill all the required fields.'
+            ]);
+        }
+
+        return Response::json([
+            'status' => 'success',
+            'message' => 'Successfully imported routes.',
+            'routes' => Route::all()
+        ]);
     }
 }

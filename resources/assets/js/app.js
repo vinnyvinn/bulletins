@@ -14,6 +14,7 @@ require('./bootstrap');
  */
 
 Vue.component('alert', require('./components/core/alert.vue'));
+Vue.component('loader', require('./components/core/loader.vue'));
 
 
 

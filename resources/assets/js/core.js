@@ -23,6 +23,29 @@ export class http {
         }, 'POST');
     }
 
+    static uploadFile(formElement, uri) {
+        let input = document.querySelector(formElement);
+        let data = new FormData();
+        data.append('uploaded_file', input.files[0]);
+        data.append('_token', window.Laravel.csrfToken);
+
+        return fetch(uri, {
+            method: 'POST',
+            credentials: 'same-origin',
+            body: data
+        }).then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+
+            return response.json().then((err) => {
+                let errors = flatten(Object.values(err));
+
+                throw new Error(JSON.stringify(errors));
+            });
+        });
+    }
+
     static _getFetch(uri, body = null, method = 'GET') {
         let options = {
             method: method,
@@ -60,21 +83,46 @@ export function showAlert(root, errors, level = 'info') {
 
     setTimeout(() => {
         root.showAlert = false;
-    }, 3000)
+    }, 5000)
 }
 
 function flatten(arr) {
-    return arr.reduce((acc, val) => acc.concat(
-        Array.isArray(val) ? flatten(val) : val
-        ),
-        []
-    )
+    return arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? flatten(val) : val), []);
 }
 
 export function prepareTable() {
     setTimeout(() => {
-        $('table').dataTable();
-    }, 500);
+        $('table').dataTable({
+            "lengthMenu": [ [-1, 10, 25, 50, 100, 200], ["All", 10, 25, 50, 100, 200] ],
+            // dom: '<".pull-right"f>l<".pull-right"B>rtip',
+            // buttons: [
+            //     {
+            //         extend: 'copy',
+            //         exportOptions: {
+            //             columns: '.printable'
+            //         }
+            //     },
+            //     {
+            //         extend: 'excel',
+            //         exportOptions: {
+            //             columns: '.printable'
+            //         }
+            //     },
+            //     {
+            //         extend: 'pdf',
+            //         exportOptions: {
+            //             columns: '.printable'
+            //         }
+            //     },
+            //     {
+            //         extend: 'print',
+            //         exportOptions: {
+            //             columns: '.printable'
+            //         }
+            //     }
+            // ]
+        });
+    }, 100);
 }
 
 export function formatDate(value) {
@@ -90,6 +138,43 @@ export function formatDate(value) {
     let monthIndex = value.getMonth();
 
     return value.getDate() + ' ' + monthNames[monthIndex] + ' ' + value.getFullYear();
+}
 
+export function confirmPopup(selector, success, cancel = () => {}, destroy = false) {
+    if (destroy) {
+        $(selector).popover('destroy');
+        return;
+    }
+    let template = `
+    <div class="confirmation-buttons text-center">
+        <div class="btn-group" style="width: 90px;">
+            <button class="btn btn-xs btn-success confirm-accept pull-left">
+                <i class="glyphicon glyphicon-ok"></i> Yes
+            </button>
+            <button class="btn btn-xs btn-danger confirm-dismiss pull-right">
+                <i class="glyphicon glyphicon-remove"></i> No
+            </button>
+        </div>
+    </div>
+    `;
 
+    setTimeout(() => {
+        $(selector).popover({
+            content: template,
+            html: true,
+            placement: 'bottom',
+            title: 'Delete?',
+            trigger: 'focus'
+        })
+            .on('shown.bs.popover', function () {
+                let trigger = this;
+                $('.confirm-accept').off().on('click', function () {
+                    success(trigger);
+                });
+
+                $('.confirm-dismiss').off().on('click', () => {
+                    cancel(trigger);
+                });
+            });
+    }, 1000);
 }
