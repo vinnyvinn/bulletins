@@ -21,8 +21,10 @@
     </script>
 </head>
 <body>
+
     <div id="app">
-        @include('layouts.partials.nav')
+        <alert v-show="showAlert" :errors="errors" :level="level"></alert>
+        <loader v-if="isLoading"></loader>
 
         @yield('content')
     </div>

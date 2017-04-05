@@ -77,7 +77,9 @@ class MainRouter {
                 errors: [],
                 showAlert: false,
                 csrf: window.Laravel.csrfToken,
-                level: 'info'
+                level: 'info',
+                user: JSON.parse(localStorage.getItem('fewuia32rfwe')),
+                isLoggedIn: !! localStorage.getItem('foeiwafwfuwe')
             },
         }).$mount('#app');
     }

@@ -28,11 +28,15 @@ export class http {
         let data = new FormData();
         data.append('uploaded_file', input.files[0]);
         data.append('_token', window.Laravel.csrfToken);
-
         return fetch(uri, {
             method: 'POST',
             credentials: 'same-origin',
-            body: data
+            body: data,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('foeiwafwfuwe'),
+            }
         }).then(response => {
             if (response.ok) {
                 return response.json();
@@ -52,7 +56,9 @@ export class http {
             credentials: 'same-origin',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'Authorization': 'Bearer ' + localStorage.getItem('foeiwafwfuwe'),
             },
         };
 
@@ -177,4 +183,18 @@ export function confirmPopup(selector, success, cancel = () => {}, destroy = fal
                 });
             });
     }, 1000);
+}
+
+export function hasPermission(permission) {
+    let user = localStorage.getItem('fewuia32rfwe');
+    if (! user) { return false; }
+
+    user = JSON.parse(user);
+    let permissions = JSON.parse(user.permissions);
+
+    if (permissions.length > 0 && permissions[0] == '*') {
+        return true;
+    }
+
+    return permissions.indexOf(permission) !== -1;
 }

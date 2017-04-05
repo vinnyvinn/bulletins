@@ -1,0 +1,85 @@
+<template>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Login</div>
+                    <div class="panel-body">
+                        <form class="form-horizontal" @submit.prevent="login" role="form" method="POST">
+                            <div class="form-group">
+                                <label for="username" class="col-md-4 control-label">E-Mail Address</label>
+
+                                <div class="col-md-6">
+                                    <input id="username" type="username" class="form-control" name="username" v-model="user.username" required autofocus>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password" class="col-md-4 control-label">Password</label>
+
+                                <div class="col-md-6">
+                                    <input id="password" type="password" class="form-control" name="password" v-model="user.password" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-8 col-md-offset-4">
+                                    <button type="submit" class="btn btn-primary">
+                                        Login
+                                    </button>
+
+                                    <a class="btn btn-link" href="/forgot">
+                                        Forgot Your Password?
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+    export default {
+        data() {
+            return {
+                user: {
+                    username: '',
+                    password: '',
+                    grant_type: 'password',
+                    client_id: 2,
+                    client_secret: 'twuq6czARQXNX2gYosgMpOQlBpumydKGqcjdq4xx',
+                    scope: ''
+                },
+            };
+        },
+
+        methods: {
+            login() {
+                this.$root.isLoading = true;
+
+                http.post('/oauth/token', this.user).then(response => {
+                    alert2(this.$root, ['Successfully signed in.'], 'success');
+                    localStorage.setItem('foeiwafwfuwe', response.access_token);
+                    http.get('/api/user').then(response => {
+                        localStorage.setItem('fewuia32rfwe', JSON.stringify(response.user));
+                        this.$root.user = response.user;
+                        this.$root.isLoggedIn = true;
+                        this.$root.isLoading = false;
+                        window._router.push({ path: '/' })
+                    }).catch((error) => {
+                        alert2(this.$root, [Object.values(JSON.parse(error.message))[1]], 'danger');
+                        this.$root.isLoading = false;
+                    });
+                }).catch((error) => {
+                    alert2(this.$root, [Object.values(JSON.parse(error.message))[1]], 'danger');
+                    this.$root.isLoading = false;
+                });
+
+
+            }
+        }
+    }
+</script>

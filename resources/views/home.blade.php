@@ -24,8 +24,7 @@
 </head>
 <body>
 <div id="app">
-    @include('layouts.partials.nav')
-
+    <core-nav v-if="isLoggedIn" app="{{ config('app.name') }}"></core-nav>
     <alert v-show="showAlert" :errors="errors" :level="level"></alert>
     <loader v-if="isLoading"></loader>
 
