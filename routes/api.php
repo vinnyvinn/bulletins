@@ -39,5 +39,5 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('offloading/{id}', 'ProgressController@offloading');
     Route::post('in-yard/{id}', 'ProgressController@inYard');
 
-    Route::resource('user', 'UserController');
+    Route::resource('users', 'UserController');
 });
