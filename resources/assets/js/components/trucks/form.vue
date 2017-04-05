@@ -37,6 +37,7 @@
                                 <label for="status">Truck Status</label>
                                 <select v-model="truck.status" name="status" id="status" class="form-control" required>
                                     <option value="Active">Active</option>
+                                    <option value="Incident">Incident</option>
                                     <option value="Central Truck Yard">Central Truck Yard</option>
                                 </select>
                             </div>
