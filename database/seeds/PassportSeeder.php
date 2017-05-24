@@ -34,5 +34,7 @@ class PassportSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ]
         ]);
+
+        Artisan::call('passport:keys');
     }
 }

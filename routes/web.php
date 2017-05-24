@@ -23,6 +23,8 @@ Route::group(['middleware' => 'auth'], function () {
         return view('home');
     });
 
+    include(__DIR__ . '/workshop.php');
+
     Route::any('{a}/{b?}/{c?}', function () {
         return view('home');
     });

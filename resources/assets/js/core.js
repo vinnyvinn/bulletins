@@ -35,7 +35,6 @@ export class http {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
                 'Accept': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('foeiwafwfuwe'),
             }
         }).then(response => {
             if (response.ok) {
@@ -58,7 +57,7 @@ export class http {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'X-Requested-With': 'XMLHttpRequest',
-                'Authorization': 'Bearer ' + localStorage.getItem('foeiwafwfuwe'),
+                'X-CSRF-TOKEN': window.Laravel.csrfToken,
             },
         };
 

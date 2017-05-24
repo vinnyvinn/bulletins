@@ -49,6 +49,7 @@
                             <li v-if="can('view-routes')"><router-link to="/routes"><i class="fa fa-road"></i> Routes</router-link></li>
                             <li v-if="can('view-trailers')"><router-link to="/trailers"><i class="fa fa-flag"></i> Trailers</router-link></li>
                             <li v-if="can('view-trucks')"><router-link to="/trucks"><i class="fa fa-truck"></i> Trucks</router-link></li>
+                            <li v-if="can('view-trucks')"><a href="/administrator"><i class="fa fa-truck"></i> Workshop</a></li>
                             <li class="dropdown-header">User Accounts</li>
                             <!--<li v-if="can('view-users')"><router-link to="/users"><i class="fa fa-group"></i> Users</router-link></li>-->
 
@@ -58,7 +59,7 @@
 
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            {{ $root.user.name }} <span class="caret"></span>
+                            {{ $root.user.first_name }} {{ $root.user.last_name }}<span class="caret"></span>
                         </a>
 
                         <ul class="dropdown-menu" role="menu">
@@ -94,6 +95,7 @@
                 localStorage.removeItem('fewuia32rfwe');
                 this.$root.isLoggedIn = false;
                 this.$root.user = null;
+                http.post('/logout', {});
 
                 window._router.push({ path: '/login' })
             },

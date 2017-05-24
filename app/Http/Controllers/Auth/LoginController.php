@@ -26,7 +26,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -45,17 +45,10 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
-        if (! $user->active_status) {
-            return redirect()->back()->with('error', 'Sorry, your account has been disabled.');
-        }
-
-        session()->put('userLevel', 'user_admin.');
-
-        if ($user->isSuperAdmin()) {
-            session()->put('userLevel', 'admin.');
-            return redirect()->intended(route('dashboard'));
-        }
-
-        return redirect()->intended(route('user_dashboard'));
+        return response()->json([
+            'success' => 'true',
+            'access_token' => 'test',
+            'user' => $user
+        ]);
     }
 }

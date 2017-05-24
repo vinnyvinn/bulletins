@@ -596,7 +596,7 @@ class ShopController extends Controller
 
     public function shopProductsData($shop_id)
     {
-        $products = Product::orderBy('id', 'desc')->select('id', 'product_name', 'product_model', 'brand_id','category_id', 'unite_price', 'created_at')->with('category', 'brand');
+        $products = Product::select('id', 'product_name', 'product_model', 'brand_id','category_id', 'unite_price', 'created_at')->with('category', 'brand');
 
         return Datatables::of($products)
             ->editColumn('brand_id', function($product){
@@ -631,7 +631,7 @@ class ShopController extends Controller
     public function shopStocksData($shop_id)
     {
 
-        $stocks = Stock::orderBy('id', 'desc')->select('id', 'product_id', 'shop_id', 'total_product', 'unite_price', 'created_at')->where('shop_id', $shop_id)->with('product', 'shop');
+        $stocks = Stock::select('id', 'product_id', 'shop_id', 'total_product', 'unite_price', 'created_at')->where('shop_id', $shop_id)->with('product', 'shop');
 
         return Datatables::of($stocks)
 

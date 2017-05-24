@@ -31,9 +31,9 @@ class CreateUsersTable extends Migration
             $table->enum('user_type', ['user', 'super_admin', 'sub_admin','shop_admin'])->default('super_admin');
             $table->enum('active_status', [0, 1, 2])->default(1);
             $table->enum('is_email_verified', [0, 1])->default(1);
-            $table->string('activation_code');
+            $table->string('activation_code')->nullable();
             $table->enum('is_online', [0, 1])->default(1);
-            $table->integer('shop_id');
+            $table->integer('shop_id')->nullable();
             $table->string('referral_id', 20)->nullable();
             $table->integer('referred_by')->nullable();
             $table->timestamp('last_login')->nullable();

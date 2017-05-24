@@ -10,7 +10,7 @@
                                 <label for="username" class="col-md-4 control-label">E-Mail Address</label>
 
                                 <div class="col-md-6">
-                                    <input id="username" type="username" class="form-control" name="username" v-model="user.username" required autofocus>
+                                    <input id="username" type="username" class="form-control" name="username" v-model="user.email" required autofocus>
                                 </div>
                             </div>
 
@@ -43,10 +43,13 @@
 
 <script>
     export default {
+//        mounted() {
+//            http.post('/logout', this.user);
+//        },
         data() {
             return {
                 user: {
-                    username: '',
+                    email: '',
                     password: '',
                     grant_type: 'password',
                     client_id: 2,
@@ -60,19 +63,15 @@
             login() {
                 this.$root.isLoading = true;
 
-                http.post('/oauth/token', this.user).then(response => {
+                http.post('/login', this.user).then(response => {
                     alert2(this.$root, ['Successfully signed in.'], 'success');
                     localStorage.setItem('foeiwafwfuwe', response.access_token);
-                    http.get('/api/user').then(response => {
-                        localStorage.setItem('fewuia32rfwe', JSON.stringify(response.user));
-                        this.$root.user = response.user;
-                        this.$root.isLoggedIn = true;
-                        this.$root.isLoading = false;
-                        window._router.push({ path: '/' })
-                    }).catch((error) => {
-                        alert2(this.$root, [Object.values(JSON.parse(error.message))[1]], 'danger');
-                        this.$root.isLoading = false;
-                    });
+                    localStorage.setItem('fewuia32rfwe', JSON.stringify(response.user));
+                    this.$root.user = response.user;
+                    this.$root.isLoggedIn = true;
+                    this.$root.isLoading = false;
+                    window._router.push({ path: '/' })
+
                 }).catch((error) => {
                     alert2(this.$root, [Object.values(JSON.parse(error.message))[1]], 'danger');
                     this.$root.isLoading = false;

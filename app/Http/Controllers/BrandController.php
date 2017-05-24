@@ -27,7 +27,7 @@ class BrandController extends Controller
 
     public function indexData()
     {
-        $brands = Brand::orderBy('id', 'desc')->select('id', 'brand_name', 'created_at');
+        $brands = Brand::select('id', 'brand_name', 'created_at');
 
         return Datatables::of($brands)
             ->editColumn('created_at', function ($brand) {

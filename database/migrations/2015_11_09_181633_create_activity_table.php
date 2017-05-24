@@ -16,7 +16,7 @@ class CreateActivityTable extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->string('activity');
-            $table->enum('is_read', [0,1]);
+            $table->enum('is_read', [0, 1])->default(0);
             $table->timestamps();
         });
     }

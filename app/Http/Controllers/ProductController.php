@@ -68,7 +68,7 @@ class ProductController extends Controller
 
     public function indexShopData()
     {
-        $products = Product::orderBy('id', 'desc')->select('id', 'product_name', 'product_model', 'brand_id','category_id', 'unite_price')->with('category', 'brand');
+        $products = Product::select('id', 'product_name', 'product_model', 'brand_id','category_id', 'unite_price')->with('category', 'brand');
         return Datatables::of($products)
             ->editColumn('brand_id', function ($product) {
                 if($product->brand)

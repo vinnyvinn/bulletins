@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Invoice;
 use App\User;
 use Auth;
 use Illuminate\Http\Request;
@@ -33,5 +34,31 @@ class UserController extends Controller
     {
         Auth::logout();
         return redirect(route('sign_in'));
+    }
+
+    public function dashboard()
+    {
+        $user = Auth::user();
+
+        $shop = $user->shop;
+
+        $year = date('Y');
+        $sales_data = Invoice::where('shop_id', $shop->id)
+            ->whereRaw('YEAR(created_at) ='.$year)
+            ->selectRaw('MONTHNAME(created_at) as month, sum(total_price) as amount')
+            ->groupBy('month')
+            ->orderBy('created_at')
+            ->get();
+
+        $label = '[';
+        $amount = '';
+        foreach($sales_data as $data) {
+            $label .= '"'.$data->month.'", ';
+            $amount .= $data->amount.', ';
+        }
+        $label .= ']';
+
+
+        return view('user_admin.dashboard', compact('user', 'label', 'amount'));
     }
 }

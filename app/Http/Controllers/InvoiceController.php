@@ -34,7 +34,7 @@ class InvoiceController extends Controller
         $user = Auth::user();
 
         if($user->isSuperAdmin()) {
-            $invoices = Invoice::orderBy('id', 'desc')->select('id', 'shop_id', 'user_id', 'invoice_id', 'total_price', 'customer_name', 'created_at')->with('shop', 'user');
+            $invoices = Invoice::select('id', 'shop_id', 'user_id', 'invoice_id', 'total_price', 'customer_name', 'created_at')->with('shop', 'user');
 
             return Datatables::of($invoices)
                 ->addColumn('product', function($invoice){

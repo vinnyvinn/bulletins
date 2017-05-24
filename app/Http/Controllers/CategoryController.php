@@ -20,20 +20,23 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $pageTitle = 'Create Category';
+        $pageTitle = 'Categories';
+
         return view('admin.category_index', compact('pageTitle'));
     }
 
-
     public function indexData()
     {
-        $categories = Category::orderBy('id', 'desc')->select('id','category_name', 'created_at');
+        $categories = Category::select(['id', 'category_name', 'created_at']);
+        
         return Datatables::of($categories)
-            ->editColumn('created_at', function($category){
-                return '<span title="'.$category->created_at->format('F d, Y').'" data-toggle="tooltip" data-placement="top"> '.$category->created_at->diffForHumans().' </span>';
+            ->editColumn('created_at', function ($category) {
+                return '<span title="'. $category->created_at->format('F d, Y') .
+                    '" data-toggle="tooltip" data-placement="top"> ' . $category->created_at->diffForHumans() .
+                    ' </span>';
             })
-            ->addColumn('actions', function($category){
-                $button = '<a href="'.route('edit_category', $category->id).'" class="btn btn-xs btn-info" title="Edit" data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil"></i> </a>';
+            ->addColumn('actions', function ($category) {
+                $button = '<a href="'. route('edit_category', $category->id) .'" class="btn btn-xs btn-info" title="Edit" data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil"></i> </a>';
                 $button .= '<a href="javascript:;" class="btn btn-xs btn-danger deleteCategory" title="Delete" data-toggle="tooltip" data-placement="top" data-id="'.$category->id.'"><i class="fa fa-trash-o"></i> </a>';
                 return $button;
             })
@@ -50,6 +53,7 @@ class CategoryController extends Controller
     public function create()
     {
         $pageTitle = 'Create Category';
+
         return view('admin.category_create', compact('pageTitle'));
     }
 
@@ -73,12 +77,13 @@ class CategoryController extends Controller
         ];
 
         $create = Category::create($data);
-        if($create)
-        {
+
+        if ($create) {
             Activity::create(['user_id' => $user->id, 'activity' => 'You have added '.$category_name. '  category']);
 
-            return redirect()->back()->with('success', 'Category create success');
+            return redirect()->route('all_categories')->with('success', 'Category create success');
         }
+
         return redirect()->back()->with('error', 'Something went wrong, please try again');
     }
 
@@ -101,10 +106,11 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        $pageTitle = 'Create Category';
-        $category = Category::find($id);
-        return view('admin.category_edit', compact('pageTitle', 'category'));
+        $pageTitle = 'Edit Category';
 
+        $category = Category::find($id);
+
+        return view('admin.category_edit', compact('pageTitle', 'category'));
     }
 
     /**
@@ -119,9 +125,8 @@ class CategoryController extends Controller
         $rules = [
             'category_name' => 'required'
         ];
-        $this->validate($request, $rules);
 
-        $user = Auth::user();
+        $this->validate($request, $rules);
 
         $category_name = $request->input('category_name');
 
@@ -129,14 +134,16 @@ class CategoryController extends Controller
         $category->category_name = $category_name;
         $update = $category->save();
 
-        if($update)
-        {
-            Activity::create(['user_id' => $user->id, 'activity' => 'You have added '.$category->category_name. '  category']);
+        if ($update) {
+            Activity::create([
+                'user_id' => Auth::id(),
+                'activity' => 'You have added ' . $category->category_name . '  category'
+            ]);
 
-            return redirect()->back()->with('success', 'Category update success');
+            return redirect()->route('all_categories')->with('success', 'Category update success');
         }
-        return redirect()->back()->with('error', 'Something went wrong, please try again');
 
+        return redirect()->back()->with('error', 'Something went wrong, please try again');
     }
 
     /**

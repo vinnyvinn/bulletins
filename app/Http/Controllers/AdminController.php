@@ -24,55 +24,18 @@ class AdminController extends Controller
         return view('admin.login');
     }
 
-    public function signIn(Request $request)
-    {
-        $rules = [
-            'email' => 'required|email',
-            'password' => 'required'
-        ];
-
-        $this->validate($request, $rules);
-
-        $email = $request->input('email');
-        $password = $request->input('password');
-
-        $credential = [
-            'email'     => $email,
-            'password'  => $password,
-        ];
-
-        $auth = Auth::attempt($credential, $request->has('remember'));
-        $request->session()->regenerate();
-
-        if (! $auth) {
-            return redirect()->back()->with('error', 'Incorrect email or password');
-        }
-
-        $user = Auth::user();
-
-        if (! $user->active_status) {
-            return redirect()->back()->with('error', 'Sorry, your account has been disabled.');
-        }
-
-        session()->put('userLevel', 'user_admin.');
-
-        if ($user->isSuperAdmin()) {
-            session()->put('userLevel', 'admin.');
-            return redirect()->intended(route('dashboard'));
-        }
-
-        return redirect()->intended(route('user_dashboard'));
-    }
-
-
     public function dashboard()
     {
-
         $shopCount = Shop::all()->count();
         $userCount = User::where('user_type', 'user')->get()->count();
 
         $year = date('Y');
-        $sales_data = Invoice::whereRaw('YEAR(created_at) ='.$year)->selectRaw('MONTHNAME(created_at) as month, sum(total_price) as amount')->groupBy('month')->orderBy('created_at')->get();
+        $sales_data = Invoice::whereRaw('YEAR(created_at) ='.$year)
+            ->selectRaw('DATEPART(MM, created_at) as month, sum(total_price) as amount')
+            ->groupBy('created_at')
+            ->orderBy('created_at')
+            ->get();
+
         $sales_value = Invoice::sum('total_price');
         $completed_repair = Repair_invoice::where('status', 'completed')->count();
 

@@ -28,6 +28,11 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function getNameAttribute($name)
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
+
     public function get_gravatar($s = 40, $d = 'mm', $r = 'g', $img = false, $atts = [])
     {
         $email = $this->email;
@@ -57,13 +62,6 @@ class User extends Authenticatable
         return $this->first_name .' '.$this->last_name;
     }
 
-    //Has shops created by this user
-    /*    public function shops()
-        {
-            return $this->belongsToMany('App\Shop');
-        }*/
-
-    //My all shop that i joined their referral program
     public function joinedShops()
     {
         return $this->belongsToMany('App\Shop');
