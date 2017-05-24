@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Auth;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +14,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        view()->composer('*', function ($view) {
+            $loggedUser = $lShop = null;
+            if (Auth::check()) {
+                $loggedUser = Auth::user();
+                $lShop = $loggedUser->shop;
+            }
+
+            $view->with(['lUser' => $loggedUser, 'lShop' => $lShop ]);
+        });
     }
 
     /**

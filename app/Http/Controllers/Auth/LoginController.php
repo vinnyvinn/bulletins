@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -40,5 +41,21 @@ class LoginController extends Controller
     public function showLoginForm()
     {
         return view('home');
+    }
+
+    protected function authenticated(Request $request, $user)
+    {
+        if (! $user->active_status) {
+            return redirect()->back()->with('error', 'Sorry, your account has been disabled.');
+        }
+
+        session()->put('userLevel', 'user_admin.');
+
+        if ($user->isSuperAdmin()) {
+            session()->put('userLevel', 'admin.');
+            return redirect()->intended(route('dashboard'));
+        }
+
+        return redirect()->intended(route('user_dashboard'));
     }
 }
