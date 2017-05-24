@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProcessesTable extends Migration
+class CreateUDFsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,14 @@ class CreateProcessesTable extends Migration
      */
     public function up()
     {
-        Schema::create('processes', function (Blueprint $table) {
+        Schema::create('u_d_fs', function (Blueprint $table) {
             $table->increments('id');
+            $table->string("name");
+            $table->string("slug");
+            $table->string('input_type');
+            $table->string("status");
+            $table->string("section");
+            $table->string("description");
             $table->timestamps();
         });
     }
@@ -26,6 +32,6 @@ class CreateProcessesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('processes');
+        Schema::dropIfExists('u_d_fs');
     }
 }
