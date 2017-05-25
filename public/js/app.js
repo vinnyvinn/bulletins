@@ -28915,7 +28915,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this.driver = response.driver;
                 });
             }
-            Vue.set(this.driver, 'image', '');
         },
         store: function store() {
             var _this2 = this;
@@ -28937,6 +28936,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this2.$root.isLoading = false;
                 alert2(_this2.$root, Object.values(JSON.parse(error.message)), 'danger');
             });
+        },
+        addUdfToObject: function addUdfToObject() {
+            Vue.set(this.driver, 'test', '');
         }
     }
 });
@@ -31337,6 +31339,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -31357,6 +31360,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       http.get('/api/udf').then(function (response) {
         _this.udfs = response;
       });
+    },
+    addToObject: function addToObject() {
+      this.$emit('udfAdded');
     }
   }
 });
@@ -36533,7 +36539,7 @@ if (typeof jQuery === 'undefined') {
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 78 */
@@ -55621,6 +55627,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })]), _vm._v(" "), _c('udf', {
     attrs: {
       "module": "Drivers"
+    },
+    on: {
+      "udfAdded": _vm.addUdfToObject
     }
   }), _vm._v(" "), _c('div', {
     staticClass: "form-group"
@@ -56918,7 +56927,7 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', _vm._l((_vm.udfs), function(udf) {
-    return _c('div', [(udf.input_type === 'Text') ? _c('div', {
+    return _c('div', [(udf.input_type === 'short text') ? _c('div', {
       staticClass: "form-group"
     }, [_c('label', {
       attrs: {
@@ -56931,6 +56940,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "id": udf.slug,
         "name": udf.slug,
         "placeholder": udf.name
+      },
+      on: {
+        "change": _vm.addToObject
       }
     })]) : (udf.input_type === 'TextArea') ? _c('div', {
       staticClass: "form-group"

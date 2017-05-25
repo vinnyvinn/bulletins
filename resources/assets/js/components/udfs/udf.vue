@@ -1,13 +1,14 @@
 <template lang="html">
   <div>
     <div v-for="udf in udfs">
-      <div v-if="udf.input_type === 'Text'" class="form-group">
+      <div v-if="udf.input_type === 'short text'" class="form-group">
         <label :for="udf.slug">{{ udf.name }}</label>
         <input type="text"
         class="form-control text-uppercase"
         :id="udf.slug"
         :name="udf.slug"
-        :placeholder="udf.name">
+        :placeholder="udf.name"
+        @change="addToObject">
       </div>
 
       <div v-else-if="udf.input_type === 'TextArea'" class="form-group">
@@ -81,6 +82,9 @@ export default {
         http.get('/api/udf').then(response => {
             this.udfs = response;
         });
+      },
+      addToObject (){
+        this.$emit('udfAdded')
       }
     }
   }
