@@ -1,7 +1,8 @@
 <template lang="html">
   <div>
     <div v-for="udf in udfs">
-      <div v-if="udf.input_type === 'Short text'" class="form-group">
+
+      <div v-if="udf.input_type === 'Short Text'" class="form-group">
         <label :for="udf.slug">{{ udf.name }}</label>
         <input type="text"
         class="form-control"
@@ -12,7 +13,7 @@
         >
       </div>
 
-      <div v-else-if="udf.input_type === 'TextArea'" class="form-group">
+      <div v-else-if="udf.input_type === 'Long Text'" class="form-group">
         <label :for="udf.slug">{{ udf.name }}</label>
         <textarea
         :name="udf.slug"
@@ -52,6 +53,10 @@
         @change="state[udf.slug]">
       </div>
 
+      <div v-else-if="udf.input_type === 'Yes/No'" class="form-group">
+        <input type="radio" name="udf.slug" value="">{{ udf.name }}
+      </div>
+
       <div v-else-if="udf.input_type === 'DateTime'" class="form-group">
         <label :for="udf.slug">{{ udf.name }}</label>
         <input type="Date"
@@ -62,7 +67,7 @@
         v-model="state[udf.slug]">
       </div>
 
-      <div v-else="udf.input_type === 'Select'" class="form-group">
+      <div v-else-if="udf.input_type === 'Select'" class="form-group">
         <label :for="udf.slug" class="control-label">{{udf.name}} </label>
         <select class="form-control" :name="udf.slug" v-model="state[udf.slug]">
           <option value="">Select {{ udf.name }}</option>

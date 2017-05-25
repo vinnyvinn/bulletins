@@ -3,7 +3,7 @@ namespace PHPSTORM_META {
 
    /**
     * PhpStorm Meta file, to provide autocomplete information for PhpStorm
-    * Generated on 2017-04-04.
+    * Generated on 2017-05-25.
     *
     * @author Barry vd. Heuvel <barryvdh@gmail.com>
     * @see https://github.com/barryvdh/laravel-ide-helper
@@ -28,7 +28,7 @@ namespace PHPSTORM_META {
             'cookie' instanceof \Illuminate\Cookie\CookieJar,
             'db.factory' instanceof \Illuminate\Database\Connectors\ConnectionFactory,
             'db' instanceof \Illuminate\Database\DatabaseManager,
-            'db.connection' instanceof \Illuminate\Database\SqlServerConnection,
+            'db.connection' instanceof \Illuminate\Database\MySqlConnection,
             'Illuminate\Contracts\Queue\EntityResolver' instanceof \Illuminate\Database\Eloquent\QueueEntityResolver,
             'encrypter' instanceof \Illuminate\Encryption\Encrypter,
             'files' instanceof \Illuminate\Filesystem\Filesystem,
@@ -41,6 +41,8 @@ namespace PHPSTORM_META {
             'view' instanceof \Illuminate\View\Factory,
             'view.finder' instanceof \Illuminate\View\FileViewFinder,
             'view.engine.resolver' instanceof \Illuminate\View\Engines\EngineResolver,
+            'League\OAuth2\Server\AuthorizationServer' instanceof \League\OAuth2\Server\AuthorizationServer,
+            'League\OAuth2\Server\ResourceServer' instanceof \League\OAuth2\Server\ResourceServer,
             'command.ide-helper.generate' instanceof \Barryvdh\LaravelIdeHelper\Console\GeneratorCommand,
             'command.ide-helper.models' instanceof \Barryvdh\LaravelIdeHelper\Console\ModelsCommand,
             'command.ide-helper.meta' instanceof \Barryvdh\LaravelIdeHelper\Console\MetaCommand,
@@ -150,7 +152,7 @@ namespace PHPSTORM_META {
             'cookie' instanceof \Illuminate\Cookie\CookieJar,
             'db.factory' instanceof \Illuminate\Database\Connectors\ConnectionFactory,
             'db' instanceof \Illuminate\Database\DatabaseManager,
-            'db.connection' instanceof \Illuminate\Database\SqlServerConnection,
+            'db.connection' instanceof \Illuminate\Database\MySqlConnection,
             'Illuminate\Contracts\Queue\EntityResolver' instanceof \Illuminate\Database\Eloquent\QueueEntityResolver,
             'encrypter' instanceof \Illuminate\Encryption\Encrypter,
             'files' instanceof \Illuminate\Filesystem\Filesystem,
@@ -163,6 +165,8 @@ namespace PHPSTORM_META {
             'view' instanceof \Illuminate\View\Factory,
             'view.finder' instanceof \Illuminate\View\FileViewFinder,
             'view.engine.resolver' instanceof \Illuminate\View\Engines\EngineResolver,
+            'League\OAuth2\Server\AuthorizationServer' instanceof \League\OAuth2\Server\AuthorizationServer,
+            'League\OAuth2\Server\ResourceServer' instanceof \League\OAuth2\Server\ResourceServer,
             'command.ide-helper.generate' instanceof \Barryvdh\LaravelIdeHelper\Console\GeneratorCommand,
             'command.ide-helper.models' instanceof \Barryvdh\LaravelIdeHelper\Console\ModelsCommand,
             'command.ide-helper.meta' instanceof \Barryvdh\LaravelIdeHelper\Console\MetaCommand,
@@ -272,7 +276,7 @@ namespace PHPSTORM_META {
             'cookie' instanceof \Illuminate\Cookie\CookieJar,
             'db.factory' instanceof \Illuminate\Database\Connectors\ConnectionFactory,
             'db' instanceof \Illuminate\Database\DatabaseManager,
-            'db.connection' instanceof \Illuminate\Database\SqlServerConnection,
+            'db.connection' instanceof \Illuminate\Database\MySqlConnection,
             'Illuminate\Contracts\Queue\EntityResolver' instanceof \Illuminate\Database\Eloquent\QueueEntityResolver,
             'encrypter' instanceof \Illuminate\Encryption\Encrypter,
             'files' instanceof \Illuminate\Filesystem\Filesystem,
@@ -285,6 +289,8 @@ namespace PHPSTORM_META {
             'view' instanceof \Illuminate\View\Factory,
             'view.finder' instanceof \Illuminate\View\FileViewFinder,
             'view.engine.resolver' instanceof \Illuminate\View\Engines\EngineResolver,
+            'League\OAuth2\Server\AuthorizationServer' instanceof \League\OAuth2\Server\AuthorizationServer,
+            'League\OAuth2\Server\ResourceServer' instanceof \League\OAuth2\Server\ResourceServer,
             'command.ide-helper.generate' instanceof \Barryvdh\LaravelIdeHelper\Console\GeneratorCommand,
             'command.ide-helper.models' instanceof \Barryvdh\LaravelIdeHelper\Console\ModelsCommand,
             'command.ide-helper.meta' instanceof \Barryvdh\LaravelIdeHelper\Console\MetaCommand,
@@ -394,7 +400,7 @@ namespace PHPSTORM_META {
             'cookie' instanceof \Illuminate\Cookie\CookieJar,
             'db.factory' instanceof \Illuminate\Database\Connectors\ConnectionFactory,
             'db' instanceof \Illuminate\Database\DatabaseManager,
-            'db.connection' instanceof \Illuminate\Database\SqlServerConnection,
+            'db.connection' instanceof \Illuminate\Database\MySqlConnection,
             'Illuminate\Contracts\Queue\EntityResolver' instanceof \Illuminate\Database\Eloquent\QueueEntityResolver,
             'encrypter' instanceof \Illuminate\Encryption\Encrypter,
             'files' instanceof \Illuminate\Filesystem\Filesystem,
@@ -407,6 +413,8 @@ namespace PHPSTORM_META {
             'view' instanceof \Illuminate\View\Factory,
             'view.finder' instanceof \Illuminate\View\FileViewFinder,
             'view.engine.resolver' instanceof \Illuminate\View\Engines\EngineResolver,
+            'League\OAuth2\Server\AuthorizationServer' instanceof \League\OAuth2\Server\AuthorizationServer,
+            'League\OAuth2\Server\ResourceServer' instanceof \League\OAuth2\Server\ResourceServer,
             'command.ide-helper.generate' instanceof \Barryvdh\LaravelIdeHelper\Console\GeneratorCommand,
             'command.ide-helper.models' instanceof \Barryvdh\LaravelIdeHelper\Console\ModelsCommand,
             'command.ide-helper.meta' instanceof \Barryvdh\LaravelIdeHelper\Console\MetaCommand,

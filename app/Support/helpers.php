@@ -1,5 +1,5 @@
 <?php
-use App\UDF;
+
 use Illuminate\Database\Schema\Blueprint;
 
 function convertString($string){
@@ -56,10 +56,3 @@ function deletecolumn($tablename, $column){
     }
 }
 
-function toJson($request){
-    if ($request['input_type']== 'options'){
-
-         return json_encode($array);
-    }
-    die();
-}

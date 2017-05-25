@@ -25,6 +25,8 @@
                                 <input v-model="trailer.type" type="text" class="form-control text-uppercase" id="type" name="type" required>
                             </div>
 
+                            <udf module="Trailers" v-on:udfAdded="addUdfToObject" :state="trailer"></udf>
+
                             <div class="form-group">
                                 <button class="btn btn-success">Save</button>
                                 <router-link to="/trailers" class="btn btn-danger">Back</router-link>
@@ -78,6 +80,9 @@
                 }).catch((error) => {
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                 });
+            },
+            addUdfToObject (slug) {
+              Vue.set(this.trailer,slug,'');
             }
         }
     }

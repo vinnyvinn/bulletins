@@ -57,7 +57,7 @@
                                     <option v-for="trailer in trailers" :value="trailer.id">{{ trailer.trailer_number }}</option>
                                 </select>
                             </div>
-                            <udf module="trucks"></udf>
+                            <udf module="Trucks" v-on:udfAdded="addUdfToObject" :state="truck"></udf>
                             <div class="form-group">
                                 <button class="btn btn-success">Save</button>
                                 <router-link to="/trucks" class="btn btn-danger">Back</router-link>
@@ -124,6 +124,9 @@
                 }).catch((error) => {
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                 });
+            },
+            addUdfToObject (slug) {
+              Vue.set(this.truck,slug,'');
             }
         }
     }

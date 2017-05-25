@@ -26,10 +26,9 @@ class UDFController extends Controller
     public function create()
     {
         //
-        return response()->json(
-            ['inputs'=>array('Short text','Image','Document','DateTime', 'Number', 'Checkbox', 'Long Text', 'Select','Radio'),
-                'modules'=>UDF::MODULES
-            ]);
+
+        return response()->json(['inputs'=>array('Short Text','Image','Document','Date', 'Number', 'Checkbox', 'Long Text', 'Options', 'Yes/No'),'modules'=>UDF::MODULES]);
+
     }
 
     /**
@@ -112,7 +111,7 @@ class UDFController extends Controller
             $slug = convertString($request->name)."_".count($slugcount);
         }
 
-        renamecolumn(UDF::TABLES[$request->section], $udf->slug, $slug);
+        renamecolumn(UDF::TABLES[$request->module], $udf->slug, $slug);
         $udf->update(array_add($request->all(),'slug',$slug));
 
         return response()->json(['message'=>'UDF Updated Successfully']);
@@ -128,7 +127,7 @@ class UDFController extends Controller
     {
         //
         $udf = UDF::findOrfail($id);
-        deletecolumn(UDF::TABLES[$udf->section],$udf->name);
+        deletecolumn(UDF::TABLES[$udf->module],$udf->name);
         $udf->delete();
         return response()->json(['message'=>'UDF deleted Successfully']);
     }
