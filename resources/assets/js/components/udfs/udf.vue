@@ -61,7 +61,7 @@ export default {
   data () {
     return {
       udfs: [{
-        name: 'Demo',
+        name: 'Text',
         slug: 'demo',
         input_type: 'Text'
       },
@@ -76,7 +76,7 @@ export default {
         input_type: 'File'
       },
       {
-        name: 'Text Area',
+        name: 'DateTime',
         slug: 'nicedemo',
         input_type: 'DateTime'
       },

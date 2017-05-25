@@ -58,7 +58,7 @@
                                 </select>
                             </div>
 
-                            <udf></udf>
+                            <udf module="trucks"></udf>
 
                             <div class="form-group">
                                 <button class="btn btn-success">Save</button>
@@ -79,7 +79,7 @@
             http.get('/api/truck/create?truck_id=' + this.$route.params.id).then((response) => {
                 this.drivers = response.drivers;
                 this.trailers = response.trailers;
-            });            
+            });
         },
 
         mounted() {
