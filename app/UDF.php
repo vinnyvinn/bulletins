@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class UDF extends Model
 {
     //
+    protected $table = 'u_d_fs';
     const ACTIVE = 1;
     const INACTIVE = 0;
     const TEXTAREA = 'Long Text';
@@ -18,7 +19,7 @@ class UDF extends Model
     const DATETIME = 'DateTime';
     const SELECT = 'Select';
     const FILE = 'file';
-    const SECTIONS = ['Drivers', 'Routes', 'Trailers', 'Trucks', 'Trips', 'Contracts'];
+    const MODULES = ['Drivers', 'Routes', 'Trailers', 'Trucks', 'Trips', 'Contracts'];
     const TABLES = [
         'Drivers'=>'drivers',
         'Routes'=>'routes',

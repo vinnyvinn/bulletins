@@ -26,7 +26,7 @@ class UDFController extends Controller
     public function create()
     {
         //
-        return response()->json(UDF::SECTIONS);
+        return response()->json(['inputs'=>array('short text','image','document','date', 'number', 'checkbox', 'Long Text', 'options'),'modules'=>UDF::MODULES]);
     }
 
     /**
