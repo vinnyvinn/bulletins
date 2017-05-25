@@ -1,4 +1,7 @@
 <?php
+use App\UDF;
+use Illuminate\Database\Schema\Blueprint;
+
 function convertString($string){
     $string =  preg_replace('/[^\da-z ]/i', '', $string);
     return strtolower(str_replace(' ','_',$string));
@@ -51,4 +54,12 @@ function deletecolumn($tablename, $column){
     else{
         return false;
     }
+}
+
+function toJson($request){
+    if ($request['input_type']== 'options'){
+
+         return json_encode($array);
+    }
+    die();
 }

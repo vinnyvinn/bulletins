@@ -27,7 +27,7 @@ class UDFController extends Controller
     {
         //
         return response()->json(
-            ['inputs'=>array('short text','image','document','date', 'number', 'checkbox', 'Long Text', 'options'),
+            ['inputs'=>array('Short text','Image','Document','DateTime', 'Number', 'Checkbox', 'Long Text', 'Select','Radio'),
                 'modules'=>UDF::MODULES
             ]);
     }
@@ -41,8 +41,12 @@ class UDFController extends Controller
     public function store(Request $request)
     {
         //
+        $data = $request->all();
         $slugcount = UDF::where('name',strtolower($request->name))->count();
-
+        if (!is_null($request['value'])){
+             $data['value'] = (string) explode(';', $request->value);
+//            return $data['value'];
+        }
         if ($slugcount > 0){
             $slug = convertString($request->name)."_".count($slugcount);
         }
@@ -51,7 +55,7 @@ class UDFController extends Controller
         }
 
         addcolumn(UDF::TABLES[$request->module],$slug, $request->input_type);
-        UDF::create(array_add($request->all(),'slug',$slug));
+        UDF::create(array_add($data,'slug',$slug));
 
         return response()->json([
             'message' => 'Successfully added new field.'
@@ -129,7 +133,7 @@ class UDFController extends Controller
         return response()->json(['message'=>'UDF deleted Successfully']);
     }
 
-    public function getModuleUdfs($module){
-        return response()->json(UDF::where('module', $module)->where('status', UDF::ACTIVE)->get()->toArray());
+    public function moduleUdf($module){
+      return response()->json(UDF::where('module', $module)->where('status', UDF::ACTIVE)->get()->toArray());
     }
 }

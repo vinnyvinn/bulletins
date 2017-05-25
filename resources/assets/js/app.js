@@ -20,6 +20,4 @@ Vue.component('core-nav', require('./components/layout/nav.vue'));
 Vue.component('udf', require('./components/udfs/udf.vue'));
 Vue.component('udf-create', require('./components/udfs/form.vue'));
 
-
-
 const app = new RouterSingleton.getRouter();

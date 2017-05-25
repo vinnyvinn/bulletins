@@ -24,6 +24,11 @@
                           </div>
 
                           <div class="form-group">
+                              <label>Value</label>
+                              <input v-model="udf.value" type="text" class="form-control" placeholder="Field Name">
+                          </div>
+
+                          <div class="form-group">
                               <label for="make">Status</label>
                               <select v-model="udf.status" class="form-control" name="status">
                                 <option value="" disabled selected>Select status</option>
@@ -68,7 +73,8 @@ export default {
           input_type: '',
           status: '',
           module: '',
-          description: ''
+          description: '',
+          value: ''
         },
 
         input_types: [],
@@ -96,6 +102,7 @@ export default {
             }
 
             request.then((response) => {
+                console.log(response);
                 alert2(this.$root, [response.message], 'success');
                 window._router.push({ path: '/udfs' });
             }).catch((error) => {

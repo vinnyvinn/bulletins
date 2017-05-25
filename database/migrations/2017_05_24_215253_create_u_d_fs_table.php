@@ -20,6 +20,7 @@ class CreateUDFsTable extends Migration
             $table->string('input_type');
             $table->string("status");
             $table->string("module");
+            $table->string("value")->nullable();
             $table->string("description");
             $table->timestamps();
         });

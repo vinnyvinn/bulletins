@@ -28915,7 +28915,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this.driver = response.driver;
                 });
             }
-            Vue.set(this.driver, 'image', '');
         },
         store: function store() {
             var _this2 = this;
@@ -28937,6 +28936,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this2.$root.isLoading = false;
                 alert2(_this2.$root, Object.values(JSON.parse(error.message)), 'danger');
             });
+        },
+        addUdfToObject: function addUdfToObject(slug) {
+            Vue.set(this.driver, slug, '');
         }
     }
 });
@@ -31214,6 +31216,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -31223,7 +31230,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 input_type: '',
                 status: '',
                 module: '',
-                description: ''
+                description: '',
+                value: ''
             },
 
             input_types: [],
@@ -31256,6 +31264,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
 
             request.then(function (response) {
+                console.log(response);
                 alert2(_this2.$root, [response.message], 'success');
                 window._router.push({ path: '/udfs' });
             }).catch(function (error) {
@@ -31338,15 +31347,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  //asasas;aasasasa;asasaasas
+  created: function created() {
+    // this.$emit('udfAdded', this.udf.slug);
+  },
   data: function data() {
     return {
       udfs: []
     };
   },
 
-  props: ['module'],
+  props: ['module', 'object', 'state'],
   mounted: function mounted() {
     this.getUdfs();
   },
@@ -31355,7 +31376,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     getUdfs: function getUdfs() {
       var _this = this;
 
-      http.get('module-udf/' + this.modules).then(function (response) {
+      http.get('/api/module-udfs/' + this.module).then(function (response) {
+        response.forEach(function (udf) {
+          _this.$emit('udfAdded', udf.slug);
+        });
+
         _this.udfs = response;
       });
     }
@@ -36534,7 +36559,7 @@ if (typeof jQuery === 'undefined') {
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 78 */
@@ -36548,7 +36573,7 @@ exports.push([module.i, "\n.loaderContainer {\n    width: 100%;\n    height: 100
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 80 */
@@ -55621,7 +55646,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })]), _vm._v(" "), _c('udf', {
     attrs: {
-      "module": "Drivers"
+      "module": "Drivers",
+      "state": _vm.driver
+    },
+    on: {
+      "udfAdded": _vm.addUdfToObject
     }
   }), _vm._v(" "), _c('div', {
     staticClass: "form-group"
@@ -56919,19 +56948,40 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', _vm._l((_vm.udfs), function(udf) {
-    return _c('div', [(udf.input_type === 'Text') ? _c('div', {
+    return _c('div', [(udf.input_type === 'Short text') ? _c('div', {
       staticClass: "form-group"
     }, [_c('label', {
       attrs: {
         "for": udf.slug
       }
     }, [_vm._v(_vm._s(udf.name))]), _vm._v(" "), _c('input', {
-      staticClass: "form-control text-uppercase",
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: (_vm.state[udf.slug]),
+        expression: "state[udf.slug]"
+      }],
+      staticClass: "form-control",
       attrs: {
         "type": "text",
         "id": udf.slug,
         "name": udf.slug,
         "placeholder": udf.name
+      },
+      domProps: {
+        "value": (_vm.state[udf.slug])
+      },
+      on: {
+        "input": function($event) {
+          if ($event.target.composing) { return; }
+          var $$exp = _vm.state,
+            $$idx = udf.slug;
+          if (!Array.isArray($$exp)) {
+            _vm.state[udf.slug] = $event.target.value
+          } else {
+            $$exp.splice($$idx, 1, $event.target.value)
+          }
+        }
       }
     })]) : (udf.input_type === 'TextArea') ? _c('div', {
       staticClass: "form-group"
@@ -56940,12 +56990,34 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "for": udf.slug
       }
     }, [_vm._v(_vm._s(udf.name))]), _vm._v(" "), _c('textarea', {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: (_vm.state[udf.slug]),
+        expression: "state[udf.slug]"
+      }],
       staticClass: "form-control",
       attrs: {
         "name": udf.slug,
         "id": udf.slug,
         "rows": "3",
-        "cols": "30"
+        "cols": "30",
+        "placeholder": udf.name
+      },
+      domProps: {
+        "value": (_vm.state[udf.slug])
+      },
+      on: {
+        "input": function($event) {
+          if ($event.target.composing) { return; }
+          var $$exp = _vm.state,
+            $$idx = udf.slug;
+          if (!Array.isArray($$exp)) {
+            _vm.state[udf.slug] = $event.target.value
+          } else {
+            $$exp.splice($$idx, 1, $event.target.value)
+          }
+        }
       }
     }, [_vm._v(_vm._s(udf.name) + "\n      ")])]) : (udf.input_type === 'Number') ? _c('div', {
       staticClass: "form-group"
@@ -56954,12 +57026,36 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "for": udf.slug
       }
     }, [_vm._v(_vm._s(udf.name))]), _vm._v(" "), _c('input', {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: (_vm.state[udf.slug]),
+        expression: "state[udf.slug]"
+      }],
       staticClass: "form-control",
       attrs: {
         "type": "number",
         "id": udf.slug,
         "name": udf.slug,
         "placeholder": udf.name
+      },
+      domProps: {
+        "value": (_vm.state[udf.slug])
+      },
+      on: {
+        "input": function($event) {
+          if ($event.target.composing) { return; }
+          var $$exp = _vm.state,
+            $$idx = udf.slug;
+          if (!Array.isArray($$exp)) {
+            _vm.state[udf.slug] = $event.target.value
+          } else {
+            $$exp.splice($$idx, 1, $event.target.value)
+          }
+        },
+        "blur": function($event) {
+          _vm.$forceUpdate()
+        }
       }
     })]) : (udf.input_type === 'Document') ? _c('div', {
       staticClass: "form-group"
@@ -56972,10 +57068,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "type": "file",
         "id": udf.slug,
-        "name": udf.slug,
-        "placeholder": udf.name
+        "name": udf.slug
+      },
+      on: {
+        "change": function($event) {
+          _vm.state[udf.slug]
+        }
       }
-    })]) : (udf.input_type === 'image') ? _c('div', {
+    })]) : (udf.input_type === 'Image') ? _c('div', {
       staticClass: "form-group"
     }, [_c('label', {
       attrs: {
@@ -56986,8 +57086,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "type": "file",
         "id": udf.slug,
-        "name": udf.slug,
-        "placeholder": udf.name
+        "name": udf.slug
+      },
+      on: {
+        "change": function($event) {
+          _vm.state[udf.slug]
+        }
       }
     })]) : (udf.input_type === 'DateTime') ? _c('div', {
       staticClass: "form-group"
@@ -56996,12 +57100,33 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "for": udf.slug
       }
     }, [_vm._v(_vm._s(udf.name))]), _vm._v(" "), _c('input', {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: (_vm.state[udf.slug]),
+        expression: "state[udf.slug]"
+      }],
       staticClass: "form-control",
       attrs: {
         "type": "Date",
         "id": udf.slug,
         "name": udf.slug,
         "placeholder": udf.name
+      },
+      domProps: {
+        "value": (_vm.state[udf.slug])
+      },
+      on: {
+        "input": function($event) {
+          if ($event.target.composing) { return; }
+          var $$exp = _vm.state,
+            $$idx = udf.slug;
+          if (!Array.isArray($$exp)) {
+            _vm.state[udf.slug] = $event.target.value
+          } else {
+            $$exp.splice($$idx, 1, $event.target.value)
+          }
+        }
       }
     })]) : _c('div', {
       staticClass: "form-group"
@@ -57011,15 +57136,44 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "for": udf.slug
       }
     }, [_vm._v(_vm._s(udf.name) + " ")]), _vm._v(" "), _c('select', {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: (_vm.state[udf.slug]),
+        expression: "state[udf.slug]"
+      }],
       staticClass: "form-control",
       attrs: {
         "name": udf.slug
+      },
+      on: {
+        "change": function($event) {
+          var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+            return o.selected
+          }).map(function(o) {
+            var val = "_value" in o ? o._value : o.value;
+            return val
+          });
+          var $$exp = _vm.state,
+            $$idx = udf.slug;
+          if (!Array.isArray($$exp)) {
+            _vm.state[udf.slug] = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+          } else {
+            $$exp.splice($$idx, 1, $event.target.multiple ? $$selectedVal : $$selectedVal[0])
+          }
+        }
       }
     }, [_c('option', {
       attrs: {
         "value": ""
       }
-    }, [_vm._v("Select " + _vm._s(udf.name))])])])])
+    }, [_vm._v("Select " + _vm._s(udf.name))]), _vm._v(" "), _vm._l((udf.value.split(';')), function(option) {
+      return _c('option', {
+        domProps: {
+          "value": option
+        }
+      }, [_vm._v(_vm._s(option))])
+    })], 2)])])
   }))
 },staticRenderFns: []}
 module.exports.render._withStripped = true
@@ -58463,6 +58617,29 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_vm._v(_vm._s(input_type))])
   })], 2)]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', [_vm._v("Value")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.udf.value),
+      expression: "udf.value"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "placeholder": "Field Name"
+    },
+    domProps: {
+      "value": (_vm.udf.value)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.udf.value = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {

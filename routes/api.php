@@ -41,6 +41,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::resource('users', 'UserController');
     Route::resource('udf', 'UDFController');
-    Route::post('module-udf/{module}', 'RouteController@getModuleUdfs')->name('module-udf');
+
+    Route::get('module-udfs/{module}', 'UDFController@moduleUdf')->name('module-udfs');
 
 });

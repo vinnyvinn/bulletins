@@ -1,13 +1,15 @@
 <template lang="html">
   <div>
     <div v-for="udf in udfs">
-      <div v-if="udf.input_type === 'Text'" class="form-group">
+      <div v-if="udf.input_type === 'Short text'" class="form-group">
         <label :for="udf.slug">{{ udf.name }}</label>
         <input type="text"
-        class="form-control text-uppercase"
+        class="form-control"
         :id="udf.slug"
         :name="udf.slug"
-        :placeholder="udf.name">
+        :placeholder="udf.name"
+        v-model="state[udf.slug]"
+        >
       </div>
 
       <div v-else-if="udf.input_type === 'TextArea'" class="form-group">
@@ -15,7 +17,9 @@
         <textarea
         :name="udf.slug"
         :id="udf.slug" rows="3" cols="30"
-        class="form-control">{{ udf.name }}
+        class="form-control"
+        :placeholder="udf.name"
+        v-model="state[udf.slug]">{{ udf.name }}
         </textarea>
       </div>
 
@@ -25,7 +29,9 @@
         class="form-control"
         :id="udf.slug"
         :name="udf.slug"
-        :placeholder="udf.name">
+        :placeholder="udf.name"
+        v-model="state[udf.slug]"
+        >
       </div>
 
       <div v-else-if="udf.input_type === 'Document'" class="form-group">
@@ -34,16 +40,16 @@
         class="form-control"
         :id="udf.slug"
         :name="udf.slug"
-        :placeholder="udf.name">
+        @change="state[udf.slug]">
       </div>
 
-      <div v-else-if="udf.input_type === 'image'" class="form-group">
+      <div v-else-if="udf.input_type === 'Image'" class="form-group">
         <label :for="udf.slug">{{ udf.name }}</label>
         <input type="file"
         class="form-control"
         :id="udf.slug"
         :name="udf.slug"
-        :placeholder="udf.name">
+        @change="state[udf.slug]">
       </div>
 
       <div v-else-if="udf.input_type === 'DateTime'" class="form-group">
@@ -52,13 +58,15 @@
         class="form-control"
         :id="udf.slug"
         :name="udf.slug"
-        :placeholder="udf.name">
+        :placeholder="udf.name"
+        v-model="state[udf.slug]">
       </div>
 
       <div v-else="udf.input_type === 'Select'" class="form-group">
         <label :for="udf.slug" class="control-label">{{udf.name}} </label>
-        <select class="form-control" :name="udf.slug">
+        <select class="form-control" :name="udf.slug" v-model="state[udf.slug]">
           <option value="">Select {{ udf.name }}</option>
+          <option v-for="option in udf.value.split(';')" :value="option">{{option}}</option>
         </select>
       </div>
     </div>
@@ -67,19 +75,30 @@
 
 <script>
 export default {
+    //asasas;aasasasa;asasaasas
+  created() {
+    // this.$emit('udfAdded', this.udf.slug);
+  },
   data () {
     return {
-      udfs: []
+      udfs: [],
     }
   },
-  props: ['module'],
+  props: ['module','object', 'state'],
   mounted () {
     this.getUdfs()
   },
   methods: {
     getUdfs () {
-        http.get('module-udf/'+this.modules).then(response => {
+
+        http.get('/api/module-udfs/'+this.module).then(response => {
+            response.forEach((udf) => {
+              this.$emit('udfAdded', udf.slug);
+            });
+
             this.udfs = response;
+
+
         });
       }
     }
