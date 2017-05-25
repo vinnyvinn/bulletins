@@ -30,6 +30,7 @@
                                 <input v-model="driver.mobile" type="text" class="form-control" id="mobile" name="mobile">
                             </div>
 
+                            <udf module="Drivers"></udf>
 
                             <div class="form-group">
                                 <button class="btn btn-success">Save</button>
@@ -74,6 +75,7 @@
                         this.driver = response.driver;
                     });
                 }
+                Vue.set(this.driver,'image','')
             },
 
             store() {

@@ -28,7 +28,16 @@
         :placeholder="udf.name">
       </div>
 
-      <div v-else-if="udf.input_type === 'File'" class="form-group">
+      <div v-else-if="udf.input_type === 'Document'" class="form-group">
+        <label :for="udf.slug">{{ udf.name }}</label>
+        <input type="file"
+        class="form-control"
+        :id="udf.slug"
+        :name="udf.slug"
+        :placeholder="udf.name">
+      </div>
+
+      <div v-else-if="udf.input_type === 'image'" class="form-group">
         <label :for="udf.slug">{{ udf.name }}</label>
         <input type="file"
         class="form-control"

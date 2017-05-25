@@ -50,11 +50,11 @@ class UDFController extends Controller
             $slug = convertString($request->name);
         }
 
-        addcolumn(UDF::TABLES[$request->section],$slug, $request->input_type);
+        addcolumn(UDF::TABLES[$request->module],$slug, $request->input_type);
         UDF::create(array_add($request->all(),'slug',$slug));
 
         return response()->json([
-            'message' => 'Successfully added new feature.'
+            'message' => 'Successfully added new field.'
         ]);
     }
 

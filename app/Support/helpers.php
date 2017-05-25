@@ -15,7 +15,7 @@ function addColumn($tablename,$column,$columntype){
     }
     else{
         Schema::table($tablename,function ($table) use($column,$columntype){
-            if ($columntype==Feature::TEXTAREA){
+            if ($columntype==App\UDF::TEXTAREA){
                 $table->text($column)->nullable();
             }
             else{

@@ -28,6 +28,6 @@ class UDF extends Model
         'Trips'=>'trips',
         'Contracts'=>'contracts',
     ];
-    protected $fillable = ['name', 'input_type', 'description', 'module', 'status'];
+    protected $fillable = ['name', 'input_type', 'description', 'module', 'status','slug'];
 
 }
