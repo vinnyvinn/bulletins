@@ -30,7 +30,7 @@
                                 <input v-model="driver.mobile" type="text" class="form-control" id="mobile" name="mobile">
                             </div>
 
-                            <udf module="Drivers" v-on:udfAdded="addUdfToObject"></udf>
+                            <udf module="Drivers" v-on:udfAdded="addUdfToObject" :state="driver"></udf>
 
                             <div class="form-group">
                                 <button class="btn btn-success">Save</button>
@@ -96,8 +96,8 @@
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                 });
             },
-            addUdfToObject () {
-              Vue.set(this.driver,'test','');
+            addUdfToObject (slug) {
+              Vue.set(this.driver,slug,'');
             }
         }
     }

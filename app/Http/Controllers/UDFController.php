@@ -125,4 +125,7 @@ class UDFController extends Controller
         $udf->delete();
         return response()->json(['message'=>'UDF deleted Successfully']);
     }
+    public function moduleUdf($module){
+      return response()->json(UDF::where('module', $module)->where('status', UDF::ACTIVE)->get()->toArray());
+    }
 }
