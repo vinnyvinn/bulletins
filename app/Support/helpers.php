@@ -1,4 +1,7 @@
 <?php
+
+use Illuminate\Database\Schema\Blueprint;
+
 function convertString($string){
     $string =  preg_replace('/[^\da-z ]/i', '', $string);
     return strtolower(str_replace(' ','_',$string));

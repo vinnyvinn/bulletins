@@ -28398,6 +28398,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     created: function created() {
@@ -28487,6 +28490,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).catch(function (error) {
                 alert2(_this4.$root, Object.values(JSON.parse(error.message)), 'danger');
             });
+        },
+        addUdfToObject: function addUdfToObject(slug) {
+            Vue.set(this.contract, slug, '');
         }
     }
 });
@@ -29303,6 +29309,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
@@ -29348,6 +29356,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).catch(function (error) {
                 alert2(_this2.$root, Object.values(JSON.parse(error.message)), 'danger');
             });
+        },
+        addUdfToObject: function addUdfToObject(slug) {
+            Vue.set(this.route, slug, '');
         }
     }
 });
@@ -29555,6 +29566,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
@@ -29598,6 +29611,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).catch(function (error) {
                 alert2(_this2.$root, Object.values(JSON.parse(error.message)), 'danger');
             });
+        },
+        addUdfToObject: function addUdfToObject(slug) {
+            Vue.set(this.trailer, slug, '');
         }
     }
 });
@@ -30979,6 +30995,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).catch(function (error) {
                 alert2(_this3.$root, Object.values(JSON.parse(error.message)), 'danger');
             });
+        },
+        addUdfToObject: function addUdfToObject(slug) {
+            Vue.set(this.truck, slug, '');
         }
     }
 });
@@ -31216,54 +31235,74 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            udf: {
-                name: '',
-                input_type: '',
-                status: '',
-                module: '',
-                description: ''
-            },
-            input_types: [],
-            modules: []
-        };
+  data: function data() {
+    return {
+      udf: {
+        name: '',
+        input_type: '',
+        status: '',
+        module: '',
+        description: ''
+      },
+      input_types: [],
+      modules: [],
+      radio_options: {
+        option1Label: 'Option 1',
+        option2Label: 'Option 2'
+      },
+      showYesNoEntryForm: false
+    };
+  },
+  created: function created() {
+    this.getInputs();
+  },
+
+  methods: {
+    getInputs: function getInputs() {
+      var _this = this;
+
+      if (this.$route.params.id) {
+        this.udf._method = 'PUT';
+        http.get('/api/udf/' + this.$route.params.id).then(function (response) {
+          _this.udf = response;
+        });
+      }
+      http.get('/api/udf/create').then(function (response) {
+        _this.input_types = response.inputs;
+        _this.modules = response.modules;
+      });
     },
-    created: function created() {
-        this.getInputs();
+    store: function store() {
+      var _this2 = this;
+
+      var request = null;
+
+      if (this.$route.params.id) {
+        request = http.put('/api/udf/' + this.$route.params.id, this.udf);
+      } else {
+        request = http.post('/api/udf', this.udf);
+      }
+
+      request.then(function (response) {
+        alert2(_this2.$root, [response.message], 'success');
+        window._router.push({ path: '/udfs' });
+      }).catch(function (error) {
+        alert2(_this2.$root, Object.values(JSON.parse(error.message)), 'danger');
+      });
     },
-
-    methods: {
-        getInputs: function getInputs() {
-            var _this = this;
-
-            http.get('api/udf/create').then(function (response) {
-                console.log(response);
-                _this.input_types = response.inputs;
-                _this.modules = response.modules;
-            });
-        },
-        store: function store() {
-            var _this2 = this;
-
-            var request = null;
-
-            if (this.$route.params.id) {
-                request = http.put('/api/udf/' + this.$route.params.id, this.udf);
-            } else {
-                request = http.post('/api/udf', this.udf);
-            }
-
-            request.then(function (response) {
-                alert2(_this2.$root, [response.message], 'success');
-                window._router.push({ path: '/udfs' });
-            }).catch(function (error) {
-                alert2(_this2.$root, Object.values(JSON.parse(error.message)), 'danger');
-            });
-        }
+    checkInputType: function checkInputType() {
+      this.showYesNoEntryForm = !this.showYesNoEntryForm;
     }
+  }
 });
 
 /***/ }),
@@ -31272,6 +31311,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
 //
 //
 //
@@ -31457,6 +31500,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
@@ -31504,6 +31549,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             }).catch(function (error) {
                 alert2(_this2.$root, Object.values(JSON.parse(error.message)), 'danger');
             });
+        },
+        addUdfToObject: function addUdfToObject(slug) {
+            Vue.set(this.user, slug, '');
         }
     }
 });
@@ -31936,7 +31984,7 @@ function authMiddleware(to, from, next) {
     return next();
 }
 
-module.exports = [{ path: '/', redirect: '/dashboard', beforeEnter: authMiddleware }, { path: '/dashboard', component: __webpack_require__(88), beforeEnter: authMiddleware }, { path: '/routes', component: __webpack_require__(91), beforeEnter: authMiddleware }, { path: '/routes/create', component: __webpack_require__(18), beforeEnter: authMiddleware }, { path: '/routes/:id/edit', component: __webpack_require__(18), beforeEnter: authMiddleware }, { path: '/drivers', component: __webpack_require__(89), beforeEnter: authMiddleware }, { path: '/drivers/create', component: __webpack_require__(17), beforeEnter: authMiddleware }, { path: '/drivers/:id/edit', component: __webpack_require__(17), beforeEnter: authMiddleware }, { path: '/trucks', component: __webpack_require__(102), beforeEnter: authMiddleware }, { path: '/trucks/create', component: __webpack_require__(8), beforeEnter: authMiddleware }, { path: '/trucks/:id', component: __webpack_require__(8), beforeEnter: authMiddleware }, { path: '/trucks/:id/edit', component: __webpack_require__(8), beforeEnter: authMiddleware }, { path: '/trailers', component: __webpack_require__(92), beforeEnter: authMiddleware }, { path: '/trailers/create', component: __webpack_require__(7), beforeEnter: authMiddleware }, { path: '/trailers/:id', component: __webpack_require__(7), beforeEnter: authMiddleware }, { path: '/trailers/:id/edit', component: __webpack_require__(7), beforeEnter: authMiddleware }, { path: '/progress', component: __webpack_require__(94), beforeEnter: authMiddleware }, { path: '/progress/pre-loading', component: __webpack_require__(101), beforeEnter: authMiddleware }, { path: '/progress/pre-loading/:id', component: __webpack_require__(96), beforeEnter: authMiddleware }, { path: '/progress/loading', component: __webpack_require__(99), beforeEnter: authMiddleware }, { path: '/progress/loading/:id', component: __webpack_require__(95), beforeEnter: authMiddleware }, { path: '/progress/enroute', component: __webpack_require__(97), beforeEnter: authMiddleware }, { path: '/progress/enroute/:id', component: __webpack_require__(93), beforeEnter: authMiddleware }, { path: '/progress/offloading', component: __webpack_require__(100), beforeEnter: authMiddleware }, { path: '/progress/in-yard', component: __webpack_require__(98), beforeEnter: authMiddleware }, { path: '/users', component: __webpack_require__(105), beforeEnter: authMiddleware }, { path: '/users/create', component: __webpack_require__(104), beforeEnter: authMiddleware }, { path: '/contracts', component: __webpack_require__(85), beforeEnter: authMiddleware }, { path: '/contracts/create', component: __webpack_require__(16), beforeEnter: authMiddleware }, { path: '/contracts/:id/edit', component: __webpack_require__(16), beforeEnter: authMiddleware }, { path: '/allocation', component: __webpack_require__(83), beforeEnter: authMiddleware }, { path: '/allocation/create', component: __webpack_require__(15), beforeEnter: authMiddleware }, { path: '/allocation/:id/edit', component: __webpack_require__(15), beforeEnter: authMiddleware }, { path: '/udfs', component: __webpack_require__(19), beforeEnter: authMiddleware }, { path: '/login',
+module.exports = [{ path: '/', redirect: '/dashboard', beforeEnter: authMiddleware }, { path: '/dashboard', component: __webpack_require__(88), beforeEnter: authMiddleware }, { path: '/routes', component: __webpack_require__(91), beforeEnter: authMiddleware }, { path: '/routes/create', component: __webpack_require__(18), beforeEnter: authMiddleware }, { path: '/routes/:id/edit', component: __webpack_require__(18), beforeEnter: authMiddleware }, { path: '/drivers', component: __webpack_require__(89), beforeEnter: authMiddleware }, { path: '/drivers/create', component: __webpack_require__(17), beforeEnter: authMiddleware }, { path: '/drivers/:id/edit', component: __webpack_require__(17), beforeEnter: authMiddleware }, { path: '/trucks', component: __webpack_require__(102), beforeEnter: authMiddleware }, { path: '/trucks/create', component: __webpack_require__(8), beforeEnter: authMiddleware }, { path: '/trucks/:id', component: __webpack_require__(8), beforeEnter: authMiddleware }, { path: '/trucks/:id/edit', component: __webpack_require__(8), beforeEnter: authMiddleware }, { path: '/trailers', component: __webpack_require__(92), beforeEnter: authMiddleware }, { path: '/trailers/create', component: __webpack_require__(7), beforeEnter: authMiddleware }, { path: '/trailers/:id', component: __webpack_require__(7), beforeEnter: authMiddleware }, { path: '/trailers/:id/edit', component: __webpack_require__(7), beforeEnter: authMiddleware }, { path: '/progress', component: __webpack_require__(94), beforeEnter: authMiddleware }, { path: '/progress/pre-loading', component: __webpack_require__(101), beforeEnter: authMiddleware }, { path: '/progress/pre-loading/:id', component: __webpack_require__(96), beforeEnter: authMiddleware }, { path: '/progress/loading', component: __webpack_require__(99), beforeEnter: authMiddleware }, { path: '/progress/loading/:id', component: __webpack_require__(95), beforeEnter: authMiddleware }, { path: '/progress/enroute', component: __webpack_require__(97), beforeEnter: authMiddleware }, { path: '/progress/enroute/:id', component: __webpack_require__(93), beforeEnter: authMiddleware }, { path: '/progress/offloading', component: __webpack_require__(100), beforeEnter: authMiddleware }, { path: '/progress/in-yard', component: __webpack_require__(98), beforeEnter: authMiddleware }, { path: '/users', component: __webpack_require__(105), beforeEnter: authMiddleware }, { path: '/users/create', component: __webpack_require__(104), beforeEnter: authMiddleware }, { path: '/contracts', component: __webpack_require__(85), beforeEnter: authMiddleware }, { path: '/contracts/create', component: __webpack_require__(16), beforeEnter: authMiddleware }, { path: '/contracts/:id/edit', component: __webpack_require__(16), beforeEnter: authMiddleware }, { path: '/allocation', component: __webpack_require__(83), beforeEnter: authMiddleware }, { path: '/allocation/create', component: __webpack_require__(15), beforeEnter: authMiddleware }, { path: '/allocation/:id/edit', component: __webpack_require__(15), beforeEnter: authMiddleware }, { path: '/udfs', component: __webpack_require__(159), beforeEnter: authMiddleware }, { path: '/udfs/create', component: __webpack_require__(19), beforeEnter: authMiddleware }, { path: '/udfs/:id/edit', component: __webpack_require__(19), beforeEnter: authMiddleware }, { path: '/login',
     component: __webpack_require__(84),
     beforeEnter: function beforeEnter(to, from, next) {
         if (localStorage.getItem('foeiwafwfuwe')) {
@@ -36549,7 +36597,7 @@ if (typeof jQuery === 'undefined') {
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 78 */
@@ -36563,7 +36611,7 @@ exports.push([module.i, "\n.loaderContainer {\n    width: 100%;\n    height: 100
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 80 */
@@ -55126,7 +55174,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "value": trailer.id
       }
     }, [_vm._v(_vm._s(trailer.trailer_number))])
-  })], 2)]), _vm._v(" "), _c('div', {
+  })], 2)]), _vm._v(" "), _c('udf', {
+    attrs: {
+      "module": "Users",
+      "state": _vm.user
+    },
+    on: {
+      "udfAdded": _vm.addUdfToObject
+    }
+  }), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('button', {
     staticClass: "btn btn-success"
@@ -55135,7 +55191,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "to": "/trucks"
     }
-  }, [_vm._v("Back")])], 1)])])])])])])
+  }, [_vm._v("Back")])], 1)], 1)])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "panel-heading"
@@ -56938,7 +56994,7 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', _vm._l((_vm.udfs), function(udf) {
-    return _c('div', [(udf.input_type === 'short text') ? _c('div', {
+    return _c('div', [(udf.input_type === 'Short Text') ? _c('div', {
       staticClass: "form-group"
     }, [_c('label', {
       attrs: {
@@ -56973,7 +57029,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           }
         }
       }
-    })]) : (udf.input_type === 'TextArea') ? _c('div', {
+    })]) : (udf.input_type === 'Long Text') ? _c('div', {
       staticClass: "form-group"
     }, [_c('label', {
       attrs: {
@@ -57065,7 +57121,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.state[udf.slug]
         }
       }
-    })]) : (udf.input_type === 'image') ? _c('div', {
+    })]) : (udf.input_type === 'Image') ? _c('div', {
       staticClass: "form-group"
     }, [_c('label', {
       attrs: {
@@ -57083,7 +57139,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.state[udf.slug]
         }
       }
-    })]) : (udf.input_type === 'DateTime') ? _c('div', {
+    })]) : (udf.input_type === 'Yes/No') ? _c('div', {
+      staticClass: "form-group"
+    }, [_c('input', {
+      attrs: {
+        "type": "radio",
+        "name": "udf.slug",
+        "value": ""
+      }
+    }), _vm._v(_vm._s(udf.name) + "\n    ")]) : (udf.input_type === 'DateTime') ? _c('div', {
       staticClass: "form-group"
     }, [_c('label', {
       attrs: {
@@ -57118,7 +57182,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           }
         }
       }
-    })]) : _c('div', {
+    })]) : (udf.input_type === 'Select') ? _c('div', {
       staticClass: "form-group"
     }, [_c('label', {
       staticClass: "control-label",
@@ -57157,7 +57221,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "value": ""
       }
-    }, [_vm._v("Select " + _vm._s(udf.name))])])])])
+    }, [_vm._v("Select " + _vm._s(udf.name))])])]) : _vm._e()])
   }))
 },staticRenderFns: []}
 module.exports.render._withStripped = true
@@ -57565,7 +57629,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.$forceUpdate()
       }
     }
-  })]), _vm._v(" "), _c('div', {
+  })]), _vm._v(" "), _c('udf', {
+    attrs: {
+      "module": "Routes",
+      "state": _vm.route
+    },
+    on: {
+      "udfAdded": _vm.addUdfToObject
+    }
+  }), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('button', {
     staticClass: "btn btn-success"
@@ -57574,7 +57646,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "to": "/routes"
     }
-  }, [_vm._v("Back")])], 1)])])])])])])])])
+  }, [_vm._v("Back")])], 1)], 1)])])])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "panel-heading"
@@ -57922,7 +57994,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "id": "quantity-addon"
     }
-  }, [_vm._v("Tonnes")])])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Tonnes")])])]), _vm._v(" "), _c('udf', {
+    attrs: {
+      "module": "Contracts",
+      "state": _vm.contract
+    },
+    on: {
+      "udfAdded": _vm.addUdfToObject
+    }
+  }), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('button', {
     staticClass: "btn btn-success"
@@ -57931,7 +58011,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "to": "/contracts"
     }
-  }, [_vm._v("Back")])], 1)])])])])])])
+  }, [_vm._v("Back")])], 1)], 1)])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "panel-heading"
@@ -58578,7 +58658,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "input_type"
     },
     on: {
-      "change": function($event) {
+      "change": [function($event) {
         var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
           return o.selected
         }).map(function(o) {
@@ -58586,7 +58666,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           return val
         });
         _vm.udf.input_type = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
+      }, function($event) {
+        _vm.checkInputType()
+      }]
     }
   }, [_c('option', {
     attrs: {
@@ -58597,10 +58679,33 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("Select input type")]), _vm._v(" "), _vm._l((_vm.input_types), function(input_type) {
     return _c('option', {
       domProps: {
-        "value": input_type
+        "value": input_type,
+        "selected": (input_type === _vm.udf.input_type)
       }
     }, [_vm._v(_vm._s(input_type))])
-  })], 2)]), _vm._v(" "), _c('div', {
+  })], 2), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.showYesNoEntryForm),
+      expression: "showYesNoEntryForm"
+    }],
+    staticClass: "col-md-6 col-md-offset-6"
+  }, [_c('span', [_vm._v("\n                                " + _vm._s(_vm.radio_options.option1Label)), _c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "name": "",
+      "value": ""
+    }
+  }), _vm._v("\n                                " + _vm._s(_vm.radio_options.optionLabel)), _c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "name": "",
+      "value": ""
+    }
+  })])])]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
@@ -59404,7 +59509,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.trailer.type = $event.target.value
       }
     }
-  })]), _vm._v(" "), _c('div', {
+  })]), _vm._v(" "), _c('udf', {
+    attrs: {
+      "module": "Trailers",
+      "state": _vm.trailer
+    },
+    on: {
+      "udfAdded": _vm.addUdfToObject
+    }
+  }), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('button', {
     staticClass: "btn btn-success"
@@ -59413,7 +59526,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "to": "/trailers"
     }
-  }, [_vm._v("Back")])], 1)])])])])])])
+  }, [_vm._v("Back")])], 1)], 1)])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "panel-heading"
@@ -59770,7 +59883,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_vm._v(_vm._s(trailer.trailer_number))])
   })], 2)]), _vm._v(" "), _c('udf', {
     attrs: {
-      "module": "trucks"
+      "module": "Trucks",
+      "state": _vm.truck
+    },
+    on: {
+      "udfAdded": _vm.addUdfToObject
     }
   }), _vm._v(" "), _c('div', {
     staticClass: "form-group"
@@ -72650,6 +72767,374 @@ module.exports = function(module) {
 __webpack_require__(21);
 module.exports = __webpack_require__(22);
 
+
+/***/ }),
+/* 146 */,
+/* 147 */,
+/* 148 */,
+/* 149 */,
+/* 150 */,
+/* 151 */,
+/* 152 */,
+/* 153 */,
+/* 154 */,
+/* 155 */,
+/* 156 */,
+/* 157 */,
+/* 158 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* WEBPACK VAR INJECTION */(function($) {//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    created: function created() {
+        var _this = this;
+
+        http.get('/api/udf').then(function (response) {
+            _this.udfs = response;
+            _this.setupConfirm();
+            prepareTable();
+        });
+    },
+    data: function data() {
+        return {
+            udfs: [],
+            showImport: false,
+            csrf: window.Laravel.csrfToken
+        };
+    },
+
+
+    methods: {
+        setupConfirm: function setupConfirm() {
+            var _this2 = this;
+
+            $('.btn-destroy').off();
+            confirm2('.btn-destroy', function (element) {
+                _this2.destroy(element.dataset.item);
+            });
+        },
+        importUdfs: function importUdfs() {
+            var _this3 = this;
+
+            this.$root.isLoading = true;
+            http.uploadFile('#import_file', '/api/udf/import').then(function (response) {
+                _this3.$root.isLoading = false;
+                if (response.status != 'success') {
+                    alert2(_this3.$root, [response.message], 'danger');
+                    return;
+                }
+                $('table').dataTable().fnDestroy();
+                _this3.udfs = response.udfs;
+                prepareTable();
+                alert2(_this3.$root, [response.message], 'success');
+            }).catch(function (error) {
+                _this3.$root.isLoading = false;
+                alert2(_this3.$root, Object.values(JSON.parse(error.message)), 'danger');
+            });
+        },
+        edit: function edit(udf) {
+            window._router.push({ path: '/udfs/' + udf.id + '/edit' });
+        },
+        flatten: function (_flatten) {
+            function flatten(_x) {
+                return _flatten.apply(this, arguments);
+            }
+
+            flatten.toString = function () {
+                return _flatten.toString();
+            };
+
+            return flatten;
+        }(function (arr) {
+            return arr.reduce(function (acc, val) {
+                return acc.concat(Array.isArray(val) ? flatten(val) : val);
+            }, []);
+        }),
+        destroy: function destroy(id) {
+            var _this4 = this;
+
+            this.$root.isLoading = true;
+
+            http.destroy('/api/udf/' + id).then(function (response) {
+                if (response.status != 'success') {
+                    _this4.$root.isLoading = false;
+
+                    alert2(_this4.$root, [response.message], 'danger');
+                    return;
+                }
+                $('table').dataTable().fnDestroy();
+                _this4.udfs = response.udfs;
+                prepareTable();
+                _this4.$root.isLoading = false;
+                alert2(_this4.$root, [response.message], 'success');
+            }).catch(function (error) {
+                _this4.$root.isLoading = false;
+                alert2(_this4.$root, Object.values(JSON.parse(error.message)), 'danger');
+            });
+        }
+    }
+});
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
+
+/***/ }),
+/* 159 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(158),
+  /* template */
+  __webpack_require__(160),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/sam/gaitara/rkkb/resources/assets/js/components/udfs/index.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] index.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-4ce232a3", Component.options)
+  } else {
+    hotAPI.reload("data-v-4ce232a3", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 160 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "container"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-10 col-md-offset-1"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-7"
+  }, [_c('transition', {
+    attrs: {
+      "name": "custom-classes-transition",
+      "enter-active-class": "animated flipInX",
+      "leave-active-class": "animated flipOutX"
+    }
+  }, [(_vm.showImport) ? _c('div', [_c('form', {
+    staticClass: "form-inline pull-right",
+    attrs: {
+      "id": "importForm",
+      "action": "#",
+      "method": "post",
+      "enctype": "multipart/form-data"
+    },
+    on: {
+      "submit": function($event) {
+        $event.preventDefault();
+        _vm.importUdfs($event)
+      }
+    }
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.csrf),
+      expression: "csrf"
+    }],
+    attrs: {
+      "type": "hidden",
+      "name": "_token"
+    },
+    domProps: {
+      "value": (_vm.csrf)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.csrf = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('input', {
+    staticClass: "form-control input-sm",
+    attrs: {
+      "type": "file",
+      "id": "import_file",
+      "name": "import_file",
+      "required": ""
+    }
+  })]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-success btn-xs",
+    attrs: {
+      "type": "submit"
+    }
+  }, [_vm._v("Import")])]), _vm._v(" "), _c('div', {
+    staticClass: "clearfix"
+  }), _vm._v(" "), _c('h6', {
+    staticClass: "pull-right"
+  }, [_c('a', {
+    attrs: {
+      "target": "_blank",
+      "href": "/templates/user_defined_fields.xls"
+    }
+  }, [_vm._v("Download Sample")])])]) : _vm._e()])], 1), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('a', {
+    staticClass: "btn btn-info btn-xs pull-right",
+    on: {
+      "click": function($event) {
+        _vm.showImport = !_vm.showImport
+      }
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-inbox"
+  }), _vm._v(" Import")]), _vm._v(" "), _c('router-link', {
+    staticClass: "btn btn-primary btn-xs pull-right",
+    attrs: {
+      "to": "/udfs/create"
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-plus"
+  }), _vm._v(" Add New")])], 1)])]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('table', {
+    staticClass: "table datatable"
+  }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.udfs), function(udf) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(udf.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(udf.input_type))]), _vm._v(" "), (udf.status) ? _c('td', [_vm._v("Active")]) : _c('td', [_vm._v("In-Active")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(udf.module))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(udf.description))]), _vm._v(" "), _c('td', {
+      staticClass: "text-center"
+    }, [_c('span', {
+      staticClass: "btn btn-xs btn-info",
+      on: {
+        "click": function($event) {
+          _vm.edit(udf)
+        }
+      }
+    }, [_c('i', {
+      staticClass: "fa fa-pencil"
+    })]), _vm._v(" "), _c('button', {
+      staticClass: "btn btn-xs btn-danger btn-destroy",
+      attrs: {
+        "data-toggle": "popover",
+        "data-item": udf.id
+      }
+    }, [_c('i', {
+      staticClass: "fa fa-trash"
+    })])])])
+  })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("Name")]), _vm._v(" "), _c('th', [_vm._v("National ID")]), _vm._v(" "), _c('th', [_vm._v("DL Number")]), _vm._v(" "), _c('th', [_vm._v("Mobile Number")]), _vm._v(" "), _c('th')])])], 1)])])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "col-sm-2"
+  }, [_c('h4', [_vm._v("User Defined Fields")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('thead', [_c('tr', [_c('th', [_vm._v("Name")]), _vm._v(" "), _c('th', [_vm._v("Input Type")]), _vm._v(" "), _c('th', [_vm._v("Status")]), _vm._v(" "), _c('th', [_vm._v("Module")]), _vm._v(" "), _c('th', [_vm._v("Description")]), _vm._v(" "), _c('th', [_vm._v("Actions")])])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-4ce232a3", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
