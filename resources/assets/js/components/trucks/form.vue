@@ -57,7 +57,7 @@
                                     <option v-for="trailer in trailers" :value="trailer.id">{{ trailer.trailer_number }}</option>
                                 </select>
                             </div>
-
+                            <udf module="trucks"></udf>
                             <div class="form-group">
                                 <button class="btn btn-success">Save</button>
                                 <router-link to="/trucks" class="btn btn-danger">Back</router-link>

@@ -54,19 +54,23 @@
 </template>
 
 <script>
-    export default {
-        created() {
 
-        },
-
-        data() {
-            return {
-                drivers: [],
-                showImport: false,
-                csrf: window.Laravel.csrfToken
-            };
-        },
-
-        methods: {}
+export default {
+    data () {
+        return {
+            udfs: []
+        }
+    },
+    props: ['module'],
+    mounted () {
+        this.getUdfs()
+    },
+    methods: {
+        getUdfs () {
+            http.get('/api/udf').then(response => {
+                this.udfs = response;
+            });
+        }
     }
+}
 </script>
