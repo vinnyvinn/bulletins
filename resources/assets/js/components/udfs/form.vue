@@ -12,7 +12,7 @@
 
                           <div class="form-group">
                               <label for="plate_number">Name</label>
-                              <input v-model="udf.name" type="text" class="form-control text-uppercase" id="plate_number" name="plate_number" required>
+                              <input v-model="udf.name" type="text" class="form-control" id="name" name="name">
                           </div>
 
                           <div class="form-group">
@@ -24,17 +24,16 @@
 
                           <div class="form-group">
                               <label for="make">Status</label>
-                              <select v-model="udf.input_type" class="form-control" name="input_type" >
+                              <select v-model="udf.status" class="form-control" name="status">
                                 <option value="">Active</option>
                                 <option value="">Inactive</option>
                               </select>
                           </div>
 
                           <div class="form-group">
-                              <label for="make">Section</label>
-                              <select v-model="udf.section" class="form-control" name="input_type" >
-                                <option value="">One</option>
-                                <option value="">two</option>
+                              <label for="make">Module</label>
+                              <select v-model="udf.module" class="form-control" name="module" >
+                                <option v-for"system_module in system_modules" value="">{{ system_module.module }}</option>
                               </select>
                           </div>
 
@@ -65,12 +64,10 @@ export default {
           name: '',
           input_type: '',
           status: '',
-          section: '',
+          module: '',
           description: ''
         },
-        input_types: [{
-          
-        }]
+        input_types: []
       }
     },
     methods: {

@@ -60,31 +60,7 @@
 export default {
   data () {
     return {
-      udfs: [{
-        name: 'Text',
-        slug: 'demo',
-        input_type: 'Text'
-      },
-      {
-        name: 'Text Area',
-        slug: 'nicedemo',
-        input_type: 'TextArea'
-      },
-      {
-        name: 'File',
-        slug: 'nicefile',
-        input_type: 'File'
-      },
-      {
-        name: 'DateTime',
-        slug: 'nicedemo',
-        input_type: 'DateTime'
-      },
-      {
-        name: 'Demo',
-        slug: 'demo',
-        input_type: 'Select'
-      }]
+      udfs: []
     }
   },
   props: ['module'],
@@ -94,7 +70,7 @@ export default {
   methods: {
     getUdfs () {
         http.get('/api/udf').then(response => {
-            this.udfs = response.udfs;
+            this.udfs = response;
         });
       }
     }

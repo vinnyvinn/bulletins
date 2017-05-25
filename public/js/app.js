@@ -31209,7 +31209,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -31218,10 +31217,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         name: '',
         input_type: '',
         status: '',
-        section: '',
+        module: '',
         description: ''
       },
-      input_types: [{}]
+      input_types: []
     };
   },
 
@@ -31296,27 +31295,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      udfs: [{
-        name: 'Text',
-        slug: 'demo',
-        input_type: 'Text'
-      }, {
-        name: 'Text Area',
-        slug: 'nicedemo',
-        input_type: 'TextArea'
-      }, {
-        name: 'File',
-        slug: 'nicefile',
-        input_type: 'File'
-      }, {
-        name: 'DateTime',
-        slug: 'nicedemo',
-        input_type: 'DateTime'
-      }, {
-        name: 'Demo',
-        slug: 'demo',
-        input_type: 'Select'
-      }]
+      udfs: []
     };
   },
 
@@ -31330,7 +31309,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var _this = this;
 
       http.get('/api/udf').then(function (response) {
-        _this.udfs = response.udfs;
+        _this.udfs = response;
       });
     }
   }
@@ -36508,7 +36487,7 @@ if (typeof jQuery === 'undefined') {
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 78 */
@@ -36522,7 +36501,7 @@ exports.push([module.i, "\n.loaderContainer {\n    width: 100%;\n    height: 100
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 80 */
@@ -58362,12 +58341,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       value: (_vm.udf.name),
       expression: "udf.name"
     }],
-    staticClass: "form-control text-uppercase",
+    staticClass: "form-control",
     attrs: {
       "type": "text",
-      "id": "plate_number",
-      "name": "plate_number",
-      "required": ""
+      "id": "name",
+      "name": "name"
     },
     domProps: {
       "value": (_vm.udf.name)
@@ -58422,12 +58400,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.udf.input_type),
-      expression: "udf.input_type"
+      value: (_vm.udf.status),
+      expression: "udf.status"
     }],
     staticClass: "form-control",
     attrs: {
-      "name": "input_type"
+      "name": "status"
     },
     on: {
       "change": function($event) {
@@ -58437,7 +58415,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           var val = "_value" in o ? o._value : o.value;
           return val
         });
-        _vm.udf.input_type = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+        _vm.udf.status = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
       }
     }
   }, [_c('option', {
@@ -58454,16 +58432,16 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "for": "make"
     }
-  }, [_vm._v("Section")]), _vm._v(" "), _c('select', {
+  }, [_vm._v("Module")]), _vm._v(" "), _c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.udf.section),
-      expression: "udf.section"
+      value: (_vm.udf.module),
+      expression: "udf.module"
     }],
     staticClass: "form-control",
     attrs: {
-      "name": "input_type"
+      "name": "module"
     },
     on: {
       "change": function($event) {
@@ -58473,18 +58451,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           var val = "_value" in o ? o._value : o.value;
           return val
         });
-        _vm.udf.section = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+        _vm.udf.module = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
       }
     }
-  }, [_c('option', {
-    attrs: {
-      "value": ""
-    }
-  }, [_vm._v("One")]), _vm._v(" "), _c('option', {
-    attrs: {
-      "value": ""
-    }
-  }, [_vm._v("two")])])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\"system_module in system_modules\" value=\"\">" + _vm._s(_vm.system_module.module))])]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
@@ -59570,7 +59540,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "value": trailer.id
       }
     }, [_vm._v(_vm._s(trailer.trailer_number))])
-  })], 2)]), _vm._v(" "), _c('div', {
+  })], 2)]), _vm._v(" "), _c('udf', {
+    attrs: {
+      "module": "trucks"
+    }
+  }), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('button', {
     staticClass: "btn btn-success"
@@ -59579,7 +59553,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "to": "/trucks"
     }
-  }, [_vm._v("Back")])], 1)])])])])])])
+  }, [_vm._v("Back")])], 1)], 1)])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "panel-heading"
