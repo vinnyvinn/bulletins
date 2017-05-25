@@ -56,11 +56,6 @@
 <script>
     export default {
         created() {
-            http.get('/api/driver').then(response => {
-                this.drivers = response;
-                this.setupConfirm();
-                prepareTable();
-            });
 
         },
 
@@ -72,63 +67,6 @@
             };
         },
 
-        methods: {
-            setupConfirm() {
-                $('.btn-destroy').off();
-                confirm2('.btn-destroy', (element) => {
-                    this.destroy(element.dataset.item);
-                });
-            },
-            importDrivers() {
-                this.$root.isLoading = true;
-                http.uploadFile('#import_file', '/api/driver/import')
-                    .then((response) => {
-                        this.$root.isLoading = false;
-                        if (response.status != 'success') {
-                            alert2(this.$root, [response.message], 'danger');
-                            return;
-                        }
-                        $('table').dataTable().fnDestroy();
-                        this.drivers = response.drivers;
-                        prepareTable();
-                        alert2(this.$root, [response.message], 'success');
-                    }).catch((error) => {
-                    this.$root.isLoading = false;
-                    alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
-                });
-            },
-
-            edit(driver) {
-                window._router.push({path: '/drivers/' + driver.id + '/edit'})
-            },
-
-            flatten(arr) {
-                return arr.reduce((acc, val) => acc.concat(
-                    Array.isArray(val) ? flatten(val) : val
-                    ),
-                    []
-                )
-            },
-
-            destroy(id) {
-                this.$root.isLoading = true;
-
-                http.destroy('api/driver/' + id).then(response => {
-                    if (response.status != 'success') {
-                        this.$root.isLoading = false;
-                        alert2(this.$root, [response.message], 'danger');
-                        return;
-                    }
-                    $('table').dataTable().fnDestroy();
-                    this.drivers = response.drivers;
-                    prepareTable();
-                    this.$root.isLoading = false;
-                    alert2(this.$root, [response.message], 'success');
-                }).catch((error) => {
-                    this.$root.isLoading = false;
-                    alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
-                });
-            }
-        }
+        methods: {}
     }
 </script>
