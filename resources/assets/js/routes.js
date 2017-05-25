@@ -57,6 +57,14 @@ module.exports = [
     { path: '/allocation/:id/edit', component: require('./components/allocation/form.vue'), beforeEnter: authMiddleware },
 
 
+
+
+    { path: '/job-card', component: require('./components/workshop/jobcard/index.vue'), beforeEnter: authMiddleware },
+    { path: '/job-card/create', component: require('./components/workshop/jobcard/form.vue'), beforeEnter: authMiddleware },
+    { path: '/job-card/:id/edit', component: require('./components/workshop/jobcard/form.vue'), beforeEnter: authMiddleware },
+
+
+
     { path: '/login',
         component: require('./components/auth/login.vue'),
         beforeEnter: (to, from, next) => {

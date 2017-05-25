@@ -1,20 +1,23 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace SmoDav\Controllers\API;
 
-use App\JobCard;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use SmoDav\Models\JobCard;
 
 class JobCardController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        //
+        return \Response::json([
+            'job_cards' => JobCard::all()
+        ]);
     }
 
     /**

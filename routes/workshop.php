@@ -3,6 +3,11 @@
 Route::group(['prefix' => 'workshop', 'as' => 'workshop.'], function () {
     Route::resource('make', '\SmoDav\Controllers\MakeController');
     Route::resource('model', '\SmoDav\Controllers\ModelController');
+
+    Route::resource('job-type', '\SmoDav\Controllers\WorkshopJobTypeController');
+    Route::resource('job-operation', '\SmoDav\Controllers\WorkshopJobOperationController');
+    Route::resource('job-task', '\SmoDav\Controllers\WorkshopJobTaskController');
+    Route::resource('inspection', '\SmoDav\Controllers\WorkshopInspectionCheckListController');
 });
 
 

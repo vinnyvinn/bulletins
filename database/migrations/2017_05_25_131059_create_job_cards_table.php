@@ -18,7 +18,7 @@ class CreateJobCardsTable extends Migration
             $table->bigIncrements('id');
             $table->enum('service_type', [Constants::WORK_NORMAL, Constants::WORK_SERVICE]);
             $table->integer('vehicle_id');
-            $table->integer('workshop_job_types')->index()->unsigned()->nullable();
+            $table->integer('workshop_job_type_id')->index()->unsigned()->nullable();
             $table->date('expected_completion')->nullable();
             $table->timestamp('time_in')->nullable();
             $table->text('job_description')->nullable();
@@ -28,7 +28,7 @@ class CreateJobCardsTable extends Migration
 
             $table->timestamps();
 
-            $table->foreign('workshop_job_types')
+            $table->foreign('workshop_job_type_id')
                 ->references('id')
                 ->on('workshop_job_types')
                 ->onDelete('set null');

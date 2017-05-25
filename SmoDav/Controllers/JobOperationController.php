@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace SmoDav\Controllers;
 
-use App\WorkshopJobOperation;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class JobOperationController extends Controller

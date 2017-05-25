@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace SmoDav\Controllers;
 
-use App\WorkshopJobType;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class JobTypeController extends Controller
+class JobCardController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,11 +41,10 @@ class JobTypeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\WorkshopJobType $jobType
-     *
+     * @param  \App\JobCard  $jobCard
      * @return \Illuminate\Http\Response
      */
-    public function show(WorkshopJobType $jobType)
+    public function show(JobCard $jobCard)
     {
         //
     }
@@ -53,11 +52,10 @@ class JobTypeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\WorkshopJobType $jobType
-     *
+     * @param  \App\JobCard  $jobCard
      * @return \Illuminate\Http\Response
      */
-    public function edit(WorkshopJobType $jobType)
+    public function edit(JobCard $jobCard)
     {
         //
     }
@@ -65,12 +63,11 @@ class JobTypeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \App\WorkshopJobType     $jobType
-     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\JobCard  $jobCard
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, WorkshopJobType $jobType)
+    public function update(Request $request, JobCard $jobCard)
     {
         //
     }
@@ -78,11 +75,10 @@ class JobTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\WorkshopJobType  $jobType
-     *
+     * @param  \App\JobCard  $jobCard
      * @return \Illuminate\Http\Response
      */
-    public function destroy(WorkshopJobType $jobType)
+    public function destroy(JobCard $jobCard)
     {
         //
     }

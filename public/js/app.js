@@ -29158,6 +29158,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     created: function created() {
@@ -31511,7 +31531,8 @@ var http = function () {
                 body: data,
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': window.Laravel.csrfToken
                 }
             }).then(function (response) {
                 if (response.ok) {
@@ -31663,7 +31684,7 @@ function authMiddleware(to, from, next) {
     return next();
 }
 
-module.exports = [{ path: '/', redirect: '/dashboard', beforeEnter: authMiddleware }, { path: '/dashboard', component: __webpack_require__(83), beforeEnter: authMiddleware }, { path: '/routes', component: __webpack_require__(86), beforeEnter: authMiddleware }, { path: '/routes/create', component: __webpack_require__(17), beforeEnter: authMiddleware }, { path: '/routes/:id/edit', component: __webpack_require__(17), beforeEnter: authMiddleware }, { path: '/drivers', component: __webpack_require__(84), beforeEnter: authMiddleware }, { path: '/drivers/create', component: __webpack_require__(16), beforeEnter: authMiddleware }, { path: '/drivers/:id/edit', component: __webpack_require__(16), beforeEnter: authMiddleware }, { path: '/trucks', component: __webpack_require__(97), beforeEnter: authMiddleware }, { path: '/trucks/create', component: __webpack_require__(6), beforeEnter: authMiddleware }, { path: '/trucks/:id', component: __webpack_require__(6), beforeEnter: authMiddleware }, { path: '/trucks/:id/edit', component: __webpack_require__(6), beforeEnter: authMiddleware }, { path: '/trailers', component: __webpack_require__(87), beforeEnter: authMiddleware }, { path: '/trailers/create', component: __webpack_require__(5), beforeEnter: authMiddleware }, { path: '/trailers/:id', component: __webpack_require__(5), beforeEnter: authMiddleware }, { path: '/trailers/:id/edit', component: __webpack_require__(5), beforeEnter: authMiddleware }, { path: '/progress', component: __webpack_require__(89), beforeEnter: authMiddleware }, { path: '/progress/pre-loading', component: __webpack_require__(96), beforeEnter: authMiddleware }, { path: '/progress/pre-loading/:id', component: __webpack_require__(91), beforeEnter: authMiddleware }, { path: '/progress/loading', component: __webpack_require__(94), beforeEnter: authMiddleware }, { path: '/progress/loading/:id', component: __webpack_require__(90), beforeEnter: authMiddleware }, { path: '/progress/enroute', component: __webpack_require__(92), beforeEnter: authMiddleware }, { path: '/progress/enroute/:id', component: __webpack_require__(88), beforeEnter: authMiddleware }, { path: '/progress/offloading', component: __webpack_require__(95), beforeEnter: authMiddleware }, { path: '/progress/in-yard', component: __webpack_require__(93), beforeEnter: authMiddleware }, { path: '/users', component: __webpack_require__(99), beforeEnter: authMiddleware }, { path: '/users/create', component: __webpack_require__(98), beforeEnter: authMiddleware }, { path: '/contracts', component: __webpack_require__(80), beforeEnter: authMiddleware }, { path: '/contracts/create', component: __webpack_require__(15), beforeEnter: authMiddleware }, { path: '/contracts/:id/edit', component: __webpack_require__(15), beforeEnter: authMiddleware }, { path: '/allocation', component: __webpack_require__(78), beforeEnter: authMiddleware }, { path: '/allocation/create', component: __webpack_require__(14), beforeEnter: authMiddleware }, { path: '/allocation/:id/edit', component: __webpack_require__(14), beforeEnter: authMiddleware }, { path: '/login',
+module.exports = [{ path: '/', redirect: '/dashboard', beforeEnter: authMiddleware }, { path: '/dashboard', component: __webpack_require__(83), beforeEnter: authMiddleware }, { path: '/routes', component: __webpack_require__(86), beforeEnter: authMiddleware }, { path: '/routes/create', component: __webpack_require__(17), beforeEnter: authMiddleware }, { path: '/routes/:id/edit', component: __webpack_require__(17), beforeEnter: authMiddleware }, { path: '/drivers', component: __webpack_require__(84), beforeEnter: authMiddleware }, { path: '/drivers/create', component: __webpack_require__(16), beforeEnter: authMiddleware }, { path: '/drivers/:id/edit', component: __webpack_require__(16), beforeEnter: authMiddleware }, { path: '/trucks', component: __webpack_require__(97), beforeEnter: authMiddleware }, { path: '/trucks/create', component: __webpack_require__(6), beforeEnter: authMiddleware }, { path: '/trucks/:id', component: __webpack_require__(6), beforeEnter: authMiddleware }, { path: '/trucks/:id/edit', component: __webpack_require__(6), beforeEnter: authMiddleware }, { path: '/trailers', component: __webpack_require__(87), beforeEnter: authMiddleware }, { path: '/trailers/create', component: __webpack_require__(5), beforeEnter: authMiddleware }, { path: '/trailers/:id', component: __webpack_require__(5), beforeEnter: authMiddleware }, { path: '/trailers/:id/edit', component: __webpack_require__(5), beforeEnter: authMiddleware }, { path: '/progress', component: __webpack_require__(89), beforeEnter: authMiddleware }, { path: '/progress/pre-loading', component: __webpack_require__(96), beforeEnter: authMiddleware }, { path: '/progress/pre-loading/:id', component: __webpack_require__(91), beforeEnter: authMiddleware }, { path: '/progress/loading', component: __webpack_require__(94), beforeEnter: authMiddleware }, { path: '/progress/loading/:id', component: __webpack_require__(90), beforeEnter: authMiddleware }, { path: '/progress/enroute', component: __webpack_require__(92), beforeEnter: authMiddleware }, { path: '/progress/enroute/:id', component: __webpack_require__(88), beforeEnter: authMiddleware }, { path: '/progress/offloading', component: __webpack_require__(95), beforeEnter: authMiddleware }, { path: '/progress/in-yard', component: __webpack_require__(93), beforeEnter: authMiddleware }, { path: '/users', component: __webpack_require__(99), beforeEnter: authMiddleware }, { path: '/users/create', component: __webpack_require__(98), beforeEnter: authMiddleware }, { path: '/contracts', component: __webpack_require__(80), beforeEnter: authMiddleware }, { path: '/contracts/create', component: __webpack_require__(15), beforeEnter: authMiddleware }, { path: '/contracts/:id/edit', component: __webpack_require__(15), beforeEnter: authMiddleware }, { path: '/allocation', component: __webpack_require__(78), beforeEnter: authMiddleware }, { path: '/allocation/create', component: __webpack_require__(14), beforeEnter: authMiddleware }, { path: '/allocation/:id/edit', component: __webpack_require__(14), beforeEnter: authMiddleware }, { path: '/job-card', component: __webpack_require__(151), beforeEnter: authMiddleware }, { path: '/job-card/create', component: __webpack_require__(148), beforeEnter: authMiddleware }, { path: '/job-card/:id/edit', component: __webpack_require__(148), beforeEnter: authMiddleware }, { path: '/login',
     component: __webpack_require__(79),
     beforeEnter: function beforeEnter(to, from, next) {
         if (localStorage.getItem('foeiwafwfuwe')) {
@@ -58165,11 +58186,22 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('i', {
     staticClass: "fa fa-truck"
-  }), _vm._v(" In Yard")])], 1)])]) : _vm._e()]), _vm._v(" "), _c('ul', {
+  }), _vm._v(" In Yard")])], 1)])]) : _vm._e(), _vm._v(" "), _c('li', {
+    staticClass: "dropdown"
+  }, [_vm._m(2), _vm._v(" "), _c('ul', {
+    staticClass: "dropdown-menu",
+    attrs: {
+      "role": "menu"
+    }
+  }, [_c('li', [_c('router-link', {
+    attrs: {
+      "to": "/job-card"
+    }
+  }, [_vm._v(" Job Cards")])], 1)])])]), _vm._v(" "), _c('ul', {
     staticClass: "nav navbar-nav navbar-right"
   }, [(_vm.can('view-administration')) ? _c('li', {
     staticClass: "dropdown"
-  }, [_vm._m(2), _vm._v(" "), _c('ul', {
+  }, [_vm._m(3), _vm._v(" "), _c('ul', {
     staticClass: "dropdown-menu",
     attrs: {
       "role": "menu"
@@ -58198,7 +58230,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('i', {
     staticClass: "fa fa-truck"
-  }), _vm._v(" Trucks")])], 1) : _vm._e(), _vm._v(" "), (_vm.can('view-trucks')) ? _c('li', [_vm._m(3)]) : _vm._e(), _vm._v(" "), _c('li', {
+  }), _vm._v(" Trucks")])], 1) : _vm._e(), _vm._v(" "), (_vm.can('view-trucks')) ? _c('li', [_vm._m(4)]) : _vm._e(), _vm._v(" "), _c('li', {
     staticClass: "dropdown-header"
   }, [_vm._v("User Accounts")])])]) : _vm._e(), _vm._v(" "), _c('li', {
     staticClass: "dropdown"
@@ -58254,6 +58286,20 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('i', {
     staticClass: "fa fa-check"
   }), _vm._v(" Progress "), _c('span', {
+    staticClass: "caret"
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('a', {
+    staticClass: "dropdown-toggle",
+    attrs: {
+      "href": "#",
+      "data-toggle": "dropdown",
+      "role": "button",
+      "aria-expanded": "false"
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-check"
+  }), _vm._v(" Workshop "), _c('span', {
     staticClass: "caret"
   })])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -71807,6 +71853,728 @@ module.exports = function(module) {
 __webpack_require__(20);
 module.exports = __webpack_require__(21);
 
+
+/***/ }),
+/* 136 */,
+/* 137 */,
+/* 138 */,
+/* 139 */,
+/* 140 */,
+/* 141 */,
+/* 142 */,
+/* 143 */,
+/* 144 */,
+/* 145 */,
+/* 146 */,
+/* 147 */,
+/* 148 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(149),
+  /* template */
+  __webpack_require__(153),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/smodav/code/office/rkkb/resources/assets/js/components/workshop/jobcard/form.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] form.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-5f376dfa", Component.options)
+  } else {
+    hotAPI.reload("data-v-5f376dfa", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 149 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    created: function created() {
+        var _this = this;
+
+        http.get('/api/truck/create?truck_id=' + this.$route.params.id).then(function (response) {
+            _this.drivers = response.drivers;
+            _this.trailers = response.trailers;
+        });
+    },
+    mounted: function mounted() {
+        this.checkState();
+    },
+    data: function data() {
+        return {
+            trailers: [],
+            drivers: [],
+            truck: {
+                driver_id: '',
+                trailer_id: '',
+                plate_number: '',
+                max_load: '',
+                make: '',
+                model: '',
+                status: 'Active',
+                location: 'Awaiting Allocation'
+            }
+        };
+    },
+
+
+    methods: {
+        checkState: function checkState() {
+            var _this2 = this;
+
+            if (this.$route.params.id) {
+                http.get('/api/truck/' + this.$route.params.id).then(function (response) {
+                    _this2.truck = response.truck;
+                });
+            }
+        },
+        store: function store() {
+            var _this3 = this;
+
+            var request = null;
+
+            if (this.$route.params.id) {
+                request = http.put('/api/truck/' + this.$route.params.id, this.truck);
+            } else {
+                request = http.post('/api/truck', this.truck);
+            }
+
+            request.then(function (response) {
+                alert2(_this3.$root, [response.message], 'success');
+                window._router.push({ path: '/trucks' });
+            }).catch(function (error) {
+                alert2(_this3.$root, Object.values(JSON.parse(error.message)), 'danger');
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 150 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* WEBPACK VAR INJECTION */(function($) {//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    created: function created() {
+        var _this = this;
+
+        http.get('/api/user').then(function (response) {
+            _this.users = response.users;
+            confirm2('.btn-destroy', function (element) {
+                _this.destroy(element.dataset.item);
+            });
+            prepareTable();
+        });
+    },
+    data: function data() {
+        return {
+            users: []
+        };
+    },
+
+
+    methods: {
+        formatDate: function formatDate(date) {
+            date = new Date(date);
+            var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+            var month = months[date.getMonth()];
+            var day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+
+            return day + ' ' + month + ' ' + date.getFullYear();
+        },
+        importTrucks: function importTrucks() {
+            var _this2 = this;
+
+            this.$root.isLoading = true;
+            http.uploadFile('#import_file', '/api/truck/import').then(function (response) {
+                _this2.$root.isLoading = false;
+                if (response.status != 'success') {
+                    alert2(_this2.$root, [response.message], 'danger');
+                    return;
+                }
+                $('table').dataTable().fnDestroy();
+                _this2.trucks = response.trucks;
+                prepareTable();
+                alert2(_this2.$root, [response.message], 'success');
+            }).catch(function (error) {
+                _this2.$root.isLoading = false;
+                alert2(_this2.$root, Object.values(JSON.parse(error.message)), 'danger');
+            });
+        },
+        edit: function edit(truck) {
+            window._router.push({ path: '/trucks/' + truck.id + '/edit' });
+        },
+        destroy: function destroy(id) {
+            var _this3 = this;
+
+            this.$root.isLoading = true;
+
+            http.destroy('api/truck/' + id).then(function (response) {
+                if (response.status != 'success') {
+                    _this3.$root.isLoading = false;
+                    alert2(_this3.$root, [response.message], 'danger');
+                    return;
+                }
+                $('table').dataTable().fnDestroy();
+                _this3.trucks = response.trucks;
+                prepareTable();
+                _this3.$root.isLoading = false;
+                alert2(_this3.$root, [response.message], 'success');
+            }).catch(function (error) {
+                _this3.$root.isLoading = false;
+                alert2(_this3.$root, Object.values(JSON.parse(error.message)), 'danger');
+            });
+        }
+    }
+});
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
+
+/***/ }),
+/* 151 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(150),
+  /* template */
+  __webpack_require__(152),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/smodav/code/office/rkkb/resources/assets/js/components/workshop/jobcard/index.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] index.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-2352f4e8", Component.options)
+  } else {
+    hotAPI.reload("data-v-2352f4e8", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 152 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "container-fluid"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-8 col-sm-offset-2"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3 col-sm-offset-7"
+  }, [_c('router-link', {
+    staticClass: "btn btn-primary btn-xs pull-right",
+    attrs: {
+      "to": "/users/create"
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-plus"
+  }), _vm._v(" Add New")])], 1)])]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('table', {
+    staticClass: "table datatable"
+  }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.users), function(user) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(user.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(user.email))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatDate(user.created_at)))]), _vm._v(" "), _c('td', {
+      staticClass: "text-center"
+    }, [_c('span', {
+      staticClass: "btn btn-xs btn-info",
+      on: {
+        "click": function($event) {
+          _vm.edit(user)
+        }
+      }
+    }, [_c('i', {
+      staticClass: "fa fa-pencil"
+    })]), _vm._v(" "), _c('button', {
+      staticClass: "btn btn-xs btn-danger btn-destroy",
+      attrs: {
+        "data-toggle": "popover",
+        "data-item": user.id
+      }
+    }, [_c('i', {
+      staticClass: "fa fa-trash"
+    })])])])
+  })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("Username")]), _vm._v(" "), _c('th', [_vm._v("Email")]), _vm._v(" "), _c('th', [_vm._v("Created On")]), _vm._v(" "), _c('th')])])], 1)])])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "col-sm-2"
+  }, [_c('h4', [_vm._v("Users")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('thead', [_c('tr', [_c('th', [_vm._v("Username")]), _vm._v(" "), _c('th', [_vm._v("Email")]), _vm._v(" "), _c('th', [_vm._v("Created On")]), _vm._v(" "), _c('th')])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-2352f4e8", module.exports)
+  }
+}
+
+/***/ }),
+/* 153 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "container"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-6 col-md-offset-3"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('form', {
+    attrs: {
+      "action": "#",
+      "role": "form"
+    },
+    on: {
+      "submit": function($event) {
+        $event.preventDefault();
+        _vm.store($event)
+      }
+    }
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "plate_number"
+    }
+  }, [_vm._v("Plate Number")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.truck.plate_number),
+      expression: "truck.plate_number"
+    }],
+    staticClass: "form-control text-uppercase",
+    attrs: {
+      "type": "text",
+      "id": "plate_number",
+      "name": "plate_number",
+      "required": ""
+    },
+    domProps: {
+      "value": (_vm.truck.plate_number)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.truck.plate_number = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "make"
+    }
+  }, [_vm._v("Make")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.truck.make),
+      expression: "truck.make"
+    }],
+    staticClass: "form-control text-uppercase",
+    attrs: {
+      "type": "text",
+      "id": "make",
+      "name": "make",
+      "required": ""
+    },
+    domProps: {
+      "value": (_vm.truck.make)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.truck.make = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "model"
+    }
+  }, [_vm._v("Model")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.truck.model),
+      expression: "truck.model"
+    }],
+    staticClass: "form-control text-uppercase",
+    attrs: {
+      "type": "text",
+      "id": "model",
+      "name": "model",
+      "required": ""
+    },
+    domProps: {
+      "value": (_vm.truck.model)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.truck.model = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "max_load"
+    }
+  }, [_vm._v("T/Weight")]), _vm._v(" "), _c('div', {
+    staticClass: "input-group"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.truck.max_load),
+      expression: "truck.max_load"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "min": "0",
+      "type": "number",
+      "id": "max_load",
+      "name": "max_load",
+      "describedby": "max_load-addon",
+      "required": ""
+    },
+    domProps: {
+      "value": (_vm.truck.max_load)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.truck.max_load = $event.target.value
+      },
+      "blur": function($event) {
+        _vm.$forceUpdate()
+      }
+    }
+  }), _vm._v(" "), _c('span', {
+    staticClass: "input-group-addon",
+    attrs: {
+      "id": "max_load-addon"
+    }
+  }, [_vm._v("KGs")])])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "status"
+    }
+  }, [_vm._v("Truck Status")]), _vm._v(" "), _c('select', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.truck.status),
+      expression: "truck.status"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "name": "status",
+      "id": "status",
+      "required": ""
+    },
+    on: {
+      "change": function($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+          return o.selected
+        }).map(function(o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val
+        });
+        _vm.truck.status = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      }
+    }
+  }, [_c('option', {
+    attrs: {
+      "value": "Active"
+    }
+  }, [_vm._v("Active")]), _vm._v(" "), _c('option', {
+    attrs: {
+      "value": "Incident"
+    }
+  }, [_vm._v("Incident")]), _vm._v(" "), _c('option', {
+    attrs: {
+      "value": "Central Truck Yard"
+    }
+  }, [_vm._v("Central Truck Yard")])])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "driver_id"
+    }
+  }, [_vm._v("Assigned Drivers")]), _vm._v(" "), _c('select', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.truck.driver_id),
+      expression: "truck.driver_id"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "name": "driver_id",
+      "id": "driver_id"
+    },
+    on: {
+      "change": function($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+          return o.selected
+        }).map(function(o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val
+        });
+        _vm.truck.driver_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      }
+    }
+  }, [_c('option', {
+    attrs: {
+      "value": ""
+    }
+  }, [_vm._v("No Driver")]), _vm._v(" "), _vm._l((_vm.drivers), function(driver) {
+    return _c('option', {
+      domProps: {
+        "value": driver.id
+      }
+    }, [_vm._v(_vm._s(driver.name))])
+  })], 2)]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "trailer_id"
+    }
+  }, [_vm._v("Attached Trailer")]), _vm._v(" "), _c('select', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.truck.trailer_id),
+      expression: "truck.trailer_id"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "name": "trailer_id",
+      "id": "trailer_id"
+    },
+    on: {
+      "change": function($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+          return o.selected
+        }).map(function(o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val
+        });
+        _vm.truck.trailer_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      }
+    }
+  }, [_c('option', {
+    attrs: {
+      "value": ""
+    }
+  }, [_vm._v("No Trailer")]), _vm._v(" "), _vm._l((_vm.trailers), function(trailer) {
+    return _c('option', {
+      domProps: {
+        "value": trailer.id
+      }
+    }, [_vm._v(_vm._s(trailer.trailer_number))])
+  })], 2)]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('button', {
+    staticClass: "btn btn-success"
+  }, [_vm._v("Save")]), _vm._v(" "), _c('router-link', {
+    staticClass: "btn btn-danger",
+    attrs: {
+      "to": "/trucks"
+    }
+  }, [_vm._v("Back")])], 1)])])])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "panel-heading"
+  }, [_c('strong', [_vm._v("Truck Details")])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-5f376dfa", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

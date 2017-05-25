@@ -26,6 +26,11 @@
                 <ul class="treeview-menu">
                     <li><a href="{{ route('workshop.make.index') }}"><i class="fa fa-list"></i> Makes</a></li>
                     <li><a href="{{ route('workshop.model.index') }}"><i class="fa fa-list"></i> Models</a></li>
+                    <li class="dropdown-header">WORKSHOP</li>
+                    <li><a href="{{ route('workshop.inspection.index') }}"><i class="fa fa-list"></i> Inspection Checklist</a></li>
+                    <li><a href="{{ route('workshop.job-type.index') }}"><i class="fa fa-list"></i> Job Types</a></li>
+                    <li><a href="{{ route('workshop.job-operation.index') }}"><i class="fa fa-list"></i> Job Operations</a></li>
+                    <li><a href="{{ route('workshop.job-task.index') }}"><i class="fa fa-list"></i> Operation Tasks</a></li>
                 </ul>
             </li>
 

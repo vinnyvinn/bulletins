@@ -35,6 +35,7 @@ export class http {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
                 'Accept': 'application/json',
+                'X-CSRF-TOKEN': window.Laravel.csrfToken,
             }
         }).then(response => {
             if (response.ok) {
