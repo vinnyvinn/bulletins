@@ -55,8 +55,8 @@ module.exports = [
     { path: '/allocation', component: require('./components/allocation/index.vue'), beforeEnter: authMiddleware },
     { path: '/allocation/create', component: require('./components/allocation/form.vue'), beforeEnter: authMiddleware },
     { path: '/allocation/:id/edit', component: require('./components/allocation/form.vue'), beforeEnter: authMiddleware },
-    { path: '/udfs', component: require('./components/udfs/form.vue'), beforeEnter: authMiddleware },
-
+    { path: '/udfs', component: require('./components/udfs/udf.vue'), beforeEnter: authMiddleware },
+    { path: '/udfs/create', component: require('./components/udfs/form.vue'), beforeEnter: authMiddleware },
 
     { path: '/login',
         component: require('./components/auth/login.vue'),
