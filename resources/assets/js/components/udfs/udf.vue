@@ -69,7 +69,7 @@ export default {
   },
   methods: {
     getUdfs () {
-        http.get('/api/udf').then(response => {
+        http.get('module-udf/'+this.modules).then(response => {
             this.udfs = response;
         });
       }

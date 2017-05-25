@@ -68,11 +68,7 @@ export default {
           module: '',
           description: ''
         },
-<<<<<<< HEAD
         input_types: '',
-=======
-        input_types: []
->>>>>>> 0270c537fceacd39a7e9f24d9de0fed8b09a0351
       }
     },
     created(){
