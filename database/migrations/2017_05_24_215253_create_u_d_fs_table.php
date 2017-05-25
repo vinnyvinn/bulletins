@@ -19,7 +19,7 @@ class CreateUDFsTable extends Migration
             $table->string("slug");
             $table->string('input_type');
             $table->string("status");
-            $table->string("section");
+            $table->string("module");
             $table->string("description");
             $table->timestamps();
         });

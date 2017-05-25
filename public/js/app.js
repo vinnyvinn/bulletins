@@ -28881,6 +28881,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
@@ -28914,6 +28915,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this.driver = response.driver;
                 });
             }
+            Vue.set(this.driver, 'image', '');
         },
         store: function store() {
             var _this2 = this;
@@ -31210,6 +31212,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -31221,7 +31225,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 module: '',
                 description: ''
             },
-            input_types: []
+            input_types: [],
+            modules: []
         };
     },
     created: function created() {
@@ -31233,7 +31238,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             http.get('api/udf/create').then(function (response) {
-                _this.input_types = response.input_types;
+                console.log(response);
+                _this.input_types = response.inputs;
+                _this.modules = response.modules;
+            });
+        },
+        store: function store() {
+            var _this2 = this;
+
+            var request = null;
+
+            if (this.$route.params.id) {
+                request = http.put('/api/udf/' + this.$route.params.id, this.udf);
+            } else {
+                request = http.post('/api/udf', this.udf);
+            }
+
+            request.then(function (response) {
+                alert2(_this2.$root, [response.message], 'success');
+                window._router.push({ path: '/udfs' });
+            }).catch(function (error) {
+                alert2(_this2.$root, Object.values(JSON.parse(error.message)), 'danger');
             });
         }
     }
@@ -31245,6 +31270,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -36499,7 +36533,7 @@ if (typeof jQuery === 'undefined') {
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 78 */
@@ -36513,7 +36547,7 @@ exports.push([module.i, "\n.loaderContainer {\n    width: 100%;\n    height: 100
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 80 */
@@ -55584,7 +55618,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.driver.mobile = $event.target.value
       }
     }
-  })]), _vm._v(" "), _c('div', {
+  })]), _vm._v(" "), _c('udf', {
+    attrs: {
+      "module": "Drivers"
+    }
+  }), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('button', {
     staticClass: "btn btn-success"
@@ -55593,7 +55631,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "to": "/drivers"
     }
-  }, [_vm._v("Back")])], 1)])])])])])])
+  }, [_vm._v("Back")])], 1)], 1)])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "panel-heading"
@@ -56922,7 +56960,21 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "name": udf.slug,
         "placeholder": udf.name
       }
-    })]) : (udf.input_type === 'File') ? _c('div', {
+    })]) : (udf.input_type === 'Document') ? _c('div', {
+      staticClass: "form-group"
+    }, [_c('label', {
+      attrs: {
+        "for": udf.slug
+      }
+    }, [_vm._v(_vm._s(udf.name))]), _vm._v(" "), _c('input', {
+      staticClass: "form-control",
+      attrs: {
+        "type": "file",
+        "id": udf.slug,
+        "name": udf.slug,
+        "placeholder": udf.name
+      }
+    })]) : (udf.input_type === 'image') ? _c('div', {
       staticClass: "form-group"
     }, [_c('label', {
       attrs: {
@@ -58327,7 +58379,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "col-md-6 col-md-offset-3"
   }, [_c('div', {
     staticClass: "panel panel-default"
-  }, [_vm._m(0), _vm._v("\n                " + _vm._s(_vm.input_types) + "\n\n                "), _c('div', {
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
   }, [_c('form', {
     attrs: {
@@ -58357,7 +58409,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "type": "text",
       "id": "name",
-      "name": "name"
+      "name": "name",
+      "placeholder": "Field Name"
     },
     domProps: {
       "value": (_vm.udf.name)
@@ -58396,13 +58449,19 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.udf.input_type = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
       }
     }
-  }, _vm._l((_vm.input_types), function(input_type) {
+  }, [_c('option', {
+    attrs: {
+      "value": "",
+      "disabled": "",
+      "selected": ""
+    }
+  }, [_vm._v("Select input type")]), _vm._v(" "), _vm._l((_vm.input_types), function(input_type) {
     return _c('option', {
-      attrs: {
-        "value": ""
+      domProps: {
+        "value": input_type
       }
     }, [_vm._v(_vm._s(input_type))])
-  }))]), _vm._v(" "), _c('div', {
+  })], 2)]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
@@ -58432,11 +58491,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('option', {
     attrs: {
-      "value": ""
+      "value": "",
+      "disabled": "",
+      "selected": ""
+    }
+  }, [_vm._v("Select status")]), _vm._v(" "), _c('option', {
+    attrs: {
+      "value": "1"
     }
   }, [_vm._v("Active")]), _vm._v(" "), _c('option', {
     attrs: {
-      "value": ""
+      "value": "0"
     }
   }, [_vm._v("Inactive")])])]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
@@ -58466,7 +58531,19 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.udf.module = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
       }
     }
-  }, [_vm._v("\"system_module in system_modules\" value=\"\">" + _vm._s(_vm.system_module.module))])]), _vm._v(" "), _c('div', {
+  }, [_c('option', {
+    attrs: {
+      "value": "",
+      "disabled": "",
+      "selected": ""
+    }
+  }, [_vm._v("Select Module")]), _vm._v(" "), _vm._l((_vm.modules), function(module) {
+    return _c('option', {
+      domProps: {
+        "value": module
+      }
+    }, [_vm._v(_vm._s(module))])
+  })], 2)]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
@@ -58479,10 +58556,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       value: (_vm.udf.description),
       expression: "udf.description"
     }],
+    staticClass: "form-control",
     attrs: {
       "name": "description",
-      "rows": "3",
-      "cols": "30"
+      "placeholder": "Field description"
     },
     domProps: {
       "value": (_vm.udf.description)
@@ -58779,7 +58856,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('i', {
     staticClass: "fa fa-truck"
-  }), _vm._v(" UDFS ")])], 1) : _vm._e()])]) : _vm._e(), _vm._v(" "), _c('li', {
+  }), _vm._v(" User Defined Fields ")])], 1) : _vm._e()])]) : _vm._e(), _vm._v(" "), _c('li', {
     staticClass: "dropdown"
   }, [_c('a', {
     staticClass: "dropdown-toggle",

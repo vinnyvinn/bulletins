@@ -6,41 +6,43 @@
                   <div class="panel-heading">
                       <strong>User Defined Fields</strong>
                   </div>
-                  {{input_types}}
 
                   <div class="panel-body">
                       <form action="#" role="form" @submit.prevent="store">
 
                           <div class="form-group">
                               <label for="plate_number">Name</label>
-                              <input v-model="udf.name" type="text" class="form-control" id="name" name="name">
+                              <input v-model="udf.name" type="text" class="form-control" id="name" name="name" placeholder="Field Name">
                           </div>
 
                           <div class="form-group">
                               <label for="make">Input Type</label>
                               <select v-model="udf.input_type" class="form-control" name="input_type" >
-                                <option v-for="input_type in input_types" value="">{{input_type}}</option>
+                                <option value="" disabled selected>Select input type</option>
+                                <option v-for="input_type in input_types" :value="input_type">{{input_type}}</option>
                               </select>
                           </div>
 
                           <div class="form-group">
                               <label for="make">Status</label>
                               <select v-model="udf.status" class="form-control" name="status">
-                                <option value="">Active</option>
-                                <option value="">Inactive</option>
+                                <option value="" disabled selected>Select status</option>
+                                <option value="1">Active</option>
+                                <option value="0">Inactive</option>
                               </select>
                           </div>
 
                           <div class="form-group">
                               <label for="make">Module</label>
                               <select v-model="udf.module" class="form-control" name="module" >
-                                <option v-for"system_module in system_modules" value="">{{ system_module.module }}</option>
+                                <option value="" disabled selected>Select Module</option>
+                                <option v-for="module in modules" :value="module">{{ module }}</option>
                               </select>
                           </div>
 
                           <div class="form-group">
                             <label for="description">Description</label>
-                            <textarea v-model="udf.description" name="description" rows="3" cols="30">
+                            <textarea v-model="udf.description" name="description" class="form-control" placeholder="Field description">
                             </textarea>
                           </div>
 
@@ -68,7 +70,8 @@ export default {
           module: '',
           description: ''
         },
-        input_types: []
+        input_types: [],
+        modules: []
       }
     },
     created(){
@@ -77,7 +80,25 @@ export default {
     methods: {
         getInputs () {
             http.get('api/udf/create').then(response => {
-                this.input_types = response.input_types;
+                console.log(response);
+                this.input_types = response.inputs;
+                this.modules = response.modules;
+            });
+        },
+        store() {
+            let request = null;
+
+            if (this.$route.params.id) {
+                request = http.put('/api/udf/' + this.$route.params.id, this.udf);
+            } else {
+                request = http.post('/api/udf', this.udf);
+            }
+
+            request.then((response) => {
+                alert2(this.$root, [response.message], 'success');
+                window._router.push({ path: '/udfs' });
+            }).catch((error) => {
+                alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
             });
         }
   }
