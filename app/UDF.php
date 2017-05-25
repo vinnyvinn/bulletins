@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class UDF extends Model
 {
     //
+    protected $table = 'u_d_fs';
     const ACTIVE = 1;
     const INACTIVE = 0;
     const TEXTAREA = 'Long Text';

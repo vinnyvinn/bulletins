@@ -58,14 +58,11 @@
                                 </select>
                             </div>
 
-                            <udf module="trucks"></udf>
-
                             <div class="form-group">
                                 <button class="btn btn-success">Save</button>
                                 <router-link to="/trucks" class="btn btn-danger">Back</router-link>
                             </div>
                         </form>
-
                     </div>
                 </div>
             </div>
