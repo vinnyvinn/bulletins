@@ -28226,6 +28226,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     //        mounted() {
@@ -28252,13 +28253,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.$root.isLoading = true;
 
             http.post('/login', this.user).then(function (response) {
+                _this.$root.isLoading = false;
                 alert2(_this.$root, ['Successfully signed in.'], 'success');
                 localStorage.setItem('foeiwafwfuwe', response.access_token);
                 localStorage.setItem('fewuia32rfwe', JSON.stringify(response.user));
-                _this.$root.user = response.user;
-                _this.$root.isLoggedIn = true;
-                _this.$root.isLoading = false;
-                window._router.push({ path: '/' });
+                setTimeout(function () {
+                    return window.location = '/';
+                }, 1000);
+                //                    this.$root.user = response.user;
+                //                    this.$root.isLoggedIn = true;
+                //                    this.$root.isLoading = false;
             }).catch(function (error) {
                 alert2(_this.$root, [Object.values(JSON.parse(error.message))[1]], 'danger');
                 _this.$root.isLoading = false;
@@ -29175,11 +29179,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         logout: function logout() {
             localStorage.removeItem('foeiwafwfuwe');
             localStorage.removeItem('fewuia32rfwe');
-            this.$root.isLoggedIn = false;
-            this.$root.user = null;
-            http.post('/logout', {});
-
-            window._router.push({ path: '/login' });
+            http.post('/logout', {}).then(function () {
+                return window.location = '/login';
+            });
         },
         can: function can(permission) {
             return window.can(permission);
@@ -57440,6 +57442,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('form', {
     staticClass: "form-horizontal",
     attrs: {
+      "action": "/login",
       "role": "form",
       "method": "POST"
     },
@@ -57449,12 +57452,20 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.login($event)
       }
     }
-  }, [_c('div', {
+  }, [_c('input', {
+    attrs: {
+      "type": "hidden",
+      "name": "_token"
+    },
+    domProps: {
+      "value": _vm.$root.csrf
+    }
+  }), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     staticClass: "col-md-4 control-label",
     attrs: {
-      "for": "username"
+      "for": "email"
     }
   }, [_vm._v("E-Mail Address")]), _vm._v(" "), _c('div', {
     staticClass: "col-md-6"
@@ -57467,9 +57478,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control",
     attrs: {
-      "id": "username",
-      "type": "username",
-      "name": "username",
+      "id": "email",
+      "type": "text",
+      "name": "email",
       "required": "",
       "autofocus": ""
     },

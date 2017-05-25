@@ -5,12 +5,13 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Login</div>
                     <div class="panel-body">
-                        <form class="form-horizontal" @submit.prevent="login" role="form" method="POST">
+                        <form class="form-horizontal" action="/login" @submit.prevent="login" role="form" method="POST">
+                            <input type="hidden" name="_token" :value="$root.csrf">
                             <div class="form-group">
-                                <label for="username" class="col-md-4 control-label">E-Mail Address</label>
+                                <label for="email" class="col-md-4 control-label">E-Mail Address</label>
 
                                 <div class="col-md-6">
-                                    <input id="username" type="username" class="form-control" name="username" v-model="user.email" required autofocus>
+                                    <input id="email" type="text" class="form-control" name="email" v-model="user.email" required autofocus>
                                 </div>
                             </div>
 
@@ -64,14 +65,14 @@
                 this.$root.isLoading = true;
 
                 http.post('/login', this.user).then(response => {
+                    this.$root.isLoading = false;
                     alert2(this.$root, ['Successfully signed in.'], 'success');
                     localStorage.setItem('foeiwafwfuwe', response.access_token);
                     localStorage.setItem('fewuia32rfwe', JSON.stringify(response.user));
-                    this.$root.user = response.user;
-                    this.$root.isLoggedIn = true;
-                    this.$root.isLoading = false;
-                    window._router.push({ path: '/' })
-
+                    setTimeout(() => window.location = '/', 1000);
+//                    this.$root.user = response.user;
+//                    this.$root.isLoggedIn = true;
+//                    this.$root.isLoading = false;
                 }).catch((error) => {
                     alert2(this.$root, [Object.values(JSON.parse(error.message))[1]], 'danger');
                     this.$root.isLoading = false;

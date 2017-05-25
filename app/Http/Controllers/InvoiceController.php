@@ -22,9 +22,10 @@ class InvoiceController extends Controller
 
         $pageTitle = 'All Sales';
 
-        if($user->isSuperAdmin()){
+        if ($user->isSuperAdmin()){
             return view('admin.sales_index', compact('pageTitle'));
         }
+
         return view('user_admin.sales_index', compact('pageTitle'));
 
     }

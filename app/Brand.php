@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Brand extends Model
 {
-    protected $guarded = [];
+    protected $fillable = ['brand_name', 'user_id'];
 }

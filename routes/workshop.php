@@ -1,5 +1,14 @@
 <?php
 
+Route::group(['prefix' => 'workshop', 'as' => 'workshop.'], function () {
+    Route::resource('make', '\SmoDav\Controllers\MakeController');
+    Route::resource('model', '\SmoDav\Controllers\ModelController');
+});
+
+
+
+
+
 
 //Route::get('/', ['as' => 'home', 'uses' =>'AdminController@index', 'middleware' => 'guest']);
 //Route::post('/', ['uses' => 'AdminController@signIn']);

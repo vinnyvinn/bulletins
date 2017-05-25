@@ -14,7 +14,7 @@
     </h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Shops</li>
+        <li class="active">Models</li>
     </ol>
 </section>
 
@@ -33,8 +33,8 @@
                     <table class="table table-bordered table-striped" id="jDataTable">
                         <thead>
                         <tr>
-                            <th>Brand Name</th>
-                            <th>Time</th>
+                            <th>Model Name</th>
+                            <th>Time Created</th>
                             <th>Action</th>
                         </tr>
                         </thead>

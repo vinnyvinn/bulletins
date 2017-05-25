@@ -1,0 +1,12 @@
+#alert-head {
+    position: fixed;
+    top: 60px;
+    right: 10px;
+    width: 400px;
+    z-index: 999999999;
+    opacity: 0.7;
+}
+
+td .btn {
+    margin-right: 5px;
+}

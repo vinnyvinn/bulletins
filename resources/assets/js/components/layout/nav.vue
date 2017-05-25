@@ -93,11 +93,7 @@
             logout() {
                 localStorage.removeItem('foeiwafwfuwe');
                 localStorage.removeItem('fewuia32rfwe');
-                this.$root.isLoggedIn = false;
-                this.$root.user = null;
-                http.post('/logout', {});
-
-                window._router.push({ path: '/login' })
+                http.post('/logout', {}).then(() => window.location = '/login');
             },
 
             can(permission) {

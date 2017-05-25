@@ -3,22 +3,36 @@
 namespace App\Http\Controllers;
 
 use App\Option;
+use App\SAGEUDF;
+use DB;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use SmoDav\Models\Make;
 
 class SettingsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function index()
     {
         $pageTitle = 'Settings';
-        return view('admin.settings_common', compact('pageTitle'));
+        $stkItemColumns = SAGEUDF::where('cTableName', 'LIKE', 'stkitem')
+            ->where('iFieldType', 5)
+            ->get([
+                'idUserDict', 'cFieldName', 'cFieldDescription'
+            ]);
+
+        $itemGroups = DB::table('GrpTbl')->select(['idGrpTbl', 'StGroup'])->get();
+
+        return view('admin.settings_common')
+            ->with('stkItemGroups', $itemGroups)
+            ->with('stkItemColumns', $stkItemColumns)
+            ->with('pageTitle', $pageTitle);
     }
 
 
@@ -33,13 +47,14 @@ class SettingsController extends Controller
     {
         $inputs = array_except($request->input(), ['_token']);
 
-        foreach($inputs as $key => $value)
-        {
+        foreach ($inputs as $key => $value) {
             $option = Option::firstOrCreate(['option_key' => $key]);
             $option -> option_value = $value;
             $option->save();
         }
+
+        Make::updateFromSAGE();
+
         return redirect()->back()->with('success', 'Settings updated');
     }
-
 }

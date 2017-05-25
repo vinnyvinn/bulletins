@@ -5,13 +5,18 @@ namespace App\Http\Controllers;
 use App\Activity;
 use App\Brand;
 use App\Category;
+use App\Http\Helpers\Helpers;
+use App\Option;
 use App\Product;
 use App\Product_attribute;
+use App\SAGEUDF;
+use DB;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use SmoDav\Models\Make;
 use Yajra\Datatables\Datatables;
 
 class ProductController extends Controller
@@ -23,40 +28,43 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $pageTitle = 'Products';
+        $pageTitle = 'Spares';
+
         return view('admin.product_index', compact('pageTitle'));
     }
 
     public function indexData()
     {
-        $products = Product::orderBy('id', 'desc')
-            ->select('id', 'product_name', 'product_model', 'brand_id', 'category_id', 'unite_price', 'created_at')
-            ->with('category', 'brand');
+//        $modelUdf = Helpers::get_option(SAGEUDF::MODEL_UDF);
+        $modelColumn = DB::select('SELECT cFieldName FROM _rtblUserDict WHERE idUserDict = ' .
+            "(SELECT option_value FROM options WHERE option_key = '". SAGEUDF::MODEL_UDF . "')");
+
+        $makeColumn = DB::select('SELECT cFieldName FROM _rtblUserDict WHERE idUserDict = ' .
+            "(SELECT option_value FROM options WHERE option_key = '". Make::UDF . "')");
+
+        if (count($modelColumn)) {
+            $modelColumn = $modelColumn[0]->cFieldName;
+        }
+
+        $products = DB::table('StkItem')->where('ItemGroup', Helpers::get_option(Option::OPTION_ITEM_GROUP))
+            ->select([
+                'StockLink', 'Description_1', "{$modelColumn} as product_model",
+                'Qty_On_Hand', 'AveUCst'
+            ]);
         
         return Datatables::of($products)
-            ->editColumn('brand_id', function ($product) {
-                return $product->brand ? $product->brand->brand_name : '';
+            ->editColumn('AveUCst', function ($product) {
+                return number_format($product->AveUCst, 2);
             })
-            ->editColumn('category_id', function ($product) {
-                return $product->category->category_name;
-            })
-            ->editColumn('created_at', function ($product) {
-                return '<span title="'. $product->created_at->format('F d, Y') .
-                    '" data-toggle="tooltip" data-placement="top"> '.$product->created_at->diffForHumans().' </span>';
-            })
-            ->addColumn('stock', function ($product) {
-                return $product->stock_available();
+            ->editColumn('Qty_On_Hand', function ($product) {
+                return number_format($product->Qty_On_Hand, 2);
             })
             ->addColumn('actions', function ($product) {
-                $button = '<a href="'.route('view_product', $product->id).'" class="btn btn-xs btn-success" title="View" data-toggle="tooltip" data-placement="top"><i class="fa fa-eye"></i> </a>';
-                $button .= '<a href="'.route('edit_product', $product->id).'" class="btn btn-xs btn-info" title="Edit" data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil"></i> </a>';
-                $button .= '<a href="javascript:;" class="btn btn-xs btn-danger deleteBrands" title="Delete" data-toggle="tooltip" data-placement="top" data-id="'.$product->id.'"><i class="fa fa-trash-o"></i> </a>';
+                $button = '<a href="' . route('view_product', $product->StockLink). '" class="btn btn-xs btn-success" title="View" data-toggle="tooltip" data-placement="top"><i class="fa fa-eye"></i> </a>';
                 return $button;
             })
-            ->removeColumn('id')
-            ->removeColumn('brand')
-            ->removeColumn('category')
-            ->rawColumns(['created_at', 'actions'])
+            ->removeColumn('StockLink')
+            ->rawColumns(['actions'])
             ->make(true);
     }
 

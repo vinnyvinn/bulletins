@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Activity;
 use App\Brand;
+use App\Http\Helpers\Helpers;
+use App\Http\Requests\ModelRequest;
+use App\SAGEUDF;
+use DB;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -20,7 +24,7 @@ class BrandController extends Controller
      */
     public function index()
     {
-        $pageTitle = 'All Brands';
+        $pageTitle = 'All Models';
 
         return view('admin.brand_index', compact('pageTitle'));
     }
@@ -54,7 +58,8 @@ class BrandController extends Controller
      */
     public function create()
     {
-        $pageTitle = 'Create Brands';
+        $pageTitle = 'Create Model';
+
         return view('admin.brand_create', compact('pageTitle'));
     }
 
@@ -64,7 +69,7 @@ class BrandController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ModelRequest $request)
     {
         $user= Auth::user();
         $rules = [
@@ -77,14 +82,19 @@ class BrandController extends Controller
             'user_id' => $user->id,
         ];
 
-        $create = Brand::create($data);
-        if($create)
-        {
-            Activity::create(['user_id' => $user->id, 'activity' => 'You have added '.$brand_name. '  brand']);
+        return DB::transaction(function () use ($user, $data, $brand_name) {
+            $create = Brand::create($data);
 
-            return redirect()->back()->with('success', 'Brands create success');
-        }
-        return redirect()->back()->with('error', 'Something went wrong, please try again');
+            SAGEUDF::addModelUDF($brand_name);
+
+            if ($create) {
+                Activity::create(['user_id' => $user->id, 'activity' => 'You have added '.$brand_name. '  brand']);
+
+                return redirect()->route('all_brands')->with('success', 'Model created successfully');
+            }
+
+            return redirect()->back()->with('error', 'Something went wrong, please try again');
+        });
     }
 
     /**

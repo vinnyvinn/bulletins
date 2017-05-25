@@ -1,9 +1,10 @@
 <?php
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBrandsTable extends Migration
+class CreateWorkshopInspectionCheckListsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,10 +13,10 @@ class CreateBrandsTable extends Migration
      */
     public function up()
     {
-        Schema::create('brands', function (Blueprint $table) {
+        Schema::create('workshop_inspection_check_lists', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('brand_name');
-            $table->string('user_id')->nullable();
+            $table->string('name');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ class CreateBrandsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('brands');
+        Schema::dropIfExists('workshop_inspection_check_lists');
     }
 }

@@ -45,10 +45,33 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
+        session()->put('userLevel', 'user_admin.');
+
         return response()->json([
             'success' => 'true',
             'access_token' => 'test',
             'user' => $user
         ]);
+    }
+
+    /**
+     * Log the user out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function logout(Request $request)
+    {
+        $this->guard()->logout();
+
+        $request->session()->flush();
+
+        $request->session()->regenerate();
+
+        if ($request->ajax()) {
+            return response()->json(['success' => 'true']);
+        }
+
+        return redirect('/');
     }
 }

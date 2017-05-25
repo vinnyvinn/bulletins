@@ -43,10 +43,13 @@ class UserController extends Controller
         $shop = $user->shop;
 
         $year = date('Y');
-        $sales_data = Invoice::where('shop_id', $shop->id)
+
+        $sales_data = Invoice::when($shop, function ($builder) use ($shop) {
+            return $builder->where('shop_id', $shop->id);
+        })
             ->whereRaw('YEAR(created_at) ='.$year)
-            ->selectRaw('MONTHNAME(created_at) as month, sum(total_price) as amount')
-            ->groupBy('month')
+            ->selectRaw('DATEPART(MM, created_at) as month, sum(total_price) as amount')
+            ->groupBy('created_at')
             ->orderBy('created_at')
             ->get();
 

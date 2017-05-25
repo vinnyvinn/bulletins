@@ -11,7 +11,7 @@
     </h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Shops</li>
+        <li class="active">Models</li>
     </ol>
 </section>
 
@@ -35,7 +35,7 @@
                         <label class="control-label col-sm-3">Name *</label>
 
                         <div class="col-sm-7">
-                            <input type="text" name="brand_name" class="form-control" value="{{ old('brand_name') }}" placeholder="Brand Name">
+                            <input type="text" name="brand_name" class="form-control" value="{{ old('brand_name') }}" placeholder="Model Name">
                             {!! $errors->has('brand_name')? '<p class="help-block"> '.$errors->first('brand_name').' </p>':'' !!}
                         </div>
                     </div>
@@ -43,7 +43,9 @@
 
                     <div class="form-group">
                         <div class="col-sm-7 col-sm-offset-3">
-                            <button type="submit" name="submit" class="btn btn-primary" required="required"><i class="fa fa-plus-square-o"></i> Add Brand</button>
+                            <button type="submit" name="submit" class="btn btn-primary">
+                                <i class="fa fa-plus-square-o"></i> Add Model
+                            </button>
                         </div>
                     </div>
 
