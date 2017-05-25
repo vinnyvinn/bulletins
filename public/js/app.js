@@ -27163,6 +27163,7 @@ __webpack_require__(71);
 Vue.component('alert', __webpack_require__(86));
 Vue.component('loader', __webpack_require__(87));
 Vue.component('core-nav', __webpack_require__(90));
+
 Vue.component('udf', __webpack_require__(103));
 Vue.component('udf-create', __webpack_require__(19));
 
@@ -28316,7 +28317,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function($) {//
-//
 //
 //
 //
@@ -31209,22 +31209,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {
-      udf: {
-        name: '',
-        input_type: '',
-        status: '',
-        module: '',
-        description: ''
-      },
-      input_types: []
-    };
-  },
+    data: function data() {
+        return {
+            udf: {
+                name: '',
+                input_type: '',
+                status: '',
+                module: '',
+                description: ''
+            },
+            input_types: []
+        };
+    },
+    created: function created() {
+        this.getInputs();
+    },
 
-  methods: {}
+    methods: {
+        getInputs: function getInputs() {
+            var _this = this;
+
+            http.get('api/udf/create').then(function (response) {
+                _this.input_types = response.input_types;
+            });
+        }
+    }
 });
 
 /***/ }),
@@ -36501,7 +36513,7 @@ exports.push([module.i, "\n.loaderContainer {\n    width: 100%;\n    height: 100
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 80 */
@@ -58315,7 +58327,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "col-md-6 col-md-offset-3"
   }, [_c('div', {
     staticClass: "panel panel-default"
-  }, [_vm._m(0), _vm._v(" "), _c('div', {
+  }, [_vm._m(0), _vm._v("\n                " + _vm._s(_vm.input_types) + "\n\n                "), _c('div', {
     staticClass: "panel-body"
   }, [_c('form', {
     attrs: {

@@ -6,6 +6,7 @@
                   <div class="panel-heading">
                       <strong>User Defined Fields</strong>
                   </div>
+                  {{input_types}}
 
                   <div class="panel-body">
                       <form action="#" role="form" @submit.prevent="store">
@@ -70,7 +71,15 @@ export default {
         input_types: []
       }
     },
+    created(){
+        this.getInputs ();
+    },
     methods: {
+        getInputs () {
+            http.get('api/udf/create').then(response => {
+                this.input_types = response.input_types;
+            });
+        }
   }
 }
 </script>

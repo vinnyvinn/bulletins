@@ -67,7 +67,6 @@
                                     <span class="input-group-addon" id="quantity-addon">Tonnes</span>
                                 </div>
                             </div>
-
                             <div class="form-group">
                                 <button class="btn btn-success">Save</button>
                                 <router-link to="/contracts" class="btn btn-danger">Back</router-link>

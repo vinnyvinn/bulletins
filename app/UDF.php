@@ -19,7 +19,7 @@ class UDF extends Model
     const DATETIME = 'DateTime';
     const SELECT = 'Select';
     const FILE = 'file';
-    const SECTIONS = ['Drivers', 'Routes', 'Trailers', 'Trucks', 'Trips', 'Contracts'];
+    const MODULES = ['Drivers', 'Routes', 'Trailers', 'Trucks', 'Trips', 'Contracts'];
     const TABLES = [
         'Drivers'=>'drivers',
         'Routes'=>'routes',
