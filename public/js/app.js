@@ -11046,7 +11046,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/sam/gaitara/rkkb/resources/assets/js/components/trailers/form.vue"
+Component.options.__file = "/home/ngeno/Laravel/rkkb/resources/assets/js/components/trailers/form.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] form.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -11080,7 +11080,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/sam/gaitara/rkkb/resources/assets/js/components/trucks/form.vue"
+Component.options.__file = "/home/ngeno/Laravel/rkkb/resources/assets/js/components/trucks/form.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] form.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -26951,7 +26951,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/sam/gaitara/rkkb/resources/assets/js/components/allocation/form.vue"
+Component.options.__file = "/home/ngeno/Laravel/rkkb/resources/assets/js/components/allocation/form.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] form.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -26985,7 +26985,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/sam/gaitara/rkkb/resources/assets/js/components/contracts/form.vue"
+Component.options.__file = "/home/ngeno/Laravel/rkkb/resources/assets/js/components/contracts/form.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] form.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -27019,7 +27019,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/sam/gaitara/rkkb/resources/assets/js/components/drivers/form.vue"
+Component.options.__file = "/home/ngeno/Laravel/rkkb/resources/assets/js/components/drivers/form.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] form.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -27053,7 +27053,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/sam/gaitara/rkkb/resources/assets/js/components/routes/form.vue"
+Component.options.__file = "/home/ngeno/Laravel/rkkb/resources/assets/js/components/routes/form.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] form.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -27125,7 +27125,6 @@ __webpack_require__(69);
 Vue.component('alert', __webpack_require__(83));
 Vue.component('loader', __webpack_require__(84));
 Vue.component('core-nav', __webpack_require__(87));
-Vue.component('udf', __webpack_require__(100));
 
 var app = new __WEBPACK_IMPORTED_MODULE_0__vuerouter__["a" /* RouterSingleton */].getRouter();
 
@@ -28277,7 +28276,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function($) {//
-//
 //
 //
 //
@@ -31773,7 +31771,7 @@ function authMiddleware(to, from, next) {
     return next();
 }
 
-module.exports = [{ path: '/', redirect: '/dashboard', beforeEnter: authMiddleware }, { path: '/dashboard', component: __webpack_require__(85), beforeEnter: authMiddleware }, { path: '/routes', component: __webpack_require__(88), beforeEnter: authMiddleware }, { path: '/routes/create', component: __webpack_require__(18), beforeEnter: authMiddleware }, { path: '/routes/:id/edit', component: __webpack_require__(18), beforeEnter: authMiddleware }, { path: '/drivers', component: __webpack_require__(86), beforeEnter: authMiddleware }, { path: '/drivers/create', component: __webpack_require__(17), beforeEnter: authMiddleware }, { path: '/drivers/:id/edit', component: __webpack_require__(17), beforeEnter: authMiddleware }, { path: '/trucks', component: __webpack_require__(99), beforeEnter: authMiddleware }, { path: '/trucks/create', component: __webpack_require__(7), beforeEnter: authMiddleware }, { path: '/trucks/:id', component: __webpack_require__(7), beforeEnter: authMiddleware }, { path: '/trucks/:id/edit', component: __webpack_require__(7), beforeEnter: authMiddleware }, { path: '/trailers', component: __webpack_require__(89), beforeEnter: authMiddleware }, { path: '/trailers/create', component: __webpack_require__(6), beforeEnter: authMiddleware }, { path: '/trailers/:id', component: __webpack_require__(6), beforeEnter: authMiddleware }, { path: '/trailers/:id/edit', component: __webpack_require__(6), beforeEnter: authMiddleware }, { path: '/progress', component: __webpack_require__(91), beforeEnter: authMiddleware }, { path: '/progress/pre-loading', component: __webpack_require__(98), beforeEnter: authMiddleware }, { path: '/progress/pre-loading/:id', component: __webpack_require__(93), beforeEnter: authMiddleware }, { path: '/progress/loading', component: __webpack_require__(96), beforeEnter: authMiddleware }, { path: '/progress/loading/:id', component: __webpack_require__(92), beforeEnter: authMiddleware }, { path: '/progress/enroute', component: __webpack_require__(94), beforeEnter: authMiddleware }, { path: '/progress/enroute/:id', component: __webpack_require__(90), beforeEnter: authMiddleware }, { path: '/progress/offloading', component: __webpack_require__(97), beforeEnter: authMiddleware }, { path: '/progress/in-yard', component: __webpack_require__(95), beforeEnter: authMiddleware }, { path: '/users', component: __webpack_require__(102), beforeEnter: authMiddleware }, { path: '/users/create', component: __webpack_require__(101), beforeEnter: authMiddleware }, { path: '/contracts', component: __webpack_require__(82), beforeEnter: authMiddleware }, { path: '/contracts/create', component: __webpack_require__(16), beforeEnter: authMiddleware }, { path: '/contracts/:id/edit', component: __webpack_require__(16), beforeEnter: authMiddleware }, { path: '/allocation', component: __webpack_require__(80), beforeEnter: authMiddleware }, { path: '/allocation/create', component: __webpack_require__(15), beforeEnter: authMiddleware }, { path: '/allocation/:id/edit', component: __webpack_require__(15), beforeEnter: authMiddleware }, { path: '/login',
+module.exports = [{ path: '/', redirect: '/dashboard', beforeEnter: authMiddleware }, { path: '/dashboard', component: __webpack_require__(85), beforeEnter: authMiddleware }, { path: '/routes', component: __webpack_require__(88), beforeEnter: authMiddleware }, { path: '/routes/create', component: __webpack_require__(18), beforeEnter: authMiddleware }, { path: '/routes/:id/edit', component: __webpack_require__(18), beforeEnter: authMiddleware }, { path: '/drivers', component: __webpack_require__(86), beforeEnter: authMiddleware }, { path: '/drivers/create', component: __webpack_require__(17), beforeEnter: authMiddleware }, { path: '/drivers/:id/edit', component: __webpack_require__(17), beforeEnter: authMiddleware }, { path: '/trucks', component: __webpack_require__(99), beforeEnter: authMiddleware }, { path: '/trucks/create', component: __webpack_require__(7), beforeEnter: authMiddleware }, { path: '/trucks/:id', component: __webpack_require__(7), beforeEnter: authMiddleware }, { path: '/trucks/:id/edit', component: __webpack_require__(7), beforeEnter: authMiddleware }, { path: '/trailers', component: __webpack_require__(89), beforeEnter: authMiddleware }, { path: '/trailers/create', component: __webpack_require__(6), beforeEnter: authMiddleware }, { path: '/trailers/:id', component: __webpack_require__(6), beforeEnter: authMiddleware }, { path: '/trailers/:id/edit', component: __webpack_require__(6), beforeEnter: authMiddleware }, { path: '/progress', component: __webpack_require__(91), beforeEnter: authMiddleware }, { path: '/progress/pre-loading', component: __webpack_require__(98), beforeEnter: authMiddleware }, { path: '/progress/pre-loading/:id', component: __webpack_require__(93), beforeEnter: authMiddleware }, { path: '/progress/loading', component: __webpack_require__(96), beforeEnter: authMiddleware }, { path: '/progress/loading/:id', component: __webpack_require__(92), beforeEnter: authMiddleware }, { path: '/progress/enroute', component: __webpack_require__(94), beforeEnter: authMiddleware }, { path: '/progress/enroute/:id', component: __webpack_require__(90), beforeEnter: authMiddleware }, { path: '/progress/offloading', component: __webpack_require__(97), beforeEnter: authMiddleware }, { path: '/progress/in-yard', component: __webpack_require__(95), beforeEnter: authMiddleware }, { path: '/users', component: __webpack_require__(102), beforeEnter: authMiddleware }, { path: '/users/create', component: __webpack_require__(101), beforeEnter: authMiddleware }, { path: '/contracts', component: __webpack_require__(82), beforeEnter: authMiddleware }, { path: '/contracts/create', component: __webpack_require__(16), beforeEnter: authMiddleware }, { path: '/contracts/:id/edit', component: __webpack_require__(16), beforeEnter: authMiddleware }, { path: '/udfs', component: __webpack_require__(100), beforeEnter: authMiddleware }, { path: '/allocation', component: __webpack_require__(80), beforeEnter: authMiddleware }, { path: '/allocation/create', component: __webpack_require__(15), beforeEnter: authMiddleware }, { path: '/allocation/:id/edit', component: __webpack_require__(15), beforeEnter: authMiddleware }, { path: '/login',
     component: __webpack_require__(81),
     beforeEnter: function beforeEnter(to, from, next) {
         if (localStorage.getItem('foeiwafwfuwe')) {
@@ -53697,7 +53695,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/sam/gaitara/rkkb/resources/assets/js/components/allocation/index.vue"
+Component.options.__file = "/home/ngeno/Laravel/rkkb/resources/assets/js/components/allocation/index.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] index.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -53731,7 +53729,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/sam/gaitara/rkkb/resources/assets/js/components/auth/login.vue"
+Component.options.__file = "/home/ngeno/Laravel/rkkb/resources/assets/js/components/auth/login.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] login.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -53765,7 +53763,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/sam/gaitara/rkkb/resources/assets/js/components/contracts/index.vue"
+Component.options.__file = "/home/ngeno/Laravel/rkkb/resources/assets/js/components/contracts/index.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] index.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -53803,7 +53801,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/sam/gaitara/rkkb/resources/assets/js/components/core/alert.vue"
+Component.options.__file = "/home/ngeno/Laravel/rkkb/resources/assets/js/components/core/alert.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] alert.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -53841,7 +53839,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/sam/gaitara/rkkb/resources/assets/js/components/core/loader.vue"
+Component.options.__file = "/home/ngeno/Laravel/rkkb/resources/assets/js/components/core/loader.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] loader.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -53875,7 +53873,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/sam/gaitara/rkkb/resources/assets/js/components/dashboard/index.vue"
+Component.options.__file = "/home/ngeno/Laravel/rkkb/resources/assets/js/components/dashboard/index.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] index.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -53909,7 +53907,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/sam/gaitara/rkkb/resources/assets/js/components/drivers/index.vue"
+Component.options.__file = "/home/ngeno/Laravel/rkkb/resources/assets/js/components/drivers/index.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] index.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -53943,7 +53941,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/sam/gaitara/rkkb/resources/assets/js/components/layout/nav.vue"
+Component.options.__file = "/home/ngeno/Laravel/rkkb/resources/assets/js/components/layout/nav.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] nav.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -53977,7 +53975,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/sam/gaitara/rkkb/resources/assets/js/components/routes/index.vue"
+Component.options.__file = "/home/ngeno/Laravel/rkkb/resources/assets/js/components/routes/index.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] index.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -54011,7 +54009,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/sam/gaitara/rkkb/resources/assets/js/components/trailers/index.vue"
+Component.options.__file = "/home/ngeno/Laravel/rkkb/resources/assets/js/components/trailers/index.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] index.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -54045,7 +54043,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/sam/gaitara/rkkb/resources/assets/js/components/truck-progress/enroute.vue"
+Component.options.__file = "/home/ngeno/Laravel/rkkb/resources/assets/js/components/truck-progress/enroute.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] enroute.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -54079,7 +54077,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/sam/gaitara/rkkb/resources/assets/js/components/truck-progress/index.vue"
+Component.options.__file = "/home/ngeno/Laravel/rkkb/resources/assets/js/components/truck-progress/index.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] index.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -54113,7 +54111,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/sam/gaitara/rkkb/resources/assets/js/components/truck-progress/loading.vue"
+Component.options.__file = "/home/ngeno/Laravel/rkkb/resources/assets/js/components/truck-progress/loading.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] loading.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -54147,7 +54145,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/sam/gaitara/rkkb/resources/assets/js/components/truck-progress/preloading.vue"
+Component.options.__file = "/home/ngeno/Laravel/rkkb/resources/assets/js/components/truck-progress/preloading.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] preloading.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -54181,7 +54179,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/sam/gaitara/rkkb/resources/assets/js/components/truck-progress/stage-enroute.vue"
+Component.options.__file = "/home/ngeno/Laravel/rkkb/resources/assets/js/components/truck-progress/stage-enroute.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] stage-enroute.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -54215,7 +54213,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/sam/gaitara/rkkb/resources/assets/js/components/truck-progress/stage-inyard.vue"
+Component.options.__file = "/home/ngeno/Laravel/rkkb/resources/assets/js/components/truck-progress/stage-inyard.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] stage-inyard.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -54249,7 +54247,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/sam/gaitara/rkkb/resources/assets/js/components/truck-progress/stage-loading.vue"
+Component.options.__file = "/home/ngeno/Laravel/rkkb/resources/assets/js/components/truck-progress/stage-loading.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] stage-loading.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -54283,7 +54281,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/sam/gaitara/rkkb/resources/assets/js/components/truck-progress/stage-offloading.vue"
+Component.options.__file = "/home/ngeno/Laravel/rkkb/resources/assets/js/components/truck-progress/stage-offloading.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] stage-offloading.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -54317,7 +54315,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/sam/gaitara/rkkb/resources/assets/js/components/truck-progress/stage-preloading.vue"
+Component.options.__file = "/home/ngeno/Laravel/rkkb/resources/assets/js/components/truck-progress/stage-preloading.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] stage-preloading.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -54351,7 +54349,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/sam/gaitara/rkkb/resources/assets/js/components/trucks/index.vue"
+Component.options.__file = "/home/ngeno/Laravel/rkkb/resources/assets/js/components/trucks/index.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] index.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -54389,7 +54387,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/sam/gaitara/rkkb/resources/assets/js/components/udfs/udf.vue"
+Component.options.__file = "/home/ngeno/Laravel/rkkb/resources/assets/js/components/udfs/udf.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] udf.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -54423,7 +54421,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/sam/gaitara/rkkb/resources/assets/js/components/users/form.vue"
+Component.options.__file = "/home/ngeno/Laravel/rkkb/resources/assets/js/components/users/form.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] form.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -54457,7 +54455,7 @@ var Component = __webpack_require__(0)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/sam/gaitara/rkkb/resources/assets/js/components/users/index.vue"
+Component.options.__file = "/home/ngeno/Laravel/rkkb/resources/assets/js/components/users/index.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] index.vue: functional components are not supported with templates, they should use render functions.")}
 
