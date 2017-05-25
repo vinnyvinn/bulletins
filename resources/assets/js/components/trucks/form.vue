@@ -58,6 +58,8 @@
                                 </select>
                             </div>
 
+                            <udf></udf>
+
                             <div class="form-group">
                                 <button class="btn btn-success">Save</button>
                                 <router-link to="/trucks" class="btn btn-danger">Back</router-link>
@@ -77,7 +79,7 @@
             http.get('/api/truck/create?truck_id=' + this.$route.params.id).then((response) => {
                 this.drivers = response.drivers;
                 this.trailers = response.trailers;
-            });
+            });            
         },
 
         mounted() {

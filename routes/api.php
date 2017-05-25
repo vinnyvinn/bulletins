@@ -40,4 +40,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('in-yard/{id}', 'ProgressController@inYard');
 
     Route::resource('users', 'UserController');
+
+    Route::resource('udf', 'UDFController');
+
 });
