@@ -39,7 +39,7 @@
 
       <div v-else-if="udf.input_type === 'DateTime'" class="form-group">
         <label :for="udf.slug">{{ udf.name }}</label>
-        <input type="DateTime"
+        <input type="Date"
         class="form-control"
         :id="udf.slug"
         :name="udf.slug"

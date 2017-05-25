@@ -56825,7 +56825,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_vm._v(_vm._s(udf.name))]), _vm._v(" "), _c('input', {
       staticClass: "form-control",
       attrs: {
-        "type": "DateTime",
+        "type": "Date",
         "id": udf.slug,
         "name": udf.slug,
         "placeholder": udf.name
