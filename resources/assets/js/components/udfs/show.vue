@@ -44,8 +44,7 @@ export default {
       http.get('/api/module-udfs/'+this.module).then(response => {
           this.udfs = response;
       }).then(() => {
-        for(var key in this.state){
-          // var fieldname = key;
+        for(var key in this.state){          
           for(var index in this.udfs){
             var udf = this.udfs[index];
             if(key == udf.slug){
