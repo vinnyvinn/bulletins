@@ -66,10 +66,11 @@
                             <tfoot>
                             <tr>
                                 <th>Name</th>
-                                <th>National ID</th>
-                                <th>DL Number</th>
-                                <th>Mobile Number</th>
-                                <th></th>
+                                <th>Input Type</th>
+                                <th>Status</th>
+                                <th>Module</th>
+                                <th>Description</th>
+                                <th>Actions</th>
                             </tr>
                             </tfoot>
                         </table>

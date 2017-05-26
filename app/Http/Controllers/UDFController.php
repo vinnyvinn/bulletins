@@ -27,7 +27,7 @@ class UDFController extends Controller
     {
         //
 
-        return response()->json(['inputs'=>array('Short Text','Image','Document','Date', 'Number', 'Checkbox', 'Long Text', 'Options', 'Yes/No'),'modules'=>UDF::MODULES]);
+        return response()->json(['inputs'=>array('Short Text','Image','Document','Date', 'Number', 'Checkbox', 'Long Text', 'Select', 'Yes/No'),'modules'=>UDF::MODULES]);
 
     }
 
@@ -42,10 +42,7 @@ class UDFController extends Controller
         //
         $data = $request->all();
         $slugcount = UDF::where('name',strtolower($request->name))->count();
-        if (!is_null($request['value'])){
-             $data['value'] = (string) explode(';', $request->value);
-//            return $data['value'];
-        }
+
         if ($slugcount > 0){
             $slug = convertString($request->name)."_".count($slugcount);
         }

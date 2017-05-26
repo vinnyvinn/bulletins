@@ -73,6 +73,13 @@
           <option value="">Select {{ udf.name }}</option>
           <option v-for="option in udf.value.split(';')" :value="option">{{option}}</option>
         </select>
+        </div>
+        <div v-else-if="udf.input_type === 'Select'" class="form-group">
+        <label :for="udf.slug" class="control-label">{{udf.name}} </label>
+        <select class="form-control" :name="udf.slug" v-model="state[udf.slug]">
+          <option value="">Select {{ udf.name }}</option>
+          <option v-for="option in udf.value.split(';')" :value="option">{{option}}</option>
+        </select>
       </div>
     </div>
   </div>

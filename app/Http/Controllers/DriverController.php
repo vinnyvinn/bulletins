@@ -34,7 +34,16 @@ class DriverController extends Controller
      */
     public function store(DriverRequest $request)
     {
-        $driver = DriverFactory::create($request->all());
+        $data = $request->all();
+        foreach ($request->all() as $key=>$item) {
+            if ($request->hasFile($key)){
+                $extension = $request->file($key)->getClientOriginalExtension();
+                $filename = time().".".$extension;
+                $request->file($key)->move(public_path('uploads'), $filename);
+                $data[$key] = $filename;
+            }
+        }
+        $driver = DriverFactory::create($data);
 
         return Response::json([
             'message' => 'Successfully added new driver.',
@@ -68,8 +77,16 @@ class DriverController extends Controller
     public function update(DriverRequest $request, $id)
     {
         $driver = DriverFactory::findOrFail($id);
-
-        DriverFactory::update($driver, $request->all());
+        $data = $request->all();
+        foreach ($request->all() as $key=>$item) {
+            if ($request->hasFile($key)){
+                $extension = $request->file($key)->getClientOriginalExtension();
+                $filename = time().".".$extension;
+                $request->file($key)->move(public_path('uploads'), $filename);
+                $data[$key] = $filename;
+            }
+        }
+        DriverFactory::update($driver, $data);
 
         return Response::json([
             'message' => 'Successfully updated driver details.',
