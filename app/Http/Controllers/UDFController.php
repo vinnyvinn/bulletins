@@ -90,15 +90,13 @@ class UDFController extends Controller
     {
         //
         $udf = UDF::findOrfail($id);
-        if ($request->name == $udf->name){
+        if (strtolower($request->name) == strtolower($udf->name)){
             $udf->update($request->all());
-
            return response()->json(['message'=>'UDF Updated Successfully']);
         }
 
-        $slugcount = UDF::where(strtolower('name'),strtolower($request->name))->count();
-
-        if ($slugcount ==0){
+        $slugcount = UDF::where('name',strtolower($request->name))->count();
+        if ($slugcount == 0){
             $slug = convertString($request->name);
         }
         else{
