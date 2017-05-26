@@ -1,10 +1,14 @@
-<template lang="html">
+loc<template lang="html">
   <div class="row">
     <div v-for="field in fields" class="">
-      <div v-if="field.datatype == 'Short Text'" class="">
+      <div v-if="field.datatype == 'Image'" class="">
+        <img :src="imageSource(field.value)" alt="">
+      </div>
+
+      <div v-else-if="field.datatype == 'Short Text'" class="">
 
         <div class="col-md-6">
-          <strong>{{ field.key }}</strong>
+          <strong>{{ field.fieldname }}</strong>
         </div>
         <div class="col-md-6">
           <p>{{ field.value }}</p>
@@ -12,10 +16,10 @@
 
       </div>
 
-      <div v-if="field.datatype == 'Long Text'" class="">
+      <div v-else-if="field.datatype == 'Long Text'" class="">
 
         <div class="col-md-6">
-          <strong>{{ field.key }}</strong>
+          <strong>{{ field.fieldname }}</strong>
         </div>
         <div class="col-md-6">
           <p>{{ field.value }}</p>
@@ -44,19 +48,23 @@ export default {
       http.get('/api/module-udfs/'+this.module).then(response => {
           this.udfs = response;
       }).then(() => {
-        for(var key in this.state){          
+        for(var key in this.state){
           for(var index in this.udfs){
             var udf = this.udfs[index];
             if(key == udf.slug){
               var datatype = udf.input_type;
+              var fieldname = udf.name;
             }
           }
           var value = this.state[key];
           if(datatype){
-            this.fields.push({key, datatype, value});
+            this.fields.push({fieldname, datatype, value});
           }
         }
       });
+    },
+    imageSource (value){
+      return value;
     }
    }
  }
