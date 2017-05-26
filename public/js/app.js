@@ -28932,8 +28932,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 request = http.put('/api/driver/' + this.$route.params.id, this.driver);
             } else {
                 request = http.post('/api/driver', this.driver);
+                http.uploadFile('.image', '/api/driver');
             }
-
             request.then(function (response) {
                 _this2.$root.isLoading = false;
                 alert2(_this2.$root, [response.message], 'success');
@@ -55256,7 +55256,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('form', {
     attrs: {
       "action": "#",
-      "role": "form"
+      "role": "form",
+      "enctype": "multipart/form-data"
     },
     on: {
       "submit": function($event) {
@@ -55935,7 +55936,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('form', {
     attrs: {
       "action": "#",
-      "role": "form"
+      "role": "form",
+      "enctype": "multipart/form-data"
     },
     on: {
       "submit": function($event) {
@@ -57480,7 +57482,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "for": udf.slug
       }
     }, [_vm._v(_vm._s(udf.name))]), _vm._v(" "), _c('input', {
-      staticClass: "form-control",
+      staticClass: "form-control document",
       attrs: {
         "type": "file",
         "id": udf.slug,
@@ -57498,16 +57500,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "for": udf.slug
       }
     }, [_vm._v(_vm._s(udf.name))]), _vm._v(" "), _c('input', {
-      staticClass: "form-control",
+      staticClass: "form-control image",
       attrs: {
         "type": "file",
         "id": udf.slug,
         "name": udf.slug
-      },
-      on: {
-        "change": function($event) {
-          _vm.state[udf.slug]
-        }
       }
     })]) : (udf.input_type === 'Yes/No') ? _c('div', {
       staticClass: "form-group"
@@ -57861,7 +57858,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('form', {
     attrs: {
       "action": "#",
-      "role": "form"
+      "role": "form",
+      "enctype": "multipart/form-data"
     },
     on: {
       "submit": function($event) {
@@ -59991,7 +59989,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('form', {
     attrs: {
       "action": "#",
-      "role": "form"
+      "role": "form",
+      "enctype": "multipart/form-data"
     },
     on: {
       "submit": function($event) {
@@ -60202,7 +60201,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('form', {
     attrs: {
       "action": "#",
-      "role": "form"
+      "role": "form",
+      "enctype": "multipart/form-data"
     },
     on: {
       "submit": function($event) {

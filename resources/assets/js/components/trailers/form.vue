@@ -8,7 +8,7 @@
                     </div>
 
                     <div class="panel-body">
-                        <form action="#" role="form" @submit.prevent="store">
+                        <form action="#" role="form" @submit.prevent="store" enctype="multipart/form-data">
 
                             <div class="form-group">
                                 <label for="trailer_number">Trailer Number</label>

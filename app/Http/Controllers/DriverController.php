@@ -32,8 +32,9 @@ class DriverController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
-    public function store(DriverRequest $request)
+    public function store(Request $request)
     {
+//        return $request->all();
         $data = $request->all();
         foreach ($request->all() as $key=>$item) {
             if ($request->hasFile($key)){

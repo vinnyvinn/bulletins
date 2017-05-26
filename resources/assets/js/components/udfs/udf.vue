@@ -38,7 +38,7 @@
       <div v-else-if="udf.input_type === 'Document'" class="form-group">
         <label :for="udf.slug">{{ udf.name }}</label>
         <input type="file"
-        class="form-control"
+        class="form-control document"
         :id="udf.slug"
         :name="udf.slug"
         @change="state[udf.slug]">
@@ -47,10 +47,9 @@
       <div v-else-if="udf.input_type === 'Image'" class="form-group">
         <label :for="udf.slug">{{ udf.name }}</label>
         <input type="file"
-        class="form-control"
+        class="form-control image"
         :id="udf.slug"
-        :name="udf.slug"
-        @change="state[udf.slug]">
+        :name="udf.slug">
       </div>
 
       <div v-else-if="udf.input_type === 'Yes/No'" class="form-group">
@@ -74,6 +73,7 @@
           <option v-for="option in udf.value.split(';')" :value="option">{{option}}</option>
         </select>
         </div>
+
         <div v-else-if="udf.input_type === 'Select'" class="form-group">
         <label :for="udf.slug" class="control-label">{{udf.name}} </label>
         <select class="form-control" :name="udf.slug" v-model="state[udf.slug]">
@@ -115,8 +115,8 @@ export default {
 
         });
       }
-    }
   }
+}
 </script>
 
 <style lang="css">

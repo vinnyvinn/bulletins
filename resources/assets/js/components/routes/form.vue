@@ -8,7 +8,7 @@
                     </div>
 
                     <div class="panel-body">
-                        <form action="#" role="form" @submit.prevent="store">
+                        <form action="#" role="form" @submit.prevent="store" enctype="multipart/form-data">
 
                             <div class="row">
                                 <div class="col-sm-6">
