@@ -27166,6 +27166,7 @@ Vue.component('core-nav', __webpack_require__(91));
 
 Vue.component('udf', __webpack_require__(105));
 Vue.component('udf-create', __webpack_require__(9));
+Vue.component('show-udfs', __webpack_require__(168));
 
 var app = new __WEBPACK_IMPORTED_MODULE_0__vuerouter__["a" /* RouterSingleton */].getRouter();
 
@@ -29087,7 +29088,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             window._router.push({ path: '/drivers/' + driver.id + '/edit' });
         },
         view: function view(driver) {
-            window._router.push({ path: '/driver/' + driver.id + '/show' });
+            window._router.push({ path: '/drivers/' + driver.id });
         },
         flatten: function (_flatten) {
             function flatten(_x) {
@@ -31240,11 +31241,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -31257,12 +31253,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 description: ''
             },
             input_types: [],
-            modules: [],
-            radio_options: {
-                option1Label: 'Option 1',
-                option2Label: 'Option 2'
-            },
-            showYesNoEntryForm: false
+            modules: []
         };
     },
     created: function created() {
@@ -31302,9 +31293,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).catch(function (error) {
                 alert2(_this2.$root, Object.values(JSON.parse(error.message)), 'danger');
             });
-        },
-        checkInputType: function checkInputType() {
-            this.showYesNoEntryForm = !this.showYesNoEntryForm;
         }
     }
 });
@@ -32170,7 +32158,7 @@ function authMiddleware(to, from, next) {
     return next();
 }
 
-module.exports = [{ path: '/', redirect: '/dashboard', beforeEnter: authMiddleware }, { path: '/dashboard', component: __webpack_require__(89), beforeEnter: authMiddleware }, { path: '/routes', component: __webpack_require__(92), beforeEnter: authMiddleware }, { path: '/routes/create', component: __webpack_require__(19), beforeEnter: authMiddleware }, { path: '/routes/:id/edit', component: __webpack_require__(19), beforeEnter: authMiddleware }, { path: '/drivers', component: __webpack_require__(90), beforeEnter: authMiddleware }, { path: '/drivers/create', component: __webpack_require__(18), beforeEnter: authMiddleware }, { path: '/drivers/:id/edit', component: __webpack_require__(18), beforeEnter: authMiddleware }, { path: '/driver/:id/show', component: __webpack_require__(163), beforeEnter: authMiddleware }, { path: '/trucks', component: __webpack_require__(103), beforeEnter: authMiddleware }, { path: '/trucks/create', component: __webpack_require__(8), beforeEnter: authMiddleware }, { path: '/trucks/:id', component: __webpack_require__(8), beforeEnter: authMiddleware }, { path: '/trucks/:id/edit', component: __webpack_require__(8), beforeEnter: authMiddleware }, { path: '/trailers', component: __webpack_require__(93), beforeEnter: authMiddleware }, { path: '/trailers/create', component: __webpack_require__(7), beforeEnter: authMiddleware }, { path: '/trailers/:id', component: __webpack_require__(7), beforeEnter: authMiddleware }, { path: '/trailers/:id/edit', component: __webpack_require__(7), beforeEnter: authMiddleware }, { path: '/progress', component: __webpack_require__(95), beforeEnter: authMiddleware }, { path: '/progress/pre-loading', component: __webpack_require__(102), beforeEnter: authMiddleware }, { path: '/progress/pre-loading/:id', component: __webpack_require__(97), beforeEnter: authMiddleware }, { path: '/progress/loading', component: __webpack_require__(100), beforeEnter: authMiddleware }, { path: '/progress/loading/:id', component: __webpack_require__(96), beforeEnter: authMiddleware }, { path: '/progress/enroute', component: __webpack_require__(98), beforeEnter: authMiddleware }, { path: '/progress/enroute/:id', component: __webpack_require__(94), beforeEnter: authMiddleware }, { path: '/progress/offloading', component: __webpack_require__(101), beforeEnter: authMiddleware }, { path: '/progress/in-yard', component: __webpack_require__(99), beforeEnter: authMiddleware }, { path: '/users', component: __webpack_require__(107), beforeEnter: authMiddleware }, { path: '/users/create', component: __webpack_require__(106), beforeEnter: authMiddleware }, { path: '/contracts', component: __webpack_require__(86), beforeEnter: authMiddleware }, { path: '/contracts/create', component: __webpack_require__(17), beforeEnter: authMiddleware }, { path: '/contracts/:id/edit', component: __webpack_require__(17), beforeEnter: authMiddleware }, { path: '/allocation', component: __webpack_require__(84), beforeEnter: authMiddleware }, { path: '/allocation/create', component: __webpack_require__(16), beforeEnter: authMiddleware }, { path: '/allocation/:id/edit', component: __webpack_require__(16), beforeEnter: authMiddleware }, { path: '/udfs', component: __webpack_require__(104), beforeEnter: authMiddleware }, { path: '/udfs/create', component: __webpack_require__(9), beforeEnter: authMiddleware }, { path: '/udfs/:id/edit', component: __webpack_require__(9), beforeEnter: authMiddleware }, { path: '/login',
+module.exports = [{ path: '/', redirect: '/dashboard', beforeEnter: authMiddleware }, { path: '/dashboard', component: __webpack_require__(89), beforeEnter: authMiddleware }, { path: '/routes', component: __webpack_require__(92), beforeEnter: authMiddleware }, { path: '/routes/create', component: __webpack_require__(19), beforeEnter: authMiddleware }, { path: '/routes/:id/edit', component: __webpack_require__(19), beforeEnter: authMiddleware }, { path: '/drivers', component: __webpack_require__(90), beforeEnter: authMiddleware }, { path: '/drivers/create', component: __webpack_require__(18), beforeEnter: authMiddleware }, { path: '/drivers/:id/edit', component: __webpack_require__(18), beforeEnter: authMiddleware }, { path: '/drivers/:id', component: __webpack_require__(163), beforeEnter: authMiddleware }, { path: '/trucks', component: __webpack_require__(103), beforeEnter: authMiddleware }, { path: '/trucks/create', component: __webpack_require__(8), beforeEnter: authMiddleware }, { path: '/trucks/:id', component: __webpack_require__(8), beforeEnter: authMiddleware }, { path: '/trucks/:id/edit', component: __webpack_require__(8), beforeEnter: authMiddleware }, { path: '/trailers', component: __webpack_require__(93), beforeEnter: authMiddleware }, { path: '/trailers/create', component: __webpack_require__(7), beforeEnter: authMiddleware }, { path: '/trailers/:id', component: __webpack_require__(7), beforeEnter: authMiddleware }, { path: '/trailers/:id/edit', component: __webpack_require__(7), beforeEnter: authMiddleware }, { path: '/progress', component: __webpack_require__(95), beforeEnter: authMiddleware }, { path: '/progress/pre-loading', component: __webpack_require__(102), beforeEnter: authMiddleware }, { path: '/progress/pre-loading/:id', component: __webpack_require__(97), beforeEnter: authMiddleware }, { path: '/progress/loading', component: __webpack_require__(100), beforeEnter: authMiddleware }, { path: '/progress/loading/:id', component: __webpack_require__(96), beforeEnter: authMiddleware }, { path: '/progress/enroute', component: __webpack_require__(98), beforeEnter: authMiddleware }, { path: '/progress/enroute/:id', component: __webpack_require__(94), beforeEnter: authMiddleware }, { path: '/progress/offloading', component: __webpack_require__(101), beforeEnter: authMiddleware }, { path: '/progress/in-yard', component: __webpack_require__(99), beforeEnter: authMiddleware }, { path: '/users', component: __webpack_require__(107), beforeEnter: authMiddleware }, { path: '/users/create', component: __webpack_require__(106), beforeEnter: authMiddleware }, { path: '/contracts', component: __webpack_require__(86), beforeEnter: authMiddleware }, { path: '/contracts/create', component: __webpack_require__(17), beforeEnter: authMiddleware }, { path: '/contracts/:id/edit', component: __webpack_require__(17), beforeEnter: authMiddleware }, { path: '/allocation', component: __webpack_require__(84), beforeEnter: authMiddleware }, { path: '/allocation/create', component: __webpack_require__(16), beforeEnter: authMiddleware }, { path: '/allocation/:id/edit', component: __webpack_require__(16), beforeEnter: authMiddleware }, { path: '/udfs', component: __webpack_require__(104), beforeEnter: authMiddleware }, { path: '/udfs/create', component: __webpack_require__(9), beforeEnter: authMiddleware }, { path: '/udfs/:id/edit', component: __webpack_require__(9), beforeEnter: authMiddleware }, { path: '/login',
     component: __webpack_require__(85),
     beforeEnter: function beforeEnter(to, from, next) {
         if (localStorage.getItem('foeiwafwfuwe')) {
@@ -36797,7 +36785,7 @@ exports.push([module.i, "\n.loaderContainer {\n    width: 100%;\n    height: 100
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 81 */
@@ -59045,29 +59033,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "value": input_type
       }
     }, [_vm._v(_vm._s(input_type))])
-  })), _vm._v(" "), _c('div', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.showYesNoEntryForm),
-      expression: "showYesNoEntryForm"
-    }],
-    staticClass: "col-md-6 col-md-offset-6"
-  }, [_c('span', [_vm._v("\n                                " + _vm._s(_vm.radio_options.option1Label)), _c('input', {
-    staticClass: "form-control",
-    attrs: {
-      "type": "text",
-      "name": "",
-      "value": ""
-    }
-  }), _vm._v("\n                                " + _vm._s(_vm.radio_options.optionLabel)), _c('input', {
-    staticClass: "form-control",
-    attrs: {
-      "type": "text",
-      "name": "",
-      "value": ""
-    }
-  })])])]), _vm._v(" "), _c('div', {
+  }))]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
@@ -73165,6 +73131,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -73185,8 +73183,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     getDriver: function getDriver() {
       var _this = this;
 
-      http.get('/api/driver/show' + this.$route.params.id).then(function (response) {
-        _this.driver = response;
+      http.get('/api/driver/' + this.$route.params.id).then(function (response) {
+        _this.driver = response.driver;
       });
     }
   }
@@ -73197,7 +73195,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 163 */
@@ -73245,17 +73243,46 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', {
     staticClass: "container"
   }, [_c('div', {
-    staticClass: "row"
-  }, [_c('div', {
     staticClass: "col-md-6 col-md-offset-3"
   }, [_c('div', {
     staticClass: "panel panel-default"
   }, [_c('div', {
     staticClass: "panel-heading"
-  }, [_vm._v("\n          Driver\n        ")]), _vm._v(" "), _c('div', {
+  }, [_c('strong', [_vm._v(_vm._s(_vm.driver.name))])]), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
-  }, [_vm._v("\n          " + _vm._s(_vm.driver) + "\n        ")])])])])])
-},staticRenderFns: []}
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "col-md-6"
+  }, [_vm._v("\n              " + _vm._s(_vm.driver.name) + "\n            ")]), _vm._v(" "), _vm._m(1), _vm._v(" "), _c('div', {
+    staticClass: "col-md-6"
+  }, [_vm._v("\n              " + _vm._s(_vm.driver.national_id) + "\n            ")]), _vm._v(" "), _vm._m(2), _vm._v(" "), _c('div', {
+    staticClass: "col-md-6"
+  }, [_vm._v("\n              " + _vm._s(_vm.driver.dl_number) + "\n            ")]), _vm._v(" "), _vm._m(3), _vm._v(" "), _c('div', {
+    staticClass: "col-md-6"
+  }, [_vm._v("\n              " + _vm._s(_vm.driver.mobile) + "\n            ")])]), _vm._v(" "), _c('show-udfs', {
+    attrs: {
+      "module": "Drivers",
+      "state": _vm.driver
+    }
+  })], 1)])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "col-md-6"
+  }, [_c('strong', [_vm._v("Name:")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "col-md-6"
+  }, [_c('strong', [_vm._v("National Id:")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "col-md-6"
+  }, [_c('strong', [_vm._v("Driving License:")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "col-md-6"
+  }, [_c('strong', [_vm._v("Mobile:")])])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -73282,6 +73309,178 @@ if(false) {
  if(!content.locals) {
    module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-16992aed!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./view.vue", function() {
      var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-16992aed!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./view.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 166 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      udfs: [],
+      fields: []
+    };
+  },
+
+  props: ['module', 'state'],
+  created: function created() {
+    this.getUdfs();
+  },
+
+  methods: {
+    getUdfs: function getUdfs() {
+      var _this = this;
+
+      http.get('/api/module-udfs/' + this.module).then(function (response) {
+        _this.udfs = response;
+      }).then(function () {
+        for (var key in _this.state) {
+          // var fieldname = key;
+          for (var index in _this.udfs) {
+            var udf = _this.udfs[index];
+            if (key == udf.slug) {
+              var datatype = udf.input_type;
+            }
+          }
+          var value = _this.state[key];
+          if (datatype) {
+            _this.fields.push({ key: key, datatype: datatype, value: value });
+          }
+        }
+      });
+    }
+  }
+});
+
+/***/ }),
+/* 167 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)();
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+/***/ }),
+/* 168 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(170)
+
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(166),
+  /* template */
+  __webpack_require__(169),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/sam/gaitara/rkkb/resources/assets/js/components/udfs/show.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] show.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-3a184bbc", Component.options)
+  } else {
+    hotAPI.reload("data-v-3a184bbc", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 169 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "row"
+  }, _vm._l((_vm.fields), function(field) {
+    return _c('div', {}, [(field.datatype == 'Short Text') ? _c('div', {}, [_c('div', {
+      staticClass: "col-md-6"
+    }, [_c('strong', [_vm._v(_vm._s(field.key))])]), _vm._v(" "), _c('div', {
+      staticClass: "col-md-6"
+    }, [_c('p', [_vm._v(_vm._s(field.value))])])]) : _vm._e(), _vm._v(" "), (field.datatype == 'Long Text') ? _c('div', {}, [_c('div', {
+      staticClass: "col-md-6"
+    }, [_c('strong', [_vm._v(_vm._s(field.key))])]), _vm._v(" "), _c('div', {
+      staticClass: "col-md-6"
+    }, [_c('p', [_vm._v(_vm._s(field.value))])])]) : _vm._e()])
+  }))
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-3a184bbc", module.exports)
+  }
+}
+
+/***/ }),
+/* 170 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(167);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(5)("60eab19d", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-3a184bbc!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./show.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-3a184bbc!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./show.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });

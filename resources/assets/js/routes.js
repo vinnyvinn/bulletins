@@ -21,7 +21,7 @@ module.exports = [
     { path: '/drivers', component: require('./components/drivers/index.vue'), beforeEnter: authMiddleware },
     { path: '/drivers/create', component: require('./components/drivers/form.vue'), beforeEnter: authMiddleware },
     { path: '/drivers/:id/edit', component: require('./components/drivers/form.vue'), beforeEnter: authMiddleware },
-    { path: '/driver/:id/show', component: require('./components/drivers/view.vue'), beforeEnter: authMiddleware },
+    { path: '/drivers/:id', component: require('./components/drivers/view.vue'), beforeEnter: authMiddleware },
 
     { path: '/trucks', component: require('./components/trucks/index.vue'), beforeEnter: authMiddleware },
     { path: '/trucks/create', component: require('./components/trucks/form.vue'), beforeEnter: authMiddleware },

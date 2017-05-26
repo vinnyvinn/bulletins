@@ -1,16 +1,48 @@
 <template lang="html">
   <div class="container">
-    <div class="row">
       <div class="col-md-6 col-md-offset-3">
         <div class="panel panel-default">
           <div class="panel-heading">
-            Driver
+            <strong>{{ driver.name }}</strong>
           </div>
+
           <div class="panel-body">
-            {{ driver }}
+
+            <div class="row">
+              <div class="col-md-6">
+                <strong>Name:</strong>
+              </div>
+              <div class="col-md-6">
+                {{ driver.name }}
+              </div>
+
+              <div class="col-md-6">
+                <strong>National Id:</strong>
+              </div>
+              <div class="col-md-6">
+                {{ driver.national_id }}
+              </div>
+
+              <div class="col-md-6">
+                <strong>Driving License:</strong>
+              </div>
+              <div class="col-md-6">
+                {{ driver.dl_number }}
+              </div>
+
+              <div class="col-md-6">
+                <strong>Mobile:</strong>
+              </div>
+              <div class="col-md-6">
+                {{ driver.mobile }}
+              </div>
+
+            </div>
+              <show-udfs module="Drivers" :state="driver"></show-udfs>
+
+            </div>
           </div>
         </div>
-      </div>
     </div>
   </div>
 </template>
@@ -32,9 +64,9 @@ export default {
   },
   methods: {
     getDriver () {
-      http.get('/api/driver/show' + this.$route.params.id).then(response => {
-        this.driver = response;
-      })
+      http.get('/api/driver/' + this.$route.params.id).then(response => {
+        this.driver = response.driver;
+      });
     }
   }
 }
