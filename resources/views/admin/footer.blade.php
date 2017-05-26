@@ -43,6 +43,7 @@
     {{--<script src="{{ asset('assets/admin/dist/js/demo.js') }}"></script>--}}
     <script>
        $('#alert-head').delay(5000).slideUp();
+       new Clipboard('.clipboard');
     </script>
   </body>
 </html>

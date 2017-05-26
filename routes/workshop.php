@@ -8,6 +8,7 @@ Route::group(['prefix' => 'workshop', 'as' => 'workshop.'], function () {
     Route::resource('job-operation', '\SmoDav\Controllers\WorkshopJobOperationController');
     Route::resource('job-task', '\SmoDav\Controllers\WorkshopJobTaskController');
     Route::resource('inspection', '\SmoDav\Controllers\WorkshopInspectionCheckListController');
+    Route::resource('integrations', '\SmoDav\Controllers\APIIntegrationController');
 });
 
 

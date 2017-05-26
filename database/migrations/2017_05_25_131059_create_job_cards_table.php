@@ -16,6 +16,7 @@ class CreateJobCardsTable extends Migration
     {
         Schema::create('job_cards', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('status');
             $table->enum('service_type', [Constants::WORK_NORMAL, Constants::WORK_SERVICE]);
             $table->integer('vehicle_id');
             $table->integer('workshop_job_type_id')->index()->unsigned()->nullable();

@@ -1,53 +1,64 @@
 <template>
+
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-8 col-sm-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-sm-2">
-                                <h4>Users</h4>
+            <div class="col-sm-12">
+                <router-link to="/job-card/create" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> New Job Card</router-link>
+            </div>
+            <br>
+            <br>
+
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="panel panel-info">
+                            <div class="panel-heading text-center">
+                                <strong>Job Cards Not Approved</strong>
                             </div>
-                            <div class="col-sm-3 col-sm-offset-7">
-                                <router-link to="/users/create" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i> Add New</router-link>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table datatable">
+                                        <thead>
+                                        <tr>
+                                            <th>Username</th>
+                                            <th>Email</th>
+                                            <th>Created On</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody>
+                                        <tr v-for="user in users">
+                                            <td>{{ user.name }}</td>
+                                            <td>{{ user.email }}</td>
+                                            <td>{{ formatDate(user.created_at) }}</td>
+                                            <td class="text-center">
+                                                <span @click="edit(user)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
+                                                <button data-toggle="popover" :data-item="user.id" class="btn btn-xs btn-danger btn-destroy"><i class="fa fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+
+                                        <tfoot>
+                                        <tr>
+                                            <th>Username</th>
+                                            <th>Email</th>
+                                            <th>Created On</th>
+                                            <th></th>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="panel-body">
-                        <table class="table datatable">
-                            <thead>
-                            <tr>
-                                <th>Username</th>
-                                <th>Email</th>
-                                <th>Created On</th>
-                                <th></th>
-                            </tr>
-                            </thead>
 
-                            <tbody>
-                            <tr v-for="user in users">
-                                <td>{{ user.name }}</td>
-                                <td>{{ user.email }}</td>
-                                <td>{{ formatDate(user.created_at) }}</td>
-                                <td class="text-center">
-                                    <span @click="edit(user)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
-                                    <button data-toggle="popover" :data-item="user.id" class="btn btn-xs btn-danger btn-destroy"><i class="fa fa-trash"></i></button>
-                                </td>
-                            </tr>
-                            </tbody>
+                    <div class="col-sm-6">
 
-                            <tfoot>
-                            <tr>
-                                <th>Username</th>
-                                <th>Email</th>
-                                <th>Created On</th>
-                                <th></th>
-                            </tr>
-                            </tfoot>
-                        </table>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </template>

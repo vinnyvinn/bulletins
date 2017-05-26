@@ -207,9 +207,16 @@
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="{{ Request::is('administrator/settings')? 'active' :''  }}"><a
-                                href="{{ route('common_settings') }}"><i class="fa fa-circle-o"></i> Common Settings
-                        </a></li>
+                    <li class="{{ Request::is('administrator/settings')? 'active' :''  }}">
+                        <a href="{{ route('common_settings') }}">
+                            <i class="fa fa-circle-o"></i> Common Settings
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('workshop.integrations.index') }}">
+                            <i class="fa fa-circle-o"></i> Integrations
+                        </a>
+                    </li>
 
                 </ul>
             </li>

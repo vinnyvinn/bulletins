@@ -1,42 +1,31 @@
 <?php
 
-namespace SmoDav\Controllers\API;
+namespace SmoDav\Controllers;
 
+use App\Employee;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use SmoDav\Factory\TruckFactory;
-use SmoDav\Models\JobCard;
-use SmoDav\Models\WorkshopInspectionCheckList;
-use SmoDav\Models\WorkshopJobType;
 
-class JobCardController extends Controller
+class EmployeeController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        return \Response::json([
-            'job_cards' => JobCard::all()
-        ]);
+        //
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        $trucks = TruckFactory::all();
-
-        return \Response::json([
-            'vehicles' => $trucks,
-            'job_types' => WorkshopJobType::with(['operations.tasks'])->get(['id', 'name', 'service_type']),
-            'checklist' => WorkshopInspectionCheckList::all(['name', 'id'])
-        ]);
+        //
     }
 
     /**
@@ -53,10 +42,10 @@ class JobCardController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\JobCard  $jobCard
+     * @param  \App\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function show(JobCard $jobCard)
+    public function show(Employee $employee)
     {
         //
     }
@@ -64,10 +53,10 @@ class JobCardController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\JobCard  $jobCard
+     * @param  \App\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function edit(JobCard $jobCard)
+    public function edit(Employee $employee)
     {
         //
     }
@@ -76,10 +65,10 @@ class JobCardController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\JobCard  $jobCard
+     * @param  \App\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, JobCard $jobCard)
+    public function update(Request $request, Employee $employee)
     {
         //
     }
@@ -87,10 +76,10 @@ class JobCardController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\JobCard  $jobCard
+     * @param  \App\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function destroy(JobCard $jobCard)
+    public function destroy(Employee $employee)
     {
         //
     }
