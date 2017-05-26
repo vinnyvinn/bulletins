@@ -1,18 +1,16 @@
 loc<template lang="html">
   <div class="row">
     <div v-for="field in fields" class="">
+
       <div v-if="field.datatype == 'Image'" class="">
-        <img :src="imageSource(field.value)" alt="">
+        <div class="col-md-6">
+          <img :src="imageSource(field.value)" alt="" width="200" height="200">
+        </div>
       </div>
 
-      <div v-else-if="field.datatype == 'Short Text'" class="">
+      <div v-else-if="field.datatype == 'Document'" class="">
 
-        <div class="col-md-6">
-          <strong>{{ field.fieldname }}</strong>
-        </div>
-        <div class="col-md-6">
-          <p>{{ field.value }}</p>
-        </div>
+        <a :href="imageSource(field.value)"><button type="button" name="button" class="btn btn-sm btn-primary">View document</button></a>
 
       </div>
 
@@ -64,7 +62,7 @@ export default {
       });
     },
     imageSource (value){
-      return value;
+      return '/uploads/' + value;
     }
    }
  }

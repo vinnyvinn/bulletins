@@ -31604,8 +31604,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -31643,7 +31641,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       });
     },
     imageSource: function imageSource(value) {
-      return value;
+      return '/uploads/' + value;
     }
   }
 });
@@ -36959,7 +36957,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 82 */
@@ -57542,16 +57540,26 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', {
     staticClass: "row"
   }, _vm._l((_vm.fields), function(field) {
-    return _c('div', {}, [(field.datatype == 'Image') ? _c('div', {}, [_c('img', {
+    return _c('div', {}, [(field.datatype == 'Image') ? _c('div', {}, [_c('div', {
+      staticClass: "col-md-6"
+    }, [_c('img', {
       attrs: {
         "src": _vm.imageSource(field.value),
-        "alt": ""
+        "alt": "",
+        "width": "200",
+        "height": "200"
       }
-    })]) : (field.datatype == 'Short Text') ? _c('div', {}, [_c('div', {
-      staticClass: "col-md-6"
-    }, [_c('strong', [_vm._v(_vm._s(field.fieldname))])]), _vm._v(" "), _c('div', {
-      staticClass: "col-md-6"
-    }, [_c('p', [_vm._v(_vm._s(field.value))])])]) : (field.datatype == 'Long Text') ? _c('div', {}, [_c('div', {
+    })])]) : (field.datatype == 'Document') ? _c('div', {}, [_c('a', {
+      attrs: {
+        "href": _vm.imageSource(field.value)
+      }
+    }, [_c('button', {
+      staticClass: "btn btn-sm btn-primary",
+      attrs: {
+        "type": "button",
+        "name": "button"
+      }
+    }, [_vm._v("View document")])])]) : (field.datatype == 'Long Text') ? _c('div', {}, [_c('div', {
       staticClass: "col-md-6"
     }, [_c('strong', [_vm._v(_vm._s(field.fieldname))])]), _vm._v(" "), _c('div', {
       staticClass: "col-md-6"
