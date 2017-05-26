@@ -9,8 +9,29 @@ loc<template lang="html">
       </div>
 
       <div v-else-if="field.datatype == 'Document'" class="">
+        <div class="col-md-6">
+          <a :href="imageSource(field.value)"><button type="button" name="button" class="btn btn-sm btn-primary">View document</button></a>
+          <p>{{ field.fieldname }}</p>
+        </div>        
+      </div>
 
-        <a :href="imageSource(field.value)"><button type="button" name="button" class="btn btn-sm btn-primary">View document</button></a>
+      <div v-if="field.datatype == 'Date'" class="">
+        <div class="col-md-6">
+          <strong>{{ field.fieldname }}</strong>
+        </div>
+        <div class="col-md-6">
+          {{ processTime(field.value) }}
+        </div>
+      </div>
+
+      <div v-else-if="field.datatype == 'Short Text'" class="">
+
+        <div class="col-md-6">
+          <strong>{{ field.fieldname }}</strong>
+        </div>
+        <div class="col-md-6">
+          <p>{{ field.value }}</p>
+        </div>
 
       </div>
 
@@ -30,6 +51,7 @@ loc<template lang="html">
 </template>
 
 <script>
+import moment from 'moment';
 export default {
   data () {
     return {
@@ -40,6 +62,9 @@ export default {
   props: ['module','state'],
   created() {
     this.getUdfs();
+  },
+  computed: {
+
   },
   methods: {
     getUdfs() {
@@ -63,6 +88,9 @@ export default {
     },
     imageSource (value){
       return '/uploads/' + value;
+    },
+    processTime(time) {
+      return moment(time, 'YYYY-MM-DD').format('MMM Do YYYY');
     }
    }
  }
