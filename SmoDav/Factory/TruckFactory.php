@@ -68,7 +68,7 @@ class TruckFactory
     {
         $attributes['plate_number'] = strtoupper($attributes['plate_number']);
         $attributes['project_id'] = self::createInSAGE($attributes);
-        
+
         return Truck::create($attributes);
     }
 

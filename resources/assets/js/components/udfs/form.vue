@@ -17,9 +17,8 @@
 
                           <div class="form-group">
                               <label for="make">Input Type</label>
-                              <select v-model="udf.input_type" class="form-control" name="input_type" @change="checkInputType()">
-                                <option value="" disabled selected>Select input type</option>
-                                <option v-for="input_type in input_types" :value="input_type" :selected="(input_type === udf.input_type)">{{input_type}}</option>
+                              <select v-model="udf.input_type" class="form-control" name="input_type">
+                                <option v-for="input_type in input_types" :value="input_type">{{input_type}}</option>
                               </select>
 
                               <div v-show="showYesNoEntryForm" class="col-md-6 col-md-offset-6">
@@ -98,15 +97,16 @@ export default {
     },
     methods: {
         getInputs () {
-          if(this.$route.params.id){
-             this.udf._method = 'PUT';
-             http.get('/api/udf/' + this.$route.params.id).then((response) => {
-             this.udf = response;
-            });
-          }
             http.get('/api/udf/create').then(response => {
               this.input_types = response.inputs;
               this.modules = response.modules;
+            }).then(() => {
+              if(this.$route.params.id){
+                 this.udf._method = 'PUT';
+                 http.get('/api/udf/' + this.$route.params.id).then((response) => {
+                 this.udf = response;
+                });
+              }
             });
 
         },

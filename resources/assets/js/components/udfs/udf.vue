@@ -105,7 +105,9 @@ export default {
 
         http.get('/api/module-udfs/'+this.module).then(response => {
             response.forEach((udf) => {
-              this.$emit('udfAdded', udf.slug);
+              if (! this.state['udf.slug']) {
+                this.$emit('udfAdded', udf.slug);
+              }
             });
 
             this.udfs = response;

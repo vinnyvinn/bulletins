@@ -54,6 +54,7 @@
                                 <td>{{ driver.dl_number }}</td>
                                 <td>{{ driver.mobile }}</td>
                                 <td class="text-center">
+                                    <span @click="view(driver)" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></span>
                                     <span @click="edit(driver)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
                                     <button data-toggle="popover" :data-item="driver.id" class="btn btn-xs btn-danger btn-destroy"><i class="fa fa-trash"></i></button>
                                 </td>
@@ -124,6 +125,10 @@
 
             edit(driver) {
                 window._router.push({path: '/drivers/' + driver.id + '/edit'})
+            },
+
+            view(driver) {
+                window._router.push({path: '/driver/' + driver.id + '/show'})
             },
 
             flatten(arr) {
