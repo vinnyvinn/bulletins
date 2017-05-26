@@ -26,7 +26,9 @@ class UDFController extends Controller
     public function create()
     {
         //
-        return response()->json(['inputs'=>array('Short Text','Image','Document','Date', 'Number', 'Checkbox', 'Long Text', 'Options', 'Yes/No'),'modules'=>UDF::MODULES]);
+
+        return response()->json(['inputs'=>array('Short Text','Image','Document','Date', 'Number', 'Checkbox', 'Long Text', 'Select', 'Yes/No'),'modules'=>UDF::MODULES]);
+
     }
 
     /**
@@ -38,6 +40,7 @@ class UDFController extends Controller
     public function store(Request $request)
     {
         //
+        $data = $request->all();
         $slugcount = UDF::where('name',strtolower($request->name))->count();
 
         if ($slugcount > 0){
@@ -48,7 +51,7 @@ class UDFController extends Controller
         }
 
         addcolumn(UDF::TABLES[$request->module],$slug, $request->input_type);
-        UDF::create(array_add($request->all(),'slug',$slug));
+        UDF::create(array_add($data,'slug',$slug));
 
         return response()->json([
             'message' => 'Successfully added new field.'
@@ -96,15 +99,18 @@ class UDFController extends Controller
         }
 
         $slugcount = UDF::where('name',strtolower($request->name))->count();
-        if ($slugcount == 0){
-            $slug = convertString($request->name);
+        $data = $request->all();
+        if ($slugcount > 0){
+            $slug = convertString($request->name)."_".count($slugcount);
+            $data['slug'] = $slug;
         }
         else{
-            $slug = convertString($request->name)."_".count($slugcount);
+            $slug = convertString($request->name);
+            $data['slug'] = $slug;
         }
 
         renamecolumn(UDF::TABLES[$request->module], $udf->slug, $slug);
-        $udf->update(array_add($request->all(),'slug',$slug));
+        $udf->update($data);
 
         return response()->json(['message'=>'UDF Updated Successfully']);
     }
@@ -123,6 +129,7 @@ class UDFController extends Controller
         $udf->delete();
         return response()->json(['message'=>'UDF deleted Successfully']);
     }
+
     public function moduleUdf($module){
       return response()->json(UDF::where('module', $module)->where('status', UDF::ACTIVE)->get()->toArray());
     }

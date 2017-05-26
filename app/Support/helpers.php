@@ -55,3 +55,4 @@ function deletecolumn($tablename, $column){
         return false;
     }
 }
+

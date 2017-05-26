@@ -40,8 +40,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('in-yard/{id}', 'ProgressController@inYard');
 
     Route::resource('users', 'UserController');
-
     Route::resource('udf', 'UDFController');
+
     Route::get('module-udfs/{module}', 'UDFController@moduleUdf')->name('module-udfs');
 
 });

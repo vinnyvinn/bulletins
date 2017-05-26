@@ -22,6 +22,4 @@ Vue.component('udf-create', require('./components/udfs/form.vue'));
 Vue.component('show-udfs', require('./components/udfs/show.vue'));
 
 
-
-
 const app = new RouterSingleton.getRouter();

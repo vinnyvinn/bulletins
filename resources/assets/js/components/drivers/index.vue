@@ -117,7 +117,8 @@
                         this.drivers = response.drivers;
                         prepareTable();
                         alert2(this.$root, [response.message], 'success');
-                    }).catch((error) => {
+                    })
+                    .catch((error) => {
                         this.$root.isLoading = false;
                         alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                     });

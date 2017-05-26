@@ -28933,8 +28933,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 request = http.put('/api/driver/' + this.$route.params.id, this.driver);
             } else {
                 request = http.post('/api/driver', this.driver);
+                request = http.uploadFile('.image', '/api/driver');
             }
-
             request.then(function (response) {
                 _this2.$root.isLoading = false;
                 alert2(_this2.$root, [response.message], 'success');
@@ -31241,6 +31241,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -31250,8 +31255,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 input_type: '',
                 status: '',
                 module: '',
-                description: ''
+                description: '',
+                value: ''
             },
+
             input_types: [],
             modules: []
         };
@@ -31288,6 +31295,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
 
             request.then(function (response) {
+                console.log(response);
                 alert2(_this2.$root, [response.message], 'success');
                 window._router.push({ path: '/udfs' });
             }).catch(function (error) {
@@ -31304,6 +31312,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function($) {//
+//
 //
 //
 //
@@ -31561,8 +31570,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  //asasas;aasasasa;asasaasas
   created: function created() {
     // this.$emit('udfAdded', this.udf.slug);
   },
@@ -36771,7 +36790,7 @@ if (typeof jQuery === 'undefined') {
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 79 */
@@ -36785,7 +36804,7 @@ exports.push([module.i, "\n.loaderContainer {\n    width: 100%;\n    height: 100
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 81 */
@@ -55130,7 +55149,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('form', {
     attrs: {
       "action": "#",
-      "role": "form"
+      "role": "form",
+      "enctype": "multipart/form-data"
     },
     on: {
       "submit": function($event) {
@@ -55782,7 +55802,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('form', {
     attrs: {
       "action": "#",
-      "role": "form"
+      "role": "form",
+      "enctype": "multipart/form-data"
     },
     on: {
       "submit": function($event) {
@@ -57327,7 +57348,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "for": udf.slug
       }
     }, [_vm._v(_vm._s(udf.name))]), _vm._v(" "), _c('input', {
-      staticClass: "form-control",
+      staticClass: "form-control document",
       attrs: {
         "type": "file",
         "id": udf.slug,
@@ -57345,16 +57366,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "for": udf.slug
       }
     }, [_vm._v(_vm._s(udf.name))]), _vm._v(" "), _c('input', {
-      staticClass: "form-control",
+      staticClass: "form-control image",
       attrs: {
         "type": "file",
         "id": udf.slug,
         "name": udf.slug
-      },
-      on: {
-        "change": function($event) {
-          _vm.state[udf.slug]
-        }
       }
     })]) : (udf.input_type === 'Yes/No') ? _c('div', {
       staticClass: "form-group"
@@ -57438,7 +57454,58 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "value": ""
       }
-    }, [_vm._v("Select " + _vm._s(udf.name))])])]) : _vm._e()])
+    }, [_vm._v("Select " + _vm._s(udf.name))]), _vm._v(" "), _vm._l((udf.value.split(';')), function(option) {
+      return _c('option', {
+        domProps: {
+          "value": option
+        }
+      }, [_vm._v(_vm._s(option))])
+    })], 2)]) : (udf.input_type === 'Select') ? _c('div', {
+      staticClass: "form-group"
+    }, [_c('label', {
+      staticClass: "control-label",
+      attrs: {
+        "for": udf.slug
+      }
+    }, [_vm._v(_vm._s(udf.name) + " ")]), _vm._v(" "), _c('select', {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: (_vm.state[udf.slug]),
+        expression: "state[udf.slug]"
+      }],
+      staticClass: "form-control",
+      attrs: {
+        "name": udf.slug
+      },
+      on: {
+        "change": function($event) {
+          var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+            return o.selected
+          }).map(function(o) {
+            var val = "_value" in o ? o._value : o.value;
+            return val
+          });
+          var $$exp = _vm.state,
+            $$idx = udf.slug;
+          if (!Array.isArray($$exp)) {
+            _vm.state[udf.slug] = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+          } else {
+            $$exp.splice($$idx, 1, $event.target.multiple ? $$selectedVal : $$selectedVal[0])
+          }
+        }
+      }
+    }, [_c('option', {
+      attrs: {
+        "value": ""
+      }
+    }, [_vm._v("Select " + _vm._s(udf.name))]), _vm._v(" "), _vm._l((udf.value.split(';')), function(option) {
+      return _c('option', {
+        domProps: {
+          "value": option
+        }
+      }, [_vm._v(_vm._s(option))])
+    })], 2)]) : _vm._e()])
   }))
 },staticRenderFns: []}
 module.exports.render._withStripped = true
@@ -57657,7 +57724,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('form', {
     attrs: {
       "action": "#",
-      "role": "form"
+      "role": "form",
+      "enctype": "multipart/form-data"
     },
     on: {
       "submit": function($event) {
@@ -58414,7 +58482,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('i', {
       staticClass: "fa fa-trash"
     })])])])
-  })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("Name")]), _vm._v(" "), _c('th', [_vm._v("National ID")]), _vm._v(" "), _c('th', [_vm._v("DL Number")]), _vm._v(" "), _c('th', [_vm._v("Mobile Number")]), _vm._v(" "), _c('th')])])], 1)])])])])])
+  })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("Name")]), _vm._v(" "), _c('th', [_vm._v("Input Type")]), _vm._v(" "), _c('th', [_vm._v("Status")]), _vm._v(" "), _c('th', [_vm._v("Module")]), _vm._v(" "), _c('th', [_vm._v("Description")]), _vm._v(" "), _c('th', [_vm._v("Actions")])])])], 1)])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "col-sm-2"
@@ -59034,6 +59102,29 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_vm._v(_vm._s(input_type))])
   }))]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', [_vm._v("Value")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.udf.value),
+      expression: "udf.value"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "placeholder": "Field Name"
+    },
+    domProps: {
+      "value": (_vm.udf.value)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.udf.value = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
@@ -59742,7 +59833,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('form', {
     attrs: {
       "action": "#",
-      "role": "form"
+      "role": "form",
+      "enctype": "multipart/form-data"
     },
     on: {
       "submit": function($event) {
@@ -59953,7 +60045,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('form', {
     attrs: {
       "action": "#",
-      "role": "form"
+      "role": "form",
+      "enctype": "multipart/form-data"
     },
     on: {
       "submit": function($event) {
