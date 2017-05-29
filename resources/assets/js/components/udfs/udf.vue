@@ -56,9 +56,9 @@
         <input type="radio" name="udf.slug" value="">{{ udf.name }}
       </div>
 
-      <div v-else-if="udf.input_type === 'DateTime'" class="form-group">
+      <div v-else-if="udf.input_type === 'Date'" class="form-group">
         <label :for="udf.slug">{{ udf.name }}</label>
-        <input type="Date"
+        <input type="text"
         class="datepicker form-control"
         :id="udf.slug"
         :name="udf.slug"
@@ -113,6 +113,10 @@ export default {
             this.udfs = response;
 
 
+        });
+        $('.datepicker').datepicker({
+            autoclose: true,
+            format: 'dd/mm/yyyy'
         });
       }
   }

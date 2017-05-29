@@ -47270,7 +47270,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
+/* WEBPACK VAR INJECTION */(function($) {//
 //
 //
 //
@@ -47387,9 +47387,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         _this.udfs = response;
       });
+      $('.datepicker').datepicker({
+        autoclose: true,
+        format: 'dd/mm/yyyy'
+      });
     }
   }
 });
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
 
 /***/ }),
 /* 189 */
@@ -52583,7 +52588,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 200 */
@@ -73613,7 +73618,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "name": "udf.slug",
         "value": ""
       }
-    }), _vm._v(_vm._s(udf.name) + "\n    ")]) : (udf.input_type === 'DateTime') ? _c('div', {
+    }), _vm._v(_vm._s(udf.name) + "\n    ")]) : (udf.input_type === 'Date') ? _c('div', {
       staticClass: "form-group"
     }, [_c('label', {
       attrs: {
@@ -73628,7 +73633,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }],
       staticClass: "datepicker form-control",
       attrs: {
-        "type": "Date",
+        "type": "text",
         "id": udf.slug,
         "name": udf.slug,
         "placeholder": udf.name
