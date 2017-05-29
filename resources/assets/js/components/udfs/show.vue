@@ -1,10 +1,10 @@
 <template lang="html">
   <div class="row">
     <div v-for="field in fields" class="">
-
+<div v-if="field.value">
       <div v-if="field.datatype == 'Image'" class="">
         <div class="col-md-6">
-          <img :src="imageSource(field.value)" alt="" width="200" height="200">
+          <img v-if="field.value" :src="imageSource(field.value)" alt="" width="200" height="200">
         </div>
       </div>
 
@@ -45,9 +45,19 @@
         </div>
 
       </div>
+      <div v-else-if="field.datatype == 'Select'" class="">
+
+        <div class="col-md-6">
+        <strong>{{ field.fieldname }}</strong>
+          <p>{{ field.value }}</p>
+        </div>
+
+      </div>
 
     </div>
   </div>
+  </div>
+
 </template>
 
 <script>
