@@ -26531,8 +26531,6 @@ module.exports = function(module) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 //
 //
 //
@@ -26637,7 +26635,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
             this.$root.isLoading = true;
             var request = null;
-            var data = mapToFormData(this.driver, this.uploads, this.$route.params.id === ( true ? 'undefined' : _typeof(undefined)));
+            var data = mapToFormData(this.driver, this.uploads, typeof this.$route.params.id === 'string');
 
             if (this.$route.params.id) {
                 request = http.put('/api/driver/' + this.$route.params.id, data, true);
