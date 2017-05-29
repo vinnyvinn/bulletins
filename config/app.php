@@ -12,6 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
+    'app_name' => 'R.K SANGHANI',
     'name' => 'R.K SANGHANI',
     'telephone' => 'Tel: +254202612441/2 Fax: +2542012440/4',
     'email' => 'Email: info@sanghani',
@@ -171,6 +172,13 @@ return [
          */
         Laravel\Tinker\TinkerServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
+        Collective\Html\HtmlServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
+        Yajra\Datatables\DatatablesServiceProvider::class,
+        Yajra\Datatables\ButtonsServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
+        Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -229,6 +237,16 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+
+
+        'Form'      => Collective\Html\FormFacade::class,
+        'Html'      => Collective\Html\HtmlFacade::class,
+        'Image'     => Intervention\Image\Facades\Image::class,
+        'Helpers'   => App\Http\Helpers\Helpers::class,
+        'Datatables' => Yajra\Datatables\Datatables::class,
+        'Excel'     => Maatwebsite\Excel\Facades\Excel::class,
+        'PDF'       => Barryvdh\DomPDF\Facade::class,
+        'Cart'      => Gloudemans\Shoppingcart\Facades\Cart::class,
 
     ],
 

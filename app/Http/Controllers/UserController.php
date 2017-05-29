@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Invoice;
 use App\User;
+use Auth;
 use Illuminate\Http\Request;
 use Response;
 
@@ -21,69 +23,45 @@ class UserController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function workIndex()
     {
-        //
+        $pageTitle = 'All Staff List';
+        return view('admin.agents', compact('pageTitle'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+
+    public function logout()
     {
-        //
+        Auth::logout();
+        return redirect(route('sign_in'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function show(User $user)
+    public function dashboard()
     {
-        //
-    }
+        $user = Auth::user();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $user)
-    {
-        //
-    }
+        $shop = $user->shop;
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, User $user)
-    {
-        //
-    }
+        $year = date('Y');
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(User $user)
-    {
-        //
+        $sales_data = Invoice::when($shop, function ($builder) use ($shop) {
+            return $builder->where('shop_id', $shop->id);
+        })
+            ->whereRaw('YEAR(created_at) ='.$year)
+            ->selectRaw('DATEPART(MM, created_at) as month, sum(total_price) as amount')
+            ->groupBy('created_at')
+            ->orderBy('created_at')
+            ->get();
+
+        $label = '[';
+        $amount = '';
+        foreach($sales_data as $data) {
+            $label .= '"'.$data->month.'", ';
+            $amount .= $data->amount.', ';
+        }
+        $label .= ']';
+
+
+        return view('user_admin.dashboard', compact('user', 'label', 'amount'));
     }
 }

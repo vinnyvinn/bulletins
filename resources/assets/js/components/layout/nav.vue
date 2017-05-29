@@ -35,6 +35,26 @@
 
                         </ul>
                     </li>
+
+
+
+
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <i class="fa fa-check"></i> Workshop <span class="caret"></span>
+                        </a>
+
+                        <ul class="dropdown-menu" role="menu">
+                            <li><router-link to="/job-card"> Job Cards</router-link></li>
+                        </ul>
+                    </li>
+
+
+
+
+
+
                 </ul>
 
                 <!-- Right Side Of Navbar -->
@@ -49,6 +69,7 @@
                             <li v-if="can('view-routes')"><router-link to="/routes"><i class="fa fa-road"></i> Routes</router-link></li>
                             <li v-if="can('view-trailers')"><router-link to="/trailers"><i class="fa fa-flag"></i> Trailers</router-link></li>
                             <li v-if="can('view-trucks')"><router-link to="/trucks"><i class="fa fa-truck"></i> Trucks</router-link></li>
+                            <li v-if="can('view-trucks')"><a href="/administrator"><i class="fa fa-truck"></i> Workshop</a></li>
                             <li class="dropdown-header">User Accounts</li>
                             <li class="dropdown-header">System Settings</li>
                             <li v-if="can('view-trucks')"><router-link to="/udfs"><i class="fa fa-truck"></i> User Defined Fields </router-link></li>
@@ -61,7 +82,7 @@
 
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            {{ $root.user.name }} <span class="caret"></span>
+                            {{ $root.user.first_name }} {{ $root.user.last_name }}<span class="caret"></span>
                         </a>
 
                         <ul class="dropdown-menu" role="menu">
@@ -95,10 +116,7 @@
             logout() {
                 localStorage.removeItem('foeiwafwfuwe');
                 localStorage.removeItem('fewuia32rfwe');
-                this.$root.isLoggedIn = false;
-                this.$root.user = null;
-
-                window._router.push({ path: '/login' })
+                http.post('/logout', {}).then(() => window.location = '/login');
             },
 
             can(permission) {

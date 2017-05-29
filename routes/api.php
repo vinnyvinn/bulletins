@@ -44,4 +44,6 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::get('module-udfs/{module}', 'UDFController@moduleUdf')->name('module-udfs');
 
+
+    Route::resource('job-card', '\SmoDav\Controllers\API\JobCardController');
 });
