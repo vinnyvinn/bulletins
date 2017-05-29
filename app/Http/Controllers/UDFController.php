@@ -41,17 +41,19 @@ class UDFController extends Controller
     {
         //
         $data = $request->all();
-        $slugcount = UDF::where('name',strtolower($request->name))->count();
+        $slugcount = UDF::where('name', strtolower($request->name))->where('module', $request->module)->count();
 
         if ($slugcount > 0){
             $slug = convertString($request->name)."_".count($slugcount);
+            $data['name'] = $request->name ." ".($slugcount+1);
         }
         else{
             $slug = convertString($request->name);
         }
+        $data['slug'] = $slug;
 
-        addcolumn(UDF::TABLES[$request->module],$slug, $request->input_type);
-        UDF::create(array_add($data,'slug',$slug));
+        addcolumn(UDF::TABLES[$request->module], $slug, $request->input_type);
+        UDF::create($data);
 
         return response()->json([
             'message' => 'Successfully added new field.'
@@ -98,17 +100,17 @@ class UDFController extends Controller
            return response()->json(['message'=>'UDF Updated Successfully']);
         }
 
-        $slugcount = UDF::where('name',strtolower($request->name))->count();
+        $slugcount = UDF::where('name',strtolower($request->name))->where('module', $request->module)->count();
         $data = $request->all();
         if ($slugcount > 0){
             $slug = convertString($request->name)."_".count($slugcount);
-            $data['slug'] = $slug;
+            $data['name'] = $request->name ." ".($slugcount+1);
         }
         else{
             $slug = convertString($request->name);
-            $data['slug'] = $slug;
         }
 
+        $data['slug'] = $slug;
         renamecolumn(UDF::TABLES[$request->module], $udf->slug, $slug);
         $udf->update($data);
 
@@ -132,5 +134,8 @@ class UDFController extends Controller
 
     public function moduleUdf($module){
       return response()->json(UDF::where('module', $module)->where('status', UDF::ACTIVE)->get()->toArray());
+    }
+    public function download($file){
+        return response()->file('uploads/'.$file);
     }
 }
