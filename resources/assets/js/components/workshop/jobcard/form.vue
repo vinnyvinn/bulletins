@@ -113,7 +113,7 @@
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label for="mechanic_findings">Mechanic's Findings</label>
-                                <textarea v-model="card.mechanic_findings" name="mechanic_findings" id="mechanic_findings" cols="20" rows="5"class="form-control"></textarea>
+                                <textarea v-model="card.mechanic_findings" name="mechanic_findings" id="mechanic_findings" cols="20" rows="5" class="form-control input-sm"></textarea>
                             </div>
                         </div>
                     </div>
@@ -345,13 +345,13 @@
             },
 
             removeTask(task) {
-                this.tasks.splice(this.tasks.indexOf(task), 1);
+                this.card.tasks.splice(this.card.tasks.indexOf(task), 1);
             },
 
             checkState() {
                 if (this.$route.params.id) {
                     http.get('/api/job-card/' + this.$route.params.id).then((response) => {
-                        this.card = response.card;
+                        this.card = response.card.raw_data;
                     });
                 }
             },

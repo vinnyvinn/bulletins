@@ -9,7 +9,7 @@ class JobCard extends SmoDavModel
     protected $fillable = [
         'service_type', 'vehicle_id', 'vehicle_type', 'vehicle_number', 'workshop_job_type_id', 'expected_completion',
         'time_in', 'job_description', 'current_km_reading', 'fuel_balance', 'has_trailer',
-        'status', 'mechanic_findings', 'user_id'
+        'status', 'mechanic_findings', 'user_id', 'raw_data'
     ];
 
     public function type()

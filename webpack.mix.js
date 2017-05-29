@@ -17,4 +17,5 @@ mix
     .copy('./node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.css', 'resources/assets/sass/libs/bootstrap-datepicker.scss')
     .copy('./node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css', 'resources/assets/sass/libs/bootstrap-datepicker3.scss')
     .js('resources/assets/js/app.js', 'public/js')
+    .js('resources/assets/js/plain.js', 'public/js')
     .sass('resources/assets/sass/app.scss', 'public/css');
