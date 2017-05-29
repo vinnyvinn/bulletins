@@ -24,6 +24,7 @@ require('bootstrap-sass');
 require('datatables.net');
 require('datatables.net-bs');
 require('bootstrap-datepicker');
+require('moment');
 
 /**
  * Vue is a modern JavaScript library for building interactive web interfaces

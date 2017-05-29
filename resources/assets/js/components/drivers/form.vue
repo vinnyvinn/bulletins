@@ -83,20 +83,16 @@
                 if (this.$route.params.id) {
                     request = http.put('/api/driver/' + this.$route.params.id, this.driver);
                 } else {
-                    request = http.post('/api/driver', this.driver);
-//                    request = axios.post('/api/driver',this.driver).then(response=>{
-//                        console.log(response.data);
-//                    }).catch(error=>{
-//                        console.log(error);
-//                    });
-//                    request = axios.post('/api/driver', this.driver)
-//                        .then(function(response){
-//                            console.log(response);
-//                        }).catch(error=>{
-//                            console.log(error);
-//                        }
+                    request = axios.post('/api/driver', this.driver)
+                        .then(function(response){
+                            console.log(response);
+                        }).catch(error=>{
+                            console.log(error);
+                        }
+                    );
 
-//                    );
+                    request = http.post('/api/driver', this.driver);                    
+
                 }
                 request.then((response) => {
                     this.$root.isLoading = false;

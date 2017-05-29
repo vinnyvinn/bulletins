@@ -21,12 +21,7 @@
                                 <option v-for="input_type in input_types" :value="input_type">{{input_type}}</option>
                               </select>
 
-                              <div v-show="showYesNoEntryForm" class="col-md-6 col-md-offset-6">
-                                <span>
-                                  {{radio_options.option1Label}}<input type="text" name="" value="" class="form-control" >
-                                  {{radio_options.optionLabel}}<input type="text" name="" value="" class="form-control">
-                                </span>
-                              </div>
+                                
                           </div>
 
                           <div v-if="udf.input_type == 'Select'" class="form-group">
@@ -86,11 +81,6 @@ export default {
 
         input_types: [],
         modules: [],
-        radio_options: {
-          option1Label: 'Option 1',
-          option2Label: 'Option 2'
-        },
-      showYesNoEntryForm: false
       }
     },
     created(){
@@ -127,11 +117,8 @@ export default {
             }).catch((error) => {
                 alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
             });
-        },
-        checkInputType (){
-          this.showYesNoEntryForm = !this.showYesNoEntryForm;
-          }
         }
+      }
 }
 </script>
 

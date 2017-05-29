@@ -129,7 +129,7 @@
             },
 
             view(driver) {
-                window._router.push({path: '/driver/' + driver.id + '/show'})
+                window._router.push({path: '/drivers/' + driver.id})
             },
 
             flatten(arr) {
