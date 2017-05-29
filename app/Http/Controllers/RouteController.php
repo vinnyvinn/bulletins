@@ -34,7 +34,17 @@ class RouteController extends Controller
      */
     public function store(Request $request)
     {
-        Route::create($request->all());
+        $data = $request->all();
+        foreach ($request->all() as $key=>$item) {
+            if ($request->hasFile($key)){
+                $extension = $request->file($key)->getClientOriginalExtension();
+                $filename = time().".".$extension;
+                $request->file($key)->move(public_path('uploads'), $filename);
+                $data[$key] = $filename;
+            }
+        }
+        $route = new Route();
+        $route->fill($data)->save();
 
         return Response::json([
             'message' => 'Successfully created new route.'
@@ -65,7 +75,16 @@ class RouteController extends Controller
      */
     public function update(Request $request, Route $route)
     {
-        $route->update($request->all());
+        $data = $request->all();
+        foreach ($request->all() as $key=>$item) {
+            if ($request->hasFile($key)){
+                $extension = $request->file($key)->getClientOriginalExtension();
+                $filename = time().".".$extension;
+                $request->file($key)->move(public_path('uploads'), $filename);
+                $data[$key] = $filename;
+            }
+        }
+        $route->fill($data)->save();
 
         return Response::json([
             'message' => 'Successfully updated route.'

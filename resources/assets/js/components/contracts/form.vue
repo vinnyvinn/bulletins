@@ -68,6 +68,8 @@
                                 </div>
                             </div>
 
+                            <udf module="Contracts" v-on:udfAdded="addUdfToObject" :state="contract"></udf>
+
                             <div class="form-group">
                                 <button class="btn btn-success">Save</button>
                                 <router-link to="/contracts" class="btn btn-danger">Back</router-link>
@@ -166,6 +168,9 @@
                 }).catch((error) => {
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                 });
+            },
+            addUdfToObject (slug) {
+              Vue.set(this.contract,slug,'');
             }
         }
     }

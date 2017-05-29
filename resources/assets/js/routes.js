@@ -21,6 +21,7 @@ module.exports = [
     { path: '/drivers', component: require('./components/drivers/index.vue'), beforeEnter: authMiddleware },
     { path: '/drivers/create', component: require('./components/drivers/form.vue'), beforeEnter: authMiddleware },
     { path: '/drivers/:id/edit', component: require('./components/drivers/form.vue'), beforeEnter: authMiddleware },
+    { path: '/drivers/:id', component: require('./components/drivers/view.vue'), beforeEnter: authMiddleware },
 
     { path: '/trucks', component: require('./components/trucks/index.vue'), beforeEnter: authMiddleware },
     { path: '/trucks/create', component: require('./components/trucks/form.vue'), beforeEnter: authMiddleware },
@@ -55,7 +56,9 @@ module.exports = [
     { path: '/allocation', component: require('./components/allocation/index.vue'), beforeEnter: authMiddleware },
     { path: '/allocation/create', component: require('./components/allocation/form.vue'), beforeEnter: authMiddleware },
     { path: '/allocation/:id/edit', component: require('./components/allocation/form.vue'), beforeEnter: authMiddleware },
-
+    { path: '/udfs', component: require('./components/udfs/index.vue'), beforeEnter: authMiddleware },
+    { path: '/udfs/create', component: require('./components/udfs/form.vue'), beforeEnter: authMiddleware },
+    { path: '/udfs/:id/edit', component: require('./components/udfs/form.vue'), beforeEnter: authMiddleware },
 
 
 
@@ -80,4 +83,3 @@ module.exports = [
         }
     },
 ];
-

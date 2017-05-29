@@ -30,7 +30,7 @@ class WorkshopJobOperationController extends Controller
                 ->with('error', 'Please create a job type first before creating a job operation');
         }
 
-        return view('workshop.workshop_job_operation.crea   te')
+        return view('workshop.workshop_job_operation.create')
             ->with('jobTypes', $types);
     }
 

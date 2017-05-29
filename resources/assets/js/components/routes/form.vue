@@ -8,7 +8,7 @@
                     </div>
 
                     <div class="panel-body">
-                        <form action="#" role="form" @submit.prevent="store">
+                        <form action="#" role="form" @submit.prevent="store" enctype="multipart/form-data">
 
                             <div class="row">
                                 <div class="col-sm-6">
@@ -45,6 +45,8 @@
                                         <label for="allowance_amount">Allowance Amount</label>
                                         <input onclick="this.select()" v-model="route.allowance_amount" min="0" type="number" class="form-control" id="allowance_amount" name="allowance_amount" required>
                                     </div>
+
+                                    <udf module="Routes" v-on:udfAdded="addUdfToObject" :state="route"></udf>
 
                                     <div class="form-group">
                                         <button class="btn btn-success">Save</button>
@@ -102,6 +104,9 @@
                 }).catch((error) => {
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                 });
+            },
+            addUdfToObject (slug) {
+              Vue.set(this.route,slug,'');
             }
         }
     }

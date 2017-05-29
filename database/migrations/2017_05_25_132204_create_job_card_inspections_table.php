@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateJobCardInspectionCheckListsTable extends Migration
+class CreateJobCardInspectionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,21 +13,22 @@ class CreateJobCardInspectionCheckListsTable extends Migration
      */
     public function up()
     {
-        Schema::create('job_card_inspection_check_lists', function (Blueprint $table) {
-            $table->bigInteger('job_card_inspection_id')->unsigned()->index();
+        Schema::create('job_card_inspections', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->bigInteger('job_card_id')->index()->unsigned();
             $table->integer('workshop_inspection_check_list_id')->unsigned()->index();
             $table->integer('employee_id')->unsigned()->index();
             $table->string('status');
             $table->timestamps();
 
-            $table->foreign('job_card_inspection_id')
-                ->references('id')
-                ->on('job_card_inspections')
-                ->onDelete('cascade');
-
             $table->foreign('workshop_inspection_check_list_id')
                 ->references('id')
                 ->on('workshop_inspection_check_lists')
+                ->onDelete('cascade');
+
+            $table->foreign('job_card_id')
+                ->references('id')
+                ->on('job_cards')
                 ->onDelete('cascade');
         });
     }
@@ -39,6 +40,6 @@ class CreateJobCardInspectionCheckListsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('job_card_inspection_check_lists');
+        Schema::dropIfExists('job_card_inspections');
     }
 }

@@ -17,6 +17,10 @@ Vue.component('alert', require('./components/core/alert.vue'));
 Vue.component('loader', require('./components/core/loader.vue'));
 Vue.component('core-nav', require('./components/layout/nav.vue'));
 
+Vue.component('udf', require('./components/udfs/udf.vue'));
+Vue.component('udf-create', require('./components/udfs/form.vue'));
+Vue.component('show-udfs', require('./components/udfs/show.vue'));
+Vue.component('driver-form', require('./components/drivers/form.vue'));
 
 
 const app = new RouterSingleton.getRouter();

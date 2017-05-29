@@ -2,13 +2,14 @@ import 'whatwg-fetch'
 
 import VueRouter from 'vue-router'
 
-import {http, showAlert, prepareTable, formatDate, confirmPopup, hasPermission} from './core';
+import { http, showAlert, prepareTable, formatDate, confirmPopup, hasPermission, mapToFormData } from './core';
 window.http = http;
 window.alert2 = showAlert;
 window.prepareTable = prepareTable;
 window._date2 = formatDate;
 window.confirm2 = confirmPopup;
 window.can = hasPermission;
+window.mapToFormData = mapToFormData;
 
 window._ = require('lodash');
 
@@ -25,6 +26,7 @@ require('bootstrap-sass');
 require('datatables.net');
 require('datatables.net-bs');
 require('bootstrap-datepicker');
+require('moment');
 
 /**
  * Vue is a modern JavaScript library for building interactive web interfaces

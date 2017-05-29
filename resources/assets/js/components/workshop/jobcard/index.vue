@@ -11,39 +11,51 @@
             <div class="col-sm-12">
                 <div class="row">
                     <div class="col-sm-6">
-                        <div class="panel panel-info">
+                        <div class="panel panel-warning">
                             <div class="panel-heading text-center">
                                 <strong>Job Cards Not Approved</strong>
                             </div>
                             <div class="panel-body">
                                 <div class="table-responsive">
-                                    <table class="table datatable">
+                                    <table class="table datatable nowrap">
                                         <thead>
                                         <tr>
-                                            <th>Username</th>
-                                            <th>Email</th>
+                                            <th>No.</th>
+                                            <th>Card #</th>
+                                            <th>Vehicle</th>
+                                            <th>Job Type</th>
+                                            <th>Description</th>
                                             <th>Created On</th>
+                                            <th>Expected Completion</th>
                                             <th></th>
                                         </tr>
                                         </thead>
 
                                         <tbody>
-                                        <tr v-for="user in users">
-                                            <td>{{ user.name }}</td>
-                                            <td>{{ user.email }}</td>
-                                            <td>{{ formatDate(user.created_at) }}</td>
+                                        <tr v-for="(card, index) in pending">
+                                            <td>{{ index + 1 }}</td>
+                                            <td><a @click.prevent="edit(card)">JC-{{ card.id }}</a></td>
+                                            <td>{{ card.vehicle_number }}</td>
+                                            <td>{{ card.type.name }}</td>
+                                            <td>{{ card.job_description }}</td>
+                                            <td>{{ formatDate(card.created_at) }}</td>
+                                            <td>{{ formatDate(card.expected_completion) }}</td>
                                             <td class="text-center">
-                                                <span @click="edit(user)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
-                                                <button data-toggle="popover" :data-item="user.id" class="btn btn-xs btn-danger btn-destroy"><i class="fa fa-trash"></i></button>
+                                                <span @click="edit(card)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
+                                                <button data-toggle="popover" :data-item="card.id" class="btn btn-xs btn-danger btn-destroy"><i class="fa fa-trash"></i></button>
                                             </td>
                                         </tr>
                                         </tbody>
 
                                         <tfoot>
                                         <tr>
-                                            <th>Username</th>
-                                            <th>Email</th>
+                                            <th>No.</th>
+                                            <th>Card #</th>
+                                            <th>Vehicle</th>
+                                            <th>Job Type</th>
+                                            <th>Description</th>
                                             <th>Created On</th>
+                                            <th>Expected Completion</th>
                                             <th></th>
                                         </tr>
                                         </tfoot>
@@ -54,7 +66,58 @@
                     </div>
 
                     <div class="col-sm-6">
+                        <div class="panel panel-info">
+                            <div class="panel-heading text-center">
+                                <strong>Open Job Cards</strong>
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table datatable nowrap">
+                                        <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Card #</th>
+                                            <th>Vehicle</th>
+                                            <th>Job Type</th>
+                                            <th>Description</th>
+                                            <th>Created On</th>
+                                            <th>Expected Completion</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
 
+                                        <tbody>
+                                        <tr v-for="(card, index) in open">
+                                            <td>{{ index + 1 }}</td>
+                                            <td><a @click.prevent="edit(card)">JC-{{ card.id }}</a></td>
+                                            <td>{{ card.vehicle_number }}</td>
+                                            <td>{{ card.type.name }}</td>
+                                            <td>{{ card.job_description }}</td>
+                                            <td>{{ formatDate(card.created_at) }}</td>
+                                            <td>{{ formatDate(card.expected_completion) }}</td>
+                                            <td class="text-center">
+                                                <span @click="edit(card)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
+                                                <button data-toggle="popover" :data-item="card.id" class="btn btn-xs btn-danger btn-destroy"><i class="fa fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+
+                                        <tfoot>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Card #</th>
+                                            <th>Vehicle</th>
+                                            <th>Job Type</th>
+                                            <th>Description</th>
+                                            <th>Created On</th>
+                                            <th>Expected Completion</th>
+                                            <th></th>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -66,8 +129,8 @@
 <script>
     export default {
         created() {
-            http.get('/api/user').then(response => {
-                this.users = response.users;
+            http.get('/api/job-card').then(response => {
+                this.cards = response.cards;
                 confirm2('.btn-destroy', (element) => {
                     this.destroy(element.dataset.item);
                 });
@@ -76,8 +139,17 @@
         },
         data() {
             return {
-                users: [],
+                cards: [],
             };
+        },
+
+        computed: {
+            pending() {
+                return this.cards.filter(card => card.status == "Pending Approval");
+            },
+            open() {
+                return this.cards.filter(card => card.status == "Approved");
+            },
         },
 
         methods: {
@@ -91,28 +163,10 @@
                 return day + ' ' + month + ' ' + date.getFullYear();
             },
 
-            importTrucks() {
-                this.$root.isLoading = true;
-                http.uploadFile('#import_file', '/api/truck/import')
-                    .then((response) => {
-                        this.$root.isLoading = false;
-                        if (response.status != 'success') {
-                            alert2(this.$root, [response.message], 'danger');
-                            return;
-                        }
-                        $('table').dataTable().fnDestroy();
-                        this.trucks = response.trucks;
-                        prepareTable();
-                        alert2(this.$root, [response.message], 'success');
-                    }).catch((error) => {
-                    this.$root.isLoading = false;
-                    alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
-                });
+            edit(record) {
+                window._router.push({path: '/job-card/' + record.id + '/edit'})
             },
 
-            edit(truck) {
-                window._router.push({path: '/trucks/' + truck.id + '/edit'})
-            },
 
 
 

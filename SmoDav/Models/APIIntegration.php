@@ -33,6 +33,7 @@ class APIIntegration extends SmoDavModel
     {
         $attributes['redirect_uri'] =
             substr($attributes['redirect_uri'], strlen(request()->getSchemeAndHttpHost()));
+
         if ($attributes['grant_type'] == 'personal_token') {
             $this->update([
                 'endpoint' => $attributes['endpoint'],
@@ -46,7 +47,7 @@ class APIIntegration extends SmoDavModel
         }
 
         $this->update([
-            'endpoint' => $attributes['endpoint'],
+            'endpoint' => rtrim($attributes['endpoint'], '/'),
             'grant_type' => $attributes['grant_type'],
             'client_id' => $attributes['client_id'],
             'client_secret' => $attributes['client_secret'],

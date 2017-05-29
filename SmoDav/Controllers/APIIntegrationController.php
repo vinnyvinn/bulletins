@@ -37,8 +37,10 @@ class APIIntegrationController extends Controller
     public function update(Request $request, $id)
     {
         $integration = APIIntegration::findOrFail($id);
+        $data = $request->all();
+        $data['grant_type'] = 'authorization_code';
 
-        return $integration->updateDetails($request->all());
+        return $integration->updateDetails($data);
     }
 
     public function finalize(Request $request, $id)

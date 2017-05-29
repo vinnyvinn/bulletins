@@ -12,7 +12,7 @@
                         <div class="col-sm-4">
                             <div class="form-group input-group-sm">
                                 <label for="service_type">Job/Service</label>
-                                <select v-model="card.service_type" name="service_type" id="service_type" class="form-control">
+                                <select required v-model="card.service_type" name="service_type" id="service_type" class="form-control">
                                     <option value="Normal Job">Normal Job</option>
                                     <option value="Service Job">Service Job</option>
                                 </select>
@@ -21,7 +21,7 @@
 
                             <div class="form-group input-group-sm">
                                 <label for="workshop_job_type_id">Job Type</label>
-                                <select v-model="card.workshop_job_type_id" name="workshop_job_type_id" id="workshop_job_type_id" class="form-control">
+                                <select required v-model="card.workshop_job_type_id" name="workshop_job_type_id" id="workshop_job_type_id" class="form-control">
                                     <option v-for="type in jobTypes" :value="type.id">{{ type.name }}</option>
                                 </select>
                             </div>
@@ -29,26 +29,26 @@
 
                             <div class="form-group input-group-sm">
                                 <label for="job_description">Job Description</label>
-                                <textarea v-model="card.job_description" name="job_description" id="job_description" cols="20" rows="5" class="form-control"></textarea>
+                                <textarea required v-model="card.job_description" name="job_description" id="job_description" cols="20" rows="5" class="form-control"></textarea>
                             </div>
                         </div>
 
                         <div class="col-sm-4">
                             <div class="form-group input-group-sm">
                                 <label for="vehicle_id">Vehicle/Chassis Number</label>
-                                <select v-model="card.vehicle_id" name="vehicle_id" id="vehicle_id" class="form-control select2">
+                                <select required v-model="card.vehicle_id" name="vehicle_id" id="vehicle_id" class="form-control select2">
                                     <option v-for="vehicle in vehicles" :value="vehicle.id">{{ vehicle.plate_number }}</option>
                                 </select>
                             </div>
 
                             <div class="form-group input-group-sm">
                                 <label for="expected_completion">Expected Completion Date</label>
-                                <input type="text" v-model="card.expected_completion" name="expected_completion" id="expected_completion" class="form-control datepicker">
+                                <input required type="text" v-model="card.expected_completion" name="expected_completion" id="expected_completion" class="form-control datepicker">
                             </div>
 
                             <div class="form-group input-group-sm">
                                 <label for="vehicle_id">Driver</label>
-                                <h5><strong>{{ vehicle.driver.name }}, {{ vehicle.driver.mobile }}</strong></h5>
+                                <h5><strong>{{ vehicle.driver.first_name }} {{ vehicle.driver.last_name }}, {{ vehicle.driver.mobile_phone }}</strong></h5>
                             </div>
 
                         </div>
@@ -62,7 +62,7 @@
 
                             <div class="form-group input-group-sm">
                                 <label for="time_in">Time In</label>
-                                <input type="time" v-model="card.time_in" name="time_in" id="time_in" class="form-control">
+                                <input required type="time" v-model="card.time_in" name="time_in" id="time_in" class="form-control">
                             </div>
 
                             <div class="form-group input-group-sm">
@@ -93,8 +93,18 @@
                                 <tr v-for="(item, index) in card.inspections">
                                     <td>{{ index + 1}}</td>
                                     <td>{{ item.inspection_name }}</td>
-                                    <td>{{ item.done_by }}</td>
-                                    <td>{{ item.status }}</td>
+                                    <td>
+                                        <select v-model="item.employee_id" class="form-control input-sm">
+                                            <option v-for="employee in employees" :value="employee.id">{{ employee.first_name }} {{ employee.last_name }}</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select v-model="item.status" class="form-control input-sm">
+                                            <option value="Not Started">Not Started</option>
+                                            <option value="In Progress">In Progress</option>
+                                            <option value="Completed">Completed</option>
+                                        </select>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -173,13 +183,23 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr v-for="task in tasks">
+                                    <tr v-for="task in card.tasks">
                                         <td>{{ task.operation }}</td>
-                                        <td>{{ task.task }}</td>
-                                        <td>{{ task.employee_name }}</td>
+                                        <td>{{ task.task_name }}</td>
+                                        <td>
+                                            <select v-model="task.employee_id" class="form-control input-sm">
+                                                <option v-for="employee in employees" :value="employee.id">{{ employee.first_name }} {{ employee.last_name }}</option>
+                                            </select>
+                                        </td>
                                         <td>{{ task.start_date }}</td>
                                         <td>{{ task.start_time }}</td>
-                                        <td>{{ task.status }}</td>
+                                        <td>
+                                            <select v-model="task.status" class="form-control input-sm">
+                                                <option value="Not Started">Not Started</option>
+                                                <option value="In Progress">In Progress</option>
+                                                <option value="Completed">Completed</option>
+                                            </select>
+                                        </td>
                                         <td><a @click="removeTask(task)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a></td>
                                     </tr>
                                     </tbody>
@@ -190,7 +210,7 @@
 
                     <div class="form-group">
                         <button class="btn btn-success">Save</button>
-                        <router-link to="/trucks" class="btn btn-danger">Back</router-link>
+                        <router-link to="/job-card" class="btn btn-danger">Back</router-link>
                     </div>
                 </form>
 
@@ -206,14 +226,13 @@
                 vehicles: [],
                 job_types: [],
                 employees: [],
-                tasks: [],
                 task: {
                     operation_id: '',
                     workshop_job_task_id: '',
                     employee_id: '',
                     start_date: '',
                     start_time: '08:00',
-                    status: ''
+                    status: 'Not Started'
                 },
                 card: {
                     service_type: 'Normal Job',
@@ -227,6 +246,7 @@
                     has_trailer: '',
                     inspections: [],
                     mechanic_findings: '',
+                    tasks: [],
                 }
             };
         },
@@ -267,10 +287,12 @@
             http.get('/api/job-card/create').then((response) => {
                 this.vehicles = response.vehicles;
                 this.job_types = response.job_types;
+                this.employees = response.employees;
                 this.createCheckLists(response.checklist);
                 setTimeout(() => {
                     let dateSettings = {
                         format: 'yyyy-mm-dd',
+                        startDate: '+0d',
                         autoclose: true
                     };
 
@@ -300,22 +322,25 @@
                         workshop_inspection_check_list_id: item.id,
                         inspection_name: item.name,
                         employee_id: '',
-                        done_by: '',
-                        status: '',
+                        status: 'Not Started',
                     });
                 });
             },
 
             addTask() {
                 this.task.operation = this.operation.name;
-                this.tasks.push(this.task);
+                this.task.task_name = this.operation.tasks.filter((e) => {
+                    return this.task.workshop_job_task_id == e.id;
+                })[0].name;
+
+                this.card.tasks.push(this.task);
                 this.task = {
                     operation_id: '',
                     workshop_job_task_id: '',
                     employee_id: '',
                     start_date: '',
                     start_time: '08:00',
-                    status: ''
+                    status: 'Not Started'
                 };
             },
 
@@ -325,24 +350,25 @@
 
             checkState() {
                 if (this.$route.params.id) {
-                    http.get('/api/truck/' + this.$route.params.id).then((response) => {
-                        this.truck = response.truck;
+                    http.get('/api/job-card/' + this.$route.params.id).then((response) => {
+                        this.card = response.card;
                     });
                 }
             },
 
             store() {
                 let request = null;
+                this.card.vehicle_number = this.vehicle.plate_number;
 
                 if (this.$route.params.id) {
-                    request = http.put('/api/truck/' + this.$route.params.id, this.truck);
+                    request = http.put('/api/job-card/' + this.$route.params.id, this.card);
                 } else {
-                    request = http.post('/api/truck', this.truck);
+                    request = http.post('/api/job-card', this.card);
                 }
 
                 request.then((response) => {
                     alert2(this.$root, [response.message], 'success');
-                    window._router.push({ path: '/trucks' });
+                    window._router.push({ path: '/job-card' });
                 }).catch((error) => {
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                 });

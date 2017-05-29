@@ -32,9 +32,26 @@ class DriverController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
-    public function store(DriverRequest $request)
+    public function store(Request $request)
     {
-        $driver = DriverFactory::create($request->all());
+        $driver = Driver::create($request->all());
+
+        foreach ($request->all() as $key => $item) {
+            if ($key == '_token' || $key == '_method' || $key == 'updated_at' || $key == 'deleted_at') {
+                continue;
+            }
+
+            $driver->{$key} = $item;
+
+            if ($request->hasFile($key)) {
+                $extension = $request->file($key)->getClientOriginalExtension();
+                $filename = time().".".$extension;
+                $request->file($key)->move(public_path('uploads'), $filename);
+                $driver->{$key} = $filename;
+            }
+        }
+
+        $driver->save();
 
         return Response::json([
             'message' => 'Successfully added new driver.',
@@ -68,8 +85,24 @@ class DriverController extends Controller
     public function update(DriverRequest $request, $id)
     {
         $driver = DriverFactory::findOrFail($id);
+        $driver->fill($request->all());
 
-        DriverFactory::update($driver, $request->all());
+        foreach ($request->all() as $key => $item) {
+            if ($key == '_token' || $key == '_method' || $key == 'updated_at' || $key == 'deleted_at') {
+                continue;
+            }
+
+            $driver->{$key} = $item;
+
+            if ($request->hasFile($key)) {
+                $extension = $request->file($key)->getClientOriginalExtension();
+                $filename = time().".".$extension;
+                $request->file($key)->move(public_path('uploads'), $filename);
+                $driver->{$key} = $filename;
+            }
+        }
+
+        $driver->save();
 
         return Response::json([
             'message' => 'Successfully updated driver details.',

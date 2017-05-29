@@ -3,11 +3,20 @@
 namespace SmoDav\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use Auth;
+use Carbon\Carbon;
+use DB;
 use Illuminate\Http\Request;
+use Illuminate\Queue\Jobs\Job;
+use Response;
 use SmoDav\Factory\TruckFactory;
 use SmoDav\Models\JobCard;
+use SmoDav\Models\JobCardInspection;
+use SmoDav\Models\JobCardTask;
+use SmoDav\Models\WorkshopEmployee;
 use SmoDav\Models\WorkshopInspectionCheckList;
 use SmoDav\Models\WorkshopJobType;
+use SmoDav\Support\Constants;
 
 class JobCardController extends Controller
 {
@@ -18,8 +27,16 @@ class JobCardController extends Controller
      */
     public function index()
     {
-        return \Response::json([
-            'job_cards' => JobCard::all()
+        $jobCards = JobCard::own()->with(['type' => function ($builder) {
+            return $builder->select(['id', 'name']);
+        }])
+            ->get([
+                'id', 'job_description', 'vehicle_number', 'created_at', 'expected_completion',
+                'workshop_job_type_id', 'status'
+            ]);
+
+        return Response::json([
+            'cards' => $jobCards
         ]);
     }
 
@@ -32,10 +49,11 @@ class JobCardController extends Controller
     {
         $trucks = TruckFactory::all();
 
-        return \Response::json([
+        return Response::json([
             'vehicles' => $trucks,
             'job_types' => WorkshopJobType::with(['operations.tasks'])->get(['id', 'name', 'service_type']),
-            'checklist' => WorkshopInspectionCheckList::all(['name', 'id'])
+            'checklist' => WorkshopInspectionCheckList::all(['name', 'id']),
+            'employees' => WorkshopEmployee::all(['id', 'first_name', 'last_name'])
         ]);
     }
 
@@ -43,22 +61,53 @@ class JobCardController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-        //
+        DB::transaction(function () use ($request) {
+            $data = $request->all();
+            $data['user_id'] = Auth::id();
+            $data['time_in'] = Carbon::now()->setTimeFromTimeString($data['time_in']);
+            $data['has_trailer'] = false;
+            $data['status'] = Constants::STATUS_PENDING;
+            $jobCard = JobCard::create($data);
+
+            foreach ($data['inspections'] as $inspection) {
+                $inspection['job_card_id'] = $jobCard->id;
+                JobCardInspection::create($inspection);
+            }
+
+            foreach ($data['tasks'] as $task) {
+                $task['job_card_id'] = $jobCard->id;
+                $task['start_time'] = Carbon::parse($task['start_date'] . ' ' . $task['start_time']);
+
+                JobCardTask::create($task);
+            }
+        });
+
+        return Response::json([
+            'message' => 'Successfully created new job card.',
+            'success' => true
+        ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\JobCard  $jobCard
-     * @return \Illuminate\Http\Response
+     * @param  $id  $jobCard
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show(JobCard $jobCard)
+    public function show($id)
     {
-        //
+        $card = JobCard::with(['type', 'tasks', 'inspections'])->findOrFail($id);
+        $card->time_in = Carbon::parse($card->time_in)->toTimeString();
+
+        return Response::json([
+            'card' => $card,
+        ]);
     }
 
     /**

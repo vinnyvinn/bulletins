@@ -8,16 +8,29 @@
                     </div>
 
                     <div class="panel-body">
-                        <form action="#" role="form" @submit.prevent="store">
+                        <form action="#" id="form" role="form" @submit.prevent="store" enctype="multipart/form-data">
 
                             <div class="form-group">
-                                <label for="name">Name</label>
-                                <input v-model="driver.name" type="text" class="form-control" id="name" name="name" required>
+                                <label for="first_name">First Name</label>
+                                <input v-model="driver.first_name" type="text" class="form-control" id="first_name" name="first_name" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="name">National ID</label>
-                                <input v-model="driver.national_id" type="number" class="form-control" id="national_id" name="national_id" required>
+                                <label for="last_name">Last Name</label>
+                                <input v-model="driver.last_name" type="text" class="form-control" id="last_name" name="last_name" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="identification_type">Identification Type</label>
+                                <select v-model="driver.identification_type" class="form-control" id="identification_type" name="identification_type" required>
+                                    <option value="National ID">National ID</option>
+                                    <option value="Passport">Passport</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="identification_number">National ID</label>
+                                <input v-model="driver.identification_number" type="text" class="form-control" id="identification_number" name="identification_number" required>
                             </div>
 
                             <div class="form-group">
@@ -26,10 +39,11 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="mobile">Mobile Number</label>
-                                <input v-model="driver.mobile" type="text" class="form-control" id="mobile" name="mobile">
+                                <label for="mobile_phone">Mobile Number</label>
+                                <input v-model="driver.mobile_phone" type="text" class="form-control" id="mobile_phone" name="mobile_phone">
                             </div>
 
+                            <udf module="Drivers" :state="driver" :uploads="uploads"></udf>
 
                             <div class="form-group">
                                 <button class="btn btn-success">Save</button>
@@ -52,13 +66,18 @@
         data() {
             return {
                 sharedState: window._mainState,
+                uploads: [],
                 driver: {
                     _token: window.Laravel.csrfToken,
                     _method: 'POST',
-                    name: '',
-                    national_id: '',
+                    payroll_number: '',
+                    identification_number: '',
+                    identification_type: 'National ID',
+                    first_name: '',
+                    last_name: '',
+                    email: '',
                     dl_number: '',
-                    mobile: ''
+                    mobile_phone: ''
                 },
                 errors: [],
                 level: 'danger',
@@ -79,11 +98,12 @@
             store() {
                 this.$root.isLoading = true;
                 let request = null;
+                let data = mapToFormData(this.driver, this.uploads, this.$route.params.id === typeof undefined);
 
                 if (this.$route.params.id) {
-                    request = http.put('/api/driver/' + this.$route.params.id, this.driver);
+                    request = http.put('/api/driver/' + this.$route.params.id, data, true);
                 } else {
-                    request = http.post('/api/driver', this.driver);
+                    request = http.post('/api/driver', data, true);
                 }
 
                 request.then((response) => {
@@ -94,7 +114,7 @@
                     this.$root.isLoading = false;
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                 });
-            }
+            },
         }
     }
 </script>

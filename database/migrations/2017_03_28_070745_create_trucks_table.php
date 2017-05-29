@@ -22,7 +22,7 @@ class CreateTrucksTable extends Migration
             $table->integer('max_load')->nullable();
             $table->string('status')->default(Core::ACTIVE);
             $table->string('location')->default(Core::AWAITING_ALLOCATION);
-            $table->integer('driver_id')->index()->unsigned()->nullable();
+            $table->bigInteger('driver_id')->index()->unsigned()->nullable();
             $table->integer('contract_id')->index()->unsigned()->nullable();
             $table->integer('trailer_id')->index()->unsigned()->nullable();
             $table->integer('project_id')->index()->unsigned()->nullable();
