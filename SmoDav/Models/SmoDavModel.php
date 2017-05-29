@@ -4,7 +4,7 @@ namespace SmoDav\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SmoDavModel extends Model
+abstract class SmoDavModel extends Model
 {
 
 }

@@ -34,17 +34,24 @@ class DriverController extends Controller
      */
     public function store(Request $request)
     {
-//        return $request->all();
-        $data = $request->all();
-        foreach ($request->all() as $key=>$item) {
-            if ($request->hasFile($key)){
+        $driver = Driver::create($request->all());
+
+        foreach ($request->all() as $key => $item) {
+            if ($key == '_token' || $key == '_method' || $key == 'updated_at' || $key == 'deleted_at') {
+                continue;
+            }
+
+            $driver->{$key} = $item;
+
+            if ($request->hasFile($key)) {
                 $extension = $request->file($key)->getClientOriginalExtension();
                 $filename = time().".".$extension;
                 $request->file($key)->move(public_path('uploads'), $filename);
-                $data[$key] = $filename;
+                $driver->{$key} = $filename;
             }
         }
-        $driver = DriverFactory::create($data);
+
+        $driver->save();
 
         return Response::json([
             'message' => 'Successfully added new driver.',
@@ -78,16 +85,24 @@ class DriverController extends Controller
     public function update(DriverRequest $request, $id)
     {
         $driver = DriverFactory::findOrFail($id);
-        $data = $request->all();
-        foreach ($request->all() as $key=>$item) {
-            if ($request->hasFile($key)){
+        $driver->fill($request->all());
+
+        foreach ($request->all() as $key => $item) {
+            if ($key == '_token' || $key == '_method' || $key == 'updated_at' || $key == 'deleted_at') {
+                continue;
+            }
+
+            $driver->{$key} = $item;
+
+            if ($request->hasFile($key)) {
                 $extension = $request->file($key)->getClientOriginalExtension();
                 $filename = time().".".$extension;
                 $request->file($key)->move(public_path('uploads'), $filename);
-                $data[$key] = $filename;
+                $driver->{$key} = $filename;
             }
         }
-        DriverFactory::update($driver, $data);
+
+        $driver->save();
 
         return Response::json([
             'message' => 'Successfully updated driver details.',

@@ -16,7 +16,7 @@ class CreateChecklistsTable extends Migration
         Schema::create('checklists', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('status')->default('Pending');
-            $table->integer('driver_id')->unsigned()->index()->nullable();
+            $table->bigInteger('driver_id')->unsigned()->index()->nullable();
             $table->integer('truck_id')->unsigned()->index()->nullable();
             $table->string('type');
             $table->string('from_station');

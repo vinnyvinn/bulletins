@@ -10,7 +10,14 @@ class Driver extends Model
 {
     use SoftDeletes;
 
-     protected $guarded = [];
+
+    //  protected $guarded = [];
+
+    protected $fillable = [
+        'payroll_number', 'avatar', 'identification_number', 'identification_type', 'first_name',
+        'last_name', 'email', 'mobile_phone', 'dl_number',
+    ];
+
 
     public function scopeUnassigned($query)
     {

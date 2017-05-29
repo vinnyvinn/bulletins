@@ -88,27 +88,33 @@
 
 <script>
 export default {
-    //asasas;aasasasa;asasaasas
-  created() {
-    // this.$emit('udfAdded', this.udf.slug);
-  },
   data () {
     return {
       udfs: []
     }
   },
-  props: ['module','object', 'state'],
+  props: ['module','object', 'state', 'uploads'],
   mounted () {
     this.getUdfs()
   },
   methods: {
-    getUdfs () {
+    updateState(udf) {
+      if (udf.input_type === 'Document' || udf.input_type === 'Image') {
+          let el = [];
+          el[udf.slug] = '#' + udf.slug;
 
+          this.uploads.push(el);
+          return;
+      }
+
+      if (! this.state[udf.slug]) {
+          Vue.set(this.state, udf.slug, '');
+      }
+    },
+    getUdfs () {
         http.get('/api/module-udfs/' + this.module).then(response => {
             response.forEach((udf) => {
-              if (! this.state['udf.slug']) {
-                this.$emit('udfAdded', udf.slug);
-              }
+              this.updateState(udf);
             });
 
             this.udfs = response;
@@ -117,19 +123,13 @@ export default {
                 $('.datepicker').datepicker({
                     autoclose: true,
                     format: 'yyyy-mm-dd'
+                }).on('change', (e) => {
+                    this.state[e.target.id] = e.target.value;
                 });
             }, 1000)
 
         });
-      },
-      onFileChange(e) {
-        this.image = e.target.files || e.dataTransfer.files
-        if (!this.image.length) {
-          return
-        }
-        console.log(this.image)
-      },
-  }
+      }
 }
 </script>
 

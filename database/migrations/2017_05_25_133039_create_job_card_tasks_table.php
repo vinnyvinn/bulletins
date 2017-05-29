@@ -15,13 +15,19 @@ class CreateJobCardTasksTable extends Migration
     {
         Schema::create('job_card_tasks', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->bigInteger('job_card_id')->index()->unsigned();
+            $table->integer('operation_id')->unsigned()->index();
             $table->integer('workshop_job_task_id')->unsigned()->index();
             $table->integer('employee_id')->unsigned()->index()->nullable();
-            $table->string('employee_name')->nullable();
             $table->timestamp('start_time')->nullable();
             $table->float('total_minutes')->default(0);
             $table->string('status');
             $table->timestamps();
+
+            $table->foreign('job_card_id')
+                ->references('id')
+                ->on('job_cards')
+                ->onDelete('cascade');
 
             $table->foreign('workshop_job_task_id')
                 ->references('id')

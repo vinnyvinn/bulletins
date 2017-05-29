@@ -21,6 +21,14 @@
     <link rel="stylesheet" href="{{ asset('assets/admin/dist/css/skins/_all-skins.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/admin/dist/css/custom.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.6.1/clipboard.min.js"></script>
+    <title>{{ config('app.name', 'Laravel') }}</title>
+
+    <!-- Scripts -->
+    <script>
+        window.Laravel = {!! json_encode([
+            'csrfToken' => csrf_token(),
+        ]) !!};
+    </script>
 
 @yield('page-css')
 
@@ -35,7 +43,7 @@
 
 <body class="hold-transition skin-blue sidebar-mini">
 
-<div class="wrapper">
+<div class="wrapper" id="app">
 
     <header class="main-header">
 

@@ -93,21 +93,6 @@
                             @endif
                         </div>
 
-                        <div class="form-group label-floating{{ $errors->has('grant_type') ? ' has-error' : '' }}">
-                            <label for="grant_type" class="control-label">Grant Type</label>
-                            <select class="form-control" id="grant_type" name="grant_type">
-                                <option value="authorization_code"{{ old('grant_type', $integration->grant_type) == 'authorization_code' ? ' selected' : '' }}>Authorization Code</option>
-                                <option value="personal_token"{{ old('grant_type', $integration->grant_type) == 'personal_token' ? ' selected' : '' }}>Personal Access Token</option>
-                            </select>
-                            @if ($errors->has('grant_type'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('grant_type') }}</strong>
-                                </span>
-                            @else
-                                <span class="help-block">Select the grant type to be used to access the system.</span>
-                            @endif
-                        </div>
-
                         <div id="pat_holder" style="display: none" class="form-group label-floating{{ $errors->has('access_token') ? ' has-error' : '' }}">
                             <label for="access_token" class="control-label">Personal Access Token</label>
                             <textarea rows="10" class="form-control" id="access_token" name="access_token">{{ old('access_token') }}</textarea>

@@ -11,12 +11,12 @@
                       <form action="#" role="form" @submit.prevent="store">
 
                           <div class="form-group">
-                              <label for="plate_number">Name</label>
+                              <label for="name">Name</label>
                               <input v-model="udf.name" type="text" class="form-control" id="name" name="name" placeholder="Field Name">
                           </div>
 
                           <div class="form-group">
-                              <label for="make">Input Type</label>
+                              <label for="input_type">Input Type</label>
                               <select v-model="udf.input_type" class="form-control" name="input_type">
                                 <option v-for="input_type in input_types" :value="input_type">{{input_type}}</option>
                               </select>
@@ -31,7 +31,7 @@
                           </div>
 
                           <div class="form-group">
-                              <label for="make">Status</label>
+                              <label for="status">Status</label>
                               <select v-model="udf.status" class="form-control" name="status">
                                 <option value="1">Active</option>
                                 <option value="0">Inactive</option>
@@ -39,7 +39,7 @@
                           </div>
 
                           <div class="form-group">
-                              <label for="make">Module</label>
+                              <label for="module">Module</label>
                               <select v-model="udf.module" class="form-control" name="module" >
                                 <option value="" disabled selected>Select Module</option>
                                 <option v-for="module in modules" :value="module">{{ module }}</option>
