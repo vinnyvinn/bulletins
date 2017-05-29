@@ -45,6 +45,7 @@
 </template>
 
 <script>
+    import axios from 'axios';
     export default {
         mounted() {
             this.checkState();
@@ -91,7 +92,7 @@
                         }
                     );
 
-                    request = http.post('/api/driver', this.driver);                    
+//                    request = http.post('/api/driver', this.driver);
 
                 }
                 request.then((response) => {

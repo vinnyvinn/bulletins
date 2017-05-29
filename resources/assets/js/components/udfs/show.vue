@@ -1,4 +1,4 @@
-loc<template lang="html">
+<template lang="html">
   <div class="row">
     <div v-for="field in fields" class="">
 
