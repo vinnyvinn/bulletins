@@ -24,6 +24,11 @@
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
+                    <li class="dropdown-header">MAN POWER</li>
+                    <li><a href="{{ route('super.employee.index', ['t' => 'employees']) }}"><i class="fa fa-list"></i> Employees</a></li>
+                    <li><a href="{{ route('super.employee.index', ['t' => 'drivers']) }}"><i class="fa fa-list"></i> Drivers</a></li>
+                    <li><a href="{{ route('super.employee.index', ['t' => 'workshop']) }}"><i class="fa fa-list"></i> Workshop Employee</a></li>
+                    <li class="dropdown-header">MAKES &amp; MODElS</li>
                     <li><a href="{{ route('workshop.make.index') }}"><i class="fa fa-list"></i> Makes</a></li>
                     <li><a href="{{ route('workshop.model.index') }}"><i class="fa fa-list"></i> Models</a></li>
                     <li class="dropdown-header">WORKSHOP</li>

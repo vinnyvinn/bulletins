@@ -11,4 +11,10 @@ class Option extends Model
     public $timestamps = false;
 
     const OPTION_ITEM_GROUP = 'spares_item_group';
+
+    const PAYROLL_DEPARTMENT_DRIVER = 'payroll_driver_department';
+
+    const PAYROLL_WORKSHOP_DRIVER = 'payroll_workshop_department';
+
+    const PAYROLL_EMPLOYEES_DRIVER = 'payroll_employees_department';
 }

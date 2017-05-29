@@ -4,6 +4,7 @@ namespace SmoDav\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use SmoDav\Engine\PassportRepository;
 use SmoDav\Models\APIIntegration;
 
 class APIIntegrationController extends Controller
@@ -20,8 +21,17 @@ class APIIntegrationController extends Controller
 
     public function edit($id)
     {
-        return view('workshop.integrations.edit')
+        $response = view('workshop.integrations.edit')
             ->with('integration', APIIntegration::findOrFail($id));
+
+        if (session('success')) {
+            $departments = PassportRepository::getPayrollDepartments();
+
+            $response->with('departments', $departments)
+                ->with('complete', true);
+        };
+
+        return $response;
     }
 
     public function update(Request $request, $id)

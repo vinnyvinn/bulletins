@@ -27,6 +27,50 @@
                 </div><!-- /.box-header -->
                 <div class="box-body">
 
+                @if(isset($complete))
+                    <form action="{{ route('settings_update') }}" method="POST" role="form">
+                        {{ csrf_field() }}
+                        <div class="form-group label-floating{{ $errors->has('payroll_driver_department') ? ' has-error' : '' }}">
+                            <label for="payroll_driver_department" class="control-label">Drivers Department</label>
+                            <select name="payroll_driver_department" id="payroll_driver_department" class="form-control">
+                                @foreach($departments as $department)
+                                    <option {{ old('payroll_driver_department', Helpers::get_option('payroll_driver_department')) == $department->id ? ' selected' : '' }} value="{{ $department->id }}">{{ $department->name }}</option>
+                                @endforeach
+                            </select>
+
+                            @if ($errors->has('payroll_driver_department'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('payroll_driver_department') }}</strong>
+                                </span>
+                            @else
+                                <span class="help-block">Select the department from payroll that the drivers belong to.</span>
+                            @endif
+                        </div>
+
+                        <div class="form-group label-floating{{ $errors->has('payroll_workshop_department') ? ' has-error' : '' }}">
+                            <label for="payroll_workshop_department" class="control-label">Workshop Employees Department</label>
+                            <select name="payroll_workshop_department" id="payroll_workshop_department" class="form-control">
+                                @foreach($departments as $department)
+                                    <option {{ old('payroll_workshop_department', Helpers::get_option('payroll_workshop_department')) == $department->id ? ' selected' : '' }} value="{{ $department->id }}">{{ $department->name }}</option>
+                                @endforeach
+                            </select>
+
+                            @if ($errors->has('payroll_workshop_department'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('payroll_workshop_department') }}</strong>
+                                </span>
+                            @else
+                                <span class="help-block">Select the department from payroll that the workshop employees belong to.</span>
+                            @endif
+                        </div>
+
+
+                        <div class="form-group">
+                            <input class="btn btn-primary" type="submit" value="Save Changes">
+                            <a class="btn btn-danger" href="{{ route('workshop.integrations.index') }}">Back</a>
+                        </div>
+                    </form>
+                @else
                     <form action="{{ route('workshop.integrations.update', $integration->id) }}" method="post">
                         {{ csrf_field() }}
                         {{ method_field('PUT') }}
@@ -123,6 +167,7 @@
                             <a class="btn btn-danger" href="{{ route('workshop.integrations.index') }}">Back</a>
                         </div>
                     </form>
+                @endif
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
         </div> <!-- /.col -->

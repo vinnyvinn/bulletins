@@ -4,6 +4,7 @@ namespace SmoDav\Models;
 
 use Carbon\Carbon;
 use GuzzleHttp\Client;
+use SmoDav\Engine\PassportRepository;
 
 class APIIntegration extends SmoDavModel
 {
@@ -13,6 +14,11 @@ class APIIntegration extends SmoDavModel
         'endpoint', 'grant_type', 'client_id', 'client_secret', 'redirect_uri', 'code', 'access_token', 'refresh_token',
         'expiry', 'name'
     ];
+
+    public function scopePayroll($builder)
+    {
+        return $builder->where('name', self::PAYROLL)->first();
+    }
 
     public function updateDetails($attributes)
     {
@@ -106,7 +112,7 @@ class APIIntegration extends SmoDavModel
                 ->with('error', 'Unable to complete the integration. Please try again.');
         }
 
-        return redirect()->route('workshop.integrations.index')
+        return redirect()->route('workshop.integrations.edit', $this->id)
             ->with('success', 'Successfully completed integration.');
     }
 }
