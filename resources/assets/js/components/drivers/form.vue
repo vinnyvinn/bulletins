@@ -8,7 +8,7 @@
                     </div>
 
                     <div class="panel-body">
-                        <form action="#" role="form" @submit.prevent="store" enctype="multipart/form-data">
+                        <form action="#" role="form" @submit.prevent="store" method="post" enctype="multipart/form-data">
 
                             <div class="form-group">
                                 <label for="name">Name</label>
@@ -37,7 +37,6 @@
                                 <router-link to="/drivers" class="btn btn-danger">Back</router-link>
                             </div>
                         </form>
-
                     </div>
                 </div>
             </div>
@@ -46,6 +45,7 @@
 </template>
 
 <script>
+    import axios from 'axios';
     export default {
         mounted() {
             this.checkState();
@@ -84,7 +84,7 @@
                 if (this.$route.params.id) {
                     request = http.put('/api/driver/' + this.$route.params.id, this.driver);
                 } else {
-                    request = http.post('/api/driver', this.driver);                    
+                   request = http.post('/api/driver', this.driver);
                 }
                 request.then((response) => {
                     this.$root.isLoading = false;

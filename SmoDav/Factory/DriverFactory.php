@@ -8,9 +8,8 @@ class DriverFactory
 {
     public static function create($attributes)
     {
-        $driver = new Driver();
-        $driver->fill($attributes);
-        return $driver->save();
+        return Driver::create($attributes);
+
     }
 
     public static function all($columns = ['*'])
@@ -25,6 +24,6 @@ class DriverFactory
 
     public static function update(Driver $driver, $attributes)
     {
-        return $driver->fill($attributes)->save();
+        return $driver->update($attributes);
     }
 }

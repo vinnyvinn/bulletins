@@ -55,8 +55,7 @@ class TrailerController extends Controller
                 $data[$key] = $filename;
             }
         }
-        $trailer = new Trailer();
-        $trailer->fill($request->all())->save();
+        Trailer::create($request->all());
 
         return Response::json([
             'status' => 'success',
@@ -109,7 +108,7 @@ class TrailerController extends Controller
                 $data[$key] = $filename;
             }
         }
-        $trailer->fill($data)->save();
+        $trailer->update($data);
 
         return Response::json([
             'status' => 'success',

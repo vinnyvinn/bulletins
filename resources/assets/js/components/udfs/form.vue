@@ -21,18 +21,18 @@
                                 <option v-for="input_type in input_types" :value="input_type">{{input_type}}</option>
                               </select>
 
-                                
+
                           </div>
 
-                          <div class="form-group">
-                              <label>Value</label>
+                          <div v-if="udf.input_type == 'Select'" class="form-group">
+                              <label>Options</label>
                               <input v-model="udf.value" type="text" class="form-control" placeholder="Field Name">
+                              <span><p><small>Separate Options with Semi-colons(;)</small></p></span>
                           </div>
 
                           <div class="form-group">
                               <label for="make">Status</label>
                               <select v-model="udf.status" class="form-control" name="status">
-                                <option value="" disabled selected>Select status</option>
                                 <option value="1">Active</option>
                                 <option value="0">Inactive</option>
                               </select>
@@ -72,7 +72,7 @@ export default {
         udf: {
           name: '',
           input_type: '',
-          status: '',
+          status: '1',
           module: '',
           description: '',
           value: ''

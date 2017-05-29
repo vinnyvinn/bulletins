@@ -48,6 +48,7 @@
         <label :for="udf.slug">{{ udf.name }}</label>
         <input type="file"
         class="form-control image"
+        @change="onFileChange"
         :id="udf.slug"
         :name="udf.slug">
       </div>
@@ -58,8 +59,8 @@
 
       <div v-else-if="udf.input_type === 'Date'" class="form-group">
         <label :for="udf.slug">{{ udf.name }}</label>
-        <input type="text"
-        class="datepicker form-control"
+        <input type="date"
+        class="form-control"
         :id="udf.slug"
         :name="udf.slug"
         :placeholder="udf.name"
@@ -93,7 +94,7 @@ export default {
   },
   data () {
     return {
-      udfs: [],
+      udfs: []
     }
   },
   props: ['module','object', 'state'],
@@ -118,8 +119,16 @@ export default {
                     format: 'yyyy-mm-dd'
                 });
             }, 1000)
+
         });
-      }
+      },
+      onFileChange(e) {
+        this.image = e.target.files || e.dataTransfer.files
+        if (!this.image.length) {
+          return
+        }
+        console.log(this.image)
+      },
   }
 }
 </script>

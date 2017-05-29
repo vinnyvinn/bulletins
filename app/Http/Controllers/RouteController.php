@@ -43,8 +43,7 @@ class RouteController extends Controller
                 $data[$key] = $filename;
             }
         }
-        $route = new Route();
-        $route->fill($data)->save();
+        Route::create($data);
 
         return Response::json([
             'message' => 'Successfully created new route.'
@@ -84,7 +83,7 @@ class RouteController extends Controller
                 $data[$key] = $filename;
             }
         }
-        $route->fill($data)->save();
+        $route->update($data);
 
         return Response::json([
             'message' => 'Successfully updated route.'

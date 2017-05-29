@@ -6,10 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Trip extends Model
 {
-    protected $fillable = [
-        'truck_id', 'contract_id', 'driver_id', 'route_id', 'pre_loading_checklist_id', 'delivery_note_id',
-        'is_complete', 'trip_date', 'source', 'destination', 'receive_delivery_note_id', 'stage'
-    ];
+    protected $guarded = [];
 
     public function preLoadingChecklist()
     {

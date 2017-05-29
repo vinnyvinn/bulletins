@@ -1,10 +1,17 @@
-loc<template lang="html">
+<template lang="html">
   <div class="row">
     <div v-for="field in fields" class="">
 
       <div v-if="field.datatype == 'Image'" class="">
         <div class="col-md-6">
-          <img :src="imageSource(field.value)" alt="" width="200" height="200">
+          <strong>{{ field.fieldname }}</strong>
+        </div>
+        <div class="col-md-6">
+          <!-- <img v-if="field.value" :src="imageSource(field.value)" alt="" width="200" height="200"> -->
+          <div v-if="field.fieldname" class="">
+            <img v-if="field.value" src="/uploads/passport.jpg" alt="" width="200" height="200">
+            <p v-else >No Image</p>
+          </div>         
         </div>
       </div>
 
@@ -22,12 +29,12 @@ loc<template lang="html">
         <div class="col-md-6">
           {{ processTime(field.value) }}
         </div>
-        <div class="col-md-6">
+        <!-- <div class="col-md-6">
           {{ processRelativeTime(field.value) }}
         </div>
         <div class="col-md-6">
           {{ processCalendarTime(field.value) }}
-        </div>
+        </div> -->
       </div>
 
       <div v-else-if="field.datatype == 'Short Text'" class="">
