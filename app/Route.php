@@ -9,8 +9,6 @@ class Route extends Model
 {
     use SoftDeletes;
 
-     protected $fillable = [
-         'source', 'destination', 'distance', 'fuel_required', 'allowance_amount'
-     ];
+     protected $guarded = [];
 
 }

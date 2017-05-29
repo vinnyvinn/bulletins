@@ -37,7 +37,6 @@
                                 <router-link to="/drivers" class="btn btn-danger">Back</router-link>
                             </div>
                         </form>
-
                     </div>
                 </div>
             </div>
@@ -85,7 +84,19 @@
                     request = http.put('/api/driver/' + this.$route.params.id, this.driver);
                 } else {
                     request = http.post('/api/driver', this.driver);
-                    request = http.uploadFile('.image', '/api/driver');
+//                    request = axios.post('/api/driver',this.driver).then(response=>{
+//                        console.log(response.data);
+//                    }).catch(error=>{
+//                        console.log(error);
+//                    });
+//                    request = axios.post('/api/driver', this.driver)
+//                        .then(function(response){
+//                            console.log(response);
+//                        }).catch(error=>{
+//                            console.log(error);
+//                        }
+
+//                    );
                 }
                 request.then((response) => {
                     this.$root.isLoading = false;

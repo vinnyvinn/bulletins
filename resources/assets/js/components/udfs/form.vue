@@ -29,9 +29,10 @@
                               </div>
                           </div>
 
-                          <div class="form-group">
-                              <label>Value</label>
+                          <div v-if="udf.input_type == 'Select'" class="form-group">
+                              <label>Options</label>
                               <input v-model="udf.value" type="text" class="form-control" placeholder="Field Name">
+                              <span><p><small>Separate Options with Semi-colons(;)</small></p></span>
                           </div>
 
                           <div class="form-group">

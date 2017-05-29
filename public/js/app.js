@@ -28887,7 +28887,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
@@ -28932,7 +28931,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 request = http.put('/api/driver/' + this.$route.params.id, this.driver);
             } else {
                 request = http.post('/api/driver', this.driver);
-                http.uploadFile('.image', '/api/driver');
+                //                    request = axios.post('/api/driver',this.driver).then(response=>{
+                //                        console.log(response.data);
+                //                    }).catch(error=>{
+                //                        console.log(error);
+                //                    });
+                //                    request = axios.post('/api/driver', this.driver)
+                //                        .then(function(response){
+                //                            console.log(response);
+                //                        }).catch(error=>{
+                //                            console.log(error);
+                //                        }
+
+                //                    );
             }
             request.then(function (response) {
                 _this2.$root.isLoading = false;
@@ -31228,6 +31239,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
 //
 //
 //
@@ -36873,7 +36885,7 @@ exports.push([module.i, "\n.loaderContainer {\n    width: 100%;\n    height: 100
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 83 */
@@ -59257,9 +59269,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "",
       "value": ""
     }
-  })])])]), _vm._v(" "), _c('div', {
+  })])])]), _vm._v(" "), (_vm.udf.input_type == 'Select') ? _c('div', {
     staticClass: "form-group"
-  }, [_c('label', [_vm._v("Value")]), _vm._v(" "), _c('input', {
+  }, [_c('label', [_vm._v("Options")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -59280,7 +59292,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.udf.value = $event.target.value
       }
     }
-  })]), _vm._v(" "), _c('div', {
+  }), _vm._v(" "), _vm._m(1)]) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
@@ -59403,6 +59415,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', {
     staticClass: "panel-heading"
   }, [_c('strong', [_vm._v("User Defined Fields")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', [_c('p', [_c('small', [_vm._v("Separate Options with Semi-colons(;)")])])])
 }]}
 module.exports.render._withStripped = true
 if (false) {

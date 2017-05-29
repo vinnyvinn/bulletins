@@ -9,9 +9,7 @@ class Trailer extends Model
 {
 //    use SoftDeletes;
 
-    protected $fillable = [
-        'trailer_number', 'make', 'type', 'truck_id'
-    ];
+    protected $guarded = [];
 
     public function scopeUnassigned($query)
     {

@@ -69,7 +69,7 @@ class TruckFactory
         $attributes['plate_number'] = strtoupper($attributes['plate_number']);
         $attributes['project_id'] = self::createInSAGE($attributes);
         $truck = new Truck();
-        return $truck->fill($attributes)->save();
+        return Truck::create($attributes);
     }
 
     private static function createInSAGE($attributes)
@@ -113,7 +113,7 @@ class TruckFactory
             }
         }
 
-        $truck->fill($attributes)->save();
+        $truck->update($attributes);
 
         DB::table('Project')->where('ProjectLink', $truck->project_id)->update(self::mapSAGEFields($attributes));
 
