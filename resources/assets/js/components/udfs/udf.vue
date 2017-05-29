@@ -122,6 +122,8 @@ export default {
                 $('.datepicker').datepicker({
                     autoclose: true,
                     format: 'yyyy-mm-dd'
+                }).on('change', (e) => {
+                    this.state[e.target.id] = e.target.value;
                 });
             }, 1000)
         });

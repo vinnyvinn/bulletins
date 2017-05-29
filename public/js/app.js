@@ -44457,6 +44457,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 //
 //
 //
@@ -44561,7 +44563,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.$root.isLoading = true;
             var request = null;
-            var data = mapToFormData(this.driver, this.uploads, this.$route.params.id !== null);
+            var data = mapToFormData(this.driver, this.uploads, this.$route.params.id === ( true ? 'undefined' : _typeof(undefined)));
 
             if (this.$route.params.id) {
                 request = http.put('/api/driver/' + this.$route.params.id, data, true);
@@ -47435,50 +47437,52 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {
-      udfs: []
-    };
-  },
-
-  props: ['module', 'object', 'state', 'uploads'],
-  mounted: function mounted() {
-    this.getUdfs();
-  },
-
-  methods: {
-    updateState: function updateState(udf) {
-      if (udf.input_type === 'Document' || udf.input_type === 'Image') {
-        var el = [];
-        el[udf.slug] = '#' + udf.slug;
-
-        this.uploads.push(el);
-        return;
-      }
-
-      if (!this.state[udf.slug]) {
-        Vue.set(this.state, udf.slug, '');
-      }
+    data: function data() {
+        return {
+            udfs: []
+        };
     },
-    getUdfs: function getUdfs() {
-      var _this = this;
 
-      http.get('/api/module-udfs/' + this.module).then(function (response) {
-        response.forEach(function (udf) {
-          _this.updateState(udf);
-        });
+    props: ['module', 'object', 'state', 'uploads'],
+    mounted: function mounted() {
+        this.getUdfs();
+    },
 
-        _this.udfs = response;
+    methods: {
+        updateState: function updateState(udf) {
+            if (udf.input_type === 'Document' || udf.input_type === 'Image') {
+                var el = [];
+                el[udf.slug] = '#' + udf.slug;
 
-        setTimeout(function () {
-          $('.datepicker').datepicker({
-            autoclose: true,
-            format: 'yyyy-mm-dd'
-          });
-        }, 1000);
-      });
+                this.uploads.push(el);
+                return;
+            }
+
+            if (!this.state[udf.slug]) {
+                Vue.set(this.state, udf.slug, '');
+            }
+        },
+        getUdfs: function getUdfs() {
+            var _this = this;
+
+            http.get('/api/module-udfs/' + this.module).then(function (response) {
+                response.forEach(function (udf) {
+                    _this.updateState(udf);
+                });
+
+                _this.udfs = response;
+
+                setTimeout(function () {
+                    $('.datepicker').datepicker({
+                        autoclose: true,
+                        format: 'yyyy-mm-dd'
+                    }).on('change', function (e) {
+                        _this.state[e.target.id] = e.target.value;
+                    });
+                }, 1000);
+            });
+        }
     }
-  }
 });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
 
@@ -53361,7 +53365,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 203 */
