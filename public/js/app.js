@@ -47955,6 +47955,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -47962,7 +47982,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             vehicles: [],
             job_types: [],
             employees: [],
-            tasks: [],
             task: {
                 operation_id: '',
                 workshop_job_task_id: '',
@@ -47982,7 +48001,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 fuel_balance: '',
                 has_trailer: '',
                 inspections: [],
-                mechanic_findings: ''
+                mechanic_findings: '',
+                tasks: []
             }
         };
     },
@@ -48044,6 +48064,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             setTimeout(function () {
                 var dateSettings = {
                     format: 'yyyy-mm-dd',
+                    startDate: '+0d',
                     autoclose: true
                 };
 
@@ -48075,8 +48096,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     workshop_inspection_check_list_id: item.id,
                     inspection_name: item.name,
                     employee_id: '',
-                    done_by: '',
-                    status: ''
+                    status: 'Not Started'
                 });
             });
         },
@@ -48087,20 +48107,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.task.task_name = this.operation.tasks.filter(function (e) {
                 return _this7.task.workshop_job_task_id == e.id;
             })[0].name;
-            var employee = this.employees.filter(function (e) {
-                return _this7.task.employee_id == e.id;
-            })[0];
 
-            this.task.employee = employee.first_name + ' ' + employee.last_name;
-
-            this.tasks.push(this.task);
+            this.card.tasks.push(this.task);
             this.task = {
                 operation_id: '',
                 workshop_job_task_id: '',
                 employee_id: '',
                 start_date: '',
                 start_time: '08:00',
-                status: ''
+                status: 'Not Started'
             };
         },
         removeTask: function removeTask(task) {
@@ -48110,8 +48125,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this8 = this;
 
             if (this.$route.params.id) {
-                http.get('/api/truck/' + this.$route.params.id).then(function (response) {
-                    _this8.truck = response.truck;
+                http.get('/api/job-card/' + this.$route.params.id).then(function (response) {
+                    _this8.card = response.card;
                 });
             }
         },
@@ -48119,16 +48134,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this9 = this;
 
             var request = null;
+            this.card.vehicle_number = this.vehicle.plate_number;
 
             if (this.$route.params.id) {
-                request = http.put('/api/truck/' + this.$route.params.id, this.truck);
+                request = http.put('/api/job-card/' + this.$route.params.id, this.card);
             } else {
-                request = http.post('/api/truck', this.truck);
+                request = http.post('/api/job-card', this.card);
             }
 
             request.then(function (response) {
                 alert2(_this9.$root, [response.message], 'success');
-                window._router.push({ path: '/trucks' });
+                window._router.push({ path: '/job-card' });
             }).catch(function (error) {
                 alert2(_this9.$root, Object.values(JSON.parse(error.message)), 'danger');
             });
@@ -48208,13 +48224,76 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     created: function created() {
         var _this = this;
 
-        http.get('/api/user').then(function (response) {
-            _this.users = response.users;
+        http.get('/api/job-card').then(function (response) {
+            _this.cards = response.cards;
             confirm2('.btn-destroy', function (element) {
                 _this.destroy(element.dataset.item);
             });
@@ -48223,10 +48302,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     data: function data() {
         return {
-            users: []
+            cards: []
         };
     },
 
+
+    computed: {
+        pending: function pending() {
+            return this.cards.filter(function (card) {
+                return card.status == "Pending Approval";
+            });
+        },
+        open: function open() {
+            return this.cards.filter(function (card) {
+                return card.status == "Approved";
+            });
+        }
+    },
 
     methods: {
         formatDate: function formatDate(date) {
@@ -48238,47 +48330,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             return day + ' ' + month + ' ' + date.getFullYear();
         },
-        importTrucks: function importTrucks() {
+        edit: function edit(record) {
+            window._router.push({ path: '/job-card/' + record.id + '/edit' });
+        },
+        destroy: function destroy(id) {
             var _this2 = this;
 
             this.$root.isLoading = true;
-            http.uploadFile('#import_file', '/api/truck/import').then(function (response) {
-                _this2.$root.isLoading = false;
+
+            http.destroy('api/truck/' + id).then(function (response) {
                 if (response.status != 'success') {
+                    _this2.$root.isLoading = false;
                     alert2(_this2.$root, [response.message], 'danger');
                     return;
                 }
                 $('table').dataTable().fnDestroy();
                 _this2.trucks = response.trucks;
                 prepareTable();
+                _this2.$root.isLoading = false;
                 alert2(_this2.$root, [response.message], 'success');
             }).catch(function (error) {
                 _this2.$root.isLoading = false;
                 alert2(_this2.$root, Object.values(JSON.parse(error.message)), 'danger');
-            });
-        },
-        edit: function edit(truck) {
-            window._router.push({ path: '/trucks/' + truck.id + '/edit' });
-        },
-        destroy: function destroy(id) {
-            var _this3 = this;
-
-            this.$root.isLoading = true;
-
-            http.destroy('api/truck/' + id).then(function (response) {
-                if (response.status != 'success') {
-                    _this3.$root.isLoading = false;
-                    alert2(_this3.$root, [response.message], 'danger');
-                    return;
-                }
-                $('table').dataTable().fnDestroy();
-                _this3.trucks = response.trucks;
-                prepareTable();
-                _this3.$root.isLoading = false;
-                alert2(_this3.$root, [response.message], 'success');
-            }).catch(function (error) {
-                _this3.$root.isLoading = false;
-                alert2(_this3.$root, Object.values(JSON.parse(error.message)), 'danger');
             });
         }
     }
@@ -78209,21 +78282,28 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "col-sm-6"
   }, [_c('div', {
-    staticClass: "panel panel-info"
+    staticClass: "panel panel-warning"
   }, [_vm._m(0), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
   }, [_c('div', {
     staticClass: "table-responsive"
   }, [_c('table', {
-    staticClass: "table datatable"
-  }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.users), function(user) {
-    return _c('tr', [_c('td', [_vm._v(_vm._s(user.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(user.email))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatDate(user.created_at)))]), _vm._v(" "), _c('td', {
+    staticClass: "table datatable nowrap"
+  }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.pending), function(card, index) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c('td', [_c('a', {
+      on: {
+        "click": function($event) {
+          $event.preventDefault();
+          _vm.edit(card)
+        }
+      }
+    }, [_vm._v("JC-" + _vm._s(card.id))])]), _vm._v(" "), _c('td', [_vm._v(_vm._s(card.vehicle_number))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(card.type.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(card.job_description))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatDate(card.created_at)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatDate(card.expected_completion)))]), _vm._v(" "), _c('td', {
       staticClass: "text-center"
     }, [_c('span', {
       staticClass: "btn btn-xs btn-info",
       on: {
         "click": function($event) {
-          _vm.edit(user)
+          _vm.edit(card)
         }
       }
     }, [_c('i', {
@@ -78232,20 +78312,62 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "btn btn-xs btn-danger btn-destroy",
       attrs: {
         "data-toggle": "popover",
-        "data-item": user.id
+        "data-item": card.id
       }
     }, [_c('i', {
       staticClass: "fa fa-trash"
     })])])])
-  })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("Username")]), _vm._v(" "), _c('th', [_vm._v("Email")]), _vm._v(" "), _c('th', [_vm._v("Created On")]), _vm._v(" "), _c('th')])])], 1)])])])]), _vm._v(" "), _c('div', {
+  })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("No.")]), _vm._v(" "), _c('th', [_vm._v("Card #")]), _vm._v(" "), _c('th', [_vm._v("Vehicle")]), _vm._v(" "), _c('th', [_vm._v("Job Type")]), _vm._v(" "), _c('th', [_vm._v("Description")]), _vm._v(" "), _c('th', [_vm._v("Created On")]), _vm._v(" "), _c('th', [_vm._v("Expected Completion")]), _vm._v(" "), _c('th')])])], 1)])])])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
-  })])])])])
+  }, [_c('div', {
+    staticClass: "panel panel-info"
+  }, [_vm._m(2), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('div', {
+    staticClass: "table-responsive"
+  }, [_c('table', {
+    staticClass: "table datatable nowrap"
+  }, [_vm._m(3), _vm._v(" "), _c('tbody', _vm._l((_vm.open), function(card, index) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c('td', [_c('a', {
+      on: {
+        "click": function($event) {
+          $event.preventDefault();
+          _vm.edit(card)
+        }
+      }
+    }, [_vm._v("JC-" + _vm._s(card.id))])]), _vm._v(" "), _c('td', [_vm._v(_vm._s(card.vehicle_number))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(card.type.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(card.job_description))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatDate(card.created_at)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatDate(card.expected_completion)))]), _vm._v(" "), _c('td', {
+      staticClass: "text-center"
+    }, [_c('span', {
+      staticClass: "btn btn-xs btn-info",
+      on: {
+        "click": function($event) {
+          _vm.edit(card)
+        }
+      }
+    }, [_c('i', {
+      staticClass: "fa fa-pencil"
+    })]), _vm._v(" "), _c('button', {
+      staticClass: "btn btn-xs btn-danger btn-destroy",
+      attrs: {
+        "data-toggle": "popover",
+        "data-item": card.id
+      }
+    }, [_c('i', {
+      staticClass: "fa fa-trash"
+    })])])])
+  })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("No.")]), _vm._v(" "), _c('th', [_vm._v("Card #")]), _vm._v(" "), _c('th', [_vm._v("Vehicle")]), _vm._v(" "), _c('th', [_vm._v("Job Type")]), _vm._v(" "), _c('th', [_vm._v("Description")]), _vm._v(" "), _c('th', [_vm._v("Created On")]), _vm._v(" "), _c('th', [_vm._v("Expected Completion")]), _vm._v(" "), _c('th')])])], 1)])])])])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "panel-heading text-center"
   }, [_c('strong', [_vm._v("Job Cards Not Approved")])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('thead', [_c('tr', [_c('th', [_vm._v("Username")]), _vm._v(" "), _c('th', [_vm._v("Email")]), _vm._v(" "), _c('th', [_vm._v("Created On")]), _vm._v(" "), _c('th')])])
+  return _c('thead', [_c('tr', [_c('th', [_vm._v("No.")]), _vm._v(" "), _c('th', [_vm._v("Card #")]), _vm._v(" "), _c('th', [_vm._v("Vehicle")]), _vm._v(" "), _c('th', [_vm._v("Job Type")]), _vm._v(" "), _c('th', [_vm._v("Description")]), _vm._v(" "), _c('th', [_vm._v("Created On")]), _vm._v(" "), _c('th', [_vm._v("Expected Completion")]), _vm._v(" "), _c('th')])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "panel-heading text-center"
+  }, [_c('strong', [_vm._v("Open Job Cards")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('thead', [_c('tr', [_c('th', [_vm._v("No.")]), _vm._v(" "), _c('th', [_vm._v("Card #")]), _vm._v(" "), _c('th', [_vm._v("Vehicle")]), _vm._v(" "), _c('th', [_vm._v("Job Type")]), _vm._v(" "), _c('th', [_vm._v("Description")]), _vm._v(" "), _c('th', [_vm._v("Created On")]), _vm._v(" "), _c('th', [_vm._v("Expected Completion")]), _vm._v(" "), _c('th')])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
@@ -81545,6 +81667,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control",
     attrs: {
+      "required": "",
       "name": "service_type",
       "id": "service_type"
     },
@@ -81582,6 +81705,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control",
     attrs: {
+      "required": "",
       "name": "workshop_job_type_id",
       "id": "workshop_job_type_id"
     },
@@ -81617,6 +81741,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control",
     attrs: {
+      "required": "",
       "name": "job_description",
       "id": "job_description",
       "cols": "20",
@@ -81648,6 +81773,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control select2",
     attrs: {
+      "required": "",
       "name": "vehicle_id",
       "id": "vehicle_id"
     },
@@ -81683,6 +81809,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control datepicker",
     attrs: {
+      "required": "",
       "type": "text",
       "name": "expected_completion",
       "id": "expected_completion"
@@ -81725,6 +81852,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control",
     attrs: {
+      "required": "",
       "type": "time",
       "name": "time_in",
       "id": "time_in"
@@ -81804,7 +81932,63 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('table', {
     staticClass: "table table-striped"
   }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.card.inspections), function(item, index) {
-    return _c('tr', [_c('td', [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.inspection_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.done_by))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.status))])])
+    return _c('tr', [_c('td', [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.inspection_name))]), _vm._v(" "), _c('td', [_c('select', {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: (item.employee_id),
+        expression: "item.employee_id"
+      }],
+      staticClass: "form-control input-sm",
+      on: {
+        "change": function($event) {
+          var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+            return o.selected
+          }).map(function(o) {
+            var val = "_value" in o ? o._value : o.value;
+            return val
+          });
+          item.employee_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+        }
+      }
+    }, _vm._l((_vm.employees), function(employee) {
+      return _c('option', {
+        domProps: {
+          "value": employee.id
+        }
+      }, [_vm._v(_vm._s(employee.first_name) + " " + _vm._s(employee.last_name))])
+    }))]), _vm._v(" "), _c('td', [_c('select', {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: (item.status),
+        expression: "item.status"
+      }],
+      staticClass: "form-control input-sm",
+      on: {
+        "change": function($event) {
+          var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+            return o.selected
+          }).map(function(o) {
+            var val = "_value" in o ? o._value : o.value;
+            return val
+          });
+          item.status = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+        }
+      }
+    }, [_c('option', {
+      attrs: {
+        "value": "Not Started"
+      }
+    }, [_vm._v("Not Started")]), _vm._v(" "), _c('option', {
+      attrs: {
+        "value": "In Progress"
+      }
+    }, [_vm._v("In Progress")]), _vm._v(" "), _c('option', {
+      attrs: {
+        "value": "Completed"
+      }
+    }, [_vm._v("Completed")])])])])
   }))])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-4"
   }, [_c('div', {
@@ -82024,8 +82208,64 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "table-responsive"
   }, [_c('table', {
     staticClass: "table table-striped"
-  }, [_vm._m(2), _vm._v(" "), _c('tbody', _vm._l((_vm.tasks), function(task) {
-    return _c('tr', [_c('td', [_vm._v(_vm._s(task.operation))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(task.task_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(task.employee))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(task.start_date))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(task.start_time))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(task.status))]), _vm._v(" "), _c('td', [_c('a', {
+  }, [_vm._m(2), _vm._v(" "), _c('tbody', _vm._l((_vm.card.tasks), function(task) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(task.operation))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(task.task_name))]), _vm._v(" "), _c('td', [_c('select', {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: (task.employee_id),
+        expression: "task.employee_id"
+      }],
+      staticClass: "form-control input-sm",
+      on: {
+        "change": function($event) {
+          var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+            return o.selected
+          }).map(function(o) {
+            var val = "_value" in o ? o._value : o.value;
+            return val
+          });
+          task.employee_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+        }
+      }
+    }, _vm._l((_vm.employees), function(employee) {
+      return _c('option', {
+        domProps: {
+          "value": employee.id
+        }
+      }, [_vm._v(_vm._s(employee.first_name) + " " + _vm._s(employee.last_name))])
+    }))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(task.start_date))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(task.start_time))]), _vm._v(" "), _c('td', [_c('select', {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: (task.status),
+        expression: "task.status"
+      }],
+      staticClass: "form-control input-sm",
+      on: {
+        "change": function($event) {
+          var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+            return o.selected
+          }).map(function(o) {
+            var val = "_value" in o ? o._value : o.value;
+            return val
+          });
+          task.status = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+        }
+      }
+    }, [_c('option', {
+      attrs: {
+        "value": "Not Started"
+      }
+    }, [_vm._v("Not Started")]), _vm._v(" "), _c('option', {
+      attrs: {
+        "value": "In Progress"
+      }
+    }, [_vm._v("In Progress")]), _vm._v(" "), _c('option', {
+      attrs: {
+        "value": "Completed"
+      }
+    }, [_vm._v("Completed")])])]), _vm._v(" "), _c('td', [_c('a', {
       staticClass: "btn btn-danger btn-xs",
       on: {
         "click": function($event) {
@@ -82042,7 +82282,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("Save")]), _vm._v(" "), _c('router-link', {
     staticClass: "btn btn-danger",
     attrs: {
-      "to": "/trucks"
+      "to": "/job-card"
     }
   }, [_vm._v("Back")])], 1)])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
