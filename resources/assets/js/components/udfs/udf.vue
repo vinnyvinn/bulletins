@@ -103,7 +103,7 @@ export default {
   methods: {
     getUdfs () {
 
-        http.get('/api/module-udfs/'+this.module).then(response => {
+        http.get('/api/module-udfs/' + this.module).then(response => {
             response.forEach((udf) => {
               if (! this.state['udf.slug']) {
                 this.$emit('udfAdded', udf.slug);
@@ -112,11 +112,12 @@ export default {
 
             this.udfs = response;
 
-
-        });
-        $('.datepicker').datepicker({
-            autoclose: true,
-            format: 'dd/mm/yyyy'
+            setTimeout(() => {
+                $('.datepicker').datepicker({
+                    autoclose: true,
+                    format: 'yyyy-mm-dd'
+                });
+            }, 1000)
         });
       }
   }
