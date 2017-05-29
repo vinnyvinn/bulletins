@@ -71,6 +71,9 @@
                             <li v-if="can('view-trucks')"><router-link to="/trucks"><i class="fa fa-truck"></i> Trucks</router-link></li>
                             <li v-if="can('view-trucks')"><a href="/administrator"><i class="fa fa-truck"></i> Workshop</a></li>
                             <li class="dropdown-header">User Accounts</li>
+                            <li class="dropdown-header">System Settings</li>
+                            <li v-if="can('view-trucks')"><router-link to="/udfs"><i class="fa fa-truck"></i> User Defined Fields </router-link></li>
+
                             <!--<li v-if="can('view-users')"><router-link to="/users"><i class="fa fa-group"></i> Users</router-link></li>-->
 
                         </ul>

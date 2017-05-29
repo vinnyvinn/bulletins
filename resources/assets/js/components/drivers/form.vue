@@ -8,7 +8,7 @@
                     </div>
 
                     <div class="panel-body">
-                        <form action="#" role="form" @submit.prevent="store">
+                        <form action="#" role="form" @submit.prevent="store" enctype="multipart/form-data">
 
                             <div class="form-group">
                                 <label for="name">Name</label>
@@ -30,6 +30,7 @@
                                 <input v-model="driver.mobile" type="text" class="form-control" id="mobile" name="mobile">
                             </div>
 
+                            <udf module="Drivers" v-on:udfAdded="addUdfToObject" :state="driver"></udf>
 
                             <div class="form-group">
                                 <button class="btn btn-success">Save</button>
@@ -83,9 +84,8 @@
                 if (this.$route.params.id) {
                     request = http.put('/api/driver/' + this.$route.params.id, this.driver);
                 } else {
-                    request = http.post('/api/driver', this.driver);
+                    request = http.post('/api/driver', this.driver);                    
                 }
-
                 request.then((response) => {
                     this.$root.isLoading = false;
                     alert2(this.$root, [response.message], 'success');
@@ -94,6 +94,9 @@
                     this.$root.isLoading = false;
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                 });
+            },
+            addUdfToObject (slug) {
+              Vue.set(this.driver,slug,'');
             }
         }
     }

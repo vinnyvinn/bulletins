@@ -8,7 +8,7 @@
                     </div>
 
                     <div class="panel-body">
-                        <form action="#" role="form" @submit.prevent="store">
+                        <form action="#" role="form" @submit.prevent="store" enctype="multipart/form-data">
 
                             <div class="form-group">
                                 <label for="plate_number">Username</label>
@@ -56,6 +56,8 @@
                                     <option v-for="trailer in trailers" :value="trailer.id">{{ trailer.trailer_number }}</option>
                                 </select>
                             </div>
+
+                            <udf module="Users" v-on:udfAdded="addUdfToObject" :state="user"></udf>
 
                             <div class="form-group">
                                 <button class="btn btn-success">Save</button>
@@ -114,6 +116,9 @@
                 }).catch((error) => {
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                 });
+            },
+            addUdfToObject (slug) {
+              Vue.set(this.user,slug,'');
             }
         }
     }

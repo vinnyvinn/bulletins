@@ -48,6 +48,7 @@
                         <li><router-link to="/routes"><i class="fa fa-road"></i> Routes</router-link></li>
                         <li><router-link to="/trailers"><i class="fa fa-flag"></i> Trailers</router-link></li>
                         <li><router-link to="/trucks"><i class="fa fa-truck"></i> Trucks</router-link></li>
+                        <li><router-link to="/udfs"><i class="fa fa-truck"></i> UDFS</router-link></li>
 
                     </ul>
                 </li>

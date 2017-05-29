@@ -56,6 +56,7 @@
                                 <td>{{ driver.dl_number }}</td>
                                 <td>{{ driver.mobile_phone }}</td>
                                 <td class="text-center">
+                                    <span @click="view(driver)" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></span>
                                     <span @click="edit(driver)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
                                     <button data-toggle="popover" :data-item="driver.id" class="btn btn-xs btn-danger btn-destroy"><i class="fa fa-trash"></i></button>
                                 </td>
@@ -119,7 +120,8 @@
                         this.drivers = response.drivers;
                         prepareTable();
                         alert2(this.$root, [response.message], 'success');
-                    }).catch((error) => {
+                    })
+                    .catch((error) => {
                         this.$root.isLoading = false;
                         alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                     });
@@ -127,6 +129,10 @@
 
             edit(driver) {
                 window._router.push({path: '/drivers/' + driver.id + '/edit'})
+            },
+
+            view(driver) {
+                window._router.push({path: '/drivers/' + driver.id})
             },
 
             flatten(arr) {
