@@ -20,16 +20,9 @@ loc<template lang="html">
       <div v-if="field.datatype == 'Date'" class="">
         <div class="col-md-6">
           <strong>{{ field.fieldname }}</strong>
-        </div>
-        <div class="col-md-6">
-          {{ processTime(field.value) }}
-        </div>
-        <div class="col-md-6">
-          {{ processRelativeTime(field.value) }}
-        </div>
-        <div class="col-md-6">
-          {{ processCalendarTime(field.value) }}
-        </div>
+          <h5 v-if="field.value">{{ processTime(field.value) }}</h5>
+          <h5 v-else>No date</h5>
+        </div>        
       </div>
 
       <div v-else-if="field.datatype == 'Short Text'" class="">
