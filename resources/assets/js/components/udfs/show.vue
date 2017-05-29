@@ -12,7 +12,7 @@ loc<template lang="html">
         <div class="col-md-6">
           <a :href="imageSource(field.value)"><button type="button" name="button" class="btn btn-sm btn-primary">View document</button></a>
           <p>{{ field.fieldname }}</p>
-        </div>        
+        </div>
       </div>
 
       <div v-if="field.datatype == 'Date'" class="">
@@ -21,6 +21,12 @@ loc<template lang="html">
         </div>
         <div class="col-md-6">
           {{ processTime(field.value) }}
+        </div>
+        <div class="col-md-6">
+          {{ processRelativeTime(field.value) }}
+        </div>
+        <div class="col-md-6">
+          {{ processCalendarTime(field.value) }}
         </div>
       </div>
 
@@ -91,6 +97,12 @@ export default {
     },
     processTime(time) {
       return moment(time, 'YYYY-MM-DD').format('MMM Do YYYY');
+    },
+    processRelativeTime(time) {
+      return moment(time, 'YYYY-MM-DD').fromNow();
+    },
+    processCalendarTime(time){
+      return moment(time).calendar();
     }
    }
  }

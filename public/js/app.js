@@ -47205,6 +47205,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -47248,6 +47254,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     processTime: function processTime(time) {
       return __WEBPACK_IMPORTED_MODULE_0_moment___default()(time, 'YYYY-MM-DD').format('MMM Do YYYY');
+    },
+    processRelativeTime: function processRelativeTime(time) {
+      return __WEBPACK_IMPORTED_MODULE_0_moment___default()(time, 'YYYY-MM-DD').fromNow();
+    },
+    processCalendarTime: function processCalendarTime(time) {
+      return __WEBPACK_IMPORTED_MODULE_0_moment___default()(time).calendar();
     }
   }
 });
@@ -52564,7 +52576,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 199 */
@@ -73424,7 +73436,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "col-md-6"
     }, [_c('strong', [_vm._v(_vm._s(field.fieldname))])]), _vm._v(" "), _c('div', {
       staticClass: "col-md-6"
-    }, [_vm._v("\n        " + _vm._s(_vm.processTime(field.value)) + "\n      ")])]) : (field.datatype == 'Short Text') ? _c('div', {}, [_c('div', {
+    }, [_vm._v("\n        " + _vm._s(_vm.processTime(field.value)) + "\n      ")]), _vm._v(" "), _c('div', {
+      staticClass: "col-md-6"
+    }, [_vm._v("\n        " + _vm._s(_vm.processRelativeTime(field.value)) + "\n      ")]), _vm._v(" "), _c('div', {
+      staticClass: "col-md-6"
+    }, [_vm._v("\n        " + _vm._s(_vm.processCalendarTime(field.value)) + "\n      ")])]) : (field.datatype == 'Short Text') ? _c('div', {}, [_c('div', {
       staticClass: "col-md-6"
     }, [_c('strong', [_vm._v(_vm._s(field.fieldname))])]), _vm._v(" "), _c('div', {
       staticClass: "col-md-6"
@@ -73610,7 +73626,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         value: (_vm.state[udf.slug]),
         expression: "state[udf.slug]"
       }],
-      staticClass: "form-control",
+      staticClass: "datepicker form-control",
       attrs: {
         "type": "Date",
         "id": udf.slug,
