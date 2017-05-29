@@ -4,7 +4,9 @@ loc<template lang="html">
 
       <div v-if="field.datatype == 'Image'" class="">
         <div class="col-md-6">
-          <img :src="imageSource(field.value)" alt="" width="200" height="200">
+          <h5><strong>{{ field.fieldname }}</strong></h5>
+          <img v-if="imageSource(field.value)" :src="imageSource(field.value)" alt="" width="200" height="200">
+          <h5 v-else>No Image</h5>
         </div>
       </div>
 
@@ -92,8 +94,8 @@ export default {
         }
       });
     },
-    imageSource (value){
-      return '/uploads/' + value;
+    imageSource (value) {
+      return value ? '/uploads/' + value : false;
     },
     processTime(time) {
       return moment(time, 'YYYY-MM-DD').format('MMM Do YYYY');

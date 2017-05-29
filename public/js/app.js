@@ -42779,6 +42779,7 @@ Vue.component('core-nav', __webpack_require__(218));
 Vue.component('udf', __webpack_require__(233));
 Vue.component('udf-create', __webpack_require__(10));
 Vue.component('show-udfs', __webpack_require__(232));
+Vue.component('driver-form', __webpack_require__(134));
 
 var app = new __WEBPACK_IMPORTED_MODULE_0__vuerouter__["a" /* RouterSingleton */].getRouter();
 
@@ -44503,6 +44504,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
@@ -44514,10 +44528,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             driver: {
                 _token: window.Laravel.csrfToken,
                 _method: 'POST',
-                name: '',
-                national_id: '',
+                payroll_number: '',
+                identification_number: '',
+                identification_type: 'National ID',
+                first_name: '',
+                last_name: '',
+                email: '',
                 dl_number: '',
-                mobile: ''
+                mobile_phone: ''
             },
             errors: [],
             level: 'danger',
@@ -44794,22 +44812,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       driver: {
-        name: '',
-        national_id: '',
+        payroll_number: '',
+        identification_number: '',
+        identification_type: 'National ID',
+        first_name: '',
+        last_name: '',
+        email: '',
         dl_number: '',
-        mobile: ''
+        mobile_phone: ''
       }
     };
   },
@@ -46971,7 +46986,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             udf: {
                 name: '',
                 input_type: '',
-                status: '',
+                status: '1',
                 module: '',
                 description: '',
                 value: ''
@@ -47270,6 +47285,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -47309,7 +47326,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       });
     },
     imageSource: function imageSource(value) {
-      return '/uploads/' + value;
+      return value ? '/uploads/' + value : false;
     },
     processTime: function processTime(time) {
       return __WEBPACK_IMPORTED_MODULE_0_moment___default()(time, 'YYYY-MM-DD').format('MMM Do YYYY');
@@ -47952,7 +47969,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 employee_id: '',
                 start_date: '',
                 start_time: '08:00',
-                status: ''
+                status: 'Not Started'
             },
             card: {
                 service_type: 'Normal Job',
@@ -48022,6 +48039,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         http.get('/api/job-card/create').then(function (response) {
             _this5.vehicles = response.vehicles;
             _this5.job_types = response.job_types;
+            _this5.employees = response.employees;
             _this5.createCheckLists(response.checklist);
             setTimeout(function () {
                 var dateSettings = {
@@ -48063,7 +48081,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         addTask: function addTask() {
+            var _this7 = this;
+
             this.task.operation = this.operation.name;
+            this.task.task_name = this.operation.tasks.filter(function (e) {
+                return _this7.task.workshop_job_task_id == e.id;
+            })[0].name;
+            var employee = this.employees.filter(function (e) {
+                return _this7.task.employee_id == e.id;
+            })[0];
+
+            this.task.employee = employee.first_name + ' ' + employee.last_name;
+
             this.tasks.push(this.task);
             this.task = {
                 operation_id: '',
@@ -48078,16 +48107,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.tasks.splice(this.tasks.indexOf(task), 1);
         },
         checkState: function checkState() {
-            var _this7 = this;
+            var _this8 = this;
 
             if (this.$route.params.id) {
                 http.get('/api/truck/' + this.$route.params.id).then(function (response) {
-                    _this7.truck = response.truck;
+                    _this8.truck = response.truck;
                 });
             }
         },
         store: function store() {
-            var _this8 = this;
+            var _this9 = this;
 
             var request = null;
 
@@ -48098,10 +48127,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
 
             request.then(function (response) {
-                alert2(_this8.$root, [response.message], 'success');
+                alert2(_this9.$root, [response.message], 'success');
                 window._router.push({ path: '/trucks' });
             }).catch(function (error) {
-                alert2(_this8.$root, Object.values(JSON.parse(error.message)), 'danger');
+                alert2(_this9.$root, Object.values(JSON.parse(error.message)), 'danger');
             });
         }
     }
@@ -53158,18 +53187,12 @@ if (typeof jQuery === 'undefined') {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
-/* 200 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(4)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-/***/ }),
+/* 200 */,
 /* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 202 */
@@ -76717,10 +76740,6 @@ module.exports = Component.exports
 /* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
-
-/* styles */
-__webpack_require__(273)
-
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(169),
@@ -77929,40 +77948,33 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "panel panel-default"
   }, [_c('div', {
     staticClass: "panel-heading"
-  }, [_c('strong', [_vm._v(_vm._s(_vm.driver.name))])]), _vm._v(" "), _c('div', {
+  }, [_c('router-link', {
+    staticClass: "btn btn-danger btn-xs",
+    attrs: {
+      "to": "/drivers"
+    }
+  }, [_vm._v("Back")]), _vm._v(" "), _c('strong', [_vm._v(_vm._s(_vm.driver.first_name) + " " + _vm._s(_vm.driver.last_name))])], 1), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
   }, [_c('div', {
     staticClass: "row"
-  }, [_vm._m(0), _vm._v(" "), _c('div', {
-    staticClass: "col-md-6"
-  }, [_vm._v("\n              " + _vm._s(_vm.driver.name) + "\n            ")]), _vm._v(" "), _vm._m(1), _vm._v(" "), _c('div', {
-    staticClass: "col-md-6"
-  }, [_vm._v("\n              " + _vm._s(_vm.driver.national_id) + "\n            ")]), _vm._v(" "), _vm._m(2), _vm._v(" "), _c('div', {
-    staticClass: "col-md-6"
-  }, [_vm._v("\n              " + _vm._s(_vm.driver.dl_number) + "\n            ")]), _vm._v(" "), _vm._m(3), _vm._v(" "), _c('div', {
-    staticClass: "col-md-6"
-  }, [_vm._v("\n              " + _vm._s(_vm.driver.mobile) + "\n            ")])]), _vm._v(" "), _c('show-udfs', {
+  }, [_c('div', {
+    staticClass: "col-sm-6"
+  }, [_vm._m(0), _vm._v("\n                  " + _vm._s(_vm.driver.first_name) + "\n                  "), _c('hr'), _vm._v(" "), _vm._m(1), _vm._v("\n                  " + _vm._s(_vm.driver.last_name) + "\n                  "), _c('hr'), _vm._v(" "), _c('h5', [_c('strong', [_vm._v(_vm._s(_vm.driver.identification_type))])]), _vm._v("\n                  " + _vm._s(_vm.driver.identification_number) + "\n                  "), _c('hr')]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_vm._m(2), _vm._v("\n                  " + _vm._s(_vm.driver.dl_number) + "\n                  "), _c('hr'), _vm._v(" "), _vm._m(3), _vm._v("\n                  " + _vm._s(_vm.driver.mobile_phone) + "\n                  "), _c('hr')])]), _vm._v(" "), _c('show-udfs', {
     attrs: {
       "module": "Drivers",
       "state": _vm.driver
     }
   })], 1)])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "col-md-6"
-  }, [_c('strong', [_vm._v("Name:")])])
+  return _c('h5', [_c('strong', [_vm._v("First Name")])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "col-md-6"
-  }, [_c('strong', [_vm._v("National Id:")])])
+  return _c('h5', [_c('strong', [_vm._v("Last Name")])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "col-md-6"
-  }, [_c('strong', [_vm._v("Driving License:")])])
+  return _c('h5', [_c('strong', [_vm._v("Driving License")])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "col-md-6"
-  }, [_c('strong', [_vm._v("Mobile:")])])
+  return _c('h5', [_c('strong', [_vm._v("Mobile")])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
@@ -78352,7 +78364,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     return _c('tr', [_c('td', [_vm._v(_vm._s(driver.first_name) + " " + _vm._s(driver.last_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(driver.identification_type))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(driver.identification_number))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(driver.dl_number))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(driver.mobile_phone))]), _vm._v(" "), _c('td', {
       staticClass: "text-center"
     }, [_c('span', {
-      staticClass: "btn btn-xs btn-info",
+      staticClass: "btn btn-xs btn-success",
       on: {
         "click": function($event) {
           _vm.view(driver)
@@ -78425,61 +78437,125 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
-      "for": "name"
+      "for": "first_name"
     }
-  }, [_vm._v("Name")]), _vm._v(" "), _c('input', {
+  }, [_vm._v("First Name")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.driver.name),
-      expression: "driver.name"
+      value: (_vm.driver.first_name),
+      expression: "driver.first_name"
     }],
     staticClass: "form-control",
     attrs: {
       "type": "text",
-      "id": "name",
-      "name": "name",
+      "id": "first_name",
+      "name": "first_name",
       "required": ""
     },
     domProps: {
-      "value": (_vm.driver.name)
+      "value": (_vm.driver.first_name)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.driver.name = $event.target.value
+        _vm.driver.first_name = $event.target.value
       }
     }
   })]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
-      "for": "name"
+      "for": "last_name"
+    }
+  }, [_vm._v("Last Name")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.driver.last_name),
+      expression: "driver.last_name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "id": "last_name",
+      "name": "last_name",
+      "required": ""
+    },
+    domProps: {
+      "value": (_vm.driver.last_name)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.driver.last_name = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "identification_type"
+    }
+  }, [_vm._v("Identification Type")]), _vm._v(" "), _c('select', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.driver.identification_type),
+      expression: "driver.identification_type"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "id": "identification_type",
+      "name": "identification_type",
+      "required": ""
+    },
+    on: {
+      "change": function($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+          return o.selected
+        }).map(function(o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val
+        });
+        _vm.driver.identification_type = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      }
+    }
+  }, [_c('option', {
+    attrs: {
+      "value": "National ID"
+    }
+  }, [_vm._v("National ID")]), _vm._v(" "), _c('option', {
+    attrs: {
+      "value": "Passport"
+    }
+  }, [_vm._v("Passport")])])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "identification_number"
     }
   }, [_vm._v("National ID")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.driver.national_id),
-      expression: "driver.national_id"
+      value: (_vm.driver.identification_number),
+      expression: "driver.identification_number"
     }],
     staticClass: "form-control",
     attrs: {
-      "type": "number",
-      "id": "national_id",
-      "name": "national_id",
+      "type": "text",
+      "id": "identification_number",
+      "name": "identification_number",
       "required": ""
     },
     domProps: {
-      "value": (_vm.driver.national_id)
+      "value": (_vm.driver.identification_number)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.driver.national_id = $event.target.value
-      },
-      "blur": function($event) {
-        _vm.$forceUpdate()
+        _vm.driver.identification_number = $event.target.value
       }
     }
   })]), _vm._v(" "), _c('div', {
@@ -78514,28 +78590,28 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
-      "for": "mobile"
+      "for": "mobile_phone"
     }
   }, [_vm._v("Mobile Number")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.driver.mobile),
-      expression: "driver.mobile"
+      value: (_vm.driver.mobile_phone),
+      expression: "driver.mobile_phone"
     }],
     staticClass: "form-control",
     attrs: {
       "type": "text",
-      "id": "mobile",
-      "name": "mobile"
+      "id": "mobile_phone",
+      "name": "mobile_phone"
     },
     domProps: {
-      "value": (_vm.driver.mobile)
+      "value": (_vm.driver.mobile_phone)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.driver.mobile = $event.target.value
+        _vm.driver.mobile_phone = $event.target.value
       }
     }
   })]), _vm._v(" "), _c('udf', {
@@ -79846,14 +79922,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, _vm._l((_vm.fields), function(field) {
     return _c('div', {}, [(field.datatype == 'Image') ? _c('div', {}, [_c('div', {
       staticClass: "col-md-6"
-    }, [_c('img', {
+    }, [_c('h5', [_c('strong', [_vm._v(_vm._s(field.fieldname))])]), _vm._v(" "), (_vm.imageSource(field.value)) ? _c('img', {
       attrs: {
         "src": _vm.imageSource(field.value),
         "alt": "",
         "width": "200",
         "height": "200"
       }
-    })])]) : (field.datatype == 'Document') ? _c('div', {}, [_c('div', {
+    }) : _c('h5', [_vm._v("No Image")])])]) : (field.datatype == 'Document') ? _c('div', {}, [_c('div', {
       staticClass: "col-md-6"
     }, [_c('a', {
       attrs: {
@@ -80336,7 +80412,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.trucks), function(truck) {
     return _c('tr', [_c('td', [_vm._v(_vm._s(truck.plate_number))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(truck.make))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(truck.model))]), _vm._v(" "), _c('td', {
       staticClass: "text-right"
-    }, [_vm._v(_vm._s(Number(truck.max_load).toLocaleString()) + " KGs")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(truck.driver ? truck.driver.name : 'No Driver'))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(truck.trailer ? truck.trailer.trailer_number : 'No Trailer'))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(truck.status))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(truck.location))]), _vm._v(" "), _c('td', {
+    }, [_vm._v(_vm._s(Number(truck.max_load).toLocaleString()) + " KGs")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(truck.driver ? truck.driver.first_name + ' ' + truck.driver.last_name : 'No Driver'))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(truck.trailer ? truck.trailer.trailer_number : 'No Trailer'))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(truck.status))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(truck.location))]), _vm._v(" "), _c('td', {
       staticClass: "text-center"
     }, [_c('span', {
       staticClass: "btn btn-xs btn-info",
@@ -81626,7 +81702,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "for": "vehicle_id"
     }
-  }, [_vm._v("Driver")]), _vm._v(" "), _c('h5', [_c('strong', [_vm._v(_vm._s(_vm.vehicle.driver.name) + ", " + _vm._s(_vm.vehicle.driver.mobile))])])])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Driver")]), _vm._v(" "), _c('h5', [_c('strong', [_vm._v(_vm._s(_vm.vehicle.driver.first_name) + " " + _vm._s(_vm.vehicle.driver.last_name) + ", " + _vm._s(_vm.vehicle.driver.mobile_phone))])])])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-4"
   }, [_c('div', {
     staticClass: "form-group input-group-sm"
@@ -81949,7 +82025,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('table', {
     staticClass: "table table-striped"
   }, [_vm._m(2), _vm._v(" "), _c('tbody', _vm._l((_vm.tasks), function(task) {
-    return _c('tr', [_c('td', [_vm._v(_vm._s(task.operation))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(task.task))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(task.employee_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(task.start_date))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(task.start_time))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(task.status))]), _vm._v(" "), _c('td', [_c('a', {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(task.operation))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(task.task_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(task.employee))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(task.start_date))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(task.start_time))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(task.status))]), _vm._v(" "), _c('td', [_c('a', {
       staticClass: "btn btn-danger btn-xs",
       on: {
         "click": function($event) {
@@ -82275,7 +82351,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
-      "for": "plate_number"
+      "for": "name"
     }
   }, [_vm._v("Name")]), _vm._v(" "), _c('input', {
     directives: [{
@@ -82304,7 +82380,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
-      "for": "make"
+      "for": "input_type"
     }
   }, [_vm._v("Input Type")]), _vm._v(" "), _c('select', {
     directives: [{
@@ -82361,7 +82437,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
-      "for": "make"
+      "for": "status"
     }
   }, [_vm._v("Status")]), _vm._v(" "), _c('select', {
     directives: [{
@@ -82403,7 +82479,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
-      "for": "make"
+      "for": "module"
     }
   }, [_vm._v("Module")]), _vm._v(" "), _c('select', {
     directives: [{
@@ -83528,7 +83604,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       domProps: {
         "value": driver.id
       }
-    }, [_vm._v(_vm._s(driver.name))])
+    }, [_vm._v(_vm._s(driver.first_name) + " " + _vm._s(driver.last_name))])
   })], 2)]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
@@ -86118,32 +86194,7 @@ if (inBrowser && window.Vue) {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(6)))
 
 /***/ }),
-/* 273 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(200);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(5)("7718c934", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-16992aed!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./view.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-16992aed!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./view.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
+/* 273 */,
 /* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 

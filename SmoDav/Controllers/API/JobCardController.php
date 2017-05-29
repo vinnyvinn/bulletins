@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use SmoDav\Factory\TruckFactory;
 use SmoDav\Models\JobCard;
+use SmoDav\Models\WorkshopEmployee;
 use SmoDav\Models\WorkshopInspectionCheckList;
 use SmoDav\Models\WorkshopJobType;
 
@@ -35,7 +36,8 @@ class JobCardController extends Controller
         return \Response::json([
             'vehicles' => $trucks,
             'job_types' => WorkshopJobType::with(['operations.tasks'])->get(['id', 'name', 'service_type']),
-            'checklist' => WorkshopInspectionCheckList::all(['name', 'id'])
+            'checklist' => WorkshopInspectionCheckList::all(['name', 'id']),
+            'employees' => WorkshopEmployee::all(['id', 'first_name', 'last_name'])
         ]);
     }
 

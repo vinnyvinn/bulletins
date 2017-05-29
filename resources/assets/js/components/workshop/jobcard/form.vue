@@ -48,7 +48,7 @@
 
                             <div class="form-group input-group-sm">
                                 <label for="vehicle_id">Driver</label>
-                                <h5><strong>{{ vehicle.driver.name }}, {{ vehicle.driver.mobile }}</strong></h5>
+                                <h5><strong>{{ vehicle.driver.first_name }} {{ vehicle.driver.last_name }}, {{ vehicle.driver.mobile_phone }}</strong></h5>
                             </div>
 
                         </div>
@@ -175,8 +175,8 @@
                                     <tbody>
                                     <tr v-for="task in tasks">
                                         <td>{{ task.operation }}</td>
-                                        <td>{{ task.task }}</td>
-                                        <td>{{ task.employee_name }}</td>
+                                        <td>{{ task.task_name }}</td>
+                                        <td>{{ task.employee }}</td>
                                         <td>{{ task.start_date }}</td>
                                         <td>{{ task.start_time }}</td>
                                         <td>{{ task.status }}</td>
@@ -213,7 +213,7 @@
                     employee_id: '',
                     start_date: '',
                     start_time: '08:00',
-                    status: ''
+                    status: 'Not Started'
                 },
                 card: {
                     service_type: 'Normal Job',
@@ -267,6 +267,7 @@
             http.get('/api/job-card/create').then((response) => {
                 this.vehicles = response.vehicles;
                 this.job_types = response.job_types;
+                this.employees = response.employees;
                 this.createCheckLists(response.checklist);
                 setTimeout(() => {
                     let dateSettings = {
@@ -308,6 +309,16 @@
 
             addTask() {
                 this.task.operation = this.operation.name;
+                this.task.task_name = this.operation.tasks.filter((e) => {
+                    return this.task.workshop_job_task_id == e.id;
+                })[0].name;
+                let employee = this.employees.filter(e => {
+                    return this.task.employee_id == e.id;
+                })[0];
+
+                this.task.employee = employee.first_name + ' ' + employee.last_name;
+
+
                 this.tasks.push(this.task);
                 this.task = {
                     operation_id: '',

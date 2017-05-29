@@ -74,7 +74,8 @@ class EmployeeController extends Controller
 
     public function edit($id)
     {
-        //
+        return view('masters.employees.edit')
+            ->with('type', request('t', 'employees'));
     }
 
     public function update(Request $request, $id)
