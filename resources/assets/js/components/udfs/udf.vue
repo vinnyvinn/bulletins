@@ -47,8 +47,7 @@
       <div v-else-if="udf.input_type === 'Image'" class="form-group">
         <label :for="udf.slug">{{ udf.name }}</label>
         <input type="file"
-        class="form-control image"
-        @change="onFileChange"
+        class="form-control image"        
         :id="udf.slug"
         :name="udf.slug">
       </div>

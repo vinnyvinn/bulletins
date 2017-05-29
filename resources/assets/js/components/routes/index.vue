@@ -56,6 +56,7 @@
                                 <td class="text-right">{{ Number(route.fuel_required).toLocaleString() }} Ltrs</td>
                                 <td class="text-right">KES {{ Number(route.allowance_amount).toLocaleString() }}</td>
                                 <td class="text-center">
+                                    <span @click="view(route)" class="btn btn-xs btn-success"><i class="fa fa-eye"></i></span>
                                     <span @click="edit(route)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
                                     <button data-toggle="popover" :data-item="route.id" class="btn btn-xs btn-danger btn-destroy"><i class="fa fa-trash"></i></button>
                                 </td>
@@ -121,6 +122,9 @@
 
             edit(route) {
                 window._router.push({path: '/routes/' + route.id + '/edit'})
+            },
+            view(route) {
+                window._router.push({path: '/routes/' + route.id})
             },
 
             destroy(id) {
