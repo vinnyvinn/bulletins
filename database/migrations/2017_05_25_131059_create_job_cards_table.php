@@ -30,6 +30,7 @@ class CreateJobCardsTable extends Migration
             $table->string('current_km_reading')->nullable();
             $table->string('fuel_balance')->nullable();
             $table->boolean('has_trailer')->default(false);
+            $table->text('raw_data')->nullable();
 
             $table->timestamps();
 

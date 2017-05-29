@@ -98,7 +98,7 @@
             store() {
                 this.$root.isLoading = true;
                 let request = null;
-                let data = mapToFormData(this.driver, this.uploads, this.$route.params.id === typeof undefined);
+                let data = mapToFormData(this.driver, this.uploads, typeof this.$route.params.id === 'string');
 
                 if (this.$route.params.id) {
                     request = http.put('/api/driver/' + this.$route.params.id, data, true);

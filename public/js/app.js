@@ -44457,8 +44457,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 //
 //
 //
@@ -44563,7 +44561,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
             this.$root.isLoading = true;
             var request = null;
-            var data = mapToFormData(this.driver, this.uploads, this.$route.params.id === ( true ? 'undefined' : _typeof(undefined)));
+            var data = mapToFormData(this.driver, this.uploads, typeof this.$route.params.id === 'string');
 
             if (this.$route.params.id) {
                 request = http.put('/api/driver/' + this.$route.params.id, data, true);
@@ -48123,14 +48121,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             };
         },
         removeTask: function removeTask(task) {
-            this.tasks.splice(this.tasks.indexOf(task), 1);
+            this.card.tasks.splice(this.card.tasks.indexOf(task), 1);
         },
         checkState: function checkState() {
             var _this8 = this;
 
             if (this.$route.params.id) {
                 http.get('/api/job-card/' + this.$route.params.id).then(function (response) {
-                    _this8.card = response.card;
+                    _this8.card = response.card.raw_data;
                 });
             }
         },
@@ -82082,7 +82080,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       value: (_vm.card.mechanic_findings),
       expression: "card.mechanic_findings"
     }],
-    staticClass: "form-control",
+    staticClass: "form-control input-sm",
     attrs: {
       "name": "mechanic_findings",
       "id": "mechanic_findings",

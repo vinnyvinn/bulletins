@@ -7,7 +7,6 @@ use Auth;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
-use Illuminate\Queue\Jobs\Job;
 use Response;
 use SmoDav\Factory\TruckFactory;
 use SmoDav\Models\JobCard;
@@ -68,6 +67,7 @@ class JobCardController extends Controller
     {
         DB::transaction(function () use ($request) {
             $data = $request->all();
+            $data['raw_data'] = json_encode($data);
             $data['user_id'] = Auth::id();
             $data['time_in'] = Carbon::now()->setTimeFromTimeString($data['time_in']);
             $data['has_trailer'] = false;
@@ -104,6 +104,7 @@ class JobCardController extends Controller
     {
         $card = JobCard::with(['type', 'tasks', 'inspections'])->findOrFail($id);
         $card->time_in = Carbon::parse($card->time_in)->toTimeString();
+        $card->raw_data = json_decode($card->raw_data);
 
         return Response::json([
             'card' => $card,
@@ -126,11 +127,40 @@ class JobCardController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\JobCard  $jobCard
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, JobCard $jobCard)
     {
-        //
+        DB::transaction(function () use ($request, $jobCard) {
+            $data = $request->all();
+            $data['raw_data'] = json_encode($data);
+            $data['user_id'] = Auth::id();
+            $data['time_in'] = Carbon::now()->setTimeFromTimeString($data['time_in']);
+            $data['has_trailer'] = false;
+            $data['status'] = Constants::STATUS_PENDING;
+            $jobCard->update($data);
+
+            JobCardInspection::where('job_card_id', $jobCard->id)->delete();
+
+            foreach ($data['inspections'] as $inspection) {
+                $inspection['job_card_id'] = $jobCard->id;
+                JobCardInspection::create($inspection);
+            }
+
+            JobCardTask::where('job_card_id', $jobCard->id)->delete();
+            foreach ($data['tasks'] as $task) {
+                $task['job_card_id'] = $jobCard->id;
+                $task['start_time'] = Carbon::parse($task['start_date'] . ' ' . $task['start_time']);
+
+                JobCardTask::create($task);
+            }
+        });
+
+        return Response::json([
+            'message' => 'Successfully updated job card.',
+            'success' => true
+        ]);
     }
 
     /**
