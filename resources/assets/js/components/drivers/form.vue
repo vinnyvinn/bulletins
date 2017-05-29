@@ -8,7 +8,7 @@
                     </div>
 
                     <div class="panel-body">
-                        <form action="#" role="form" @submit.prevent="store" enctype="multipart/form-data">
+                        <form action="#" id="form" role="form" @submit.prevent="store" enctype="multipart/form-data">
 
                             <div class="form-group">
                                 <label for="first_name">First Name</label>
@@ -43,7 +43,7 @@
                                 <input v-model="driver.mobile_phone" type="text" class="form-control" id="mobile_phone" name="mobile_phone">
                             </div>
 
-                            <udf module="Drivers" v-on:udfAdded="addUdfToObject" :state="driver"></udf>
+                            <udf module="Drivers" :state="driver" :uploads="uploads"></udf>
 
                             <div class="form-group">
                                 <button class="btn btn-success">Save</button>
@@ -66,6 +66,7 @@
         data() {
             return {
                 sharedState: window._mainState,
+                uploads: [],
                 driver: {
                     _token: window.Laravel.csrfToken,
                     _method: 'POST',
@@ -97,12 +98,14 @@
             store() {
                 this.$root.isLoading = true;
                 let request = null;
+                let data = mapToFormData(this.driver, this.uploads, this.$route.params.id !== null);
 
                 if (this.$route.params.id) {
-                    request = http.put('/api/driver/' + this.$route.params.id, this.driver);
+                    request = http.put('/api/driver/' + this.$route.params.id, data, true);
                 } else {
-                    request = http.post('/api/driver', this.driver);                    
+                    request = http.post('/api/driver', data, true);
                 }
+
                 request.then((response) => {
                     this.$root.isLoading = false;
                     alert2(this.$root, [response.message], 'success');
@@ -112,9 +115,6 @@
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                 });
             },
-            addUdfToObject (slug) {
-              Vue.set(this.driver,slug,'');
-            }
         }
     }
 </script>

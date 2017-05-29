@@ -5,13 +5,21 @@ export class http {
         return http._getFetch(uri);
     }
 
-    static post(uri, body) {
+    static post(uri, body, hasUpload = false) {
+        if (hasUpload) {
+            return http._getUploadFetch(uri, body, 'POST', hasUpload);
+        }
+
         body._method = 'POST';
 
         return http._getFetch(uri, body, 'POST');
     }
 
-    static put(uri, body) {
+    static put(uri, body, hasUpload = false) {
+        if (hasUpload) {
+            return http._getUploadFetch(uri, body, 'POST', hasUpload);
+        }
+
         body._method = 'PUT';
 
         return http._getFetch(uri, body, 'POST');
@@ -48,6 +56,41 @@ export class http {
                 throw new Error(JSON.stringify(errors));
             });
         });
+    }
+
+    static _getUploadFetch(uri, body = null, method = 'GET', hasUpload = false) {
+        let options = {
+            method: method,
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': window.Laravel.csrfToken,
+            },
+        };
+
+        if (body) {
+            if (! hasUpload) {
+                body._token = window.Laravel.csrfToken;
+                body = JSON.stringify(body);
+                options.headers['Content-Type'] = 'application/json';
+            }
+
+            options.body = body;
+        }
+
+        return fetch(uri, options)
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+
+                return response.json().then((err) => {
+                    let errors = flatten(Object.values(err));
+
+                    throw new Error(JSON.stringify(errors));
+                });
+            })
     }
 
     static _getFetch(uri, body = null, method = 'GET') {
@@ -197,4 +240,31 @@ export function hasPermission(permission) {
     }
 
     return permissions.indexOf(permission) !== -1;
+}
+
+export function mapToFormData(main, addons, isPUT = false) {
+    let data = new FormData();
+
+    data.append('_token', window.Laravel.csrfToken);
+
+    for (let key in main) {
+        data.append(key, main[key]);
+    }
+
+    addons.forEach((value) => {
+        let key = Object.keys(value)[0];
+        let input = document.querySelector(value[key]);
+
+        if (input.files[0]) {
+            data.append(key, input.files[0]);
+        }
+    });
+
+    data.append('_method', 'POST');
+
+    if (isPUT) {
+        data.set('_method', 'PUT');
+    }
+
+    return data;
 }

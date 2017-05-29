@@ -44525,6 +44525,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             sharedState: window._mainState,
+            uploads: [],
             driver: {
                 _token: window.Laravel.csrfToken,
                 _method: 'POST',
@@ -44560,12 +44561,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.$root.isLoading = true;
             var request = null;
+            var data = mapToFormData(this.driver, this.uploads, this.$route.params.id !== null);
 
             if (this.$route.params.id) {
-                request = http.put('/api/driver/' + this.$route.params.id, this.driver);
+                request = http.put('/api/driver/' + this.$route.params.id, data, true);
             } else {
-                request = http.post('/api/driver', this.driver);
+                request = http.post('/api/driver', data, true);
             }
+
             request.then(function (response) {
                 _this2.$root.isLoading = false;
                 alert2(_this2.$root, [response.message], 'success');
@@ -44574,9 +44577,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this2.$root.isLoading = false;
                 alert2(_this2.$root, Object.values(JSON.parse(error.message)), 'danger');
             });
-        },
-        addUdfToObject: function addUdfToObject(slug) {
-            Vue.set(this.driver, slug, '');
         }
     }
 });
@@ -47435,30 +47435,37 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  //asasas;aasasasa;asasaasas
-  created: function created() {
-    // this.$emit('udfAdded', this.udf.slug);
-  },
   data: function data() {
     return {
       udfs: []
     };
   },
 
-  props: ['module', 'object', 'state'],
+  props: ['module', 'object', 'state', 'uploads'],
   mounted: function mounted() {
     this.getUdfs();
   },
 
   methods: {
+    updateState: function updateState(udf) {
+      if (udf.input_type === 'Document' || udf.input_type === 'Image') {
+        var el = [];
+        el[udf.slug] = '#' + udf.slug;
+
+        this.uploads.push(el);
+        return;
+      }
+
+      if (!this.state[udf.slug]) {
+        Vue.set(this.state, udf.slug, '');
+      }
+    },
     getUdfs: function getUdfs() {
       var _this = this;
 
       http.get('/api/module-udfs/' + this.module).then(function (response) {
         response.forEach(function (udf) {
-          if (!_this.state['udf.slug']) {
-            _this.$emit('udfAdded', udf.slug);
-          }
+          _this.updateState(udf);
         });
 
         _this.udfs = response;
@@ -48379,6 +48386,7 @@ window.prepareTable = __WEBPACK_IMPORTED_MODULE_2__core__["c" /* prepareTable */
 window._date2 = __WEBPACK_IMPORTED_MODULE_2__core__["d" /* formatDate */];
 window.confirm2 = __WEBPACK_IMPORTED_MODULE_2__core__["e" /* confirmPopup */];
 window.can = __WEBPACK_IMPORTED_MODULE_2__core__["f" /* hasPermission */];
+window.mapToFormData = __WEBPACK_IMPORTED_MODULE_2__core__["g" /* mapToFormData */];
 
 window._ = __webpack_require__(207);
 
@@ -48448,6 +48456,7 @@ window.axios.defaults.headers.common = {
 /* harmony export (immutable) */ __webpack_exports__["d"] = formatDate;
 /* harmony export (immutable) */ __webpack_exports__["e"] = confirmPopup;
 /* harmony export (immutable) */ __webpack_exports__["f"] = hasPermission;
+/* harmony export (immutable) */ __webpack_exports__["g"] = mapToFormData;
 
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -48467,6 +48476,12 @@ var http = function () {
     }, {
         key: 'post',
         value: function post(uri, body) {
+            var hasUpload = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+            if (hasUpload) {
+                return http._getUploadFetch(uri, body, 'POST', hasUpload);
+            }
+
             body._method = 'POST';
 
             return http._getFetch(uri, body, 'POST');
@@ -48474,6 +48489,12 @@ var http = function () {
     }, {
         key: 'put',
         value: function put(uri, body) {
+            var hasUpload = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+            if (hasUpload) {
+                return http._getUploadFetch(uri, body, 'POST', hasUpload);
+            }
+
             body._method = 'PUT';
 
             return http._getFetch(uri, body, 'POST');
@@ -48502,6 +48523,45 @@ var http = function () {
                     'X-CSRF-TOKEN': window.Laravel.csrfToken
                 }
             }).then(function (response) {
+                if (response.ok) {
+                    return response.json();
+                }
+
+                return response.json().then(function (err) {
+                    var errors = flatten(Object.values(err));
+
+                    throw new Error(JSON.stringify(errors));
+                });
+            });
+        }
+    }, {
+        key: '_getUploadFetch',
+        value: function _getUploadFetch(uri) {
+            var body = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+            var method = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'GET';
+            var hasUpload = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+
+            var options = {
+                method: method,
+                credentials: 'same-origin',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': window.Laravel.csrfToken
+                }
+            };
+
+            if (body) {
+                if (!hasUpload) {
+                    body._token = window.Laravel.csrfToken;
+                    body = JSON.stringify(body);
+                    options.headers['Content-Type'] = 'application/json';
+                }
+
+                options.body = body;
+            }
+
+            return fetch(uri, options).then(function (response) {
                 if (response.ok) {
                     return response.json();
                 }
@@ -48632,6 +48692,35 @@ function hasPermission(permission) {
     }
 
     return permissions.indexOf(permission) !== -1;
+}
+
+function mapToFormData(main, addons) {
+    var isPUT = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+    var data = new FormData();
+
+    data.append('_token', window.Laravel.csrfToken);
+
+    for (var key in main) {
+        data.append(key, main[key]);
+    }
+
+    addons.forEach(function (value) {
+        var key = Object.keys(value)[0];
+        var input = document.querySelector(value[key]);
+
+        if (input.files[0]) {
+            data.append(key, input.files[0]);
+        }
+    });
+
+    data.append('_method', 'POST');
+
+    if (isPUT) {
+        data.set('_method', 'PUT');
+    }
+
+    return data;
 }
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
 
@@ -53272,7 +53361,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 203 */
@@ -78546,6 +78635,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('form', {
     attrs: {
       "action": "#",
+      "id": "form",
       "role": "form",
       "enctype": "multipart/form-data"
     },
@@ -78739,10 +78829,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })]), _vm._v(" "), _c('udf', {
     attrs: {
       "module": "Drivers",
-      "state": _vm.driver
-    },
-    on: {
-      "udfAdded": _vm.addUdfToObject
+      "state": _vm.driver,
+      "uploads": _vm.uploads
     }
   }), _vm._v(" "), _c('div', {
     staticClass: "form-group"
