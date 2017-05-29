@@ -2,12 +2,14 @@
 
 namespace SmoDav\Controllers;
 
+use App\Driver;
 use App\Http\Controllers\Controller;
 use App\Option;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use SmoDav\Engine\PassportRepository;
-use SmoDav\Models\Employee;
+use SmoDav\Models\WorkshopEmployee;
+use SmoDav\Support\Constants;
 use Yajra\Datatables\Facades\Datatables;
 
 class EmployeeController extends Controller
@@ -57,10 +59,10 @@ class EmployeeController extends Controller
     {
         switch ($id) {
             case 'drivers':
-                return $this->getTableData(Employee::DRIVER);
+                return $this->getTableData(Constants::DRIVER);
                 break;
             case 'workshop':
-                return $this->getTableData(Employee::WORKSHOP);
+                return $this->getTableData(Constants::WORKSHOP);
                 break;
             case 'employees':
                 return $this->getTableData();
@@ -70,47 +72,36 @@ class EmployeeController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Employee  $employee
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Employee $employee)
+    public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Employee  $employee
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Employee $employee)
+    public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Employee  $employee
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Employee $employee)
+    public function destroy($id)
     {
         //
     }
 
     private function getTableData($type = null)
     {
-        $results = Employee::when($type, function ($builder) use ($type) {
-            return $builder->where('type', $type);
-        })->select([
+        $fields = [
             'id', 'first_name', 'last_name', 'mobile_phone', 'identification_number', 'identification_type', 'email'
-        ]);
+        ];
+
+        switch ($type) {
+            default:
+            case Constants::DRIVER:
+                $results = Driver::select($fields);
+                break;
+            case Constants::WORKSHOP:
+                $results = WorkshopEmployee::select($fields);
+                break;
+        }
 
         return Datatables::of($results)
             ->addColumn('actions', function ($result) {
@@ -127,38 +118,57 @@ class EmployeeController extends Controller
 
     public function importFromPayroll()
     {
-        ini_set('max_execution_time', 3000);
-        $employees = PassportRepository::getPayrollEmployees();
-        $departments = Option::select(['option_key', 'option_value'])
-            ->whereIn('option_key', [Option::PAYROLL_DEPARTMENT_DRIVER, Option::PAYROLL_WORKSHOP_DRIVER])
-            ->get();
+        try {
+            ini_set('max_execution_time', 3000);
+            $employees = PassportRepository::getPayrollEmployees();
+            $departments = Option::select(['option_key', 'option_value'])
+                ->whereIn('option_key', [Option::PAYROLL_DEPARTMENT_DRIVER, Option::PAYROLL_WORKSHOP_DRIVER])
+                ->get();
 
-        $driver = $departments->where('option_key', Option::PAYROLL_DEPARTMENT_DRIVER)->first()->option_value;
-        $workshop = $departments->where('option_key', Option::PAYROLL_WORKSHOP_DRIVER)->first()->option_value;
+            $driver = $departments->where('option_key', Option::PAYROLL_DEPARTMENT_DRIVER)->first()->option_value;
+            $workshop = $departments->where('option_key', Option::PAYROLL_WORKSHOP_DRIVER)->first()->option_value;
 
-        $employeeTypes = [
-            $driver => Employee::DRIVER,
-            $workshop => Employee::WORKSHOP
-        ];
+            unset($departments);
 
-        $currentEmployees = Employee::all(['identification_number'])->map(function ($employee) {
-            return $employee->identification_number;
-        })->toArray();
+            $drivers = Driver::all(['identification_number'])->map(function ($employee) {
+                return $employee->identification_number;
+            })->toArray();
 
-        $employees = collect($employees)->groupBy('department_id');
-        foreach ($employees as $key => $value) {
-            foreach ($value as $employee) {
-                $employee = (array) $employee;
+            $workshopEmployees = WorkshopEmployee::all(['identification_number'])->map(function ($employee) {
+                return $employee->identification_number;
+            })->toArray();
 
-                if (in_array($employee['identification_number'], $currentEmployees)) {
-                    continue;
+            $currentEmployees = array_merge($drivers, $workshopEmployees);
+
+            unset($drivers, $workshopEmployees);
+
+            $employees = collect($employees)->groupBy('department_id');
+            foreach ($employees as $key => $value) {
+                foreach ($value as $employee) {
+                    $employee = (array) $employee;
+
+                    if (in_array($employee['identification_number'], $currentEmployees)) {
+                        continue;
+                    }
+
+                    switch ($key) {
+                        case $driver:
+                            Driver::create($employee);
+                            continue;
+                            break;
+                        case $workshop:
+                            WorkshopEmployee::create($employee);
+                            continue;
+                            break;
+                        default:
+                            break;
+                    }
                 }
-
-                $employee['type'] = $employeeTypes[$key];
-                Employee::create($employee);
             }
-        }
 
-        return redirect()->back()->with('success', 'Successfully imported employee information');
+            return redirect()->back()->with('success', 'Successfully imported employee information');
+        } catch (\Exception $ex) {
+            return redirect()->back()->with('error', 'Please confirm the Payroll Integration is set up.');
+        }
     }
 }

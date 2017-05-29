@@ -40,7 +40,8 @@
                             <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>National ID</th>
+                                <th>Identification</th>
+                                <th>Identification Number</th>
                                 <th>DL Number</th>
                                 <th>Mobile Number</th>
                                 <th></th>
@@ -49,10 +50,11 @@
 
                             <tbody>
                             <tr v-for="driver in drivers">
-                                <td>{{ driver.name }}</td>
-                                <td>{{ driver.national_id }}</td>
+                                <td>{{ driver.first_name }} {{ driver.last_name }}</td>
+                                <td>{{ driver.identification_type }}</td>
+                                <td>{{ driver.identification_number }}</td>
                                 <td>{{ driver.dl_number }}</td>
-                                <td>{{ driver.mobile }}</td>
+                                <td>{{ driver.mobile_phone }}</td>
                                 <td class="text-center">
                                     <span @click="edit(driver)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
                                     <button data-toggle="popover" :data-item="driver.id" class="btn btn-xs btn-danger btn-destroy"><i class="fa fa-trash"></i></button>
@@ -63,7 +65,8 @@
                             <tfoot>
                             <tr>
                                 <th>Name</th>
-                                <th>National ID</th>
+                                <th>Identification</th>
+                                <th>Identification Number</th>
                                 <th>DL Number</th>
                                 <th>Mobile Number</th>
                                 <th></th>
