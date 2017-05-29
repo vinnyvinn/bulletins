@@ -20,12 +20,12 @@ class CreateJobCardInspectionCheckListsTable extends Migration
             $table->string('status');
             $table->timestamps();
 
-            $table->foreign('job_card_inspection_id')
+            $table->foreign('job_card_inspection_id', 'jci_id')
                 ->references('id')
                 ->on('job_card_inspections')
                 ->onDelete('cascade');
 
-            $table->foreign('workshop_inspection_check_list_id')
+            $table->foreign('workshop_inspection_check_list_id', 'wi_checklist')
                 ->references('id')
                 ->on('workshop_inspection_check_lists')
                 ->onDelete('cascade');
