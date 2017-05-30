@@ -2,7 +2,9 @@
 
 namespace SmoDav\Models;
 
+use App\User;
 use Auth;
+use SmoDav\Support\Constants;
 
 class JobCard extends SmoDavModel
 {
@@ -11,6 +13,11 @@ class JobCard extends SmoDavModel
         'time_in', 'job_description', 'current_km_reading', 'fuel_balance', 'has_trailer',
         'status', 'mechanic_findings', 'user_id', 'raw_data'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function type()
     {
@@ -30,5 +37,10 @@ class JobCard extends SmoDavModel
     public function scopeOwn($builder)
     {
         return $builder->where('user_id', Auth::id());
+    }
+
+    public function scopeOpen($builder)
+    {
+        return $builder->where('status', Constants::STATUS_APPROVED);
     }
 }

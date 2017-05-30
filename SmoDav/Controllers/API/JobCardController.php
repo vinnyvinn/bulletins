@@ -102,8 +102,7 @@ class JobCardController extends Controller
      */
     public function show($id)
     {
-        $card = JobCard::with(['type', 'tasks', 'inspections'])->findOrFail($id);
-        $card->time_in = Carbon::parse($card->time_in)->toTimeString();
+        $card = JobCard::with(['user'])->findOrFail($id);
         $card->raw_data = json_decode($card->raw_data);
 
         return Response::json([
@@ -172,5 +171,29 @@ class JobCardController extends Controller
     public function destroy(JobCard $jobCard)
     {
         //
+    }
+
+    public function approveJobCard($id)
+    {
+        JobCard::where('id', $id)->update([
+            'status' => Constants::STATUS_APPROVED
+        ]);
+
+        return Response::json([
+            'success' => 'true',
+            'message' => 'Successfully approved job card.'
+        ]);
+    }
+
+    public function disapproveJobCard($id)
+    {
+        JobCard::where('id', $id)->update([
+            'status' => Constants::STATUS_DECLINED
+        ]);
+
+        return Response::json([
+            'success' => 'true',
+            'message' => 'Successfully declined job card.'
+        ]);
     }
 }

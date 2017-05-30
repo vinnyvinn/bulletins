@@ -3,7 +3,8 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
-                <router-link to="/job-card/create" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> New Job Card</router-link>
+                <router-link to="/job-card/create" class="btn btn-primary"><i class="fa fa-plus"></i> New Job Card</router-link>
+                <router-link to="/parts/create" class="btn btn-primary"><i class="fa fa-plus"></i> Request Parts</router-link>
             </div>
             <br>
             <br>
@@ -34,7 +35,7 @@
                                         <tbody>
                                         <tr v-for="(card, index) in pending">
                                             <td>{{ index + 1 }}</td>
-                                            <td><a @click.prevent="edit(card)">JC-{{ card.id }}</a></td>
+                                            <td><a @click.prevent="view(card)">JC-{{ card.id }}</a></td>
                                             <td>{{ card.vehicle_number }}</td>
                                             <td>{{ card.type.name }}</td>
                                             <td>{{ card.job_description }}</td>
@@ -89,7 +90,7 @@
                                         <tbody>
                                         <tr v-for="(card, index) in open">
                                             <td>{{ index + 1 }}</td>
-                                            <td><a @click.prevent="edit(card)">JC-{{ card.id }}</a></td>
+                                            <td><a @click.prevent="view(card)">JC-{{ card.id }}</a></td>
                                             <td>{{ card.vehicle_number }}</td>
                                             <td>{{ card.type.name }}</td>
                                             <td>{{ card.job_description }}</td>
@@ -165,6 +166,10 @@
 
             edit(record) {
                 window._router.push({path: '/job-card/' + record.id + '/edit'})
+            },
+
+            view(record) {
+                window._router.push({ path: '/job-card/' + record.id })
             },
 
 
