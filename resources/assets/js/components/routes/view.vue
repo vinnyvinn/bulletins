@@ -3,60 +3,65 @@
       <div class="col-md-6 col-md-offset-3">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <strong>Route Details</strong>
+            <router-link to="/routes" class="btn btn-danger btn-xs">Back</router-link>
+            <strong>Route: {{ route.source }} - {{ route.destination }}</strong>
           </div>
-
-          <div class="panel-body">
-
+        <div class="panel-body">
             <div class="row">
-              <div class="col-md-6">
-                <strong>From:</strong><p>{{ route.source }}</p>
-              </div>
+                <div class="col-sm-6">
+                    <h5><strong>From</strong></h5>
+                    {{ route.source }}
+                    <hr>
 
-              <div class="col-md-6">
-                <strong>To:</strong><p>{{ route.destination }}</p>
-              </div>
+                    <h5><strong>To</strong></h5>
+                    {{ route.destination }}
+                    <hr>
 
-              <div class="col-md-6">
-                <strong>Distance:</strong><p>{{ route.distance }}</p>
-              </div>
+                    <h5><strong>Distance</strong></h5>
+                    {{ route.distance }}
+                    <hr>
+                </div>
+                <div class="col-sm-6">
+                    <h5><strong>Fuel Required</strong></h5>
+                    {{ route.fuel_required }}
+                    <hr>
 
-              <div class="col-md-6">
-                <strong>Fuel Required:</strong><p>{{ Number(route.fuel_required).toLocaleString() }} Ltrs</p>
-              </div>
+                    <h5><strong>Allowance</strong></h5>
+                    {{ route.allowance_amount }}
+                    <hr>
+                </div>
 
+                <show-udfs module="Routes" :state="route"></show-udfs>
             </div>
-              <show-udfs module="Routes" :state="route"></show-udfs>
-            <div class="col-md-12">
-            <router-link to="/routes" class="btn btn-danger pull-right">Back</router-link>
-            </div>
-            </div>
-          </div>
+
         </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
 export default {
   data (){
     return {
-        route: {
-            source: '',
-            destination: '',
-            distance: '',
-            fuel_required: 1,
-            allowance_amount: 0
-        }
+
+      route: {
+        source: '',
+        destination: '',
+        distance: '',
+        fuel_required: '',
+        allowance_amount: 0
+      },
     }
   },
   created () {
     this.getRoute()
   },
   methods: {
-    getRoute () {
+    getRoute() {
       http.get('/api/route/' + this.$route.params.id).then(response => {
         this.route = response.route;
-        console.log(response.route);
+
       });
     }
   }

@@ -3,60 +3,51 @@
       <div class="col-md-6 col-md-offset-3">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <strong>Trailer Details</strong>
+            <router-link to="/trailers" class="btn btn-danger btn-xs">Back</router-link>
           </div>
-
-          <div class="panel-body">
-
+        <div class="panel-body">
             <div class="row">
-              <div class="col-md-6">
-                <strong>Trailer Number:</strong><p>{{ trailer.trailer_number }}</p>
-              </div>
+                <div class="col-sm-6">
+                    <h5><strong>Trailer Number</strong></h5>
+                    {{ trailer.trailer_number }}
+                    <hr>
 
-              <div class="col-md-6">
-                <strong>Make:</strong><p>{{ trailer.make }}</p>
-              </div>
+                    <h5><strong>Type</strong></h5>
+                    {{ trailer.type }}
+                    <hr>
 
-              <div class="col-md-6">
-                <strong>Type:</strong><p>{{ trailer.type }}</p>
-              </div>
-
-               <div class="col-md-6">
-                <strong>Attached To:</strong><p>{{ trailer.truck ? trailer.truck.plate_number : 'No Truck' }}</p>
-              </div>
-
-            </div>
-              <show-udfs module="Trailers" :state="trailer"></show-udfs>
-
-            <div class="col-md-12">
-            <router-link to="/trailers" class="btn btn-danger pull-right">Back</router-link>
+                    <h5><strong>Make</strong></h5>
+                    {{ trailer.make }}
+                    <hr>
+                </div>
+                <show-udfs module="Trailers" :state="trailer"></show-udfs>
             </div>
 
-            </div>
-          </div>
         </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
 export default {
   data (){
     return {
-        trailer: {
-            trailer_number: '',
-            type: '',
-            make: '',
-        }
+
+      trailer: {
+        trailer_number: '',
+        type: '',
+        make: ''
+      },
     }
   },
   created () {
-    this.getTrailer();
+    this.getTrailer()
   },
   methods: {
-    getTrailer () {
+    getTrailer() {
       http.get('/api/trailer/' + this.$route.params.id).then(response => {
-        this.route = response.route;
-        console.log(response.route);
+        this.trailer = response.trailer;
       });
     }
   }

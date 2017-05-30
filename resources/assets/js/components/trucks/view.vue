@@ -3,78 +3,80 @@
       <div class="col-md-6 col-md-offset-3">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <strong>Truck Details</strong>
+            <router-link to="/trailers" class="btn btn-danger btn-xs">Back</router-link>
           </div>
-
-          <div class="panel-body">
-
+        <div class="panel-body">
             <div class="row">
-              <div class="col-md-6">
-                <strong>Plate Number:</strong><p>{{ truck.plate_number }}</p>
-              </div>
+                <div class="col-sm-6">
+                    <h5><strong>Driver</strong></h5>
+                    {{ truck.trailer_number }}
+                    <hr>
 
-              <div class="col-md-6">
-                <strong>Make:</strong><p>{{ truck.make }}</p>
-              </div>
+                    <h5><strong>Trailer</strong></h5>
+                    {{ truck.type }}
+                    <hr>
 
-              <div class="col-md-6">
-                <strong>Model:</strong><p>{{ truck.model }}</p>
-              </div>
+                    <h5><strong>Plate Number</strong></h5>
+                    {{ truck.make }}
+                    <hr>
+                </div>
 
-              <div class="col-md-6">
-                <strong>T/Weight:</strong><p>{{ Number(truck.max_load).toLocaleString() }} KGs</p>
-              </div>
-              <div class="col-md-6">
-                <strong>Driver:</strong><p>{{ truck.driver ? truck.driver.name : 'No Driver' }}</p>
-              </div>
-              <div class="col-md-6">
-                <strong>Trailer:</strong><p>{{ truck.trailer ? truck.trailer.trailer_number : 'No Trailer' }}</p>
-              </div>
-              <div class="col-md-6">
-                <strong>Status:</strong><p>{{ truck.status }}</p>
-              </div>
-              <div class="col-md-6">
-                <strong>Current Stage:</strong><p>{{ truck.location }}</p>
-              </div>
+                <div class="col-sm-6">
+                    <h5><strong>Max Load</strong></h5>
+                    {{ truck.max_load }}
+                    <hr>
 
+                    <h5><strong>Make</strong></h5>
+                    {{ truck.make }}
+                    <hr>
 
+                    <h5><strong>Model</strong></h5>
+                    {{ truck.model }}
+                    <hr>
+                </div>
+
+                <div class="col-sm-6">
+                    <h5><strong>Status</strong></h5>
+                    {{ truck.status }}
+                    <hr>
+
+                    <h5><strong>Location</strong></h5>
+                    {{ truck.location }}
+                    <hr>
+                </div>
+                <show-udfs module="Trucks" :state="truck"></show-udfs>
             </div>
-              <show-udfs module="Trucks" :state="truck"></show-udfs>
-            <div class="col-md-12">
-            <router-link to="/trucks" class="btn btn-danger pull-right">Back</router-link>
-            </div>
-            </div>
-          </div>
+
         </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
 export default {
   data (){
-      return {
-          trailers: [],
-          drivers: [],
-          truck: {
-              driver_id: '',
-              trailer_id: '',
-              plate_number: '',
-              max_load: '',
-              make: '',
-              model: '',
-              status: 'Active',
-              location: 'Awaiting Allocation',
-          }
-      }
+
+    return {
+      truck: {
+        driver_id: '',
+        trailer_id: '',
+        plate_number: '',
+        max_load: '',
+        make: '',
+        model: '',
+        status: '',
+        location: ''
+      },
+    }
   },
   created () {
-    this.getRoute()
+    this.getTruck()
   },
   methods: {
-    getTruck () {
+    getTruck() {
       http.get('/api/truck/' + this.$route.params.id).then(response => {
-        this.route = response.route;
-        console.log(response.route);
+        this.truck = response.truck;
       });
     }
   }

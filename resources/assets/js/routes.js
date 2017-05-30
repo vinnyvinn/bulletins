@@ -17,7 +17,6 @@ module.exports = [
     { path: '/routes', component: require('./components/routes/index.vue'), beforeEnter: authMiddleware },
     { path: '/routes/create', component: require('./components/routes/form.vue'), beforeEnter: authMiddleware },
     { path: '/routes/:id/edit', component: require('./components/routes/form.vue'), beforeEnter: authMiddleware },
-    { path: '/routes/:id/edit', component: require('./components/routes/form.vue'), beforeEnter: authMiddleware },
     { path: '/routes/:id', component: require('./components/routes/view.vue'), beforeEnter: authMiddleware },
 
     { path: '/drivers', component: require('./components/drivers/index.vue'), beforeEnter: authMiddleware },
@@ -27,12 +26,11 @@ module.exports = [
 
     { path: '/trucks', component: require('./components/trucks/index.vue'), beforeEnter: authMiddleware },
     { path: '/trucks/create', component: require('./components/trucks/form.vue'), beforeEnter: authMiddleware },
-    { path: '/trucks/:id', component: require('./components/trucks/form.vue'), beforeEnter: authMiddleware },
+    { path: '/trucks/:id', component: require('./components/trucks/view.vue'), beforeEnter: authMiddleware },
     { path: '/trucks/:id/edit', component: require('./components/trucks/form.vue'), beforeEnter: authMiddleware },
 
     { path: '/trailers', component: require('./components/trailers/index.vue'), beforeEnter: authMiddleware },
     { path: '/trailers/create', component: require('./components/trailers/form.vue'), beforeEnter: authMiddleware },
-    // { path: '/trailers/:id', component: require('./components/trailers/form.vue'), beforeEnter: authMiddleware },
     { path: '/trailers/:id/edit', component: require('./components/trailers/form.vue'), beforeEnter: authMiddleware },
     { path: '/trailers/:id', component: require('./components/trailers/view.vue'), beforeEnter: authMiddleware },
 
