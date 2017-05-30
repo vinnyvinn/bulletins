@@ -77736,84 +77736,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            vehicles: [],
-            job_types: [],
-            employees: [],
-            task: {
+            parts: [],
+            cards: [],
+            item: {
                 operation_id: '',
                 workshop_job_task_id: '',
                 employee_id: '',
@@ -77839,59 +77768,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
 
-    computed: {
-        vehicle: function vehicle() {
-            var _this = this;
-
-            var selected = this.vehicles.filter(function (item) {
-                return item.id == _this.card.vehicle_id;
-            });
-            selected = selected.length ? selected[0] : { driver: {} };
-            selected.driver = selected.driver ? selected.driver : { name: 'No Driver' };
-
-            return selected;
-        },
-        jobTypes: function jobTypes() {
-            var _this2 = this;
-
-            var selected = this.job_types.filter(function (t) {
-                return t.service_type == _this2.card.service_type;
-            });
-
-            return selected.length ? selected : [];
-        },
-        jobType: function jobType() {
-            var _this3 = this;
-
-            var selected = this.job_types.filter(function (item) {
-                return item.id == _this3.card.workshop_job_type_id;
-            });
-            selected = selected.length ? selected[0] : { operations: [] };
-
-            return selected;
-        },
-        operation: function operation() {
-            var _this4 = this;
-
-            var selected = this.jobType.operations.filter(function (item) {
-                return item.id == _this4.task.operation_id;
-            });
-            selected = selected.length ? selected[0] : { tasks: [] };
-            selected.tasks = selected.tasks ? selected.tasks : [];
-
-            return selected;
-        }
-    },
+    computed: {},
 
     created: function created() {
-        var _this5 = this;
+        var _this = this;
 
         this.$root.isLoading = true;
         http.get('/api/parts/create').then(function (response) {
-            _this5.vehicles = response.vehicles;
-            _this5.job_types = response.job_types;
-            _this5.employees = response.employees;
-            _this5.createCheckLists(response.checklist);
+            _this.vehicles = response.vehicles;
+            _this.job_types = response.job_types;
+            _this.employees = response.employees;
+            _this.createCheckLists(response.checklist);
             setTimeout(function () {
                 var dateSettings = {
                     format: 'yyyy-mm-dd',
@@ -77900,16 +77787,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 };
 
                 $('#expected_completion').datepicker(dateSettings).on('change', function (e) {
-                    _this5.card.expected_completion = e.target.value;
+                    _this.card.expected_completion = e.target.value;
                 });
 
                 $('#task_start_date').datepicker(dateSettings).on('change', function (e) {
-                    _this5.task.start_date = e.target.value;
+                    _this.task.start_date = e.target.value;
                 });
                 $('#vehicle_id').select2().on('change', function (e) {
-                    _this5.card.vehicle_id = e.target.value;
+                    _this.card.vehicle_id = e.target.value;
                 });
-                _this5.$root.isLoading = false;
+                _this.$root.isLoading = false;
             }, 1000);
         });
     },
@@ -77920,10 +77807,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         createCheckLists: function createCheckLists(lists) {
-            var _this6 = this;
+            var _this2 = this;
 
             lists.forEach(function (item) {
-                _this6.card.inspections.push({
+                _this2.card.inspections.push({
                     workshop_inspection_check_list_id: item.id,
                     inspection_name: item.name,
                     employee_id: '',
@@ -77932,11 +77819,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         addTask: function addTask() {
-            var _this7 = this;
+            var _this3 = this;
 
             this.task.operation = this.operation.name;
             this.task.task_name = this.operation.tasks.filter(function (e) {
-                return _this7.task.workshop_job_task_id == e.id;
+                return _this3.task.workshop_job_task_id == e.id;
             })[0].name;
 
             this.card.tasks.push(this.task);
@@ -77953,16 +77840,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.card.tasks.splice(this.card.tasks.indexOf(task), 1);
         },
         checkState: function checkState() {
-            var _this8 = this;
+            var _this4 = this;
 
             if (this.$route.params.id) {
                 http.get('/api/job-card/' + this.$route.params.id).then(function (response) {
-                    _this8.card = response.card.raw_data;
+                    _this4.card = response.card.raw_data;
                 });
             }
         },
         store: function store() {
-            var _this9 = this;
+            var _this5 = this;
 
             var request = null;
             this.card.vehicle_number = this.vehicle.plate_number;
@@ -77974,10 +77861,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
 
             request.then(function (response) {
-                alert2(_this9.$root, [response.message], 'success');
+                alert2(_this5.$root, [response.message], 'success');
                 window._router.push({ path: '/job-card' });
             }).catch(function (error) {
-                alert2(_this9.$root, Object.values(JSON.parse(error.message)), 'danger');
+                alert2(_this5.$root, Object.values(JSON.parse(error.message)), 'danger');
             });
         }
     }
@@ -91503,283 +91390,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-sm-4"
-  }, [_c('div', {
-    staticClass: "form-group input-group-sm"
-  }, [_c('label', {
-    attrs: {
-      "for": "service_type"
-    }
-  }, [_vm._v("Job/Service")]), _vm._v(" "), _c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.card.service_type),
-      expression: "card.service_type"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "required": "",
-      "name": "service_type",
-      "id": "service_type"
-    },
-    on: {
-      "change": function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.card.service_type = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
-    }
-  }, [_c('option', {
-    attrs: {
-      "value": "Normal Job"
-    }
-  }, [_vm._v("Normal Job")]), _vm._v(" "), _c('option', {
-    attrs: {
-      "value": "Service Job"
-    }
-  }, [_vm._v("Service Job")])])]), _vm._v(" "), _c('div', {
-    staticClass: "form-group input-group-sm"
-  }, [_c('label', {
-    attrs: {
-      "for": "workshop_job_type_id"
-    }
-  }, [_vm._v("Job Type")]), _vm._v(" "), _c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.card.workshop_job_type_id),
-      expression: "card.workshop_job_type_id"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "required": "",
-      "name": "workshop_job_type_id",
-      "id": "workshop_job_type_id"
-    },
-    on: {
-      "change": function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.card.workshop_job_type_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
-    }
-  }, _vm._l((_vm.jobTypes), function(type) {
-    return _c('option', {
-      domProps: {
-        "value": type.id
-      }
-    }, [_vm._v(_vm._s(type.name))])
-  }))]), _vm._v(" "), _c('div', {
-    staticClass: "form-group input-group-sm"
-  }, [_c('label', {
-    attrs: {
-      "for": "job_description"
-    }
-  }, [_vm._v("Job Description")]), _vm._v(" "), _c('textarea', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.card.job_description),
-      expression: "card.job_description"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "required": "",
-      "name": "job_description",
-      "id": "job_description",
-      "cols": "20",
-      "rows": "5"
-    },
-    domProps: {
-      "value": (_vm.card.job_description)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.card.job_description = $event.target.value
-      }
-    }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-4"
-  }, [_c('div', {
-    staticClass: "form-group input-group-sm"
-  }, [_c('label', {
-    attrs: {
-      "for": "vehicle_id"
-    }
-  }, [_vm._v("Vehicle/Chassis Number")]), _vm._v(" "), _c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.card.vehicle_id),
-      expression: "card.vehicle_id"
-    }],
-    staticClass: "form-control select2",
-    attrs: {
-      "required": "",
-      "name": "vehicle_id",
-      "id": "vehicle_id"
-    },
-    on: {
-      "change": function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.card.vehicle_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
-    }
-  }, _vm._l((_vm.vehicles), function(vehicle) {
-    return _c('option', {
-      domProps: {
-        "value": vehicle.id
-      }
-    }, [_vm._v(_vm._s(vehicle.plate_number))])
-  }))]), _vm._v(" "), _c('div', {
-    staticClass: "form-group input-group-sm"
-  }, [_c('label', {
-    attrs: {
-      "for": "expected_completion"
-    }
-  }, [_vm._v("Expected Completion Date")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.card.expected_completion),
-      expression: "card.expected_completion"
-    }],
-    staticClass: "form-control datepicker",
-    attrs: {
-      "required": "",
-      "type": "text",
-      "name": "expected_completion",
-      "id": "expected_completion"
-    },
-    domProps: {
-      "value": (_vm.card.expected_completion)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.card.expected_completion = $event.target.value
-      }
-    }
-  })]), _vm._v(" "), _c('div', {
-    staticClass: "form-group input-group-sm"
-  }, [_c('label', {
-    attrs: {
-      "for": "vehicle_id"
-    }
-  }, [_vm._v("Driver")]), _vm._v(" "), _c('h5', [_c('strong', [_vm._v(_vm._s(_vm.vehicle.driver.first_name) + " " + _vm._s(_vm.vehicle.driver.last_name) + ", " + _vm._s(_vm.vehicle.driver.mobile_phone))])])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-4"
-  }, [_c('div', {
-    staticClass: "form-group input-group-sm"
-  }, [_c('label', {
-    attrs: {
-      "for": "vehicle_id"
-    }
-  }, [_vm._v("Make & Model")]), _vm._v(" "), _c('h5', [_c('strong', [_vm._v(_vm._s(_vm.vehicle.make) + ", " + _vm._s(_vm.vehicle.model))])])]), _vm._v(" "), _c('div', {
-    staticClass: "form-group input-group-sm"
-  }, [_c('label', {
-    attrs: {
-      "for": "time_in"
-    }
-  }, [_vm._v("Time In")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.card.time_in),
-      expression: "card.time_in"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "required": "",
-      "type": "time",
-      "name": "time_in",
-      "id": "time_in"
-    },
-    domProps: {
-      "value": (_vm.card.time_in)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.card.time_in = $event.target.value
-      }
-    }
-  })]), _vm._v(" "), _c('div', {
-    staticClass: "form-group input-group-sm"
-  }, [_c('label', {
-    attrs: {
-      "for": "current_km_reading"
-    }
-  }, [_vm._v("Current KM Reading")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.card.current_km_reading),
-      expression: "card.current_km_reading"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "type": "number",
-      "name": "current_km_reading",
-      "id": "current_km_reading"
-    },
-    domProps: {
-      "value": (_vm.card.current_km_reading)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.card.current_km_reading = $event.target.value
-      },
-      "blur": function($event) {
-        _vm.$forceUpdate()
-      }
-    }
-  })]), _vm._v(" "), _c('div', {
-    staticClass: "form-group input-group-sm"
-  }, [_c('label', {
-    attrs: {
-      "for": "fuel_balance"
-    }
-  }, [_vm._v("Fuel Balance")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.card.fuel_balance),
-      expression: "card.fuel_balance"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "type": "text",
-      "name": "fuel_balance",
-      "id": "fuel_balance"
-    },
-    domProps: {
-      "value": (_vm.card.fuel_balance)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.card.fuel_balance = $event.target.value
-      }
-    }
-  })])])]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-8"

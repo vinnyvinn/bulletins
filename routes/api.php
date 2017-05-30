@@ -50,4 +50,3 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('job-card/{id}/disapprove', '\SmoDav\Controllers\API\JobCardController@disapproveJobCard');
     Route::resource('parts', '\SmoDav\Controllers\API\PartsController');
 });
-

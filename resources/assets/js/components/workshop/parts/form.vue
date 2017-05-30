@@ -9,76 +9,6 @@
                 <form action="#" role="form" @submit.prevent="store">
 
                     <div class="row">
-                        <div class="col-sm-4">
-                            <div class="form-group input-group-sm">
-                                <label for="service_type">Job/Service</label>
-                                <select required v-model="card.service_type" name="service_type" id="service_type" class="form-control">
-                                    <option value="Normal Job">Normal Job</option>
-                                    <option value="Service Job">Service Job</option>
-                                </select>
-                            </div>
-
-
-                            <div class="form-group input-group-sm">
-                                <label for="workshop_job_type_id">Job Type</label>
-                                <select required v-model="card.workshop_job_type_id" name="workshop_job_type_id" id="workshop_job_type_id" class="form-control">
-                                    <option v-for="type in jobTypes" :value="type.id">{{ type.name }}</option>
-                                </select>
-                            </div>
-
-
-                            <div class="form-group input-group-sm">
-                                <label for="job_description">Job Description</label>
-                                <textarea required v-model="card.job_description" name="job_description" id="job_description" cols="20" rows="5" class="form-control"></textarea>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-4">
-                            <div class="form-group input-group-sm">
-                                <label for="vehicle_id">Vehicle/Chassis Number</label>
-                                <select required v-model="card.vehicle_id" name="vehicle_id" id="vehicle_id" class="form-control select2">
-                                    <option v-for="vehicle in vehicles" :value="vehicle.id">{{ vehicle.plate_number }}</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group input-group-sm">
-                                <label for="expected_completion">Expected Completion Date</label>
-                                <input required type="text" v-model="card.expected_completion" name="expected_completion" id="expected_completion" class="form-control datepicker">
-                            </div>
-
-                            <div class="form-group input-group-sm">
-                                <label for="vehicle_id">Driver</label>
-                                <h5><strong>{{ vehicle.driver.first_name }} {{ vehicle.driver.last_name }}, {{ vehicle.driver.mobile_phone }}</strong></h5>
-                            </div>
-
-                        </div>
-
-
-                        <div class="col-sm-4">
-                            <div class="form-group input-group-sm">
-                                <label for="vehicle_id">Make &amp; Model</label>
-                                <h5><strong>{{ vehicle.make }}, {{ vehicle.model }}</strong></h5>
-                            </div>
-
-                            <div class="form-group input-group-sm">
-                                <label for="time_in">Time In</label>
-                                <input required type="time" v-model="card.time_in" name="time_in" id="time_in" class="form-control">
-                            </div>
-
-                            <div class="form-group input-group-sm">
-                                <label for="current_km_reading">Current KM Reading</label>
-                                <input type="number" v-model="card.current_km_reading" name="current_km_reading" id="current_km_reading" class="form-control">
-                            </div>
-
-                            <div class="form-group input-group-sm">
-                                <label for="fuel_balance">Fuel Balance</label>
-                                <input type="text" v-model="card.fuel_balance" name="fuel_balance" id="fuel_balance" class="form-control">
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="row">
                         <div class="col-sm-8">
                             <table class="table table-striped">
                                 <thead>
@@ -223,10 +153,9 @@
     export default {
         data() {
             return {
-                vehicles: [],
-                job_types: [],
-                employees: [],
-                task: {
+                parts: [],
+                cards: [],
+                item: {
                     operation_id: '',
                     workshop_job_task_id: '',
                     employee_id: '',
@@ -252,34 +181,7 @@
         },
 
         computed: {
-            vehicle() {
-                let selected =  this.vehicles.filter((item) => (item.id == this.card.vehicle_id));
-                selected = selected.length ? selected[0]: { driver:{} };
-                selected.driver = selected.driver ? selected.driver : { name: 'No Driver' };
 
-                return selected;
-            },
-
-            jobTypes() {
-                let selected = this.job_types.filter((t) => (t.service_type == this.card.service_type));
-
-                return selected.length ? selected : [];
-            },
-
-            jobType() {
-                let selected =  this.job_types.filter((item) => item.id == this.card.workshop_job_type_id);
-                selected = selected.length ? selected[0]: { operations:[] };
-
-                return selected;
-            },
-
-            operation() {
-                let selected =  this.jobType.operations.filter((item) => item.id == this.task.operation_id);
-                selected = selected.length ? selected[0]: { tasks:[] };
-                selected.tasks = selected.tasks ? selected.tasks : [];
-
-                return selected;
-            },
         },
 
         created() {
