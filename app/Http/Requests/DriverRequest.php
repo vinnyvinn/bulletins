@@ -24,12 +24,14 @@ class DriverRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'name' => 'required',
-            'national_id' => 'required|unique:drivers',
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'identification_type' => 'required',
+            'identification_number' => 'required|unique:drivers',
         ];
 
         if ($this->method() == 'PUT') {
-            $rules['national_id'] = 'required|unique:drivers,national_id,' . $this->id;
+            $rules['identification_number'] = 'required|unique:drivers,identification_number,' . $this->id;
         }
 
         return $rules;

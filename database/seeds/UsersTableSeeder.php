@@ -13,7 +13,8 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         User::create([
-            'name' => 'superuser',
+            'first_name' => 'superuser',
+            'user_name' => 'superuser',
             'email' => 'dev@wizag.biz',
             'password' => bcrypt(env('SUPER_PASSWORD', 'BOd23309J(!j~)@@1')),
             'permissions' => json_encode(['*'])

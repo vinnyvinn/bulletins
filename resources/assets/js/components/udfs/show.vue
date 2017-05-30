@@ -5,6 +5,9 @@
       <div v-if="field.datatype == 'Image'" class="">
         <div class="col-md-6">
           <img v-if="field.value" :src="imageSource(field.value)" alt="" width="200" height="200">
+          <h5><strong>{{ field.fieldname }}</strong></h5>
+          <img v-if="imageSource(field.value)" :src="imageSource(field.value)" alt="" width="200" height="200">
+          <h5 v-else>No Image</h5>
         </div>
       </div>
 
@@ -12,27 +15,25 @@
         <div class="col-md-6">
           <a :href="imageSource(field.value)"><button type="button" name="button" class="btn btn-sm btn-primary">View document</button></a>
           <p>{{ field.fieldname }}</p>
-        </div>        
+        </div>
       </div>
 
       <div v-if="field.datatype == 'Date'" class="">
         <div class="col-md-6">
           <strong>{{ field.fieldname }}</strong>
-        </div>
-        <div class="col-md-6">
           {{ processTime(field.value) }}
+          <h5 v-if="field.value">{{ processTime(field.value) }}</h5>
+          <h5 v-else>No date</h5>
         </div>
       </div>
 
       <div v-else-if="field.datatype == 'Short Text'" class="">
-
         <div class="col-md-6">
           <strong>{{ field.fieldname }}</strong>
         </div>
         <div class="col-md-6">
           <p>{{ field.value }}</p>
         </div>
-
       </div>
 
       <div v-else-if="field.datatype == 'Long Text'" class="">
@@ -96,11 +97,17 @@ export default {
         }
       });
     },
-    imageSource (value){
-      return '/uploads/' + value;
+    imageSource (value) {
+      return value ? '/uploads/' + value : false;
     },
     processTime(time) {
       return moment(time, 'YYYY-MM-DD').format('MMM Do YYYY');
+    },
+    processRelativeTime(time) {
+      return moment(time, 'YYYY-MM-DD').fromNow();
+    },
+    processCalendarTime(time){
+      return moment(time).calendar();
     }
    }
  }

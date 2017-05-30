@@ -23,6 +23,7 @@
     "datatables.net-bs": "^1.10.13",
     "font-awesome": "^4.7.0",
     "moment": "^2.18.1",
+    "select2": "^4.0.3",
     "vue-router": "^2.3.0",
     "whatwg-fetch": "^2.0.3"
   }

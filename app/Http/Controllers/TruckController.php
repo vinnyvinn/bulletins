@@ -41,7 +41,7 @@ class TruckController extends Controller
 
 
             return Response::json([
-                'drivers' => Driver::whereNotIn('id', $assigned)->get(['id', 'name']),
+                'drivers' => Driver::whereNotIn('id', $assigned)->get(['id', 'first_name', 'last_name']),
                 'trailers' => Trailer::whereNull('truck_id')
                     ->orWhere('truck_id', request('truck_id'))
                     ->get(['id', 'trailer_number']),

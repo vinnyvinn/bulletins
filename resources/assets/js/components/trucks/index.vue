@@ -57,7 +57,7 @@
                                 <td>{{ truck.make }}</td>
                                 <td>{{ truck.model }}</td>
                                 <td class="text-right">{{ Number(truck.max_load).toLocaleString() }} KGs</td>
-                                <td>{{ truck.driver ? truck.driver.name : 'No Driver' }}</td>
+                                <td>{{ truck.driver ? truck.driver.first_name + ' ' + truck.driver.last_name : 'No Driver' }}</td>
                                 <td>{{ truck.trailer ? truck.trailer.trailer_number : 'No Trailer' }}</td>
                                 <td>{{ truck.status }}</td>
                                 <td>{{ truck.location }}</td>
