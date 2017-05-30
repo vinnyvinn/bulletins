@@ -12,6 +12,7 @@ use SmoDav\Factory\TruckFactory;
 use SmoDav\Models\JobCard;
 use SmoDav\Models\JobCardInspection;
 use SmoDav\Models\JobCardTask;
+use SmoDav\Models\Requisition;
 use SmoDav\Models\WorkshopEmployee;
 use SmoDav\Models\WorkshopInspectionCheckList;
 use SmoDav\Models\WorkshopJobType;
@@ -34,8 +35,17 @@ class JobCardController extends Controller
                 'workshop_job_type_id', 'status'
             ]);
 
+        $requisitions = Requisition::own()
+            ->with(['jobCard' => function ($builder) {
+                return $builder->select(['id', 'vehicle_number']);
+            }])
+            ->get([
+                'id', 'job_card_id', 'created_at', 'status'
+            ]);
+
         return Response::json([
-            'cards' => $jobCards
+            'cards' => $jobCards,
+            'requisitions' => $requisitions,
         ]);
     }
 

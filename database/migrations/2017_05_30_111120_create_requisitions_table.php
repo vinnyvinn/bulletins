@@ -18,6 +18,8 @@ class CreateRequisitionsTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('job_card_id')->unsigned()->index();
             $table->integer('user_id')->unsigned()->index();
+            $table->text('mechanic_findings')->nullable();
+            $table->text('raw_data')->nullable();
             $table->string('status')->default(Constants::STATUS_PENDING);
             $table->timestamps();
 

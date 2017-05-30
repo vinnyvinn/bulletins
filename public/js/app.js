@@ -77143,6 +77143,53 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     created: function created() {
@@ -77150,6 +77197,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         http.get('/api/job-card').then(function (response) {
             _this.cards = response.cards;
+            _this.requisitions = response.requisitions;
             confirm2('.btn-destroy', function (element) {
                 _this.destroy(element.dataset.item);
             });
@@ -77158,20 +77206,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     data: function data() {
         return {
-            cards: []
+            cards: [],
+            requisitions: []
         };
     },
 
 
     computed: {
-        pending: function pending() {
+        pendingCards: function pendingCards() {
             return this.cards.filter(function (card) {
                 return card.status == "Pending Approval";
             });
         },
-        open: function open() {
+        openCards: function openCards() {
             return this.cards.filter(function (card) {
                 return card.status == "Approved";
+            });
+        },
+        pendingRequisitions: function pendingRequisitions() {
+            return this.requisitions.filter(function (item) {
+                return item.status == "Pending Approval";
+            });
+        },
+        approvedRequisitions: function approvedRequisitions() {
+            return this.requisitions.filter(function (item) {
+                return item.status == "Approved";
             });
         }
     },
@@ -77186,11 +77245,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             return day + ' ' + month + ' ' + date.getFullYear();
         },
-        edit: function edit(record) {
-            window._router.push({ path: '/job-card/' + record.id + '/edit' });
+        editCard: function editCard(record) {
+            window._router.push({ path: '/job-card/' + record + '/edit' });
         },
-        view: function view(record) {
-            window._router.push({ path: '/job-card/' + record.id });
+        viewCard: function viewCard(record) {
+            window._router.push({ path: '/job-card/' + record });
+        },
+        editRequisition: function editRequisition(record) {
+            window._router.push({ path: '/parts/' + record + '/edit' });
+        },
+        viewRequisition: function viewRequisition(record) {
+            window._router.push({ path: '/parts/' + record });
         },
         destroy: function destroy(id) {
             var _this2 = this;
@@ -77686,56 +77751,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -77743,60 +77758,53 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             parts: [],
             cards: [],
             item: {
-                operation_id: '',
-                workshop_job_task_id: '',
-                employee_id: '',
-                start_date: '',
-                start_time: '08:00',
-                status: 'Not Started'
+                item_id: null,
+                item_name: '',
+                requested_quantity: 0,
+                approved_quantity: 'Pending',
+                issued_quantity: 'Pending'
             },
-            card: {
-                service_type: 'Normal Job',
-                vehicle_id: '',
-                workshop_job_type_id: '',
-                expected_completion: '',
-                time_in: '08:00',
-                job_description: '',
-                current_km_reading: '',
-                fuel_balance: '',
-                has_trailer: '',
-                inspections: [],
+            requisition: {
+                job_card_id: null,
                 mechanic_findings: '',
-                tasks: []
+                lines: [],
+                status: 'Pending Approval'
             }
         };
     },
 
 
-    computed: {},
+    computed: {
+        card: function card() {
+            var _this = this;
+
+            var card = this.cards.filter(function (e) {
+                return e.id == _this.requisition.job_card_id;
+            });
+
+            return card.length ? JSON.parse(card[0].raw_data) : {};
+        }
+    },
 
     created: function created() {
-        var _this = this;
+        var _this2 = this;
 
         this.$root.isLoading = true;
         http.get('/api/parts/create').then(function (response) {
-            _this.vehicles = response.vehicles;
-            _this.job_types = response.job_types;
-            _this.employees = response.employees;
-            _this.createCheckLists(response.checklist);
+            _this2.parts = response.parts;
+            _this2.cards = response.cards;
             setTimeout(function () {
-                var dateSettings = {
-                    format: 'yyyy-mm-dd',
-                    startDate: '+0d',
-                    autoclose: true
-                };
+                $('#item_id').select2({
+                    placeholder: 'Select an option'
+                }).on('change', function (e) {
+                    _this2.item.item_id = e.target.value;
+                    var selectedItem = _this2.parts.filter(function (item) {
+                        return item.StockLink == e.target.value;
+                    })[0];
 
-                $('#expected_completion').datepicker(dateSettings).on('change', function (e) {
-                    _this.card.expected_completion = e.target.value;
+                    _this2.item.item_name = selectedItem.Description_1 + '(' + selectedItem.product_make + ' ' + selectedItem.product_model + ')';
                 });
-
-                $('#task_start_date').datepicker(dateSettings).on('change', function (e) {
-                    _this.task.start_date = e.target.value;
-                });
-                $('#vehicle_id').select2().on('change', function (e) {
-                    _this.card.vehicle_id = e.target.value;
-                });
-                _this.$root.isLoading = false;
+                _this2.$root.isLoading = false;
             }, 1000);
         });
     },
@@ -77806,65 +77814,72 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
     methods: {
-        createCheckLists: function createCheckLists(lists) {
-            var _this2 = this;
-
-            lists.forEach(function (item) {
-                _this2.card.inspections.push({
-                    workshop_inspection_check_list_id: item.id,
-                    inspection_name: item.name,
-                    employee_id: '',
-                    status: 'Not Started'
-                });
-            });
-        },
-        addTask: function addTask() {
+        addToList: function addToList() {
             var _this3 = this;
 
-            this.task.operation = this.operation.name;
-            this.task.task_name = this.operation.tasks.filter(function (e) {
-                return _this3.task.workshop_job_task_id == e.id;
-            })[0].name;
+            if (parseInt(this.item.requested_quantity) < 1) {
+                alert2(this.$root, ['Please enter a valid quantity'], 'danger');
+                return;
+            }
 
-            this.card.tasks.push(this.task);
-            this.task = {
-                operation_id: '',
-                workshop_job_task_id: '',
-                employee_id: '',
-                start_date: '',
-                start_time: '08:00',
-                status: 'Not Started'
+            var shouldAdd = true;
+
+            this.requisition.lines.map(function (e) {
+                if (e.item_id === _this3.item.item_id) {
+                    e.requested_quantity = parseInt(e.requested_quantity) + parseInt(_this3.item.requested_quantity);
+                    shouldAdd = false;
+                    return true;
+                }
+
+                return e;
+            });
+
+            if (shouldAdd) this.requisition.lines.push(this.item);
+
+            $('#item_id').val('null').trigger('change.select2');
+            this.item = {
+                item_id: null,
+                item_name: '',
+                requested_quantity: 0,
+                approved_quantity: 'Pending',
+                issued_quantity: 'Pending'
             };
         },
-        removeTask: function removeTask(task) {
-            this.card.tasks.splice(this.card.tasks.indexOf(task), 1);
-        },
-        checkState: function checkState() {
+        mapFindings: function mapFindings() {
             var _this4 = this;
 
+            setTimeout(function () {
+                return _this4.requisition.mechanic_findings = _this4.card.mechanic_findings;
+            }, 500);
+        },
+        remove: function remove(item) {
+            this.requisition.lines.splice(this.requisition.lines.indexOf(item), 1);
+        },
+        checkState: function checkState() {
+            var _this5 = this;
+
             if (this.$route.params.id) {
-                http.get('/api/job-card/' + this.$route.params.id).then(function (response) {
-                    _this4.card = response.card.raw_data;
+                http.get('/api/parts/' + this.$route.params.id).then(function (response) {
+                    _this5.card = response.card.raw_data;
                 });
             }
         },
         store: function store() {
-            var _this5 = this;
+            var _this6 = this;
 
             var request = null;
-            this.card.vehicle_number = this.vehicle.plate_number;
 
             if (this.$route.params.id) {
-                request = http.put('/api/job-card/' + this.$route.params.id, this.card);
+                request = http.put('/api/parts/' + this.$route.params.id, this.requisition);
             } else {
-                request = http.post('/api/job-card', this.card);
+                request = http.post('/api/parts', this.requisition);
             }
 
             request.then(function (response) {
-                alert2(_this5.$root, [response.message], 'success');
+                alert2(_this6.$root, [response.message], 'success');
                 window._router.push({ path: '/job-card' });
             }).catch(function (error) {
-                alert2(_this5.$root, Object.values(JSON.parse(error.message)), 'danger');
+                alert2(_this6.$root, Object.values(JSON.parse(error.message)), 'danger');
             });
         }
     }
@@ -78239,7 +78254,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_whatwg_fetch__ = __webpack_require__(150);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_whatwg_fetch__ = __webpack_require__(150);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_whatwg_fetch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_whatwg_fetch__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(287);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__core__ = __webpack_require__(131);
@@ -78272,6 +78287,8 @@ __webpack_require__(156);
 __webpack_require__(224);
 __webpack_require__(220);
 __webpack_require__(0);
+
+$.fn.select2.defaults.set("theme", "bootstrap");
 
 /**
  * Vue is a modern JavaScript library for building interactive web interfaces
@@ -78312,6 +78329,7 @@ window.axios.defaults.headers.common = {
 //     broadcaster: 'pusher',
 //     key: 'your-pusher-key'
 // });
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
 
 /***/ }),
 /* 218 */
@@ -91128,12 +91146,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "table-responsive"
   }, [_c('table', {
     staticClass: "table datatable nowrap"
-  }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.pending), function(card, index) {
+  }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.pendingCards), function(card, index) {
     return _c('tr', [_c('td', [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c('td', [_c('a', {
       on: {
         "click": function($event) {
           $event.preventDefault();
-          _vm.view(card)
+          _vm.viewCard(card.id)
         }
       }
     }, [_vm._v("JC-" + _vm._s(card.id))])]), _vm._v(" "), _c('td', [_vm._v(_vm._s(card.vehicle_number))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(card.type.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(card.job_description))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatDate(card.created_at)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatDate(card.expected_completion)))]), _vm._v(" "), _c('td', {
@@ -91142,7 +91160,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "btn btn-xs btn-info",
       on: {
         "click": function($event) {
-          _vm.edit(card)
+          _vm.editCard(card.id)
         }
       }
     }, [_c('i', {
@@ -91156,22 +91174,65 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('i', {
       staticClass: "fa fa-trash"
     })])])])
-  })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("No.")]), _vm._v(" "), _c('th', [_vm._v("Card #")]), _vm._v(" "), _c('th', [_vm._v("Vehicle")]), _vm._v(" "), _c('th', [_vm._v("Job Type")]), _vm._v(" "), _c('th', [_vm._v("Description")]), _vm._v(" "), _c('th', [_vm._v("Created On")]), _vm._v(" "), _c('th', [_vm._v("Expected Completion")]), _vm._v(" "), _c('th')])])], 1)])])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-6"
-  }, [_c('div', {
-    staticClass: "panel panel-info"
+  })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("No.")]), _vm._v(" "), _c('th', [_vm._v("Card #")]), _vm._v(" "), _c('th', [_vm._v("Vehicle")]), _vm._v(" "), _c('th', [_vm._v("Job Type")]), _vm._v(" "), _c('th', [_vm._v("Description")]), _vm._v(" "), _c('th', [_vm._v("Created On")]), _vm._v(" "), _c('th', [_vm._v("Expected Completion")]), _vm._v(" "), _c('th')])])], 1)])])]), _vm._v(" "), _c('div', {
+    staticClass: "panel panel-warning"
   }, [_vm._m(2), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
   }, [_c('div', {
     staticClass: "table-responsive"
   }, [_c('table', {
     staticClass: "table datatable nowrap"
-  }, [_vm._m(3), _vm._v(" "), _c('tbody', _vm._l((_vm.open), function(card, index) {
+  }, [_vm._m(3), _vm._v(" "), _c('tbody', _vm._l((_vm.pendingRequisitions), function(item, index) {
     return _c('tr', [_c('td', [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c('td', [_c('a', {
       on: {
         "click": function($event) {
           $event.preventDefault();
-          _vm.view(card)
+          _vm.viewRequisition(item.id)
+        }
+      }
+    }, [_vm._v("PR-" + _vm._s(item.id))])]), _vm._v(" "), _c('td', [_c('a', {
+      on: {
+        "click": function($event) {
+          $event.preventDefault();
+          _vm.viewCard(item.job_card_id)
+        }
+      }
+    }, [_vm._v("JC-" + _vm._s(item.job_card_id))])]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.job_card.vehicle_number))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatDate(item.created_at)))]), _vm._v(" "), _c('td', {
+      staticClass: "text-center"
+    }, [_c('span', {
+      staticClass: "btn btn-xs btn-info",
+      on: {
+        "click": function($event) {
+          _vm.editRequisition(item.id)
+        }
+      }
+    }, [_c('i', {
+      staticClass: "fa fa-pencil"
+    })]), _vm._v(" "), _c('button', {
+      staticClass: "btn btn-xs btn-danger btn-destroy",
+      attrs: {
+        "data-toggle": "popover",
+        "data-item": item.id
+      }
+    }, [_c('i', {
+      staticClass: "fa fa-trash"
+    })])])])
+  })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("No.")]), _vm._v(" "), _c('th', [_vm._v("Requisition #")]), _vm._v(" "), _c('th', [_vm._v("Card #")]), _vm._v(" "), _c('th', [_vm._v("Vehicle")]), _vm._v(" "), _c('th', [_vm._v("Requested On")]), _vm._v(" "), _c('th')])])], 1)])])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('div', {
+    staticClass: "panel panel-info"
+  }, [_vm._m(4), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('div', {
+    staticClass: "table-responsive"
+  }, [_c('table', {
+    staticClass: "table datatable nowrap"
+  }, [_vm._m(5), _vm._v(" "), _c('tbody', _vm._l((_vm.openCards), function(card, index) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c('td', [_c('a', {
+      on: {
+        "click": function($event) {
+          $event.preventDefault();
+          _vm.viewCard(card.id)
         }
       }
     }, [_vm._v("JC-" + _vm._s(card.id))])]), _vm._v(" "), _c('td', [_vm._v(_vm._s(card.vehicle_number))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(card.type.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(card.job_description))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatDate(card.created_at)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatDate(card.expected_completion)))]), _vm._v(" "), _c('td', {
@@ -91180,7 +91241,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "btn btn-xs btn-info",
       on: {
         "click": function($event) {
-          _vm.edit(card)
+          _vm.editCard(card.id)
         }
       }
     }, [_c('i', {
@@ -91201,6 +91262,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('strong', [_vm._v("Job Cards Not Approved")])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('thead', [_c('tr', [_c('th', [_vm._v("No.")]), _vm._v(" "), _c('th', [_vm._v("Card #")]), _vm._v(" "), _c('th', [_vm._v("Vehicle")]), _vm._v(" "), _c('th', [_vm._v("Job Type")]), _vm._v(" "), _c('th', [_vm._v("Description")]), _vm._v(" "), _c('th', [_vm._v("Created On")]), _vm._v(" "), _c('th', [_vm._v("Expected Completion")]), _vm._v(" "), _c('th')])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "panel-heading text-center"
+  }, [_c('strong', [_vm._v("Parts Requisitions Not Approved")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('thead', [_c('tr', [_c('th', [_vm._v("No.")]), _vm._v(" "), _c('th', [_vm._v("Requisition #")]), _vm._v(" "), _c('th', [_vm._v("Card #")]), _vm._v(" "), _c('th', [_vm._v("Vehicle")]), _vm._v(" "), _c('th', [_vm._v("Requested On")]), _vm._v(" "), _c('th')])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "panel-heading text-center"
@@ -91392,69 +91459,46 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "row"
   }, [_c('div', {
-    staticClass: "col-sm-8"
-  }, [_c('table', {
-    staticClass: "table table-striped"
-  }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.card.inspections), function(item, index) {
-    return _c('tr', [_c('td', [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.inspection_name))]), _vm._v(" "), _c('td', [_c('select', {
-      directives: [{
-        name: "model",
-        rawName: "v-model",
-        value: (item.employee_id),
-        expression: "item.employee_id"
-      }],
-      staticClass: "form-control input-sm",
-      on: {
-        "change": function($event) {
-          var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-            return o.selected
-          }).map(function(o) {
-            var val = "_value" in o ? o._value : o.value;
-            return val
-          });
-          item.employee_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-        }
+    staticClass: "col-sm-6"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "job_card_id"
+    }
+  }, [_vm._v("Job Card")]), _vm._v(" "), _c('select', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.requisition.job_card_id),
+      expression: "requisition.job_card_id"
+    }],
+    staticClass: "form-control input-sm",
+    attrs: {
+      "name": "job_card_id",
+      "id": "job_card_id"
+    },
+    on: {
+      "change": [function($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+          return o.selected
+        }).map(function(o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val
+        });
+        _vm.requisition.job_card_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      }, _vm.mapFindings]
+    }
+  }, _vm._l((_vm.cards), function(card) {
+    return _c('option', {
+      domProps: {
+        "value": card.id
       }
-    }, _vm._l((_vm.employees), function(employee) {
-      return _c('option', {
-        domProps: {
-          "value": employee.id
-        }
-      }, [_vm._v(_vm._s(employee.first_name) + " " + _vm._s(employee.last_name))])
-    }))]), _vm._v(" "), _c('td', [_c('select', {
-      directives: [{
-        name: "model",
-        rawName: "v-model",
-        value: (item.status),
-        expression: "item.status"
-      }],
-      staticClass: "form-control input-sm",
-      on: {
-        "change": function($event) {
-          var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-            return o.selected
-          }).map(function(o) {
-            var val = "_value" in o ? o._value : o.value;
-            return val
-          });
-          item.status = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-        }
-      }
-    }, [_c('option', {
-      attrs: {
-        "value": "Not Started"
-      }
-    }, [_vm._v("Not Started")]), _vm._v(" "), _c('option', {
-      attrs: {
-        "value": "In Progress"
-      }
-    }, [_vm._v("In Progress")]), _vm._v(" "), _c('option', {
-      attrs: {
-        "value": "Completed"
-      }
-    }, [_vm._v("Completed")])])])])
-  }))])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-4"
+    }, [_vm._v("JC-" + _vm._s(card.id))])
+  }))]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', [_vm._v("Vehicle Number")]), _vm._v(" "), _c('h5', [_vm._v(_vm._s(_vm.card.vehicle_number))])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
   }, [_c('div', {
     staticClass: "form-group"
   }, [_c('label', {
@@ -91462,284 +91506,102 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "for": "mechanic_findings"
     }
   }, [_vm._v("Mechanic's Findings")]), _vm._v(" "), _c('textarea', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.card.mechanic_findings),
-      expression: "card.mechanic_findings"
-    }],
     staticClass: "form-control input-sm",
     attrs: {
       "name": "mechanic_findings",
       "id": "mechanic_findings",
       "cols": "20",
       "rows": "5"
+    }
+  }, [_vm._v(_vm._s(_vm.card.mechanic_findings))])])])]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-sm-7"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "item_id"
+    }
+  }, [_vm._v("Spare")]), _vm._v(" "), _c('select', {
+    staticClass: "form-control input-sm",
+    attrs: {
+      "name": "item_id",
+      "id": "item_id"
+    }
+  }, [_c('option', {
+    attrs: {
+      "value": "null",
+      "disabled": "",
+      "selected": ""
+    }
+  }, [_vm._v("Select Spare")]), _vm._v(" "), _vm._l((_vm.parts), function(item) {
+    return _c('option', {
+      domProps: {
+        "value": item.StockLink
+      }
+    }, [_vm._v(_vm._s(item.Description_1) + " (" + _vm._s(item.product_make) + " " + _vm._s(item.product_model) + ")")])
+  })], 2)])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "requested_quantity"
+    }
+  }, [_vm._v("Quantity")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.item.requested_quantity),
+      expression: "item.requested_quantity"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "number": "",
+      "type": "number",
+      "min": "0",
+      "onclick": "this.select()",
+      "name": "requested_quantity",
+      "id": "requested_quantity"
     },
     domProps: {
-      "value": (_vm.card.mechanic_findings)
+      "value": (_vm.item.requested_quantity)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.card.mechanic_findings = $event.target.value
-      }
-    }
-  })])])]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-sm-5"
-  }, [_c('div', {
-    staticClass: "form-group input-group-sm"
-  }, [_c('label', {
-    attrs: {
-      "for": "operation_id"
-    }
-  }, [_vm._v("Operation Name")]), _vm._v(" "), _c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.task.operation_id),
-      expression: "task.operation_id"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "name": "operation_id",
-      "id": "operation_id"
-    },
-    on: {
-      "change": function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.task.operation_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
-    }
-  }, _vm._l((_vm.jobType.operations), function(operation) {
-    return _c('option', {
-      domProps: {
-        "value": operation.id
-      }
-    }, [_vm._v(_vm._s(operation.name))])
-  }))]), _vm._v(" "), _c('div', {
-    staticClass: "form-group input-group-sm"
-  }, [_c('label', {
-    attrs: {
-      "for": "employee_id"
-    }
-  }, [_vm._v("Assigned To")]), _vm._v(" "), _c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.task.employee_id),
-      expression: "task.employee_id"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "name": "employee_id",
-      "id": "employee_id"
-    },
-    on: {
-      "change": function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.task.employee_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
-    }
-  }, _vm._l((_vm.employees), function(employee) {
-    return _c('option', {
-      domProps: {
-        "value": employee.id
-      }
-    }, [_vm._v(_vm._s(employee.first_name) + " " + _vm._s(employee.last_name))])
-  }))])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-5"
-  }, [_c('div', {
-    staticClass: "form-group input-group-sm"
-  }, [_c('label', {
-    attrs: {
-      "for": "workshop_job_task_id"
-    }
-  }, [_vm._v("Task")]), _vm._v(" "), _c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.task.workshop_job_task_id),
-      expression: "task.workshop_job_task_id"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "name": "workshop_job_task_id",
-      "id": "workshop_job_task_id"
-    },
-    on: {
-      "change": function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.task.workshop_job_task_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
-    }
-  }, _vm._l((_vm.operation.tasks), function(task) {
-    return _c('option', {
-      domProps: {
-        "value": task.id
-      }
-    }, [_vm._v(_vm._s(task.name))])
-  }))]), _vm._v(" "), _c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-sm-6"
-  }, [_c('div', {
-    staticClass: "form-group input-group-sm"
-  }, [_c('label', {
-    attrs: {
-      "for": "task_start_date"
-    }
-  }, [_vm._v("Start Date")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.task.start_date),
-      expression: "task.start_date"
-    }],
-    staticClass: "form-control datepicker",
-    attrs: {
-      "type": "text",
-      "name": "task_start_date",
-      "id": "task_start_date"
-    },
-    domProps: {
-      "value": (_vm.task.start_date)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.task.start_date = $event.target.value
+        _vm.item.requested_quantity = $event.target.value
+      },
+      "blur": function($event) {
+        _vm.$forceUpdate()
       }
     }
   })])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-6"
-  }, [_c('div', {
-    staticClass: "form-group input-group-sm"
-  }, [_c('label', {
-    attrs: {
-      "for": "task_start_time"
-    }
-  }, [_vm._v("Time In")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.task.start_time),
-      expression: "task.start_time"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "type": "time",
-      "name": "task_start_time",
-      "id": "task_start_time"
-    },
-    domProps: {
-      "value": (_vm.task.start_time)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.task.start_time = $event.target.value
-      }
-    }
-  })])])])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-2"
-  }, [_c('br'), _vm._v(" "), _c('br'), _vm._v(" "), _c('a', {
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', [_vm._v("Actions")]), _vm._v(" "), _c('a', {
     staticClass: "btn btn-success btn-block",
     on: {
-      "click": _vm.addTask
+      "click": _vm.addToList
     }
-  }, [_vm._v("Add Task")])])]), _vm._v(" "), _c('div', {
-    staticClass: "row"
-  }, [_c('div', {
+  }, [_vm._v("Add to Requisition")])])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-12"
-  }, [_c('div', {
-    staticClass: "table-responsive"
   }, [_c('table', {
     staticClass: "table table-striped"
-  }, [_vm._m(2), _vm._v(" "), _c('tbody', _vm._l((_vm.card.tasks), function(task) {
-    return _c('tr', [_c('td', [_vm._v(_vm._s(task.operation))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(task.task_name))]), _vm._v(" "), _c('td', [_c('select', {
-      directives: [{
-        name: "model",
-        rawName: "v-model",
-        value: (task.employee_id),
-        expression: "task.employee_id"
-      }],
-      staticClass: "form-control input-sm",
-      on: {
-        "change": function($event) {
-          var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-            return o.selected
-          }).map(function(o) {
-            var val = "_value" in o ? o._value : o.value;
-            return val
-          });
-          task.employee_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-        }
-      }
-    }, _vm._l((_vm.employees), function(employee) {
-      return _c('option', {
-        domProps: {
-          "value": employee.id
-        }
-      }, [_vm._v(_vm._s(employee.first_name) + " " + _vm._s(employee.last_name))])
-    }))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(task.start_date))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(task.start_time))]), _vm._v(" "), _c('td', [_c('select', {
-      directives: [{
-        name: "model",
-        rawName: "v-model",
-        value: (task.status),
-        expression: "task.status"
-      }],
-      staticClass: "form-control input-sm",
-      on: {
-        "change": function($event) {
-          var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-            return o.selected
-          }).map(function(o) {
-            var val = "_value" in o ? o._value : o.value;
-            return val
-          });
-          task.status = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-        }
-      }
-    }, [_c('option', {
-      attrs: {
-        "value": "Not Started"
-      }
-    }, [_vm._v("Not Started")]), _vm._v(" "), _c('option', {
-      attrs: {
-        "value": "In Progress"
-      }
-    }, [_vm._v("In Progress")]), _vm._v(" "), _c('option', {
-      attrs: {
-        "value": "Completed"
-      }
-    }, [_vm._v("Completed")])])]), _vm._v(" "), _c('td', [_c('a', {
+  }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.requisition.lines), function(item, index) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.item_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.requested_quantity))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.approved_quantity))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.issued_quantity))]), _vm._v(" "), _c('td', [_c('a', {
       staticClass: "btn btn-danger btn-xs",
       on: {
         "click": function($event) {
-          _vm.removeTask(task)
+          _vm.remove(item)
         }
       }
     }, [_c('i', {
       staticClass: "fa fa-trash"
     })])])])
-  }))])])])]), _vm._v(" "), _c('div', {
+  }))])])]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('button', {
     staticClass: "btn btn-success"
@@ -91754,9 +91616,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "panel-heading"
   }, [_c('strong', [_vm._v("New Parts Request")])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('thead', [_c('tr', [_c('th', [_vm._v("#")]), _vm._v(" "), _c('th', [_vm._v("Inspection")]), _vm._v(" "), _c('th', [_vm._v("Done By")]), _vm._v(" "), _c('th', [_vm._v("Status")])])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('thead', [_c('tr', [_c('th', [_vm._v("Operation")]), _vm._v(" "), _c('th', [_vm._v("Action")]), _vm._v(" "), _c('th', [_vm._v("Allocated To")]), _vm._v(" "), _c('th', [_vm._v("Start Date")]), _vm._v(" "), _c('th', [_vm._v("Start Time")]), _vm._v(" "), _c('th', [_vm._v("Status")]), _vm._v(" "), _c('th', [_vm._v("Action")])])])
+  return _c('thead', [_c('tr', [_c('th', [_vm._v("#")]), _vm._v(" "), _c('th', [_vm._v("Item")]), _vm._v(" "), _c('th', [_vm._v("Requested")]), _vm._v(" "), _c('th', [_vm._v("Approved")]), _vm._v(" "), _c('th', [_vm._v("Issued")]), _vm._v(" "), _c('th')])])
 }]}
 module.exports.render._withStripped = true
 if (false) {

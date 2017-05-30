@@ -6,10 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Http\Helpers\Helpers;
 use App\Option;
 use App\SAGEUDF;
+use Auth;
 use DB;
 use Illuminate\Http\Request;
+use Response;
 use SmoDav\Models\JobCard;
 use SmoDav\Models\Make;
+use SmoDav\Models\Requisition;
+use SmoDav\Models\RequisitionLines;
+use SmoDav\Support\Constants;
 
 class PartsController extends Controller
 {
@@ -20,7 +25,7 @@ class PartsController extends Controller
      */
     public function index()
     {
-        return \Response::json([
+        return Response::json([
 
         ]);
     }
@@ -57,8 +62,8 @@ class PartsController extends Controller
             ->open()
             ->get();
 
-        return \Response::json([
-            'items' => $products,
+        return Response::json([
+            'parts' => $products,
             'cards' => $jobCards,
         ]);
     }
@@ -67,11 +72,31 @@ class PartsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $data['raw_data'] = json_encode($data);
+        $data['status'] = Constants::STATUS_PENDING;
+        $data['user_id'] = Auth::id();
+
+        DB::transaction(function () use ($data) {
+            $requisition = Requisition::create($data);
+
+            foreach ($data['lines'] as $line) {
+                $line['requisition_id'] = $requisition->id;
+                unset($line['approved_quantity'], $line['issued_quantity']);
+
+                RequisitionLines::create($line);
+            }
+        });
+
+        return Response::json([
+            'status' => 'success',
+            'message' => 'Successfully requested for parts.'
+        ]);
     }
 
     /**
