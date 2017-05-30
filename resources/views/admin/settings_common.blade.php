@@ -83,6 +83,32 @@
                                 </div>
                             </div>
 
+                            <div class="form-group {{ $errors->has('warehouse_transfer_batch') ? 'has-error' : '' }}">
+                                <label class="col-sm-3 control-label" for="warehouse_transfer_batch">Warehouse Transfer Batch*</label>
+                                <div class="col-sm-9">
+
+                                    <select name="warehouse_transfer_batch" id="warehouse_transfer_batch" class="form-control">
+                                        @foreach($warehouseBatches as $batch)
+                                            <option {{ old('warehouse_transfer_batch', trim(Helpers::get_option('warehouse_transfer_batch'))) == trim($batch->idWhseTransferBatch) ? 'selected' : '' }} value="{{ $batch->idWhseTransferBatch }}">{{ $batch->cBatchNo }} ({{ $batch->cBatchDescription }})</option>
+                                        @endforeach
+                                    </select>
+                                    {!! $errors->has('warehouse_transfer_batch')? '<p class="help-block"> '.$errors->first('warehouse_transfer_batch').' </p>':'' !!}
+                                </div>
+                            </div>
+
+                            <div class="form-group {{ $errors->has('warehouse_to_transfer') ? 'has-error' : '' }}">
+                                <label class="col-sm-3 control-label" for="warehouse_to_transfer">Warehouse to Transfer to*</label>
+                                <div class="col-sm-9">
+
+                                    <select name="warehouse_to_transfer" id="warehouse_to_transfer" class="form-control">
+                                        @foreach($warehouses as $warehouse)
+                                            <option {{ old('warehouse_to_transfer', trim(Helpers::get_option('warehouse_to_transfer'))) == trim($warehouse->WhseLink) ? 'selected' : '' }} value="{{ $warehouse->WhseLink }}">{{ $warehouse->Name }} ({{ $warehouse->Code }})</option>
+                                        @endforeach
+                                    </select>
+                                    {!! $errors->has('warehouse_to_transfer')? '<p class="help-block"> '.$errors->first('warehouse_to_transfer').' </p>':'' !!}
+                                </div>
+                            </div>
+
 
 
                                 <div class="form-group">

@@ -177,10 +177,10 @@
                     </div>
 
                     <div class="form-group">
-                        <div v-if="status == 'Pending Approval'">
+                        <span v-if="status == 'Pending Approval'">
                             <button class="btn btn-success" @click.prevent="approve()">Approve Job Card</button>
                             <button class="btn btn-danger" @click.prevent="disapprove()">Disapprove Job Card</button>
-                        </div>
+                        </span>
                         <router-link to="/job-card" class="btn btn-danger">Back</router-link>
                     </div>
                 </form>

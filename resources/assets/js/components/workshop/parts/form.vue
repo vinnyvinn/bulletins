@@ -201,6 +201,7 @@
 
             store() {
                 let request = null;
+                this.requisition.vehicle_number = this.card.vehicle_number;
 
                 if (this.$route.params.id) {
                     request = http.put('/api/parts/' + this.$route.params.id, this.requisition);

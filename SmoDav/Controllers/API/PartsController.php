@@ -103,11 +103,17 @@ class PartsController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
-        //
+        $requisition = Requisition::with(['user'])->findOrFail($id);
+        $requisition->raw_data = json_decode($requisition->raw_data);
+
+        return Response::json([
+            'requisition' => $requisition,
+        ]);
     }
 
     /**
@@ -142,5 +148,57 @@ class PartsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+    public function approve(Request $request, $id)
+    {
+        DB::transaction(function () use ($request, $id) {
+            $lines = collect($request->get('lines'))->keyBy('item_id');
+            $requisition = Requisition::with(['lines'])->where('id', $id)->first();
+
+            foreach ($requisition->lines as $line) {
+                $itemLine = $lines->get($line->item_id);
+                $fields = [
+                    'approved_quantity' => $itemLine['approved_quantity']
+                ];
+
+                if ($requisition->status == Constants::STATUS_APPROVED) {
+                    $fields = [
+                        'issued_quantity' => $itemLine['issued_quantity']
+                    ];
+                }
+
+                $line->update($fields);
+            }
+
+            $requisition->update([
+                'status' => $requisition->status == Constants::STATUS_PENDING ?
+                    Constants::STATUS_APPROVED :
+                    Constants::STATUS_ISSUED,
+                'raw_data' => json_encode($request->all())
+            ]);
+
+            if ($requisition->status == Constants::STATUS_ISSUED) {
+                $requisition->transferToSite();
+            }
+        });
+
+        return Response::json([
+            'success' => 'true',
+            'message' => 'Successfully approved requisition.'
+        ]);
+    }
+
+    public function disapprove($id)
+    {
+        Requisition::where('id', $id)->update([
+            'status' => Constants::STATUS_DECLINED
+        ]);
+
+        return Response::json([
+            'success' => 'true',
+            'message' => 'Successfully declined requisition.'
+        ]);
     }
 }
