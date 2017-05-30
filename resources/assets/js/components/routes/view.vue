@@ -18,7 +18,7 @@
                     <hr>
 
                     <h5><strong>Distance</strong></h5>
-                    {{ route.distance }}
+                    {{ route.distance }} Kms
                     <hr>
                 </div>
                 <div class="col-sm-6">
@@ -27,7 +27,7 @@
                     <hr>
 
                     <h5><strong>Allowance</strong></h5>
-                    {{ route.allowance_amount }}
+                    Ksh. {{ route.allowance_amount }}
                     <hr>
                 </div>
 

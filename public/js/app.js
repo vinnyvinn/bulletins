@@ -97040,9 +97040,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-6"
-  }, [_vm._m(0), _vm._v("\n                  " + _vm._s(_vm.route.source) + "\n                  "), _c('hr'), _vm._v(" "), _vm._m(1), _vm._v("\n                  " + _vm._s(_vm.route.destination) + "\n                  "), _c('hr'), _vm._v(" "), _vm._m(2), _vm._v("\n                  " + _vm._s(_vm.route.distance) + "\n                  "), _c('hr')]), _vm._v(" "), _c('div', {
+  }, [_vm._m(0), _vm._v("\n                  " + _vm._s(_vm.route.source) + "\n                  "), _c('hr'), _vm._v(" "), _vm._m(1), _vm._v("\n                  " + _vm._s(_vm.route.destination) + "\n                  "), _c('hr'), _vm._v(" "), _vm._m(2), _vm._v("\n                  " + _vm._s(_vm.route.distance) + " Kms\n                  "), _c('hr')]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
-  }, [_vm._m(3), _vm._v("\n                  " + _vm._s(_vm.route.fuel_required) + "\n                  "), _c('hr'), _vm._v(" "), _vm._m(4), _vm._v("\n                  " + _vm._s(_vm.route.allowance_amount) + "\n                  "), _c('hr')]), _vm._v(" "), _c('show-udfs', {
+  }, [_vm._m(3), _vm._v("\n                  " + _vm._s(_vm.route.fuel_required) + "\n                  "), _c('hr'), _vm._v(" "), _vm._m(4), _vm._v("\n                  Ksh. " + _vm._s(_vm.route.allowance_amount) + "\n                  "), _c('hr')]), _vm._v(" "), _c('show-udfs', {
     attrs: {
       "module": "Routes",
       "state": _vm.route
