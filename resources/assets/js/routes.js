@@ -62,11 +62,14 @@ module.exports = [
     { path: '/udfs/:id/edit', component: require('./components/udfs/form.vue'), beforeEnter: authMiddleware },
 
 
-
     { path: '/job-card', component: require('./components/workshop/jobcard/index.vue'), beforeEnter: authMiddleware },
     { path: '/job-card/create', component: require('./components/workshop/jobcard/form.vue'), beforeEnter: authMiddleware },
+    { path: '/job-card/:id', component: require('./components/workshop/jobcard/view.vue'), beforeEnter: authMiddleware },
     { path: '/job-card/:id/edit', component: require('./components/workshop/jobcard/form.vue'), beforeEnter: authMiddleware },
 
+    { path: '/parts/create', component: require('./components/workshop/parts/form.vue'), beforeEnter: authMiddleware },
+    { path: '/parts/:id', component: require('./components/workshop/parts/view.vue'), beforeEnter: authMiddleware },
+    { path: '/parts/:id/edit', component: require('./components/workshop/parts/form.vue'), beforeEnter: authMiddleware },
 
 
     { path: '/login',

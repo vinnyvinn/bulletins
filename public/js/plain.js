@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "./";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 282);
+/******/ 	return __webpack_require__(__webpack_require__.s = 291);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -28360,6 +28360,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+<<<<<<< HEAD
+=======
+//
+>>>>>>> a31cc8d01750c6013890a6b23d7d15a004464d2c
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -28841,7 +28845,11 @@ function mapToFormData(main, addons) {
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)();
+<<<<<<< HEAD
 exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+=======
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+>>>>>>> a31cc8d01750c6013890a6b23d7d15a004464d2c
 
 /***/ }),
 /* 156 */
@@ -46548,7 +46556,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_vm._v("View document")])]), _vm._v(" "), _c('p', [_vm._v(_vm._s(field.fieldname))])])]) : _vm._e(), _vm._v(" "), (field.datatype == 'Date') ? _c('div', {}, [_c('div', {
       staticClass: "col-md-6"
+<<<<<<< HEAD
     }, [_c('strong', [_vm._v(_vm._s(field.fieldname))]), _vm._v("\n        " + _vm._s(_vm.processTime(field.value)) + "\n        "), (field.value) ? _c('h5', [_vm._v(_vm._s(_vm.processTime(field.value)))]) : _c('h5', [_vm._v("No date")])])]) : (field.datatype == 'Short Text') ? _c('div', {}, [_c('div', {
+=======
+    }, [_c('strong', [_vm._v(_vm._s(field.fieldname))]), _vm._v(" "), (field.value) ? _c('h5', [_vm._v(_vm._s(_vm.processTime(field.value)))]) : _c('h5', [_vm._v("No date")])])]) : (field.datatype == 'Short Text') ? _c('div', {}, [_c('div', {
+>>>>>>> a31cc8d01750c6013890a6b23d7d15a004464d2c
       staticClass: "col-md-6"
     }, [_c('strong', [_vm._v(_vm._s(field.fieldname))])]), _vm._v(" "), _c('div', {
       staticClass: "col-md-6"
@@ -57374,6 +57386,7 @@ module.exports = Vue$3;
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 174 */,
 /* 175 */,
 /* 176 */,
@@ -57381,6 +57394,21 @@ module.exports = Vue$3;
 /* 178 */,
 /* 179 */,
 /* 180 */
+=======
+/* 151 */,
+/* 152 */,
+/* 153 */,
+/* 154 */,
+/* 155 */,
+/* 156 */,
+/* 157 */,
+/* 158 */,
+/* 159 */,
+/* 160 */,
+/* 161 */,
+/* 162 */,
+/* 163 */
+>>>>>>> a31cc8d01750c6013890a6b23d7d15a004464d2c
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -57423,6 +57451,26 @@ var app = new Vue({
 }).$mount('#app');
 
 /***/ }),
+<<<<<<< HEAD
+=======
+/* 164 */,
+/* 165 */,
+/* 166 */,
+/* 167 */,
+/* 168 */,
+/* 169 */,
+/* 170 */,
+/* 171 */,
+/* 172 */,
+/* 173 */,
+/* 174 */,
+/* 175 */,
+/* 176 */,
+/* 177 */,
+/* 178 */,
+/* 179 */,
+/* 180 */,
+>>>>>>> a31cc8d01750c6013890a6b23d7d15a004464d2c
 /* 181 */,
 /* 182 */,
 /* 183 */,
@@ -57524,10 +57572,23 @@ var app = new Vue({
 /* 279 */,
 /* 280 */,
 /* 281 */,
-/* 282 */
+/* 282 */,
+/* 283 */,
+/* 284 */,
+/* 285 */,
+/* 286 */,
+/* 287 */,
+/* 288 */,
+/* 289 */,
+/* 290 */,
+/* 291 */
 /***/ (function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 module.exports = __webpack_require__(180);
+=======
+module.exports = __webpack_require__(163);
+>>>>>>> a31cc8d01750c6013890a6b23d7d15a004464d2c
 
 
 /***/ })
