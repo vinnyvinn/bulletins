@@ -12,6 +12,7 @@ class Constants
     const WORKSHOP = 'Workshop Employee';
 
     const STATUS_PENDING = 'Pending Approval';
+    const STATUS_ISSUED = 'Issued';
     const STATUS_APPROVED = 'Approved';
     const STATUS_DECLINED = 'Declined';
     const STATUS_CLOSED = 'Closed';

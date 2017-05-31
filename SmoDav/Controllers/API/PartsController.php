@@ -6,10 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Http\Helpers\Helpers;
 use App\Option;
 use App\SAGEUDF;
+use Auth;
 use DB;
 use Illuminate\Http\Request;
+use Response;
 use SmoDav\Models\JobCard;
 use SmoDav\Models\Make;
+use SmoDav\Models\Requisition;
+use SmoDav\Models\RequisitionLines;
+use SmoDav\Support\Constants;
 
 class PartsController extends Controller
 {
@@ -20,7 +25,7 @@ class PartsController extends Controller
      */
     public function index()
     {
-        return \Response::json([
+        return Response::json([
 
         ]);
     }
@@ -57,8 +62,8 @@ class PartsController extends Controller
             ->open()
             ->get();
 
-        return \Response::json([
-            'items' => $products,
+        return Response::json([
+            'parts' => $products,
             'cards' => $jobCards,
         ]);
     }
@@ -67,22 +72,48 @@ class PartsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $data['raw_data'] = json_encode($data);
+        $data['status'] = Constants::STATUS_PENDING;
+        $data['user_id'] = Auth::id();
+
+        DB::transaction(function () use ($data) {
+            $requisition = Requisition::create($data);
+
+            foreach ($data['lines'] as $line) {
+                $line['requisition_id'] = $requisition->id;
+                unset($line['approved_quantity'], $line['issued_quantity']);
+
+                RequisitionLines::create($line);
+            }
+        });
+
+        return Response::json([
+            'status' => 'success',
+            'message' => 'Successfully requested for parts.'
+        ]);
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
-        //
+        $requisition = Requisition::with(['user'])->findOrFail($id);
+        $requisition->raw_data = json_decode($requisition->raw_data);
+
+        return Response::json([
+            'requisition' => $requisition,
+        ]);
     }
 
     /**
@@ -117,5 +148,57 @@ class PartsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+    public function approve(Request $request, $id)
+    {
+        DB::transaction(function () use ($request, $id) {
+            $lines = collect($request->get('lines'))->keyBy('item_id');
+            $requisition = Requisition::with(['lines'])->where('id', $id)->first();
+
+            foreach ($requisition->lines as $line) {
+                $itemLine = $lines->get($line->item_id);
+                $fields = [
+                    'approved_quantity' => $itemLine['approved_quantity']
+                ];
+
+                if ($requisition->status == Constants::STATUS_APPROVED) {
+                    $fields = [
+                        'issued_quantity' => $itemLine['issued_quantity']
+                    ];
+                }
+
+                $line->update($fields);
+            }
+
+            $requisition->update([
+                'status' => $requisition->status == Constants::STATUS_PENDING ?
+                    Constants::STATUS_APPROVED :
+                    Constants::STATUS_ISSUED,
+                'raw_data' => json_encode($request->all())
+            ]);
+
+            if ($requisition->status == Constants::STATUS_ISSUED) {
+                $requisition->transferToSite();
+            }
+        });
+
+        return Response::json([
+            'success' => 'true',
+            'message' => 'Successfully approved requisition.'
+        ]);
+    }
+
+    public function disapprove($id)
+    {
+        Requisition::where('id', $id)->update([
+            'status' => Constants::STATUS_DECLINED
+        ]);
+
+        return Response::json([
+            'success' => 'true',
+            'message' => 'Successfully declined requisition.'
+        ]);
     }
 }

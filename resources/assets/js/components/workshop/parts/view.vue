@@ -2,7 +2,7 @@
     <div class="container">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <strong>Job Card #JC-{{ card_number }}</strong>
+                <strong>Requisition Order #JC-{{ requisition_number }}</strong>
             </div>
 
             <div class="panel-body">
@@ -10,8 +10,8 @@
 
                     <div class="row">
                         <div class="col-sm-4">
-                            <h4><strong>Job Card Number:</strong></h4>
-                            <h5>JC-{{ card_number }}</h5>
+                            <h4><strong>Requisition Order Number:</strong></h4>
+                            <h5>JC-{{ requisition_number }}</h5>
                         </div>
                         <div class="col-sm-4">
                             <h4><strong>Requested By:</strong></h4>
@@ -25,110 +25,22 @@
                     <hr>
 
                     <div class="row">
-                        <div class="col-sm-4">
-                            <div class="form-group input-group-sm">
-                                <label for="service_type">Job/Service</label>
-                                <select disabled required v-model="card.service_type" name="service_type" id="service_type" class="form-control">
-                                    <option value="Normal Job">Normal Job</option>
-                                    <option value="Service Job">Service Job</option>
-                                </select>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="job_card_id">Job Card</label>
+                                <input disabled :value="'JC-' + requisition.job_card_id" name="job_card_id" id="job_card_id" class="form-control input-sm">
                             </div>
 
-
-                            <div class="form-group input-group-sm">
-                                <label for="workshop_job_type_id">Job Type</label>
-                                <select disabled required v-model="card.workshop_job_type_id" name="workshop_job_type_id" id="workshop_job_type_id" class="form-control">
-                                    <option v-for="type in jobTypes" :value="type.id">{{ type.name }}</option>
-                                </select>
-                            </div>
-
-
-                            <div class="form-group input-group-sm">
-                                <label for="job_description">Job Description</label>
-                                <textarea disabled required v-model="card.job_description" name="job_description" id="job_description" cols="20" rows="5" class="form-control"></textarea>
+                            <div class="form-group">
+                                <label>Vehicle Number</label>
+                                <h5>{{ requisition.vehicle_number }}</h5>
                             </div>
                         </div>
 
-                        <div class="col-sm-4">
-                            <div class="form-group input-group-sm">
-                                <label for="vehicle_id">Vehicle/Chassis Number</label>
-                                <select disabled required v-model="card.vehicle_id" name="vehicle_id" id="vehicle_id" class="form-control select2">
-                                    <option v-for="vehicle in vehicles" :value="vehicle.id">{{ vehicle.plate_number }}</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group input-group-sm">
-                                <label for="expected_completion">Expected Completion Date</label>
-                                <input disabled required type="text" v-model="card.expected_completion" name="expected_completion" id="expected_completion" class="form-control datepicker">
-                            </div>
-
-                            <div class="form-group input-group-sm">
-                                <label for="vehicle_id">Driver</label>
-                                <h5><strong>{{ vehicle.driver.first_name }} {{ vehicle.driver.last_name }}, {{ vehicle.driver.mobile_phone }}</strong></h5>
-                            </div>
-                        </div>
-
-
-                        <div class="col-sm-4">
-                            <div class="form-group input-group-sm">
-                                <label for="vehicle_id">Make &amp; Model</label>
-                                <h5><strong>{{ vehicle.make }}, {{ vehicle.model }}</strong></h5>
-                            </div>
-
-                            <div class="form-group input-group-sm">
-                                <label for="time_in">Time In</label>
-                                <input disabled required type="time" v-model="card.time_in" name="time_in" id="time_in" class="form-control">
-                            </div>
-
-                            <div class="form-group input-group-sm">
-                                <label for="current_km_reading">Current KM Reading</label>
-                                <input disabled type="number" v-model="card.current_km_reading" name="current_km_reading" id="current_km_reading" class="form-control">
-                            </div>
-
-                            <div class="form-group input-group-sm">
-                                <label for="fuel_balance">Fuel Balance</label>
-                                <input disabled type="text" v-model="card.fuel_balance" name="fuel_balance" id="fuel_balance" class="form-control">
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-8">
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Inspection</th>
-                                    <th>Done By</th>
-                                    <th>Status</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr v-for="(item, index) in card.inspections">
-                                    <td>{{ index + 1}}</td>
-                                    <td>{{ item.inspection_name }}</td>
-                                    <td>
-                                        <select disabled v-model="item.employee_id" class="form-control input-sm">
-                                            <option v-for="employee in employees" :value="employee.id">{{ employee.first_name }} {{ employee.last_name }}</option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <select disabled v-model="item.status" class="form-control input-sm">
-                                            <option value="Not Started">Not Started</option>
-                                            <option value="In Progress">In Progress</option>
-                                            <option value="Completed">Completed</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="mechanic_findings">Mechanic's Findings</label>
-                                <textarea disabled v-model="card.mechanic_findings" name="mechanic_findings" id="mechanic_findings" cols="20" rows="5" class="form-control input-sm"></textarea>
+                                <textarea disabled name="mechanic_findings" id="mechanic_findings" cols="20" rows="5" class="form-control input-sm">{{ requisition.mechanic_findings }}</textarea>
                             </div>
                         </div>
                     </div>
@@ -137,50 +49,48 @@
 
                     <div class="row">
                         <div class="col-sm-12">
-                            <div class="table-responsive">
-                                <table class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th>Operation</th>
-                                        <th>Action</th>
-                                        <th>Allocated To</th>
-                                        <th>Start Date</th>
-                                        <th>Start Time</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr v-for="task in card.tasks">
-                                        <td>{{ task.operation }}</td>
-                                        <td>{{ task.task_name }}</td>
-                                        <td>
-                                            <select disabled v-model="task.employee_id" class="form-control input-sm">
-                                                <option v-for="employee in employees" :value="employee.id">{{ employee.first_name }} {{ employee.last_name }}</option>
-                                            </select>
-                                        </td>
-                                        <td>{{ task.start_date }}</td>
-                                        <td>{{ task.start_time }}</td>
-                                        <td>
-                                            <select disabled v-model="task.status" class="form-control input-sm">
-                                                <option value="Not Started">Not Started</option>
-                                                <option value="In Progress">In Progress</option>
-                                                <option value="Completed">Completed</option>
-                                            </select>
-                                        </td>
-                                        <td></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Item</th>
+                                    <th>Requested</th>
+                                    <th>Approved</th>
+                                    <th>Issued</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="(item, index) in requisition.lines">
+                                    <td>{{ index + 1}}</td>
+                                    <td>{{ item.item_name }}</td>
+                                    <td>{{ item.requested_quantity }}</td>
+                                    <td>
+                                        <input v-if="status == 'Pending Approval' && can('approve-requisition')" type="number"
+                                               v-model="item.approved_quantity" class="form-control input-sm" :max="item.requested_quantity" number>
+                                        <span v-else>{{ item.approved_quantity }}</span>
+                                    </td>
+                                    <td>
+                                        <input v-if="status == 'Approved' && can('issue-requisition')" type="number"
+                                               v-model="item.issued_quantity" class="form-control input-sm" :max="item.issued_quantity" number>
+                                        <span v-else>{{ item.issued_quantity }}</span>
+                                    </td>
+                                    <td>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <div v-if="status == 'Pending Approval'">
+                        <span v-if="(status == 'Pending Approval' && can('approve-requisition'))">
                             <button class="btn btn-success" @click.prevent="approve()">Approve Job Card</button>
                             <button class="btn btn-danger" @click.prevent="disapprove()">Disapprove Job Card</button>
-                        </div>
+                        </span>
+                        <span v-if="(status == 'Approved' && can('issue-requisition'))">
+                            <button class="btn btn-success" @click.prevent="approve()">Issue Parts</button>
+                        </span>
                         <router-link to="/job-card" class="btn btn-danger">Back</router-link>
                     </div>
                 </form>
@@ -195,33 +105,16 @@
         data() {
             return {
                 status: '',
-                card_number: '',
+                requisition_number: '',
                 user: {},
                 requested_on: '',
-                vehicles: [],
-                job_types: [],
-                employees: [],
-                task: {
-                    operation_id: '',
-                    workshop_job_task_id: '',
-                    employee_id: '',
-                    start_date: '',
-                    start_time: '08:00',
-                    status: 'Not Started'
-                },
-                card: {
-                    service_type: 'Normal Job',
-                    vehicle_id: '',
-                    workshop_job_type_id: '',
-                    expected_completion: '',
-                    time_in: '08:00',
-                    job_description: '',
-                    current_km_reading: '',
-                    fuel_balance: '',
-                    has_trailer: '',
-                    inspections: [],
+                parts: [],
+                cards: [],
+                requisition: {
+                    job_card_id: null,
                     mechanic_findings: '',
-                    tasks: [],
+                    lines: [],
+                    status: 'Pending Approval'
                 }
             };
         },
@@ -258,23 +151,13 @@
         },
 
         created() {
-            this.$root.isLoading = true;
-            http.get('/api/job-card/create').then((response) => {
-                this.vehicles = response.vehicles;
-                this.job_types = response.job_types;
-                this.employees = response.employees;
-                this.createCheckLists(response.checklist);
-                setTimeout(() => {
-                    this.$root.isLoading = false;
-                }, 1000);
-            });
-        },
-
-        mounted() {
             this.checkState();
         },
 
         methods: {
+            can(permission) {
+                return window.can(permission)
+            },
             formatDate(date) {
                 date = new Date(date);
                 let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -284,32 +167,53 @@
 
                 return day + ' ' + month + ' ' + date.getFullYear();
             },
-            createCheckLists(lists) {
-                lists.forEach((item) => {
-                    this.card.inspections.push({
-                        workshop_inspection_check_list_id: item.id,
-                        inspection_name: item.name,
-                        employee_id: '',
-                        status: 'Not Started',
-                    });
-                });
-            },
+
 
             checkState() {
                 if (this.$route.params.id) {
-                    http.get('/api/job-card/' + this.$route.params.id).then((response) => {
-                        this.card = response.card.raw_data;
-                        this.card_number = response.card.id;
-                        this.user = response.card.user;
-                        this.requested_on = response.card.created_at;
-                        this.status = response.card.status;
+                    this.$root.isLoading = true;
+
+                    http.get('/api/parts/' + this.$route.params.id).then((response) => {
+                        this.requisition = response.requisition.raw_data;
+                        this.requisition_number = response.requisition.id;
+                        this.user = response.requisition.user;
+                        this.requested_on = response.requisition.created_at;
+                        this.status = response.requisition.status;
+
+                        this.requisition.lines.map(item => {
+                            item.old_approved = item.approved_quantity;
+                            item.old_issued = item.issued_quantity;
+                            item.approved_quantity = 'Pending';
+                            item.issued_quantity = 'Pending';
+                            item.issued_quantity = this.status == 'Approved' ? item.approved_quantity : item.issued_quantity;
+
+                            if (this.status == 'Pending Approval') {
+                                item.approved_quantity = item.requested_quantity;
+
+                                return item;
+                            }
+
+                            if (this.status == 'Approved') {
+                                item.approved_quantity = item.old_approved;
+                                item.issued_quantity = item.approved_quantity;
+
+                                return item;
+                            }
+
+                            item.approved_quantity = item.old_approved;
+                            item.issued_quantity = item.old_issued;
+
+                            return item;
+                        });
+
+                        this.$root.isLoading = false;
                     });
                 }
             },
 
             approve() {
                 this.$root.isLoading = true;
-                http.post('/api/job-card/' + this.$route.params.id + '/approve', {}).then((response) => {
+                http.post('/api/parts/' + this.$route.params.id + '/approve', this.requisition).then((response) => {
                     alert2(this.$root, [response.message], 'success');
                     this.$root.isLoading = false;
                     window._router.push({ path: '/job-card' });
@@ -321,7 +225,7 @@
 
             disapprove() {
                 this.$root.isLoading = true;
-                http.post('/api/job-card/' + this.$route.params.id + '/disapprove', {}).then((response) => {
+                http.post('/api/parts/' + this.$route.params.id + '/disapprove', this.requisition).then((response) => {
                     alert2(this.$root, [response.message], 'success');
                     this.$root.isLoading = false;
                     window._router.push({ path: '/job-card' });

@@ -27,9 +27,24 @@ class SettingsController extends Controller
                 'idUserDict', 'cFieldName', 'cFieldDescription'
             ]);
 
+        $warehouseTransferBatches = DB::table('_etblWhseTransferBatches')
+            ->select([
+                'idWhseTransferBatch', 'cBatchNo', 'cBatchDescription'
+            ])
+            ->get();
+
+        $warehouses = DB::table('WhseMst')
+            ->where('WhseLink', '<>', 1)
+            ->select([
+                'WhseLink', 'Code', 'Name'
+            ])
+            ->get();
+
         $itemGroups = DB::table('GrpTbl')->select(['idGrpTbl', 'StGroup'])->get();
 
         return view('admin.settings_common')
+            ->with('warehouseBatches', $warehouseTransferBatches)
+            ->with('warehouses', $warehouses)
             ->with('stkItemGroups', $itemGroups)
             ->with('stkItemColumns', $stkItemColumns)
             ->with('pageTitle', $pageTitle);

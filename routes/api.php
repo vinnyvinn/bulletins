@@ -45,10 +45,10 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('module-udfs/{module}', 'UDFController@moduleUdf')->name('module-udfs');
     Route::get('download-doc/{file}', 'UDFController@download')->name('download');
 
-
     Route::resource('job-card', '\SmoDav\Controllers\API\JobCardController');
     Route::post('job-card/{id}/approve', '\SmoDav\Controllers\API\JobCardController@approveJobCard');
     Route::post('job-card/{id}/disapprove', '\SmoDav\Controllers\API\JobCardController@disapproveJobCard');
     Route::resource('parts', '\SmoDav\Controllers\API\PartsController');
+    Route::post('parts/{id}/approve', '\SmoDav\Controllers\API\PartsController@approve');
+    Route::post('parts/{id}/disapprove', '\SmoDav\Controllers\API\PartsController@disapprove');
 });
-

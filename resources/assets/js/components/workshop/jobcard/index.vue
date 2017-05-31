@@ -33,16 +33,16 @@
                                         </thead>
 
                                         <tbody>
-                                        <tr v-for="(card, index) in pending">
+                                        <tr v-for="(card, index) in pendingCards">
                                             <td>{{ index + 1 }}</td>
-                                            <td><a @click.prevent="view(card)">JC-{{ card.id }}</a></td>
+                                            <td><a @click.prevent="viewCard(card.id)">JC-{{ card.id }}</a></td>
                                             <td>{{ card.vehicle_number }}</td>
                                             <td>{{ card.type.name }}</td>
                                             <td>{{ card.job_description }}</td>
                                             <td>{{ formatDate(card.created_at) }}</td>
                                             <td>{{ formatDate(card.expected_completion) }}</td>
                                             <td class="text-center">
-                                                <span @click="edit(card)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
+                                                <span @click="editCard(card.id)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
                                                 <button data-toggle="popover" :data-item="card.id" class="btn btn-xs btn-danger btn-destroy"><i class="fa fa-trash"></i></button>
                                             </td>
                                         </tr>
@@ -57,6 +57,97 @@
                                             <th>Description</th>
                                             <th>Created On</th>
                                             <th>Expected Completion</th>
+                                            <th></th>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-warning">
+                            <div class="panel-heading text-center">
+                                <strong>Parts Requisitions Not Approved</strong>
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table datatable nowrap">
+                                        <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Requisition #</th>
+                                            <th>Card #</th>
+                                            <th>Vehicle</th>
+                                            <th>Requested On</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody>
+                                        <tr v-for="(item, index) in pendingRequisitions">
+                                            <td>{{ index + 1 }}</td>
+                                            <td><a @click.prevent="viewRequisition(item.id)">PR-{{ item.id }}</a></td>
+                                            <td><a @click.prevent="viewCard(item.job_card_id)">JC-{{ item.job_card_id }}</a></td>
+                                            <td>{{ item.job_card.vehicle_number }}</td>
+                                            <td>{{ formatDate(item.created_at) }}</td>
+                                            <td class="text-center">
+                                                <span @click="editRequisition(item.id)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
+                                                <button data-toggle="popover" :data-item="item.id" class="btn btn-xs btn-danger btn-destroy"><i class="fa fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+
+                                        <tfoot>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Requisition #</th>
+                                            <th>Card #</th>
+                                            <th>Vehicle</th>
+                                            <th>Requested On</th>
+                                            <th></th>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-success">
+                            <div class="panel-heading text-center">
+                                <strong>Issued Parts Requisitions</strong>
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table datatable nowrap">
+                                        <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Requisition #</th>
+                                            <th>Card #</th>
+                                            <th>Vehicle</th>
+                                            <th>Requested On</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody>
+                                        <tr v-for="(item, index) in issuedRequisitions">
+                                            <td>{{ index + 1 }}</td>
+                                            <td><a @click.prevent="viewRequisition(item.id)">PR-{{ item.id }}</a></td>
+                                            <td><a @click.prevent="viewCard(item.job_card_id)">JC-{{ item.job_card_id }}</a></td>
+                                            <td>{{ item.job_card.vehicle_number }}</td>
+                                            <td>{{ formatDate(item.created_at) }}</td>
+                                            <td class="text-center"></td>
+                                        </tr>
+                                        </tbody>
+
+                                        <tfoot>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Requisition #</th>
+                                            <th>Card #</th>
+                                            <th>Vehicle</th>
+                                            <th>Requested On</th>
                                             <th></th>
                                         </tr>
                                         </tfoot>
@@ -88,17 +179,16 @@
                                         </thead>
 
                                         <tbody>
-                                        <tr v-for="(card, index) in open">
+                                        <tr v-for="(card, index) in openCards">
                                             <td>{{ index + 1 }}</td>
-                                            <td><a @click.prevent="view(card)">JC-{{ card.id }}</a></td>
+                                            <td><a @click.prevent="viewCard(card.id)">JC-{{ card.id }}</a></td>
                                             <td>{{ card.vehicle_number }}</td>
                                             <td>{{ card.type.name }}</td>
                                             <td>{{ card.job_description }}</td>
                                             <td>{{ formatDate(card.created_at) }}</td>
                                             <td>{{ formatDate(card.expected_completion) }}</td>
                                             <td class="text-center">
-                                                <span @click="edit(card)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
-                                                <button data-toggle="popover" :data-item="card.id" class="btn btn-xs btn-danger btn-destroy"><i class="fa fa-trash"></i></button>
+                                                <span @click="editCard(card.id)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -119,6 +209,53 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="panel panel-info">
+                            <div class="panel-heading text-center">
+                                <strong>Parts Requisitions Approved, Not Issued</strong>
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table datatable nowrap">
+                                        <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Requisition #</th>
+                                            <th>Card #</th>
+                                            <th>Vehicle</th>
+                                            <th>Requested On</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody>
+                                        <tr v-for="(item, index) in approvedRequisitions">
+                                            <td>{{ index + 1 }}</td>
+                                            <td><a @click.prevent="viewRequisition(item.id)">PR-{{ item.id }}</a></td>
+                                            <td><a @click.prevent="viewCard(item.job_card_id)">JC-{{ item.job_card_id }}</a></td>
+                                            <td>{{ item.job_card.vehicle_number }}</td>
+                                            <td>{{ formatDate(item.created_at) }}</td>
+                                            <td class="text-center">
+                                                <span @click="editRequisition(item.id)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+
+                                        <tfoot>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Requisition #</th>
+                                            <th>Card #</th>
+                                            <th>Vehicle</th>
+                                            <th>Requested On</th>
+                                            <th></th>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -132,6 +269,7 @@
         created() {
             http.get('/api/job-card').then(response => {
                 this.cards = response.cards;
+                this.requisitions = response.requisitions;
                 confirm2('.btn-destroy', (element) => {
                     this.destroy(element.dataset.item);
                 });
@@ -141,16 +279,27 @@
         data() {
             return {
                 cards: [],
+                requisitions: [],
             };
         },
 
         computed: {
-            pending() {
+            pendingCards() {
                 return this.cards.filter(card => card.status == "Pending Approval");
             },
-            open() {
+            openCards() {
                 return this.cards.filter(card => card.status == "Approved");
             },
+            pendingRequisitions() {
+                return this.requisitions.filter(item => item.status == "Pending Approval");
+            },
+            approvedRequisitions() {
+                return this.requisitions.filter(item => item.status == "Approved");
+            },
+            issuedRequisitions() {
+                return this.requisitions.filter(item => item.status == "Issued");
+            },
+
         },
 
         methods: {
@@ -164,16 +313,21 @@
                 return day + ' ' + month + ' ' + date.getFullYear();
             },
 
-            edit(record) {
-                window._router.push({path: '/job-card/' + record.id + '/edit'})
+            editCard(record) {
+                window._router.push({path: '/job-card/' + record + '/edit'})
             },
 
-            view(record) {
-                window._router.push({ path: '/job-card/' + record.id })
+            viewCard(record) {
+                window._router.push({ path: '/job-card/' + record })
             },
 
+            editRequisition(record) {
+                window._router.push({path: '/parts/' + record + '/edit'})
+            },
 
-
+            viewRequisition(record) {
+                window._router.push({ path: '/parts/' + record })
+            },
 
             destroy(id) {
                 this.$root.isLoading = true;
