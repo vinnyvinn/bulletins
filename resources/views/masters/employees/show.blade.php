@@ -1,7 +1,7 @@
 @extends('admin.layout')
 
 @section('title')
-    {{ ucwords($type) }} Master
+    DRIVERS
 @endsection
 
 @section('page-css')
@@ -12,18 +12,56 @@
 
     <section class="content-header">
         <h1>
-            {{ ucwords($type) }} Master
+            DRIVERS
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-            <li class="active">{{ ucwords($type) }} Master</li>
+            <li class="active">{{ $driver->first_name }}</li>
         </ol>
     </section>
 
     <!-- Main content -->
     <section class="content">
         <!-- Info boxes -->
-        <driver-form></driver-form>
+        <div class="container">
+            <div class="col-md-8 col-md-offset-1">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <a href="{{ route('super.employee.index') }}"><button type="button" name="button" class="btn btn-primary btn-xs">Back</button></a>
+                  <strong>{{ $driver->first_name }} {{ $driver->last_name }}</strong>
+                </div>
+
+              <div class="panel-body">
+                  <div class="row">
+                      <div class="col-sm-6">
+                          <h5><strong>First Name</strong></h5>
+                          {{ $driver->first_name }}
+                          <hr>
+
+                          <h5><strong>Last Name</strong></h5>
+                          {{ $driver->last_name }}
+                          <hr>
+
+                          <h5><strong>{{ $driver->identification_type }}</strong></h5>
+                          {{ $driver->identification_number }}
+                          <hr>
+                      </div>
+                      <div class="col-sm-6">
+                          <h5><strong>Driving License</strong></h5>
+                          {{ $driver->dl_number }}
+                          <hr>
+
+                          <h5><strong>Mobile</strong></h5>
+                          {{ $driver->mobile_phone }}
+                          <hr>
+                      </div>
+                  </div>
+
+                  <show-udfs module="Drivers" :state="{{ $driver }}"></show-udfs>
+              </div>
+            </div>
+          </div>
+        </div>
         <!-- /.row -->
     </section><!-- /.content -->
 
@@ -33,23 +71,5 @@
 
 
 @section('page-js')
-    <script src="{{ asset('assets/admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('assets/admin/plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
-    <script>
-        $('#jDataTable').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: '{{ route('super.employee.show', $type) }}',
-            columns: [
-                { data: 'first_name', name: 'first_name' },
-                { data: 'last_name', name: 'last_name' },
-                { data: 'mobile_phone', name: 'mobile_phone' },
-                { data: 'identification_type', name: 'identification_type' },
-                { data: 'identification_number', name: 'identification_number' },
-                { data: 'email', name: 'email' },
-                { data: 'created_at', name: 'created_at' },
-                { data: 'actions', name: 'actions' },
-            ]
-        });
-    </script>
+
 @endsection

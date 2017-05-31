@@ -29,8 +29,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <strong>Edit Driver</strong>
-                        </div>
-                        {{$driver}}
+                        </div>                        
                         <div class="panel-body">
                             <form action="{{ route('super.employee.update', ['id'=>$driver->id]) }}" id="form" role="form" method="POST" enctype="multipart/form-data">
                                 {{method_field('patch')}}

@@ -58,6 +58,8 @@ class EmployeeController extends Controller
      */
     public function show($id)
     {
+
+      // return view('masters.employees.show', ['driver', Driver::findOrFail($id)]);
         switch ($id) {
             case 'drivers':
                 return $this->getTableData(Constants::DRIVER);
@@ -71,6 +73,7 @@ class EmployeeController extends Controller
             default:
                 break;
         }
+        return view('masters.employees.show', ['driver'=>Driver::findOrFail($id)]);
     }
 
     public function edit($id)
@@ -85,7 +88,23 @@ class EmployeeController extends Controller
     {
         //
         $driver = Driver::findOrFail($id);
-        $driver->update($request->all());
+        $driver->fill($request->all());
+
+        foreach ($request->all() as $key => $item) {
+            if ($key == '_token' || $key == '_method' || $key == 'updated_at' || $key == 'deleted_at') {
+                continue;
+            }
+            $driver->{$key} = $item;
+
+            if ($request->hasFile($key)) {
+                $extension = $request->file($key)->getClientOriginalExtension();
+                $filename = time().".".$extension;
+                $request->file($key)->move(public_path('uploads'), $filename);
+                $driver->{$key} = $filename;
+            }
+          }
+
+        $driver->save();
 
         session()->flash('flash_message', 'Driver successfully updated.');
         session()->flash('flash_status', 'success');
@@ -96,6 +115,12 @@ class EmployeeController extends Controller
     public function destroy($id)
     {
         //
+        $driver = Driver::findOrFail($id)->delete();
+
+        session()->flash('flash_message', 'Driver successfully deleted.');
+        session()->flash('flash_status', 'success');
+
+        return redirect()->route('super.employee.index');
 
     }
 
@@ -114,14 +139,14 @@ class EmployeeController extends Controller
                 $results = WorkshopEmployee::select($fields);
                 break;
         }
-
         return Datatables::of($results)
             ->addColumn('actions', function ($result) {
                 return
                 '<a href="' . route('super.employee.show', $result->id) .
                     '" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
                     <a href="' . route('super.employee.edit', $result->id) .
-                        '" class="btn btn-xs btn-success"><i class="fa fa-pencil"></i></a>';
+                        '" class="btn btn-xs btn-success"><i class="fa fa-pencil"></i></a>
+                            ';
             })
             ->editColumn('created_at', function ($result) {
                 return Carbon::parse($result->created_at)->format('d F Y');

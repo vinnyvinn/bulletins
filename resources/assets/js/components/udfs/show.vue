@@ -19,7 +19,7 @@
 
       <div v-if="field.datatype == 'Date'" class="">
         <div class="col-md-6">
-          <strong>{{ field.fieldname }}</strong>          
+          <strong>{{ field.fieldname }}</strong>
           <h5 v-if="field.value">{{ processTime(field.value) }}</h5>
           <h5 v-else>No date</h5>
         </div>
@@ -27,9 +27,7 @@
 
       <div v-else-if="field.datatype == 'Short Text'" class="">
         <div class="col-md-6">
-          <strong>{{ field.fieldname }}</strong>
-        </div>
-        <div class="col-md-6">
+          <strong>{{ field.fieldname }}</strong>        
           <p>{{ field.value }}</p>
         </div>
       </div>
@@ -38,9 +36,8 @@
 
         <div class="col-md-6">
           <strong>{{ field.fieldname }}</strong>
-        </div>
-        <div class="col-md-6">
-          <p>{{ field.value }}</p>
+          <p v-if="field.value">{{ field.value }}</p>
+          <p v-else>---</i></p>
         </div>
 
       </div>

@@ -28356,9 +28356,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -28841,7 +28838,7 @@ function mapToFormData(main, addons) {
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 156 */
@@ -46548,13 +46545,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "col-md-6"
     }, [_c('strong', [_vm._v(_vm._s(field.fieldname))]), _vm._v(" "), (field.value) ? _c('h5', [_vm._v(_vm._s(_vm.processTime(field.value)))]) : _c('h5', [_vm._v("No date")])])]) : (field.datatype == 'Short Text') ? _c('div', {}, [_c('div', {
       staticClass: "col-md-6"
-    }, [_c('strong', [_vm._v(_vm._s(field.fieldname))])]), _vm._v(" "), _c('div', {
+    }, [_c('strong', [_vm._v(_vm._s(field.fieldname))]), _vm._v(" "), _c('p', [_vm._v(_vm._s(field.value))])])]) : (field.datatype == 'Long Text') ? _c('div', {}, [_c('div', {
       staticClass: "col-md-6"
-    }, [_c('p', [_vm._v(_vm._s(field.value))])])]) : (field.datatype == 'Long Text') ? _c('div', {}, [_c('div', {
-      staticClass: "col-md-6"
-    }, [_c('strong', [_vm._v(_vm._s(field.fieldname))])]), _vm._v(" "), _c('div', {
-      staticClass: "col-md-6"
-    }, [_c('p', [_vm._v(_vm._s(field.value))])])]) : _vm._e()])
+    }, [_c('strong', [_vm._v(_vm._s(field.fieldname))]), _vm._v(" "), (field.value) ? _c('p', [_vm._v(_vm._s(field.value))]) : _c('p', [_vm._v("---")])])]) : _vm._e()])
   }))
 },staticRenderFns: []}
 module.exports.render._withStripped = true
