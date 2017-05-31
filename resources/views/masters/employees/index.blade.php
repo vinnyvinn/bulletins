@@ -67,7 +67,7 @@
         $('#jDataTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: '{{ route('super.employee.show', $type) }}',
+            ajax: '{{ route('super.employee.show', $type) }}',                      
             columns: [
                 { data: 'first_name', name: 'first_name' },
                 { data: 'last_name', name: 'last_name' },

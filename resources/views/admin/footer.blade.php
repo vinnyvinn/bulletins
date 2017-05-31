@@ -14,6 +14,8 @@
 
 </div><!-- ./wrapper -->
 
+    <!-- main app js -->
+    <script src="{{ asset('js/app.js') }}"></script>
 
     <!-- jQuery 2.1.4 -->
     <script src="{{ asset('assets/admin/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
@@ -32,15 +34,11 @@
     <script src="{{ asset('assets/admin/plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
 
 
+
     @yield('page-js')
 
 
-    <!-- ChartJS 1.0.1 -->
-    <script src="{{ asset('assets/admin/plugins/chartjs/Chart.min.js') }}"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    {{--<script src="{{ asset('assets/admin/dist/js/pages/dashboard2.js') }}"></script>--}}
-    <!-- AdminLTE for demo purposes -->
-    {{--<script src="{{ asset('assets/admin/dist/js/demo.js') }}"></script>--}}
+
     <script>
        $('#alert-head').delay(5000).slideUp();
        new Clipboard('.clipboard');

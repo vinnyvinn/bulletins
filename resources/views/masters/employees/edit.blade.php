@@ -22,9 +22,65 @@
 
     <!-- Main content -->
     <section class="content">
-        <!-- Info boxes -->
-        <driver-form></driver-form>
-        <!-- /.row -->
+        <!-- Edit form -->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <strong>Edit Driver</strong>
+                        </div>
+                        {{$driver}}
+                        <div class="panel-body">
+                            <form action="{{ route('super.employee.update', ['id'=>$driver->id]) }}" id="form" role="form" method="POST" enctype="multipart/form-data">
+                                {{method_field('patch')}}
+                                  {{ csrf_field() }}
+                                <div class="form-group">
+                                    <label for="first_name">First Name</label>
+                                    <input value="{{ $driver->first_name }}" type="text" class="form-control" id="first_name" name="first_name" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="last_name">Last Name</label>
+                                    <input value="{{ $driver->last_name }}" type="text" class="form-control" id="last_name" name="last_name" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="identification_type">Identification Type</label>
+                                    <select value="{{ $driver->identification_type }}" class="form-control" id="identification_type" name="identification_type" required>
+                                        <option value="National ID">National ID</option>
+                                        <option value="Passport">Passport</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="identification_number">National ID</label>
+                                    <input value="{{ $driver->identification_number }}" type="text" class="form-control" id="identification_number" name="identification_number" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="dl_number">Drivers License Number</label>
+                                    <input value="{{ $driver->dl_number }}" type="text" class="form-control text-uppercase" id="dl_number" name="dl_number">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="mobile_phone">Mobile Number</label>
+                                    <input value="{{ $driver->mobile_phone }}" type="text" class="form-control" id="mobile_phone" name="mobile_phone">
+                                </div>
+
+                                <udf module="Drivers" :state="{{ $driver }}" :uploads="[]"></udf>
+
+
+                                <div class="form-group">
+                                    <button class="btn btn-success">Save</button>
+                                    <router-link to="/drivers" class="btn btn-danger">Back</router-link>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section><!-- /.content -->
 
 

@@ -19,8 +19,7 @@
 
       <div v-if="field.datatype == 'Date'" class="">
         <div class="col-md-6">
-          <strong>{{ field.fieldname }}</strong>
-          {{ processTime(field.value) }}
+          <strong>{{ field.fieldname }}</strong>          
           <h5 v-if="field.value">{{ processTime(field.value) }}</h5>
           <h5 v-else>No date</h5>
         </div>

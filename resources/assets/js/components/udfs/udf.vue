@@ -47,7 +47,7 @@
       <div v-else-if="udf.input_type === 'Image'" class="form-group">
         <label :for="udf.slug">{{ udf.name }}</label>
         <input type="file"
-        class="form-control image"        
+        class="form-control image"
         :id="udf.slug"
         :name="udf.slug">
       </div>
@@ -58,8 +58,8 @@
 
       <div v-else-if="udf.input_type === 'Date'" class="form-group">
         <label :for="udf.slug">{{ udf.name }}</label>
-        <input type="date"
-        class="form-control"
+        <input type="text"
+        class="datepicker form-control"
         :id="udf.slug"
         :name="udf.slug"
         :placeholder="udf.name"
@@ -112,6 +112,7 @@ export default {
     },
     getUdfs () {
         http.get('/api/module-udfs/' + this.module).then(response => {
+          
             response.forEach((udf) => {
               this.updateState(udf);
             });

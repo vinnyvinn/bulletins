@@ -11,6 +11,7 @@ use SmoDav\Engine\PassportRepository;
 use SmoDav\Models\WorkshopEmployee;
 use SmoDav\Support\Constants;
 use Yajra\Datatables\Facades\Datatables;
+use App\UDF;
 
 class EmployeeController extends Controller
 {
@@ -74,18 +75,28 @@ class EmployeeController extends Controller
 
     public function edit($id)
     {
+        $employee = WorkshopEmployee::findOrFail($id);
         return view('masters.employees.edit')
-            ->with('type', request('t', 'employees'));
+            ->with('type', request('t', 'employees'))
+            ->with('driver', Driver::findOrFail($id));
     }
 
     public function update(Request $request, $id)
     {
         //
+        $driver = Driver::findOrFail($id);
+        $driver->update($request->all());
+
+        session()->flash('flash_message', 'Driver successfully updated.');
+        session()->flash('flash_status', 'success');
+
+        return redirect()->route('super.employee.index');
     }
 
     public function destroy($id)
     {
         //
+
     }
 
     private function getTableData($type = null)
@@ -106,8 +117,11 @@ class EmployeeController extends Controller
 
         return Datatables::of($results)
             ->addColumn('actions', function ($result) {
-                return '<a href="' . route('super.employee.show', $result->id) .
-                    '" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>';
+                return
+                '<a href="' . route('super.employee.show', $result->id) .
+                    '" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
+                    <a href="' . route('super.employee.edit', $result->id) .
+                        '" class="btn btn-xs btn-success"><i class="fa fa-pencil"></i></a>';
             })
             ->editColumn('created_at', function ($result) {
                 return Carbon::parse($result->created_at)->format('d F Y');
