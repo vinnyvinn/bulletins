@@ -68,7 +68,8 @@
                                 </div>
                             </div>
 
-                            <udf module="Contracts" v-on:udfAdded="addUdfToObject" :state="contract"></udf>
+                            <udf module="Contracts" :state="contract" :uploads="uploads"></udf>
+
 
                             <div class="form-group">
                                 <button class="btn btn-success">Save</button>
@@ -101,6 +102,7 @@
             return {
                 clients: [],
                 routes: [],
+                uploads: [],
                 stockItems: [],
                 contract: {
                     name: null,
@@ -155,11 +157,12 @@
 
             store() {
                 let request = null;
+                let data = mapToFormData(this.contract, this.uploads, typeof this.$route.params.id === 'string');
 
                 if (this.$route.params.id) {
-                    request = http.put('/api/contract/' + this.$route.params.id, this.contract);
+                    request = http.put('/api/contract/' + this.$route.params.id, data, true);
                 } else {
-                    request = http.post('/api/contract', this.contract);
+                    request = http.post('/api/contract', data, true);
                 }
 
                 request.then((response) => {
