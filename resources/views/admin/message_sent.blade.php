@@ -67,7 +67,7 @@
                 { data: 'sender_id', name: 'sender_id' },
                 { data: 'subject', name: 'subject' },
                 { data: 'created_at', name: 'created_at' },
-                { data: 'actions', name: 'actions' },
+                { data: 'actions', name: 'actions', searchable: false },
             ]
         });
     </script>

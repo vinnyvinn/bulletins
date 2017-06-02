@@ -66,7 +66,7 @@
                 { data: 'name', name: 'name' },
                 { data: 'job_type', name: 'job_type' },
                 { data: 'created_at', name: 'created_at' },
-                { data: 'actions', name: 'actions' },
+                { data: 'actions', name: 'actions', searchable: false },
             ]
         });
     </script>

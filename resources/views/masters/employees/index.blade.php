@@ -75,7 +75,7 @@
                 { data: 'identification_number', name: 'identification_number' },
                 { data: 'email', name: 'email' },
                 { data: 'created_at', name: 'created_at' },
-                { data: 'actions', name: 'actions' },
+                { data: 'actions', name: 'actions', searchable: false },
             ]
         });
     </script>

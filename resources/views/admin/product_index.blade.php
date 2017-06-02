@@ -74,7 +74,7 @@
                 { data: 'product_model', name: 'product_model' },
                 { data: 'Qty_On_Hand', name: 'Qty_On_Hand', className: 'text-right' },
                 { data: 'AveUCst', name: 'AveUCst', className: 'text-right' },
-                { data: 'actions', name: 'actions' },
+                { data: 'actions', name: 'actions', searchable: false },
             ]
         });
     </script>

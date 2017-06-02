@@ -76,7 +76,7 @@
                 { data: 'total_product', name: 'total_product', className: 'text-right' },
                 { data: 'unite_price', name: 'unite_price', className: 'text-right' },
                 { data: 'created_at', name: 'created_at' },
-                { data: 'actions', name: 'actions' },
+                { data: 'actions', name: 'actions', searchable: false },
             ]
         });
 

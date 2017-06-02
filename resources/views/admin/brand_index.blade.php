@@ -70,7 +70,7 @@
             columns: [
                 { data: 'brand_name', name: 'brand_name' },
                 { data: 'created_at', name: 'created_at' },
-                { data: 'actions', name: 'actions' },
+                { data: 'actions', name: 'actions', searchable: false },
             ]
         });
 

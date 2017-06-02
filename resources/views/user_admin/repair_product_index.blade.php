@@ -73,7 +73,7 @@
                 { data: 'customer_name', name: 'customer_name' },
                 { data: 'created_at', name: 'created_at' },
                 { data: 'product', name: 'product' },
-                { data: 'actions', name: 'actions' },
+                { data: 'actions', name: 'actions', searchable: false },
             ],
         });
     </script>
