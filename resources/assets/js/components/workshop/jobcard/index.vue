@@ -236,7 +236,6 @@
                                             <td>{{ item.job_card.vehicle_number }}</td>
                                             <td>{{ formatDate(item.created_at) }}</td>
                                             <td class="text-center">
-                                                <span @click="editRequisition(item.id)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
                                             </td>
                                         </tr>
                                         </tbody>
