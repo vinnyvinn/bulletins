@@ -9,7 +9,6 @@ class DriverFactory
     public static function create($attributes)
     {
         return Driver::create($attributes);
-
     }
 
     public static function all($columns = ['*'])

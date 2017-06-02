@@ -151,9 +151,11 @@ class DriverController extends Controller
 
         $rows = Excel::prepare($file)
             ->usingHeaders([
-                'name', 'national_id', 'dl_number', 'mobile'
+                'first_name', 'identification_number', 'dl_number', 'mobile_phone'
             ])
             ->includeColumns([
+                'last_name' => '',
+                'identification_type' => 'National ID',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ])
