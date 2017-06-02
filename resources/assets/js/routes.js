@@ -52,6 +52,7 @@ module.exports = [
 
     { path: '/contracts', component: require('./components/contracts/index.vue'), beforeEnter: authMiddleware },
     { path: '/contracts/create', component: require('./components/contracts/form.vue'), beforeEnter: authMiddleware },
+    { path: '/contracts/:id', component: require('./components/contracts/view.vue'), beforeEnter: authMiddleware },
     { path: '/contracts/:id/edit', component: require('./components/contracts/form.vue'), beforeEnter: authMiddleware },
 
     { path: '/allocation', component: require('./components/allocation/index.vue'), beforeEnter: authMiddleware },

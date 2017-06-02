@@ -53,6 +53,10 @@ class ContractController extends Controller
         $data['end_date'] = Carbon::parse(str_replace('/', '-', $data['end_date']))->format('Y-m-d');
         $contract = Contract::create($data);
         foreach ($request->all() as $key => $item) {
+            if ($key == 'start_date' || $key == 'end_date' ||$key == '_token' || $key == '_method' || $key == 'updated_at' ||
+                $key == 'deleted_at') {
+                continue;
+            }
             $contract->{$key} = $item;
             if ($request->hasFile($key)) {
                 $extension = $request->file($key)->getClientOriginalExtension();
@@ -97,6 +101,10 @@ class ContractController extends Controller
         $data = $request->all();
 
         foreach ($request->all() as $key => $item) {
+            if ($key == 'start_date' || $key == 'end_date' ||$key == '_token' || $key == '_method' || $key == 'updated_at' ||
+                $key == 'deleted_at') {
+                continue;
+            }
             $contract->{$key} = $item;
             if ($request->hasFile($key)) {
                 $extension = $request->file($key)->getClientOriginalExtension();
@@ -119,10 +127,17 @@ class ContractController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Contract  $contract
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Contract $contract)
     {
-        //
+        $contract->delete();
+
+        return Response::json([
+            'status' => 'success',
+            'message' => 'Successfully deleted contract.',
+            'contracts' => Contract::with(['client'])->get()
+        ]);
     }
 }
