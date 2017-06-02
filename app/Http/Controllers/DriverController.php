@@ -145,7 +145,7 @@ class DriverController extends Controller
             ]);
         }
 
-        $existingDrivers = Driver::all(['national_id'])->map(function ($driver) {
+        $existingDrivers = Driver::all(['identification_number'])->map(function ($driver) {
             return $driver->national_id;
         })->values()->toArray();
 
