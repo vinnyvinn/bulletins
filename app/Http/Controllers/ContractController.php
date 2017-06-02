@@ -49,19 +49,20 @@ class ContractController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        foreach ($request->all() as $key=>$item) {
-            if ($request->hasFile($key)){
+        $data['start_date'] = Carbon::parse(str_replace('/', '-', $data['start_date']))->format('Y-m-d');
+        $data['end_date'] = Carbon::parse(str_replace('/', '-', $data['end_date']))->format('Y-m-d');
+        $contract = Contract::create($data);
+        foreach ($request->all() as $key => $item) {
+            $contract->{$key} = $item;
+            if ($request->hasFile($key)) {
                 $extension = $request->file($key)->getClientOriginalExtension();
                 $filename = time().".".$extension;
                 $request->file($key)->move(public_path('uploads'), $filename);
-                $data[$key] = $filename;
+                $contract->{$key} = $filename;
             }
         }
 
-        $data['start_date'] = Carbon::parse(str_replace('/', '-', $data['start_date']))->format('Y-m-d');
-        $data['end_date'] = Carbon::parse(str_replace('/', '-', $data['end_date']))->format('Y-m-d');
-        $contract = new Contract();
-        $contract->fill($data)->save();
+        $contract->save();
 
         return Response::json([
             'message' => 'Successfully created new contract ending on ' .
@@ -94,18 +95,20 @@ class ContractController extends Controller
     public function update(Request $request, Contract $contract)
     {
         $data = $request->all();
-        foreach ($request->all() as $key=>$item) {
-            if ($request->hasFile($key)){
+
+        foreach ($request->all() as $key => $item) {
+            $contract->{$key} = $item;
+            if ($request->hasFile($key)) {
                 $extension = $request->file($key)->getClientOriginalExtension();
                 $filename = time().".".$extension;
                 $request->file($key)->move(public_path('uploads'), $filename);
-                $data[$key] = $filename;
+                $contract->{$key} = $filename;
             }
         }
-        $data['start_date'] = Carbon::parse(str_replace('/', '-', $data['start_date']))->format('Y-m-d');
-        $data['end_date'] = Carbon::parse(str_replace('/', '-', $data['end_date']))->format('Y-m-d');
 
-        $contract->fill($data)->save();
+        $contract->start_date = Carbon::parse(str_replace('/', '-', $data['start_date']))->format('Y-m-d');
+        $contract->end_date = Carbon::parse(str_replace('/', '-', $data['end_date']))->format('Y-m-d');
+        $contract->save();
 
         return Response::json([
             'message' => 'Successfully updated contract.'
