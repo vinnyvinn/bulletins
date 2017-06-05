@@ -12,7 +12,7 @@
 
       <div v-else-if="field.datatype == 'Document'" class="">
         <div class="col-md-6">
-          <a :href="imageSource(field.value)"><button type="button" name="button" class="btn btn-sm btn-primary">View document</button></a>
+          <a target="_blank" :href="imageSource(field.value)"><button type="button" name="button" class="btn btn-sm btn-primary">View document</button></a>
           <p>{{ field.fieldname }}</p>
         </div>
       </div>
@@ -37,7 +37,7 @@
         <div class="col-md-6">
           <strong>{{ field.fieldname }}</strong>
           <p v-if="field.value">{{ field.value }}</p>
-          <p v-else>---</i></p>
+          <p v-else>---</p>
         </div>
 
       </div>

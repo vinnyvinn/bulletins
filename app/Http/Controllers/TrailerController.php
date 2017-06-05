@@ -106,7 +106,7 @@ class TrailerController extends Controller
         $data = $request->all();
         foreach ($request->all() as $key => $item) {
             $data[$key] = $item;
-            
+
             if ($request->hasFile($key)) {
                 $extension = $request->file($key)->getClientOriginalExtension();
                 $filename = time().".".$extension;
