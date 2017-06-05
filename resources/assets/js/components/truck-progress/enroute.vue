@@ -22,7 +22,7 @@
                                     <h5><strong>Delivery To: </strong> {{ trip.contract.client.Name }}</h5>
                                 </div>
                                 <div class="col-sm-4">
-                                    <h5><strong>Driver: </strong> {{ trip.driver.name }}</h5>
+                                    <h5><strong>Driver: </strong> {{ trip.driver.first_name }} {{ trip.driver.last_name }}</h5>
                                     <h5><strong>Vehicle Number: </strong> {{ trip.truck.plate_number }}</h5>
                                     <h5><strong>Trailer Number: </strong> {{ trip.truck.trailer.trailer_number }}</h5>
                                 </div>
