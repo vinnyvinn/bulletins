@@ -10,7 +10,7 @@ class Truck extends Model
 {
     use SoftDeletes;
 
-    protected $guarded = [
+    protected $fillable = [
         'plate_number', 'make', 'model', 'max_load', 'status', 'location', 'driver_id', 'contract_id', 'trailer_id',
         'project_id'
     ];
