@@ -113,7 +113,14 @@ class TruckFactory
             }
         }
 
-        $truck->update($attributes);
+        unset($attributes['_method'], $attributes['_token'], $attributes['driver']);
+
+        foreach ($attributes as $key => $value) {
+            $truck->{$key} = $value;
+        }
+
+        $truck->save();
+
 
         DB::table('Project')->where('ProjectLink', $truck->project_id)->update(self::mapSAGEFields($attributes));
 

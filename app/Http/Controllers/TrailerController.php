@@ -47,15 +47,19 @@ class TrailerController extends Controller
     public function store(TrailerRequest $request)
     {
         $data = $request->all();
-        foreach ($request->all() as $key=>$item) {
-            if ($request->hasFile($key)){
+        foreach ($request->all() as $key => $item) {
+            $data[$key] = $item;
+            if ($request->hasFile($key)) {
                 $extension = $request->file($key)->getClientOriginalExtension();
                 $filename = time().".".$extension;
                 $request->file($key)->move(public_path('uploads'), $filename);
                 $data[$key] = $filename;
             }
         }
-        Trailer::create($request->all());
+
+        unset($data['_method'], $data['_token']);
+
+        Trailer::create($data);
 
         return Response::json([
             'status' => 'success',
@@ -100,14 +104,18 @@ class TrailerController extends Controller
     public function update(TrailerRequest $request, Trailer $trailer)
     {
         $data = $request->all();
-        foreach ($request->all() as $key=>$item) {
-            if ($request->hasFile($key)){
+        foreach ($request->all() as $key => $item) {
+            $data[$key] = $item;
+            
+            if ($request->hasFile($key)) {
                 $extension = $request->file($key)->getClientOriginalExtension();
                 $filename = time().".".$extension;
                 $request->file($key)->move(public_path('uploads'), $filename);
                 $data[$key] = $filename;
             }
         }
+        unset($data['_method'], $data['_token']);
+
         $trailer->update($data);
 
         return Response::json([
