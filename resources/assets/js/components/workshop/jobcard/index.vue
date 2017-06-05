@@ -65,102 +65,9 @@
                             </div>
                         </div>
 
-                        <div class="panel panel-warning">
-                            <div class="panel-heading text-center">
-                                <strong>Parts Requisitions Not Approved</strong>
-                            </div>
-                            <div class="panel-body">
-                                <div class="table-responsive">
-                                    <table class="table datatable nowrap">
-                                        <thead>
-                                        <tr>
-                                            <th>No.</th>
-                                            <th>Requisition #</th>
-                                            <th>Card #</th>
-                                            <th>Vehicle</th>
-                                            <th>Requested On</th>
-                                            <th></th>
-                                        </tr>
-                                        </thead>
-
-                                        <tbody>
-                                        <tr v-for="(item, index) in pendingRequisitions">
-                                            <td>{{ index + 1 }}</td>
-                                            <td><a @click.prevent="viewRequisition(item.id)">PR-{{ item.id }}</a></td>
-                                            <td><a @click.prevent="viewCard(item.job_card_id)">JC-{{ item.job_card_id }}</a></td>
-                                            <td>{{ item.job_card.vehicle_number }}</td>
-                                            <td>{{ formatDate(item.created_at) }}</td>
-                                            <td class="text-center">
-                                                <span @click="editRequisition(item.id)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
-                                                <button data-toggle="popover" :data-item="item.id" class="btn btn-xs btn-danger btn-destroy"><i class="fa fa-trash"></i></button>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-
-                                        <tfoot>
-                                        <tr>
-                                            <th>No.</th>
-                                            <th>Requisition #</th>
-                                            <th>Card #</th>
-                                            <th>Vehicle</th>
-                                            <th>Requested On</th>
-                                            <th></th>
-                                        </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="panel panel-success">
                             <div class="panel-heading text-center">
-                                <strong>Issued Parts Requisitions</strong>
-                            </div>
-                            <div class="panel-body">
-                                <div class="table-responsive">
-                                    <table class="table datatable nowrap">
-                                        <thead>
-                                        <tr>
-                                            <th>No.</th>
-                                            <th>Requisition #</th>
-                                            <th>Card #</th>
-                                            <th>Vehicle</th>
-                                            <th>Requested On</th>
-                                            <th></th>
-                                        </tr>
-                                        </thead>
-
-                                        <tbody>
-                                        <tr v-for="(item, index) in issuedRequisitions">
-                                            <td>{{ index + 1 }}</td>
-                                            <td><a @click.prevent="viewRequisition(item.id)">PR-{{ item.id }}</a></td>
-                                            <td><a @click.prevent="viewCard(item.job_card_id)">JC-{{ item.job_card_id }}</a></td>
-                                            <td>{{ item.job_card.vehicle_number }}</td>
-                                            <td>{{ formatDate(item.created_at) }}</td>
-                                            <td class="text-center"></td>
-                                        </tr>
-                                        </tbody>
-
-                                        <tfoot>
-                                        <tr>
-                                            <th>No.</th>
-                                            <th>Requisition #</th>
-                                            <th>Card #</th>
-                                            <th>Vehicle</th>
-                                            <th>Requested On</th>
-                                            <th></th>
-                                        </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-6">
-                        <div class="panel panel-info">
-                            <div class="panel-heading text-center">
-                                <strong>Open Job Cards</strong>
+                                <strong>Closed Job Cards</strong>
                             </div>
                             <div class="panel-body">
                                 <div class="table-responsive">
@@ -179,7 +86,7 @@
                                         </thead>
 
                                         <tbody>
-                                        <tr v-for="(card, index) in openCards">
+                                        <tr v-for="(card, index) in closedJobCards">
                                             <td>{{ index + 1 }}</td>
                                             <td><a @click.prevent="viewCard(card.id)">JC-{{ card.id }}</a></td>
                                             <td>{{ card.vehicle_number }}</td>
@@ -188,7 +95,6 @@
                                             <td>{{ formatDate(card.created_at) }}</td>
                                             <td>{{ formatDate(card.expected_completion) }}</td>
                                             <td class="text-center">
-                                                <span @click="editCard(card.id)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -300,6 +206,151 @@
                         </div>
 
                     </div>
+
+                    <div class="col-sm-6">
+                        <div class="panel panel-info">
+                            <div class="panel-heading text-center">
+                                <strong>Open Job Cards</strong>
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table datatable nowrap">
+                                        <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Card #</th>
+                                            <th>Vehicle</th>
+                                            <th>Job Type</th>
+                                            <th>Description</th>
+                                            <th>Created On</th>
+                                            <th>Expected Completion</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody>
+                                        <tr v-for="(card, index) in openCards">
+                                            <td>{{ index + 1 }}</td>
+                                            <td><a @click.prevent="viewCard(card.id)">JC-{{ card.id }}</a></td>
+                                            <td>{{ card.vehicle_number }}</td>
+                                            <td>{{ card.type.name }}</td>
+                                            <td>{{ card.job_description }}</td>
+                                            <td>{{ formatDate(card.created_at) }}</td>
+                                            <td>{{ formatDate(card.expected_completion) }}</td>
+                                            <td class="text-center">
+                                                <span @click="editCard(card.id)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+
+                                        <tfoot>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Card #</th>
+                                            <th>Vehicle</th>
+                                            <th>Job Type</th>
+                                            <th>Description</th>
+                                            <th>Created On</th>
+                                            <th>Expected Completion</th>
+                                            <th></th>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-warning">
+                            <div class="panel-heading text-center">
+                                <strong>Parts Requisitions Not Approved</strong>
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table datatable nowrap">
+                                        <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Requisition #</th>
+                                            <th>Card #</th>
+                                            <th>Vehicle</th>
+                                            <th>Requested On</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody>
+                                        <tr v-for="(item, index) in pendingRequisitions">
+                                            <td>{{ index + 1 }}</td>
+                                            <td><a @click.prevent="viewRequisition(item.id)">PR-{{ item.id }}</a></td>
+                                            <td><a @click.prevent="viewCard(item.job_card_id)">JC-{{ item.job_card_id }}</a></td>
+                                            <td>{{ item.job_card.vehicle_number }}</td>
+                                            <td>{{ formatDate(item.created_at) }}</td>
+                                            <td class="text-center">
+                                                <span @click="editRequisition(item.id)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
+                                                <button data-toggle="popover" :data-item="item.id" class="btn btn-xs btn-danger btn-destroy"><i class="fa fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+
+                                        <tfoot>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Requisition #</th>
+                                            <th>Card #</th>
+                                            <th>Vehicle</th>
+                                            <th>Requested On</th>
+                                            <th></th>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-warning">
+                            <div class="panel-heading text-center">
+                                <strong>Issued Parts Requisitions</strong>
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table datatable nowrap">
+                                        <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Requisition #</th>
+                                            <th>Card #</th>
+                                            <th>Vehicle</th>
+                                            <th>Requested On</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody>
+                                        <tr v-for="(item, index) in issuedRequisitions">
+                                            <td>{{ index + 1 }}</td>
+                                            <td><a @click.prevent="viewRequisition(item.id)">PR-{{ item.id }}</a></td>
+                                            <td><a @click.prevent="viewCard(item.job_card_id)">JC-{{ item.job_card_id }}</a></td>
+                                            <td>{{ item.job_card.vehicle_number }}</td>
+                                            <td>{{ formatDate(item.created_at) }}</td>
+                                            <td class="text-center"></td>
+                                        </tr>
+                                        </tbody>
+
+                                        <tfoot>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Requisition #</th>
+                                            <th>Card #</th>
+                                            <th>Vehicle</th>
+                                            <th>Requested On</th>
+                                            <th></th>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -332,6 +383,9 @@
             },
             openCards() {
                 return this.cards.filter(card => card.status == "Approved");
+            },
+            closedJobCards() {
+                return this.cards.filter(card => card.status == "Closed");
             },
             pendingRequisitions() {
                 return this.requisitions.filter(item => item.status == "Pending Approval");

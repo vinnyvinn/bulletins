@@ -177,6 +177,7 @@
                     </div>
 
                     <div class="form-group">
+                        <button v-if="status == 'Approved'" class="btn btn-warning" @click.prevent="closeCard">Close Job Card</button>
                         <span v-if="status == 'Pending Approval'">
                             <button class="btn btn-success" @click.prevent="approve()">Approve Job Card</button>
                             <button class="btn btn-danger" @click.prevent="disapprove()">Disapprove Job Card</button>
@@ -327,6 +328,19 @@
                     window._router.push({ path: '/job-card' });
                 }).catch((error) => {
                     this.$root.isLoading = false;
+                    alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
+                });
+            },
+
+            closeCard() {
+                let request = null;
+                this.card.vehicle_number = this.vehicle.plate_number;
+                request = http.post('/api/job-card/' + this.$route.params.id + '/close', this.card);
+
+                request.then((response) => {
+                    alert2(this.$root, [response.message], 'success');
+                    window._router.push({ path: '/job-card' });
+                }).catch((error) => {
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                 });
             },

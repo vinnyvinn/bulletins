@@ -198,4 +198,16 @@ class JobCardController extends Controller
             'message' => 'Successfully declined job card.'
         ]);
     }
+
+    public function closeCard($id)
+    {
+        JobCard::where('id', $id)->update([
+            'status' => Constants::STATUS_CLOSED
+        ]);
+
+        return Response::json([
+            'success' => 'true',
+            'message' => 'Successfully closed job card.'
+        ]);
+    }
 }

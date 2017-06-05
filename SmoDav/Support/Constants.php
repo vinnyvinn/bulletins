@@ -11,6 +11,7 @@ class Constants
     const EMPLOYEE = 'Employee';
     const WORKSHOP = 'Workshop Employee';
 
+    const STATUS_SAVED = 'Saved';
     const STATUS_PENDING = 'Pending Approval';
     const STATUS_ISSUED = 'Issued';
     const STATUS_APPROVED = 'Approved';

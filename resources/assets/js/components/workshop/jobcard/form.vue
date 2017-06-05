@@ -209,7 +209,8 @@
                     </div>
 
                     <div class="form-group">
-                        <button class="btn btn-success">Save</button>
+                        <!--<button v-if="status == null || status == 'Saved'" class="btn btn-success" @click.prevent="saveProcess">Save</button>-->
+                        <button class="btn btn-success">Process</button>
                         <button v-if="status == 'Approved'" class="btn btn-warning" @click.prevent="closeCard">Close Job Card</button>
                         <router-link to="/job-card" class="btn btn-danger">Back</router-link>
                     </div>
@@ -224,6 +225,7 @@
     export default {
         data() {
             return {
+                status: null,
                 editing: false,
                 vehicles: [],
                 job_types: [],
@@ -368,6 +370,19 @@
                 } else {
                     request = http.post('/api/job-card', this.card);
                 }
+
+                request.then((response) => {
+                    alert2(this.$root, [response.message], 'success');
+                    window._router.push({ path: '/job-card' });
+                }).catch((error) => {
+                    alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
+                });
+            },
+
+            saveProcess() {
+                let request = null;
+                this.card.vehicle_number = this.vehicle.plate_number;
+                request = http.put('/api/job-card/' + this.$route.params.id, this.card);
 
                 request.then((response) => {
                     alert2(this.$root, [response.message], 'success');
