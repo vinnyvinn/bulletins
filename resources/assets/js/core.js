@@ -50,6 +50,11 @@ export class http {
                 return response.json();
             }
 
+            if (response.status == 401) {
+                logout();
+                return false;
+            }
+
             return response.json().then((err) => {
                 let errors = flatten(Object.values(err));
 
@@ -85,6 +90,11 @@ export class http {
                     return response.json();
                 }
 
+                if (response.status == 401) {
+                    logout();
+                    return false;
+                }
+
                 return response.json().then((err) => {
                     let errors = flatten(Object.values(err));
 
@@ -116,6 +126,11 @@ export class http {
                     return response.json();
                 }
 
+                if (response.status == 401) {
+                    logout();
+                    return false;
+                }
+
                 return response.json().then((err) => {
                     let errors = flatten(Object.values(err));
 
@@ -123,6 +138,12 @@ export class http {
                 });
             })
     }
+}
+
+function logout() {
+    localStorage.removeItem('foeiwafwfuwe');
+    localStorage.removeItem('fewuia32rfwe');
+    http.post('/logout', {}).then(() => window.location = '/login');
 }
 
 export function showAlert(root, errors, level = 'info') {
