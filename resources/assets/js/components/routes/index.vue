@@ -130,7 +130,7 @@
             destroy(id) {
                 this.$root.isLoading = true;
 
-                http.destroy('api/driver/' + id).then(response => {
+                http.destroy('api/route/' + id).then(response => {
                     if (response.status != 'success') {
                         this.$root.isLoading = false;
                         alert2(this.$root, [response.message], 'danger');

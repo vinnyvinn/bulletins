@@ -14,13 +14,17 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="source">From</label>
-                                        <input v-model="route.source" type="text" class="form-control" id="source" name="source" required>
+                                        <input list="locations" autocomplete="off" v-model="route.source" type="text" class="form-control" id="source" name="source" required>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="destination">To</label>
-                                        <input v-model="route.destination" type="text" class="form-control" id="destination" name="destination" required>
+                                        <input list="locations" autocomplete="off" v-model="route.destination" type="text" class="form-control" id="destination" name="destination" required>
                                     </div>
+
+                                    <datalist id="locations">
+                                        <option v-for="location in locations" :value="location">{{ location }}</option>
+                                    </datalist>
 
                                     <div class="form-group">
                                         <label for="distance">Distance</label>
@@ -65,11 +69,17 @@
 
 <script>
     export default {
+        created() {
+            http.get('/api/route/create').then((response) => {
+                this.locations = response.locations;
+            });
+        },
         mounted() {
             this.checkState();
         },
         data() {
             return {
+                locations: [],
                 route: {
                     source: '',
                     destination: '',
