@@ -17,14 +17,14 @@
 
                             <div class="form-group">
                                 <label for="client_id">Client</label>
-                                <select v-model="contract.client_id" name="client_id" id="client_id" class="form-control" required>
+                                <select v-model="contract.client_id" name="client_id" id="client_id" class="form-control select2" required>
                                     <option v-for="client in clients" :value="client.DCLink">{{ client.Name }} ({{ client.Account }})</option>
                                 </select>
                             </div>
 
                             <div class="form-group">
                                 <label for="rate">Rate</label>
-                                <select v-model="contract.rate" name="rate" id="rate" class="form-control" required>
+                                <select v-model="contract.rate" name="rate" id="rate" class="form-control select2" required>
                                     <option value="Per Hour">Per Hour</option>
                                     <option value="Per KM">Per KM</option>
                                     <option value="Per Tonne">Per Tonne</option>
@@ -33,19 +33,19 @@
 
                             <div class="form-group">
                                 <label for="amount">Price {{ contract.rate }}</label>
-                                <input v-model="contract.amount" type="text" pattern="[0-9\.]+$" class="form-control" id="amount" name="amount" required>
+                                <input v-model="contract.amount" type="number" class="form-control" id="amount" name="amount" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="route_id">Route</label>
-                                <select v-model="contract.route_id" name="route_id" id="route_id" class="form-control" required>
+                                <select v-model="contract.route_id" name="route_id" id="route_id" class="form-control select2" required>
                                     <option v-for="route in routes" :value="route.id">{{ route.source }} - {{ route.destination }} ({{ route.distance }} KM)</option>
                                 </select>
                             </div>
 
                             <div class="form-group">
                                 <label for="stock_item_id">Billable Item</label>
-                                <select v-model="contract.stock_item_id" name="stock_item_id" id="stock_item_id" class="form-control" required>
+                                <select v-model="contract.stock_item_id" name="stock_item_id" id="stock_item_id" class="form-control select2" required>
                                     <option v-for="item in stockItems" :value="item.StockLink">{{ item.Description_1 }}</option>
                                 </select>
                             </div>
@@ -156,7 +156,6 @@
 
                 $('#route_id').select2().on('change', e => this.contract.route_id = e.target.value);
                 $('#stock_item_id').select2().on('change', e => this.contract.stock_item_id = e.target.value);
-                $('#client_id').select2().on('change', e => this.contract.client_id = e.target.value);
             },
 
             store() {

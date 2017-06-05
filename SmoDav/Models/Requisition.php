@@ -2,10 +2,13 @@
 
 namespace SmoDav\Models;
 
+use App\Http\Helpers\Helpers;
 use App\Option;
+use App\StockItem;
 use App\Truck;
 use App\User;
 use Auth;
+use Carbon\Carbon;
 use DB;
 use SmoDav\Support\Constants;
 
@@ -63,20 +66,54 @@ class Requisition extends SmoDavModel
 
         $toInsert = [];
 
-        foreach ($this->lines as $line) {
+        foreach ($this->lines as $index => $line) {
             $toInsert[] = [
                 'iWhseTransferBatchID' => $batchId,
                 'iStockID' => (int) $line->item_id,
                 'iFromWhseID' => 1,
                 'iToWhseID' => $warehouseId,
                 'fQuantity' => (int) $line->issued_quantity,
-                'cReference' => "PR-" . $line->id,
+                'cReference' => "PR-" . $line->id . '-' . $index,
                 'cDescription' => 'Parts Requisition',
                 'iProjectID' => $project,
                 'iUnitsOfMeasureID' => 0
             ];
         }
 
-        DB::table('_etblWhseTransferBatchLines')->insert($toInsert);
+        return DB::table('_etblWhseTransferBatchLines')->insert($toInsert);
+    }
+
+    public function makeJournal($items)
+    {
+        $result = StockItem::select(['StockLink', 'AveUCst', 'iUOMStockingUnitID'])
+            ->whereIn('StockLink', array_keys($items))
+            ->get()
+            ->keyBy('StockLink');
+
+        $jobCard = $this->jobCard;
+        $project = Truck::where('id', $jobCard->vehicle_id)->first();
+        $project = $project ? $project->project_id : 0;
+
+        foreach ($items as $itemId => $quantity) {
+            $details = $result->get($itemId);
+
+            DB::table('_etblInvJrBatchLines')->insert(
+                [
+                    'iInvJrBatchID'     => Helpers::get_option(Option::CONSUMPTION_JOURNAL_BATCH),
+                    'iStockID'          => $itemId,
+                    'iWarehouseID'      => Helpers::get_option(Option::WAREHOUSE_TO_TRANSFER),
+                    'dTrDate'           => Carbon::now(),
+                    'iTrCodeID'         => 37,
+                    'iGLContraID'       => 5,
+                    'cReference'        => 'PR-' . $this->id . '-' .$itemId . time(),
+                    'cDescription'      => 'Consumption for PR-' . $this->id,
+                    'fQtyIn'            => 0,
+                    'fQtyOut'           => $quantity,
+                    'fNewCost'          => $details->AveUCst,
+                    'iProjectID'        => $project,
+                    'cLineNotes'        => '',
+                    'iUnitsOfMeasureId' => $details->iUOMStockingUnitID
+                ]);
+        }
     }
 }

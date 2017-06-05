@@ -3,7 +3,7 @@
       <div class="col-md-6 col-md-offset-3">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <router-link to="/trailers" class="btn btn-danger btn-xs">Back</router-link>
+            <router-link to="/trucks" class="btn btn-danger btn-xs">< Trucks</router-link>
           </div>
         <div class="panel-body">
             <div class="row">

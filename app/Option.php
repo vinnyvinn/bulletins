@@ -16,6 +16,10 @@ class Option extends Model
 
     const WAREHOUSE_TO_TRANSFER = 'warehouse_to_transfer';
 
+    const CONSUMPTION_JOURNAL_BATCH = 'consumption_journal_batch';
+
+    const BILLABLE_GROUP = 'billable_item_group';
+
     const PAYROLL_DEPARTMENT_DRIVER = 'payroll_driver_department';
 
     const PAYROLL_WORKSHOP_DRIVER = 'payroll_workshop_department';

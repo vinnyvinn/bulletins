@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Client;
 use App\Contract;
+use App\Http\Helpers\Helpers;
+use App\Option;
 use App\Route;
+use App\StockItem;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
@@ -32,10 +35,14 @@ class ContractController extends Controller
      */
     public function create()
     {
+        $items = StockItem::where('ItemGroup', Helpers::get_option(Option::BILLABLE_GROUP))
+            ->select(['StockLink', 'Description_1'])
+            ->get();
+
         return Response::json([
             'routes' => Route::all(['id', 'source', 'destination', 'distance']),
             'clients' => Client::all(['DCLink', 'Name', 'Account']),
-            'stockItems' => DB::table('StkItem')->select(['StockLink', 'Description_1'])->get()
+            'stockItems' => $items
         ]);
     }
 

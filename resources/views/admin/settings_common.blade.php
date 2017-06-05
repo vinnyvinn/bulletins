@@ -83,6 +83,30 @@
                                 </div>
                             </div>
 
+                            <div class="form-group {{ $errors->has('billable_item_group') ? 'has-error' : '' }}">
+                                <label class="col-sm-3 control-label" for="billable_item_group">Contracts Billable Items Group*</label>
+                                <div class="col-sm-9">
+                                    <select name="billable_item_group" id="billable_item_group" class="form-control">
+                                        @foreach($stkItemGroups as $group)
+                                            <option {{ old('billable_item_group', trim(Helpers::get_option('billable_item_group'))) == trim($group->StGroup) ? 'selected' : '' }} value="{{ $group->StGroup }}">{{ $group->StGroup }}</option>
+                                        @endforeach
+                                    </select>
+                                    {!! $errors->has('billable_item_group')? '<p class="help-block"> '.$errors->first('billable_item_group').' </p>':'' !!}
+                                </div>
+                            </div>
+
+                            <div class="form-group {{ $errors->has('consumption_journal_batch') ? 'has-error' : '' }}">
+                                <label class="col-sm-3 control-label" for="consumption_journal_batch">Item Consumption Journal Batch*</label>
+                                <div class="col-sm-9">
+                                    <select name="consumption_journal_batch" id="consumption_journal_batch" class="form-control">
+                                        @foreach($journalBatches as $batch)
+                                            <option {{ old('consumption_journal_batch', trim(Helpers::get_option('consumption_journal_batch'))) == trim($batch->IDInvJrBatches) ? 'selected' : '' }} value="{{ $batch->IDInvJrBatches }}">{{ $batch->cInvJrNumber }}({{ $batch->cInvJrDescription }})</option>
+                                        @endforeach
+                                    </select>
+                                    {!! $errors->has('consumption_journal_batch')? '<p class="help-block"> '.$errors->first('consumption_journal_batch').' </p>':'' !!}
+                                </div>
+                            </div>
+
                             <div class="form-group {{ $errors->has('warehouse_transfer_batch') ? 'has-error' : '' }}">
                                 <label class="col-sm-3 control-label" for="warehouse_transfer_batch">Warehouse Transfer Batch*</label>
                                 <div class="col-sm-9">

@@ -33,6 +33,12 @@ class SettingsController extends Controller
             ])
             ->get();
 
+        $journalBatches = DB::table('_etblInvJrBatches')
+            ->select([
+                'IDInvJrBatches', 'cInvJrNumber', 'cInvJrDescription'
+            ])
+            ->get();
+
         $warehouses = DB::table('WhseMst')
             ->where('WhseLink', '<>', 1)
             ->select([
@@ -43,6 +49,7 @@ class SettingsController extends Controller
         $itemGroups = DB::table('GrpTbl')->select(['idGrpTbl', 'StGroup'])->get();
 
         return view('admin.settings_common')
+            ->with('journalBatches', $journalBatches)
             ->with('warehouseBatches', $warehouseTransferBatches)
             ->with('warehouses', $warehouses)
             ->with('stkItemGroups', $itemGroups)

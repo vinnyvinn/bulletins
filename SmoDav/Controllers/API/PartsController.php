@@ -156,6 +156,8 @@ class PartsController extends Controller
         DB::transaction(function () use ($request, $id) {
             $lines = collect($request->get('lines'))->keyBy('item_id');
             $requisition = Requisition::with(['lines'])->where('id', $id)->first();
+            $data = $request->all();
+            $data['lines'] = [];
 
             foreach ($requisition->lines as $line) {
                 $itemLine = $lines->get($line->item_id);
@@ -169,6 +171,8 @@ class PartsController extends Controller
                     ];
                 }
 
+                $itemLine['old_consumed_quantity'] = 0;
+                $data['lines'][] = $itemLine;
                 $line->update($fields);
             }
 
@@ -176,7 +180,7 @@ class PartsController extends Controller
                 'status' => $requisition->status == Constants::STATUS_PENDING ?
                     Constants::STATUS_APPROVED :
                     Constants::STATUS_ISSUED,
-                'raw_data' => json_encode($request->all())
+                'raw_data' => json_encode($data)
             ]);
 
             if ($requisition->status == Constants::STATUS_ISSUED) {
@@ -187,6 +191,49 @@ class PartsController extends Controller
         return Response::json([
             'success' => 'true',
             'message' => 'Successfully approved requisition.'
+        ]);
+    }
+
+    public function consume(Request $request, $id)
+    {
+        DB::transaction(function () use ($request, $id) {
+            $lines = collect($request->get('lines'))->keyBy('item_id');
+            $requisition = Requisition::with(['lines'])->where('id', $id)->first();
+            $data = $request->all();
+            $data['lines'] = [];
+            $consumed = [];
+            $fullyConsumed = true;
+            foreach ($requisition->lines as $line) {
+                $itemLine = $lines->get($line->item_id);
+                $fields = [
+                    'consumed_quantity' => $line->consumed_quantity + $itemLine['consumed_quantity']
+                ];
+                if (intval($itemLine['consumed_quantity'])) {
+                    $consumed[$itemLine['item_id']] = $itemLine['consumed_quantity'];
+                    $itemLine['old_consumed_quantity'] = $fields['consumed_quantity'];
+                    $itemLine['consumed_quantity'] = 0;
+
+                    $line->update($fields);
+                }
+
+                if ($line->issued_quantity > $line->consumed_quantity) {
+                    $fullyConsumed = false;
+                }
+
+                $data['lines'][] = $itemLine;
+            }
+
+            $requisition->makeJournal($consumed);
+
+            $requisition->update([
+                'status' => $fullyConsumed ? Constants::STATUS_CLOSED : Constants::STATUS_ISSUED,
+                'raw_data' => json_encode($data)
+            ]);
+        });
+
+        return Response::json([
+            'success' => 'true',
+            'message' => 'Successfully updated requisition.'
         ]);
     }
 

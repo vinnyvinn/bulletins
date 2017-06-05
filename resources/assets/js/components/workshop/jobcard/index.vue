@@ -255,6 +255,50 @@
                             </div>
                         </div>
 
+                        <div class="panel panel-success">
+                            <div class="panel-heading text-center">
+                                <strong>Closed Parts Requisitions</strong>
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table datatable nowrap">
+                                        <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Requisition #</th>
+                                            <th>Card #</th>
+                                            <th>Vehicle</th>
+                                            <th>Requested On</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody>
+                                        <tr v-for="(item, index) in closedRequisitions">
+                                            <td>{{ index + 1 }}</td>
+                                            <td><a @click.prevent="viewRequisition(item.id)">PR-{{ item.id }}</a></td>
+                                            <td><a @click.prevent="viewCard(item.job_card_id)">JC-{{ item.job_card_id }}</a></td>
+                                            <td>{{ item.job_card.vehicle_number }}</td>
+                                            <td>{{ formatDate(item.created_at) }}</td>
+                                            <td class="text-center"></td>
+                                        </tr>
+                                        </tbody>
+
+                                        <tfoot>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Requisition #</th>
+                                            <th>Card #</th>
+                                            <th>Vehicle</th>
+                                            <th>Requested On</th>
+                                            <th></th>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -297,6 +341,9 @@
             },
             issuedRequisitions() {
                 return this.requisitions.filter(item => item.status == "Issued");
+            },
+            closedRequisitions() {
+                return this.requisitions.filter(item => item.status == "Closed");
             },
 
         },

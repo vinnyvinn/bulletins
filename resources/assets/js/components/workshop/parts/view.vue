@@ -2,11 +2,11 @@
     <div class="container">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <strong>Requisition Order #JC-{{ requisition_number }}</strong>
+                <strong>Requisition Order #PR-{{ requisition_number }}</strong>
             </div>
 
             <div class="panel-body">
-                <form action="#" role="form">
+                <form action="#" role="form" id="viewForm">
 
                     <div class="row">
                         <div class="col-sm-4">
@@ -57,6 +57,8 @@
                                     <th>Requested</th>
                                     <th>Approved</th>
                                     <th>Issued</th>
+                                    <th>Previous Consumption</th>
+                                    <th>Consumed</th>
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -64,16 +66,23 @@
                                 <tr v-for="(item, index) in requisition.lines">
                                     <td>{{ index + 1}}</td>
                                     <td>{{ item.item_name }}</td>
-                                    <td>{{ item.requested_quantity }}</td>
-                                    <td>
+                                    <td class="text-right">{{ item.requested_quantity }}</td>
+                                    <td class="text-right">
                                         <input v-if="status == 'Pending Approval' && can('approve-requisition')" type="number"
-                                               v-model="item.approved_quantity" class="form-control input-sm" :max="item.requested_quantity" number>
+                                               v-model="item.approved_quantity" class="form-control input-sm" min="0" number>
                                         <span v-else>{{ item.approved_quantity }}</span>
                                     </td>
-                                    <td>
+                                    <td class="text-right">
                                         <input v-if="status == 'Approved' && can('issue-requisition')" type="number"
-                                               v-model="item.issued_quantity" class="form-control input-sm" :max="item.issued_quantity" number>
-                                        <span v-else>{{ item.issued_quantity }}</span>
+                                               v-model="item.issued_quantity" class="form-control input-sm" min="0" :max="item.approved_quantity" number>
+                                        <span class="text-right" v-else>{{ item.issued_quantity }}</span>
+                                    </td>
+                                    <td class="text-right">{{ isNaN(parseInt(item.old_consumed_quantity)) ? 0 : item.old_consumed_quantity }}</td>
+                                    <td>
+                                        <input v-if="status == 'Issued' && can('create-requisition') && parseInt(item.issued_quantity) > parseInt(item.old_consumed_quantity)" type="number"
+                                               onfocus="this.select()"
+                                               :max="parseInt(item.issued_quantity) - parseInt(item.old_consumed_quantity)" min="0"
+                                               v-model="item.consumed_quantity" class="form-control input-sm" number>
                                     </td>
                                     <td>
                                     </td>
@@ -85,11 +94,14 @@
 
                     <div class="form-group">
                         <span v-if="(status == 'Pending Approval' && can('approve-requisition'))">
-                            <button class="btn btn-success" @click.prevent="approve()">Approve Job Card</button>
-                            <button class="btn btn-danger" @click.prevent="disapprove()">Disapprove Job Card</button>
+                            <input type="submit" name="approve" class="btn btn-success" @click.prevent="approve()" value="Approve Job Card">
+                            <input type="submit" name="disapprove" class="btn btn-danger" @click.prevent="disapprove()" value="Disapprove Job Card">
                         </span>
                         <span v-if="(status == 'Approved' && can('issue-requisition'))">
-                            <button class="btn btn-success" @click.prevent="approve()">Issue Parts</button>
+                            <input type="submit" name="issue" class="btn btn-success" @click.prevent="approve()" value="Issue Parts">
+                        </span>
+                        <span v-if="status == 'Issued' && can('create-requisition')">
+                            <input type="submit" name="consumption" class="btn btn-success" @click.prevent="consume()" value="Update Card">
                         </span>
                         <router-link to="/job-card" class="btn btn-danger">Back</router-link>
                     </div>
@@ -214,6 +226,20 @@
             approve() {
                 this.$root.isLoading = true;
                 http.post('/api/parts/' + this.$route.params.id + '/approve', this.requisition).then((response) => {
+                    alert2(this.$root, [response.message], 'success');
+                    this.$root.isLoading = false;
+                    window._router.push({ path: '/job-card' });
+                }).catch((error) => {
+                    this.$root.isLoading = false;
+                    alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
+                });
+            },
+
+
+            consume() {
+                this.$root.isLoading = true;
+                this.requisition.type = 'consumption';
+                http.post('/api/parts/' + this.$route.params.id + '/consume', this.requisition).then((response) => {
                     alert2(this.$root, [response.message], 'success');
                     this.$root.isLoading = false;
                     window._router.push({ path: '/job-card' });

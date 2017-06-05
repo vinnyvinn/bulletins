@@ -21,6 +21,7 @@ class CreateRequisitionLinesTable extends Migration
             $table->integer('requested_quantity');
             $table->integer('approved_quantity')->nullable();
             $table->integer('issued_quantity')->nullable();
+            $table->integer('consumed_quantity')->default(0);
             $table->timestamps();
 
             $table->foreign('requisition_id')
