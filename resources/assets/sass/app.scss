@@ -111,3 +111,9 @@ a.active {
 .select2-container--bootstrap .select2-results__option {
   font-size: 12px;
 }
+
+@media print {
+  .page-break {
+    page-break-after: always;
+  }
+}

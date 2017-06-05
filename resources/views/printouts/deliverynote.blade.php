@@ -141,14 +141,8 @@
     </div>
 </div>
 
-<br>
-<br>
-<hr>
-<br>
-<br>
-<br>
-
 @if(! $trip->receiveNote)
+<div class="page-break"></div>
 <div class="container">
     <div class="row">
         <div class="col-xs-5">
