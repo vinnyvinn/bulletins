@@ -143,19 +143,11 @@ class JobCardController extends Controller
     {
         DB::transaction(function () use ($request, $jobCard) {
             $data = $request->all();
-            $data['raw_data'] = json_encode($data);
-            $data['user_id'] = Auth::id();
-            $data['time_in'] = Carbon::now()->setTimeFromTimeString($data['time_in']);
-            $data['has_trailer'] = false;
-            $data['status'] = Constants::STATUS_PENDING;
-            $jobCard->update($data);
+            $jobCard->update([
+                'raw_data' => json_encode($data)
+            ]);
 
             JobCardInspection::where('job_card_id', $jobCard->id)->delete();
-
-            foreach ($data['inspections'] as $inspection) {
-                $inspection['job_card_id'] = $jobCard->id;
-                JobCardInspection::create($inspection);
-            }
 
             JobCardTask::where('job_card_id', $jobCard->id)->delete();
             foreach ($data['tasks'] as $task) {

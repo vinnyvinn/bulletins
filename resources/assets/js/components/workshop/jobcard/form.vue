@@ -12,7 +12,7 @@
                         <div class="col-sm-4">
                             <div class="form-group input-group-sm">
                                 <label for="service_type">Job/Service</label>
-                                <select required v-model="card.service_type" name="service_type" id="service_type" class="form-control">
+                                <select :disabled="editing" required v-model="card.service_type" name="service_type" id="service_type" class="form-control">
                                     <option value="Normal Job">Normal Job</option>
                                     <option value="Service Job">Service Job</option>
                                 </select>
@@ -21,7 +21,7 @@
 
                             <div class="form-group input-group-sm">
                                 <label for="workshop_job_type_id">Job Type</label>
-                                <select required v-model="card.workshop_job_type_id" name="workshop_job_type_id" id="workshop_job_type_id" class="form-control">
+                                <select :disabled="editing" required v-model="card.workshop_job_type_id" name="workshop_job_type_id" id="workshop_job_type_id" class="form-control">
                                     <option v-for="type in jobTypes" :value="type.id">{{ type.name }}</option>
                                 </select>
                             </div>
@@ -29,21 +29,21 @@
 
                             <div class="form-group input-group-sm">
                                 <label for="job_description">Job Description</label>
-                                <textarea required v-model="card.job_description" name="job_description" id="job_description" cols="20" rows="5" class="form-control"></textarea>
+                                <textarea :disabled="editing" required v-model="card.job_description" name="job_description" id="job_description" cols="20" rows="5" class="form-control"></textarea>
                             </div>
                         </div>
 
                         <div class="col-sm-4">
                             <div class="form-group input-group-sm">
                                 <label for="vehicle_id">Vehicle/Chassis Number</label>
-                                <select required v-model="card.vehicle_id" name="vehicle_id" id="vehicle_id" class="form-control select2">
+                                <select :disabled="editing" required v-model="card.vehicle_id" name="vehicle_id" id="vehicle_id" class="form-control select2">
                                     <option v-for="vehicle in vehicles" :value="vehicle.id">{{ vehicle.plate_number }}</option>
                                 </select>
                             </div>
 
                             <div class="form-group input-group-sm">
                                 <label for="expected_completion">Expected Completion Date</label>
-                                <input required type="text" v-model="card.expected_completion" name="expected_completion" id="expected_completion" class="form-control datepicker">
+                                <input :disabled="editing" required type="text" v-model="card.expected_completion" name="expected_completion" id="expected_completion" class="form-control datepicker">
                             </div>
 
                             <div class="form-group input-group-sm">
@@ -62,17 +62,17 @@
 
                             <div class="form-group input-group-sm">
                                 <label for="time_in">Time In</label>
-                                <input required type="time" v-model="card.time_in" name="time_in" id="time_in" class="form-control">
+                                <input :disabled="editing" required type="time" v-model="card.time_in" name="time_in" id="time_in" class="form-control">
                             </div>
 
                             <div class="form-group input-group-sm">
                                 <label for="current_km_reading">Current KM Reading</label>
-                                <input type="number" v-model="card.current_km_reading" name="current_km_reading" id="current_km_reading" class="form-control">
+                                <input :disabled="editing" type="number" v-model="card.current_km_reading" name="current_km_reading" id="current_km_reading" class="form-control">
                             </div>
 
                             <div class="form-group input-group-sm">
                                 <label for="fuel_balance">Fuel Balance</label>
-                                <input type="text" v-model="card.fuel_balance" name="fuel_balance" id="fuel_balance" class="form-control">
+                                <input :disabled="editing" type="text" v-model="card.fuel_balance" name="fuel_balance" id="fuel_balance" class="form-control">
                             </div>
 
                         </div>
@@ -94,12 +94,12 @@
                                     <td>{{ index + 1}}</td>
                                     <td>{{ item.inspection_name }}</td>
                                     <td>
-                                        <select v-model="item.employee_id" class="form-control input-sm">
+                                        <select :disabled="editing" v-model="item.employee_id" class="form-control input-sm">
                                             <option v-for="employee in employees" :value="employee.id">{{ employee.first_name }} {{ employee.last_name }}</option>
                                         </select>
                                     </td>
                                     <td>
-                                        <select v-model="item.status" class="form-control input-sm">
+                                        <select :disabled="editing" v-model="item.status" class="form-control input-sm">
                                             <option value="Not Started">Not Started</option>
                                             <option value="In Progress">In Progress</option>
                                             <option value="Completed">Completed</option>
@@ -113,14 +113,14 @@
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label for="mechanic_findings">Mechanic's Findings</label>
-                                <textarea v-model="card.mechanic_findings" name="mechanic_findings" id="mechanic_findings" cols="20" rows="5" class="form-control input-sm"></textarea>
+                                <textarea :disabled="editing" v-model="card.mechanic_findings" name="mechanic_findings" id="mechanic_findings" cols="20" rows="5" class="form-control input-sm"></textarea>
                             </div>
                         </div>
                     </div>
 
                     <hr>
 
-                    <div class="row">
+                    <div class="row" v-if="! editing">
                         <div class="col-sm-5">
                             <div class="form-group input-group-sm">
                                 <label for="operation_id">Operation Name</label>
@@ -200,7 +200,7 @@
                                                 <option value="Completed">Completed</option>
                                             </select>
                                         </td>
-                                        <td><a @click="removeTask(task)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a></td>
+                                        <td><a v-if="! editing" @click="removeTask(task)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -210,6 +210,7 @@
 
                     <div class="form-group">
                         <button class="btn btn-success">Save</button>
+                        <button v-if="status == 'Approved'" class="btn btn-warning" @click.prevent="closeCard">Close Job Card</button>
                         <router-link to="/job-card" class="btn btn-danger">Back</router-link>
                     </div>
                 </form>
@@ -223,6 +224,7 @@
     export default {
         data() {
             return {
+                editing: false,
                 vehicles: [],
                 job_types: [],
                 employees: [],
@@ -350,6 +352,7 @@
 
             checkState() {
                 if (this.$route.params.id) {
+                    this.editing = true;
                     http.get('/api/job-card/' + this.$route.params.id).then((response) => {
                         this.card = response.card.raw_data;
                     });
@@ -365,6 +368,19 @@
                 } else {
                     request = http.post('/api/job-card', this.card);
                 }
+
+                request.then((response) => {
+                    alert2(this.$root, [response.message], 'success');
+                    window._router.push({ path: '/job-card' });
+                }).catch((error) => {
+                    alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
+                });
+            },
+
+            closeCard() {
+                let request = null;
+                this.card.vehicle_number = this.vehicle.plate_number;
+                request = http.post('/api/job-card/' + this.$route.params.id + '/close', this.card);
 
                 request.then((response) => {
                     alert2(this.$root, [response.message], 'success');

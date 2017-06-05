@@ -154,8 +154,10 @@
                     this.contract.end_date = e.date.toLocaleDateString('en-GB');
                 });
 
-                $('#route_id').select2().on('change', e => this.contract.route_id = e.target.value);
-                $('#stock_item_id').select2().on('change', e => this.contract.stock_item_id = e.target.value);
+                setTimeout(() => {
+                    $('#route_id').select2().on('change', e => this.contract.route_id = e.target.value);
+                    $('#stock_item_id').select2().on('change', e => this.contract.stock_item_id = e.target.value);
+                }, 1000);
             },
 
             store() {

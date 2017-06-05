@@ -98,14 +98,16 @@ class TruckController extends Controller
     public function update(TruckRequest $request, $id)
     {
         $data = $request->all();
+
         foreach ($request->all() as $key=>$item) {
-        if ($request->hasFile($key)){
-            $extension = $request->file($key)->getClientOriginalExtension();
-            $filename = time().".".$extension;
-            $request->file($key)->move(public_path('uploads'), $filename);
-            $data[$key] = $filename;
-        }
+            if ($request->hasFile($key)){
+                $extension = $request->file($key)->getClientOriginalExtension();
+                $filename = time().".".$extension;
+                $request->file($key)->move(public_path('uploads'), $filename);
+                $data[$key] = $filename;
+            }
        }
+
         TruckFactory::update($data, $id);
 
         return Response::json([
