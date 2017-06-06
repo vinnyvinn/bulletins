@@ -122,7 +122,8 @@ export default {
             setTimeout(() => {
                 $('.datepicker').datepicker({
                     autoclose: true,
-                    format: 'yyyy-mm-dd'
+                    format: 'yyyy-mm-dd',
+                    todayHighlight: true,
                 }).on('change', (e) => {
                     this.state[e.target.id] = e.target.value;
                 });

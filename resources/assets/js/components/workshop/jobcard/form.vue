@@ -297,7 +297,8 @@
                     let dateSettings = {
                         format: 'yyyy-mm-dd',
                         startDate: '+0d',
-                        autoclose: true
+                        autoclose: true,
+                        todayHighlight: true,
                     };
 
                     $('#expected_completion').datepicker(dateSettings).on('change', (e) => {

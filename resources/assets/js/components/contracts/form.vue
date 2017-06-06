@@ -142,7 +142,8 @@
             setupUI() {
                 $('.datepicker').datepicker({
                     autoclose: true,
-                    format: 'dd/mm/yyyy'
+                    format: 'dd/mm/yyyy',
+                    todayHighlight: true,
                 });
 
                 $('#start_date').datepicker().on('changeDate', (e) => {
@@ -155,6 +156,7 @@
                 });
 
                 setTimeout(() => {
+                    $('#client_id').select2().on('change', e => this.contract.route_id = e.target.value);
                     $('#route_id').select2().on('change', e => this.contract.route_id = e.target.value);
                     $('#stock_item_id').select2().on('change', e => this.contract.stock_item_id = e.target.value);
                 }, 1000);
