@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTrailersTable extends Migration
+class CreateCarriagePointsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreateTrailersTable extends Migration
      */
     public function up()
     {
-        Schema::create('trailers', function (Blueprint $table) {
+        Schema::create('carriage_points', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('trailer_number')->unique();
-            $table->string('make')->nullable();
-            $table->string('type')->nullable();
-            $table->softDeletes();
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -30,6 +27,6 @@ class CreateTrailersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('trailers');
+        Schema::dropIfExists('carriage_points');
     }
 }

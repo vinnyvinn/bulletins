@@ -4,6 +4,9 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use SmoDav\Models\CargoClassification;
+use SmoDav\Models\CargoType;
+use SmoDav\Models\CarriagePoint;
 
 class Contract extends Model
 {
@@ -12,8 +15,29 @@ class Contract extends Model
     const PER_TONNE = 'Per Tonne';
 
     protected $fillable = [
-        'client_id', 'route_id', 'name', 'rate', 'amount', 'start_date', 'end_date', 'quantity', 'stock_item_id'
+        'raw', 'cargo_classification_id', 'cargo_type_id', 'trucks_allocated', 'job_description',
+        'capture_loading_weights', 'capture_offloading_weights', 'ls_loading_weights', 'ls_offloading_weights',
+        'lh_loading_weights', 'lh_offloading_weights', 'loading_point_id', 'unloading_points', 'enquiry_from',
+        'contract_head', 'packages_captured', 'estimated_days', 'lot_number', 'shipping_line', 'berth_no',
+        'vessel_name', 'berthing_date', 'vessel_arrival_date', 'shifts', 'no_of_shifts',
+        'no_of_shifts', 'stock_item_id', 'client_id', 'route_id', 'name', 'rate', 'amount', 'start_date',
+        'end_date', 'quantity'
     ];
+
+    public function classification()
+    {
+        return $this->belongsTo(CargoClassification::class, 'cargo_classification_id');
+    }
+
+    public function cargoType()
+    {
+        return $this->belongsTo(CargoType::class, 'cargo_type_id');
+    }
+
+    public function loadingPoint()
+    {
+        return $this->belongsTo(CarriagePoint::class, 'loading_point_id');
+    }
 
     public function client()
     {

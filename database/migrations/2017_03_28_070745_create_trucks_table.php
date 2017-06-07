@@ -22,22 +22,9 @@ class CreateTrucksTable extends Migration
             $table->integer('max_load')->nullable();
             $table->string('status')->default(Core::ACTIVE);
             $table->string('location')->default(Core::AWAITING_ALLOCATION);
-            $table->bigInteger('driver_id')->index()->unsigned()->nullable();
-            $table->integer('contract_id')->index()->unsigned()->nullable();
-            $table->integer('trailer_id')->index()->unsigned()->nullable();
             $table->integer('project_id')->index()->unsigned()->nullable();
             $table->softDeletes();
             $table->timestamps();
-
-            $table->foreign('driver_id')
-                ->references('id')
-                ->on('drivers')
-                ->onDelete('set null');
-
-            $table->foreign('contract_id')
-                ->references('id')
-                ->on('contracts')
-                ->onDelete('set null');
         });
     }
 

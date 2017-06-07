@@ -12,7 +12,7 @@ function authMiddleware(to, from, next) {
 
 module.exports = [
     { path: '/', redirect: '/dashboard', beforeEnter: authMiddleware },
-    { path: '/dashboard', component: require('./transport/dashboard/index.vue'), beforeEnter: authMiddleware },
+    { path: '/dashboard', component: require('./components/dashboard/index.vue'), beforeEnter: authMiddleware },
 
     { path: '/routes', component: require('./components/routes/index.vue'), beforeEnter: authMiddleware },
     { path: '/routes/create', component: require('./components/routes/form.vue'), beforeEnter: authMiddleware },
@@ -50,10 +50,10 @@ module.exports = [
     { path: '/users', component: require('./components/users/index.vue'), beforeEnter: authMiddleware },
     { path: '/users/create', component: require('./components/users/form.vue'), beforeEnter: authMiddleware },
 
-    { path: '/contracts', component: require('./transport/contracts/index.vue'), beforeEnter: authMiddleware },
-    { path: '/contracts/create', component: require('./transport/contracts/form.vue'), beforeEnter: authMiddleware },
-    { path: '/contracts/:id', component: require('./transport/contracts/view.vue'), beforeEnter: authMiddleware },
-    { path: '/contracts/:id/edit', component: require('./transport/contracts/form.vue'), beforeEnter: authMiddleware },
+    { path: '/contracts', component: require('./components/contracts/index.vue'), beforeEnter: authMiddleware },
+    { path: '/contracts/create', component: require('./components/contracts/form.vue'), beforeEnter: authMiddleware },
+    { path: '/contracts/:id', component: require('./components/contracts/view.vue'), beforeEnter: authMiddleware },
+    { path: '/contracts/:id/edit', component: require('./components/contracts/form.vue'), beforeEnter: authMiddleware },
 
     { path: '/allocation', component: require('./components/allocation/index.vue'), beforeEnter: authMiddleware },
     { path: '/allocation/create', component: require('./components/allocation/form.vue'), beforeEnter: authMiddleware },

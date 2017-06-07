@@ -9,6 +9,9 @@ Route::group(['prefix' => 'workshop', 'as' => 'workshop.'], function () {
     Route::resource('job-task', '\SmoDav\Controllers\WorkshopJobTaskController');
     Route::resource('inspection', '\SmoDav\Controllers\WorkshopInspectionCheckListController');
     Route::resource('integrations', '\SmoDav\Controllers\APIIntegrationController');
+    Route::resource('cargo-classification', '\SmoDav\Controllers\CargoClassificationController');
+    Route::resource('cargo-type', '\SmoDav\Controllers\CargoTypeController');
+    Route::resource('carriage-point', '\SmoDav\Controllers\CarriagePointController');
 });
 
 

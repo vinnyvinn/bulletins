@@ -30,6 +30,12 @@
                     {{--<li class="dropdown-header">MAKES &amp; MODElS</li>--}}
                     {{--<li><a href="{{ route('workshop.make.index') }}"><i class="fa fa-list"></i> Makes</a></li>--}}
                     {{--<li><a href="{{ route('workshop.model.index') }}"><i class="fa fa-list"></i> Models</a></li>--}}
+
+                    <li class="dropdown-header">CONTRACTS</li>
+                    <li><a href="{{ route('workshop.cargo-classification.index') }}"><i class="fa fa-list"></i> Cargo Classifications</a></li>
+                    <li><a href="{{ route('workshop.cargo-type.index') }}"><i class="fa fa-list"></i> Cargo Types</a></li>
+                    <li><a href="{{ route('workshop.carriage-point.index') }}"><i class="fa fa-list"></i> Loading & Offloading Points</a></li>
+
                     <li class="dropdown-header">WORKSHOP</li>
                     <li><a href="{{ route('workshop.inspection.index') }}"><i class="fa fa-list"></i> Inspection Checklist</a></li>
                     <li><a href="{{ route('workshop.job-type.index') }}"><i class="fa fa-list"></i> Job Types</a></li>

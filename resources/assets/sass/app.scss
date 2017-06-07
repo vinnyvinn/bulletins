@@ -16,11 +16,12 @@
 @import "./libs/bootstrap-datepicker";
 
 body {
-  margin-top: 70px;
+  margin-top: 40px;
+  margin-bottom: 100px;
 }
 
-a.active {
-  background-color: #496684 !important;
+a.active:not(.btn) {
+  background-color: #76ffdf !important;
   color: #fff;
 }
 
@@ -115,5 +116,73 @@ a.active {
 @media print {
   .page-break {
     page-break-after: always;
+  }
+}
+
+.select2-selection {
+  height: 30px !important;
+}
+
+.main-content {
+  width: 100%;
+  padding: 20px;
+  z-index: 1;
+}
+
+.top-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin-bottom: 10px;
+  width: 100%;
+  height: 45px;
+  padding: 2px;
+  background: #93b9d2;
+  color: #fff;
+  z-index: 9999999;
+  border-bottom: 1px solid #93b9d2;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.4);
+
+  .brand {
+    margin-left: 20px;
+  }
+}
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+  width: 100%;
+  z-index: 9999999;
+  background: #93b9d2;
+}
+
+.nav-items {
+  flex-grow: 1;
+  padding: 5px;
+  background-color: #fff;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
+  margin: 5px;
+  width: 100%;
+  cursor: pointer;
+
+  img {
+    max-height: 40px;
+    margin: 0 auto;
+  }
+
+  .caption {
+    font-weight: 600;
+    text-align: center;
+    color: #000;
+  }
+
+  &:hover {
+    text-decoration: none;
+    background-color: rgba(224, 0, 0, 0.4);
+    color: #fff;
   }
 }

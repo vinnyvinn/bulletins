@@ -12,6 +12,9 @@ use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
 use Response;
+use SmoDav\Models\CargoClassification;
+use SmoDav\Models\CargoType;
+use SmoDav\Models\CarriagePoint;
 use function str_replace;
 
 class ContractController extends Controller
@@ -42,6 +45,9 @@ class ContractController extends Controller
         return Response::json([
             'routes' => Route::all(['id', 'source', 'destination', 'distance']),
             'clients' => Client::all(['DCLink', 'Name', 'Account']),
+            'cargo_classifications' => CargoClassification::all(['id', 'name']),
+            'cargo_types' => CargoType::all(['id', 'name', 'cargo_classification_id']),
+            'carriage_points' => CarriagePoint::all(['id', 'name']),
             'stockItems' => $items
         ]);
     }
@@ -57,7 +63,21 @@ class ContractController extends Controller
     {
         $data = $request->all();
         $data['start_date'] = Carbon::parse(str_replace('/', '-', $data['start_date']))->format('Y-m-d');
-        $data['end_date'] = Carbon::parse(str_replace('/', '-', $data['end_date']))->format('Y-m-d');
+        $data['berthing_date'] = Carbon::parse(str_replace('/', '-', $data['berthing_date']))->format('Y-m-d');
+        $data['vessel_arrival_date'] = Carbon::parse(str_replace('/', '-', $data['vessel_arrival_date']))->format('Y-m-d');
+        $data['end_date'] = Carbon::parse(str_replace('/', '-', $data['start_date']))
+            ->addDays($data['estimated_days'])
+            ->format('Y-m-d');
+
+        $data['unloading_points'] = json_decode($data['unloading_points']);
+        $data['shifts'] = json_decode($data['shifts']);
+
+        $data['raw'] = json_encode($data);
+        $data['shifts'] = json_encode($data['shifts']);
+        $data['unloading_points'] = json_encode($data['unloading_points']);
+
+        unset($data['_token'], $data['_method']);
+
         $contract = Contract::create($data);
         foreach ($request->all() as $key => $item) {
             if ($key == 'start_date' || $key == 'end_date' ||$key == '_token' || $key == '_method' || $key == 'updated_at' ||
@@ -90,7 +110,18 @@ class ContractController extends Controller
      */
     public function show(Contract $contract)
     {
+        $items = StockItem::where('ItemGroup', Helpers::get_option(Option::BILLABLE_GROUP))
+            ->select(['StockLink', 'Description_1'])
+            ->get();
+        $contract->raw = json_decode($contract->raw);
+
         return Response::json([
+            'routes' => Route::all(['id', 'source', 'destination', 'distance']),
+            'clients' => Client::all(['DCLink', 'Name', 'Account']),
+            'cargo_classifications' => CargoClassification::all(['id', 'name']),
+            'cargo_types' => CargoType::all(['id', 'name', 'cargo_classification_id']),
+            'carriage_points' => CarriagePoint::all(['id', 'name']),
+            'stockItems' => $items,
             'contract' => $contract
         ]);
     }
@@ -106,8 +137,23 @@ class ContractController extends Controller
     public function update(Request $request, Contract $contract)
     {
         $data = $request->all();
+        $data['start_date'] = Carbon::parse(str_replace('/', '-', $data['start_date']))->format('Y-m-d');
+        $data['berthing_date'] = Carbon::parse(str_replace('/', '-', $data['berthing_date']))->format('Y-m-d');
+        $data['vessel_arrival_date'] = Carbon::parse(str_replace('/', '-', $data['vessel_arrival_date']))->format('Y-m-d');
+        $data['end_date'] = Carbon::parse(str_replace('/', '-', $data['start_date']))
+            ->addDays($data['estimated_days'])
+            ->format('Y-m-d');
 
-        foreach ($request->all() as $key => $item) {
+        $data['unloading_points'] = json_decode($data['unloading_points']);
+        $data['shifts'] = json_decode($data['shifts']);
+
+        $data['raw'] = json_encode($data);
+        $data['shifts'] = json_encode($data['shifts']);
+        $data['unloading_points'] = json_encode($data['unloading_points']);
+
+        unset($data['_token'], $data['_method']);
+
+        foreach ($data as $key => $item) {
             if ($key == 'start_date' || $key == 'end_date' ||$key == '_token' || $key == '_method' || $key == 'updated_at' ||
                 $key == 'deleted_at') {
                 continue;
@@ -121,8 +167,6 @@ class ContractController extends Controller
             }
         }
 
-        $contract->start_date = Carbon::parse(str_replace('/', '-', $data['start_date']))->format('Y-m-d');
-        $contract->end_date = Carbon::parse(str_replace('/', '-', $data['end_date']))->format('Y-m-d');
         $contract->save();
 
         return Response::json([
