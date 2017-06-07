@@ -1,18 +1,7 @@
 <template>
     <div class="panel panel-default">
         <div class="panel-heading">
-            <div class="row">
-                <div class="col-sm-6">
-                    <h4><strong>Contract Details</strong></h4>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group pull-right">
-                        <button @click.prevent="approveContract" class="btn btn-success" v-if="status == 'Pending Approval'">Approve Contract</button>
-                        <button @click.prevent="closeContract" class="btn btn-danger" v-if="(status == 'Pending Approval') || (status == 'Approved')">Close Contract</button>
-                        <button @click.prevent="reopenContract" class="btn btn-primary" v-if="status == 'Closed'">Reopen Contract</button>
-                    </div>
-                </div>
-            </div>
+            <strong>Contract Details</strong>
         </div>
 
         <div class="panel-body">
@@ -326,7 +315,6 @@
 export default {
     data() {
         return {
-            status: null,
             classifications: [],
             cargo_types: [],
             carriage_points: [],
@@ -337,6 +325,7 @@ export default {
                 hours: 1,
                 to_time: null,
             },
+
             clients: [],
             routes: [],
             uploads: [],
@@ -366,6 +355,9 @@ export default {
                 no_of_shifts: 1,
                 vessel_arrival_date: null,
                 shifts: [],
+
+
+
                 name: null,
                 rate: 'Per Tonne',
                 amount: null,
@@ -408,7 +400,6 @@ export default {
             this.classifications = response.cargo_classifications;
             this.cargo_types = response.cargo_types;
             this.carriage_points = response.carriage_points;
-            this.status = response.contract.status;
             this.contract = response.contract.raw;
             this.updateBooleans();
             this.$root.isLoading = false;
@@ -427,31 +418,6 @@ export default {
 
         setBoolState(key) {
             this.contract[key] = this.contract[key] == 'true';
-        },
-
-        approveContract() {
-            this.processContract('approve');
-        },
-
-        closeContract() {
-            this.processContract('close');
-        },
-
-        reopenContract() {
-            this.processContract('reopen');
-        },
-
-        processContract(endpoint) {
-            this.$root.isLoading = true;
-            http.post('/api/contract/' + this.$route.params.id + '/' + endpoint, {})
-                .then((response) => {
-                    this.$root.isLoading = false;
-                    alert2(this.$root, [response.message], 'success');
-                    window._router.push({ path: '/contracts' });
-                }).catch((error) => {
-                this.$root.isLoading = false;
-                alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
-            });
         },
     },
 }

@@ -21,7 +21,7 @@ class Contract extends Model
         'contract_head', 'packages_captured', 'estimated_days', 'lot_number', 'shipping_line', 'berth_no',
         'vessel_name', 'berthing_date', 'vessel_arrival_date', 'shifts', 'no_of_shifts',
         'no_of_shifts', 'stock_item_id', 'client_id', 'route_id', 'name', 'rate', 'amount', 'start_date',
-        'end_date', 'quantity'
+        'end_date', 'quantity', 'status'
     ];
 
     public function classification()

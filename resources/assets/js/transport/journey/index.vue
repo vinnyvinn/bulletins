@@ -15,7 +15,7 @@
                                 <th>Client</th>
                                 <th>Date Created</th>
                                 <th>Start Date</th>
-                                <th>Expected End Date</th>
+                                <th>End Date</th>
                                 <th>Quantity</th>
                                 <th>Rate</th>
                                 <th></th>
@@ -32,13 +32,12 @@
                                 <td>{{ date2(contract.end_date) }}</td>
                                 <td>{{ Number(contract.quantity).toLocaleString() }} Tonnes</td>
                                 <td>{{ $root.currency }} {{ Number(contract.amount).toLocaleString() }} {{ contract.rate }}</td>
-                                <td class="text-center" v-if="contract.status == 'Pending Approval'">
+                                <td class="text-center">
                                     <span @click="edit(contract)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
                                     <button data-toggle="popover" :data-item="contract.id" class="btn btn-xs btn-danger btn-destroy">
                                         <i class="fa fa-trash"></i>
                                     </button>
                                 </td>
-                                <td v-else></td>
                             </tr>
                             </tbody>
 

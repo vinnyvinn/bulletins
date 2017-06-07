@@ -28,7 +28,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('truck/import', 'TruckController@import')->name('truck.import');
     Route::resource('trailer', 'TrailerController');
     Route::post('trailer/import', 'TrailerController@import')->name('trailer.import');
-    Route::resource('contract', 'ContractController');
     Route::resource('allocation', 'AllocationController');
     Route::post('progress/{id}', 'ProgressController@progress');
     Route::get('progress/{id}', 'TruckController@getAtStage');
@@ -53,4 +52,11 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('parts/{id}/approve', '\SmoDav\Controllers\API\PartsController@approve');
     Route::post('parts/{id}/consume', '\SmoDav\Controllers\API\PartsController@consume');
     Route::post('parts/{id}/disapprove', '\SmoDav\Controllers\API\PartsController@disapprove');
+
+
+    Route::resource('contract', 'ContractController');
+    Route::post('contract/{id}/approve', 'ContractController@approve');
+    Route::post('contract/{id}/close', 'ContractController@close');
+    Route::post('contract/{id}/reopen', 'ContractController@reopen');
+
 });

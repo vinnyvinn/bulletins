@@ -15,6 +15,7 @@ use Response;
 use SmoDav\Models\CargoClassification;
 use SmoDav\Models\CargoType;
 use SmoDav\Models\CarriagePoint;
+use SmoDav\Support\Constants;
 use function str_replace;
 
 class ContractController extends Controller
@@ -26,8 +27,14 @@ class ContractController extends Controller
      */
     public function index()
     {
+        $contracts = Contract::with(['client' => function ($builder) {
+            return $builder->select(['DCLink', 'Name']);
+        }])->get([
+            'id', 'client_id', 'created_at', 'start_date', 'end_date', 'quantity', 'amount', 'rate', 'status'
+        ]);
+
         return Response::json([
-            'contracts' => Contract::with(['client'])->get()
+            'contracts' => $contracts
         ]);
     }
 
@@ -189,6 +196,42 @@ class ContractController extends Controller
             'status' => 'success',
             'message' => 'Successfully deleted contract.',
             'contracts' => Contract::with(['client'])->get()
+        ]);
+    }
+
+    public function approve($id)
+    {
+        Contract::where('id', $id)->update([
+            'status' => Constants::STATUS_APPROVED
+        ]);
+
+        return Response::json([
+            'status' => 'success',
+            'message' => 'Successfully approved contract.',
+        ]);
+    }
+
+    public function close($id)
+    {
+        Contract::where('id', $id)->update([
+            'status' => Constants::STATUS_CLOSED
+        ]);
+
+        return Response::json([
+            'status' => 'success',
+            'message' => 'Successfully closed contract.',
+        ]);
+    }
+
+    public function reopen($id)
+    {
+        Contract::where('id', $id)->update([
+            'status' => Constants::STATUS_APPROVED
+        ]);
+
+        return Response::json([
+            'status' => 'success',
+            'message' => 'Successfully reopened contract.',
         ]);
     }
 }

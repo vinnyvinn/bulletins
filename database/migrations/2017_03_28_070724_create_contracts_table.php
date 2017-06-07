@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use SmoDav\Support\Constants;
 
 class CreateContractsTable extends Migration
 {
@@ -15,6 +16,7 @@ class CreateContractsTable extends Migration
     {
         Schema::create('contracts', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('status')->default(Constants::STATUS_PENDING);
             $table->text('raw')->nullale();
             $table->integer('cargo_classification_id');
             $table->integer('cargo_type_id');
