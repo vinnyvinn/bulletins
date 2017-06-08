@@ -45,12 +45,22 @@ class CreateContractsTable extends Migration
             $table->integer('stock_item_id')->nullable();
             $table->integer('client_id')->unsigned()->index();
             $table->integer('route_id')->unsigned()->index()->nullable();
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->string('rate');
             $table->string('amount');
             $table->date('start_date');
             $table->date('end_date');
             $table->integer('quantity');
+
+            $table->boolean('subcontracted')->default('false');
+            $table->string('sub_company_name')->nullable();
+            $table->string('sub_address_1')->nullable();
+            $table->string('sub_address_2')->nullable();
+            $table->string('sub_address_3')->nullable();
+            $table->string('sub_address_4')->nullable();
+            $table->string('sub_delivery_to')->nullable();
+            $table->string('sub_delivery_address')->nullable();
+
             $table->softDeletes();
             $table->timestamps();
 

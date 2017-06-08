@@ -351,11 +351,70 @@
                     </div>
                 </div>
 
+                <h4>Sub Contracts</h4>
+                <hr>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label>Sub-Contracts</label>
+                            <div class="checkbox">
+                                <label>
+                                    <input v-model="contract.subcontracted" type="checkbox">
+                                    Check if the trucks have been subcontracted by another company.
+                                    Note that the delivery note will be processed in the name of the other company.
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" v-if="contract.subcontracted">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="sub_company_name">Company Name</label>
+                            <input v-model="contract.sub_company_name" type="text" class="form-control input-sm" id="sub_company_name" name="sub_company_name">
+                        </div>
+                        <div class="form-group">
+                            <label for="sub_address_1">Address Line 1</label>
+                            <input v-model="contract.sub_address_1" type="text" class="form-control input-sm" id="sub_address_1" name="sub_address_1">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sub_address_2">Address Line 2</label>
+                            <input v-model="contract.sub_address_2" type="text" class="form-control input-sm" id="sub_address_2" name="sub_address_2">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sub_address_3">Address Line 3</label>
+                            <input v-model="contract.sub_address_3" type="text" class="form-control input-sm" id="sub_address_3" name="sub_address_3">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sub_address_4">Address Line 4</label>
+                            <input v-model="contract.sub_address_4" type="text" class="form-control input-sm" id="sub_address_4" name="sub_address_4">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="sub_delivery_to">Delivery To</label>
+                            <input v-model="contract.sub_delivery_to" type="text" class="form-control input-sm" id="sub_delivery_to" name="sub_delivery_to">
+                        </div>
+                        <div class="form-group">
+                            <label for="sub_delivery_address">Delivery Address</label>
+                            <input v-model="contract.sub_delivery_address" type="text" class="form-control input-sm" id="sub_delivery_address" name="sub_delivery_address">
+                        </div>
+                    </div>
+                </div>
+
                 <hr>
 
                 <div class="row">
                     <udf module="Contracts" :state="contract" :uploads="uploads" cols="col-sm-4"></udf>
                 </div>
+
+                <hr>
 
                 <div class="form-group">
                     <button class="btn btn-success">Save</button>
@@ -436,6 +495,15 @@
                     route_id: null,
                     start_date: null,
                     quantity: null,
+
+                    subcontracted: false,
+                    sub_company_name: '',
+                    sub_address_1: '',
+                    sub_address_2: '',
+                    sub_address_3: '',
+                    sub_address_4: '',
+                    sub_delivery_to: '',
+                    sub_delivery_address: '',
                 }
             };
         },
@@ -462,6 +530,19 @@
         },
 
         methods: {
+            updateBooleans() {
+                let keys = [
+                    'capture_loading_weights', 'capture_offloading_weights', 'packages_captured', 'ls_loading_weights',
+                    'ls_offloading_weights', 'lh_offloading_weights', 'lh_loading_weights', 'subcontracted'
+                ];
+
+                keys.forEach(item => this.setBoolState(item));
+            },
+
+            setBoolState(key) {
+                this.contract[key] = this.contract[key] == 'true';
+            },
+
             addUnloadingPoint() {
                 if (this.contract.unloading_points.some(point => point.id == this.unloadingPoint)) return;
 
@@ -500,11 +581,15 @@
 
             checkState() {
                 if (this.$route.params.id) {
+                    this.$root.isLoading = true;
                     http.get('/api/contract/' + this.$route.params.id).then((response) => {
                         this.contract = response.contract.raw;
+                        this.updateBooleans();
                         this.contract.start_date = this.formatDate(this.contract.start_date);
-                        this.contract.end_date = this.formatDate(this.contract.end_date);
+                        this.contract.vessel_arrival_date = this.formatDate(this.contract.vessel_arrival_date);
+                        this.contract.berthing_date = this.formatDate(this.contract.berthing_date);
                         this.setupUI();
+                        this.$root.isLoading = false;
                     });
 
                     return;

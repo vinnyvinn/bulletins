@@ -70,11 +70,14 @@ class ContractController extends Controller
     {
         $data = $request->all();
         $data['start_date'] = Carbon::parse(str_replace('/', '-', $data['start_date']))->format('Y-m-d');
-        $data['berthing_date'] = Carbon::parse(str_replace('/', '-', $data['berthing_date']))->format('Y-m-d');
-        $data['vessel_arrival_date'] = Carbon::parse(str_replace('/', '-', $data['vessel_arrival_date']))->format('Y-m-d');
         $data['end_date'] = Carbon::parse(str_replace('/', '-', $data['start_date']))
             ->addDays($data['estimated_days'])
             ->format('Y-m-d');
+
+        $data['berthing_date'] = is_null($data['berthing_date']) ? null :
+            Carbon::parse(str_replace('/', '-', $data['berthing_date']))->format('Y-m-d');
+        $data['vessel_arrival_date'] = is_null($data['vessel_arrival_date']) ? null :
+            Carbon::parse(str_replace('/', '-', $data['vessel_arrival_date']))->format('Y-m-d');
 
         $data['unloading_points'] = json_decode($data['unloading_points']);
         $data['shifts'] = json_decode($data['shifts']);
@@ -145,11 +148,13 @@ class ContractController extends Controller
     {
         $data = $request->all();
         $data['start_date'] = Carbon::parse(str_replace('/', '-', $data['start_date']))->format('Y-m-d');
-        $data['berthing_date'] = Carbon::parse(str_replace('/', '-', $data['berthing_date']))->format('Y-m-d');
-        $data['vessel_arrival_date'] = Carbon::parse(str_replace('/', '-', $data['vessel_arrival_date']))->format('Y-m-d');
         $data['end_date'] = Carbon::parse(str_replace('/', '-', $data['start_date']))
             ->addDays($data['estimated_days'])
             ->format('Y-m-d');
+        $data['berthing_date'] = is_null($data['berthing_date']) ? null :
+            Carbon::parse(str_replace('/', '-', $data['berthing_date']))->format('Y-m-d');
+        $data['vessel_arrival_date'] = is_null($data['vessel_arrival_date']) ? null :
+            Carbon::parse(str_replace('/', '-', $data['vessel_arrival_date']))->format('Y-m-d');
 
         $data['unloading_points'] = json_decode($data['unloading_points']);
         $data['shifts'] = json_decode($data['shifts']);
