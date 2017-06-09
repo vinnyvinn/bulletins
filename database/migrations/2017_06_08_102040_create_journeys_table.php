@@ -19,7 +19,7 @@ class CreateJourneysTable extends Migration
             $table->text('raw');
             $table->string('status')->default(Constants::STATUS_PENDING);
             $table->boolean('is_contract_related')->default('false');
-            $table->bigInteger('contract_id')->default(0)->index()->unsigned();
+            $table->bigInteger('contract_id')->nullable();
             $table->string('journey_type');
             $table->date('job_date');
             $table->integer('truck_id')->index()->unsigned();
@@ -39,7 +39,6 @@ class CreateJourneysTable extends Migration
 
             $table->timestamps();
 
-            $table->foreign('contract_id')->references('id')->on('contracts')->onDelete('cascade');
             $table->foreign('truck_id')->references('id')->on('trucks')->onDelete('cascade');
             $table->foreign('driver_id')->references('id')->on('drivers')->onDelete('cascade');
             $table->foreign('route_id')->references('id')->on('routes')->onDelete('set null');
