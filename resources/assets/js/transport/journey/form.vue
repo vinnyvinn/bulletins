@@ -319,6 +319,18 @@
         },
 
         methods: {
+            updateBooleans() {
+                let keys = [
+                    'subcontracted',
+                ];
+
+                keys.forEach(item => this.setBoolState(item));
+            },
+
+            setBoolState(key) {
+                this.journey[key] = this.journey[key] == 'true';
+            },
+
             fetchContracts() {
                 this.$root.isLoading = true;
                 return http.get('/api/journey/create?contracts=true').then((response) => {
@@ -352,6 +364,8 @@
                             this.journey = response.journey.raw;
                             this.journey.enquiry_from = this.journey.enquiry_from == 'null' ? '' : this.journey.enquiry_from;
                             this.journey.ref_no = this.journey.ref_no == 'null' ? '' : this.journey.ref_no;
+                            this.journey.ref_no = this.journey.contract_id == 'null' ? '' : this.journey.contract_id;
+                            this.updateBooleans();
                             this.status = response.journey.status;
                             this.setupUI();
                         });

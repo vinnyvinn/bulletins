@@ -224,6 +224,7 @@
 <script>
     export default {
         created() {
+            this.$root.isLoading = true;
             http.get('/api/journey/' + this.$route.params.id).then((response) => {
                 this.clients = response.clients;
                 this.routes = response.routes;
@@ -236,7 +237,10 @@
                 this.journey = response.journey.raw;
                 this.journey.enquiry_from = this.journey.enquiry_from == 'null' ? '' : this.journey.enquiry_from;
                 this.journey.ref_no = this.journey.ref_no == 'null' ? '' : this.journey.ref_no;
+                this.journey.contract_id = this.journey.contract_id == 'null' ? '' : this.journey.contract_id;
+                this.updateBooleans();
                 this.status = response.journey.status;
+                this.$root.isLoading = false;
             });
         },
 
@@ -302,6 +306,18 @@
         },
 
         methods: {
+            updateBooleans() {
+                let keys = [
+                    'subcontracted',
+                ];
+
+                keys.forEach(item => this.setBoolState(item));
+            },
+
+            setBoolState(key) {
+                this.journey[key] = this.journey[key] == 'true';
+            },
+
             fetchContracts() {
                 this.$root.isLoading = true;
                 http.get('/api/journey/create?contracts=true').then((response) => {
@@ -337,19 +353,6 @@
                 date = date.split('-');
 
                 return date[2] + '/' + date[1] + '/' + date[0];
-            },
-
-            updateBooleans() {
-                let keys = [
-                    'capture_loading_weights', 'capture_offloading_weights', 'packages_captured', 'ls_loading_weights',
-                    'ls_offloading_weights', 'lh_offloading_weights', 'lh_loading_weights', 'subcontracted'
-                ];
-
-                keys.forEach(item => this.setBoolState(item));
-            },
-
-            setBoolState(key) {
-                this.contract[key] = this.contract[key] == 'true';
             },
 
             approveJourney() {

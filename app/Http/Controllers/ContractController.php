@@ -88,6 +88,12 @@ class ContractController extends Controller
 
         unset($data['_token'], $data['_method']);
 
+        foreach ($data as $key => $value) {
+            if ($value == 'null') {
+                unset($data[$key]);
+            }
+        }
+
         $contract = Contract::create($data);
         foreach ($request->all() as $key => $item) {
             if ($key == 'start_date' || $key == 'end_date' ||$key == '_token' || $key == '_method' || $key == 'updated_at' ||
@@ -170,6 +176,11 @@ class ContractController extends Controller
                 $key == 'deleted_at') {
                 continue;
             }
+            if ($item == 'null') {
+                unset($data[$key]);
+                continue;
+            }
+
             $contract->{$key} = $item;
             if ($request->hasFile($key)) {
                 $extension = $request->file($key)->getClientOriginalExtension();

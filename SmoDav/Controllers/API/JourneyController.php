@@ -77,6 +77,12 @@ class JourneyController extends Controller
         $data['raw'] = json_encode($data);
         $data['job_date'] = Carbon::parse(str_replace('/', '-', $data['job_date']))->format('Y-m-d');
 
+        foreach ($data as $key => $value) {
+            if ($value == 'null') {
+                unset($data[$key]);
+            }
+        }
+
         $journey = Journey::create($data);
 
         return Response::json([
@@ -96,7 +102,7 @@ class JourneyController extends Controller
         $journey = Journey::with(['contract'])->findOrFail($id);
         $journey->raw = json_decode($journey->raw);
         $contract = $journey->contract ? json_decode($journey->contract->raw): new \stdClass();
-        $contract->id = $journey->contract->id;
+        $contract->id = $journey->contract ? $journey->contract->id : '';
         unset($journey->contract);
 
         return Response::json([
@@ -127,6 +133,12 @@ class JourneyController extends Controller
         unset($data['_token'], $data['_method']);
         $data['raw'] = json_encode($data);
         $data['job_date'] = Carbon::parse(str_replace('/', '-', $data['job_date']))->format('Y-m-d');
+
+        foreach ($data as $key => $value) {
+            if ($value == 'null') {
+                unset($data[$key]);
+            }
+        }
 
         $journey->update($data);
 
