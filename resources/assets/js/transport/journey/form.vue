@@ -66,7 +66,7 @@
 
                         <div class="form-group">
                             <label for="enquiry_from">Enquiry from</label>
-                            <input :disabled="journey.is_contract_related == '1'" type="text" v-model="journey.enquiry_from" class="form-control input-sm datepicker" id="enquiry_from" name="enquiry_from">
+                            <input :disabled="journey.is_contract_related == '1'" type="text" v-model="journey.enquiry_from" class="form-control input-sm" id="enquiry_from" name="enquiry_from">
                         </div>
                     </div>
 
