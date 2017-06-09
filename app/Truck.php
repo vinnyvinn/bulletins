@@ -11,8 +11,7 @@ class Truck extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'plate_number', 'make', 'model', 'max_load', 'status', 'location', 'driver_id', 'contract_id', 'trailer_id',
-        'project_id'
+        'plate_number', 'make', 'model', 'max_load', 'status', 'location', 'trailer_id', 'project_id'
     ];
 
     public function scopePreLoading($query)
@@ -53,16 +52,6 @@ class Truck extends Model
     public function scopeWorkshop($query)
     {
         return $query->where('location', Core::WORKSHOP);
-    }
-
-    public function driver()
-    {
-        return $this->belongsTo(Driver::class);
-    }
-
-    public function contract()
-    {
-        return $this->belongsTo(Contract::class);
     }
 
     public function trailer()

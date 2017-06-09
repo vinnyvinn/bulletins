@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use SmoDav\Models\CargoClassification;
 use SmoDav\Models\CargoType;
 use SmoDav\Models\CarriagePoint;
+use SmoDav\Support\Constants;
 
 class Contract extends Model
 {
@@ -54,5 +55,20 @@ class Contract extends Model
     public function scopeCurrent($builder)
     {
         return $builder->where('end_date', '>=', Carbon::now());
+    }
+
+    public function scopePending($builder)
+    {
+        return $builder->where('status', Constants::STATUS_PENDING);
+    }
+
+    public function scopeOpen($builder)
+    {
+        return $builder->where('status', Constants::STATUS_APPROVED);
+    }
+
+    public function scopeClosed($builder)
+    {
+        return $builder->where('status', Constants::STATUS_CLOSED);
     }
 }

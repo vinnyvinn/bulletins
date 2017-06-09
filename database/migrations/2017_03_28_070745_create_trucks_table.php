@@ -23,8 +23,11 @@ class CreateTrucksTable extends Migration
             $table->string('status')->default(Core::ACTIVE);
             $table->string('location')->default(Core::AWAITING_ALLOCATION);
             $table->integer('project_id')->index()->unsigned()->nullable();
+            $table->integer('trailer_id')->nullable()->index()->unsigned();
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('trailer_id')->references('id')->on('trailers')->onDelete('set null');
         });
     }
 

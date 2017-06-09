@@ -11,7 +11,7 @@ function authMiddleware(to, from, next) {
 }
 
 module.exports = [
-    { path: '/', redirect: '/dashboard', beforeEnter: authMiddleware },
+    { path: '/', redirect: '/login', beforeEnter: authMiddleware },
     { path: '/dashboard', component: require('./transport/dashboard/index.vue'), beforeEnter: authMiddleware },
 
     { path: '/routes', component: require('./components/routes/index.vue'), beforeEnter: authMiddleware },
@@ -55,33 +55,31 @@ module.exports = [
     { path: '/contracts/:id', component: require('./transport/contracts/view.vue'), beforeEnter: authMiddleware },
     { path: '/contracts/:id/edit', component: require('./transport/contracts/form.vue'), beforeEnter: authMiddleware },
 
+    { path: '/journey', component: require('./transport/journey/index.vue'), beforeEnter: authMiddleware },
+    { path: '/journey/create', component: require('./transport/journey/form.vue'), beforeEnter: authMiddleware },
+    { path: '/journey/:id', component: require('./transport/journey/view.vue'), beforeEnter: authMiddleware },
+    { path: '/journey/:id/edit', component: require('./transport/journey/form.vue'), beforeEnter: authMiddleware },
+
+
+
+
     { path: '/allocation', component: require('./components/allocation/index.vue'), beforeEnter: authMiddleware },
     { path: '/allocation/create', component: require('./components/allocation/form.vue'), beforeEnter: authMiddleware },
     { path: '/allocation/:id/edit', component: require('./components/allocation/form.vue'), beforeEnter: authMiddleware },
+
     { path: '/udfs', component: require('./components/udfs/index.vue'), beforeEnter: authMiddleware },
     { path: '/udfs/create', component: require('./components/udfs/form.vue'), beforeEnter: authMiddleware },
     { path: '/udfs/:id/edit', component: require('./components/udfs/form.vue'), beforeEnter: authMiddleware },
-
-
-    { path: '/job-card', component: require('./components/workshop/jobcard/index.vue'), beforeEnter: authMiddleware },
-    { path: '/job-card/create', component: require('./components/workshop/jobcard/form.vue'), beforeEnter: authMiddleware },
-    { path: '/job-card/:id', component: require('./components/workshop/jobcard/view.vue'), beforeEnter: authMiddleware },
-    { path: '/job-card/:id/edit', component: require('./components/workshop/jobcard/form.vue'), beforeEnter: authMiddleware },
-
-    { path: '/parts/create', component: require('./components/workshop/parts/form.vue'), beforeEnter: authMiddleware },
-    { path: '/parts/:id', component: require('./components/workshop/parts/view.vue'), beforeEnter: authMiddleware },
-    { path: '/parts/:id/edit', component: require('./components/workshop/parts/form.vue'), beforeEnter: authMiddleware },
-
 
     { path: '/login',
         component: require('./components/auth/login.vue'),
         beforeEnter: (to, from, next) => {
             if (localStorage.getItem('foeiwafwfuwe')) {
-                return next({path: '/'});
+                return next({path: '/dashboard'});
             }
 
             if (localStorage.getItem('fewuia32rfwe')) {
-                return next({path: '/'});
+                return next({path: '/dashboard'});
             }
 
             return next();

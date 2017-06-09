@@ -8,53 +8,55 @@
                         <router-link to="/contracts/create" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i> Add New</router-link>
                     </div>
                     <div class="panel-body">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th>Contract #</th>
-                                <th>Client</th>
-                                <th>Date Created</th>
-                                <th>Start Date</th>
-                                <th>Expected End Date</th>
-                                <th>Quantity</th>
-                                <th>Rate</th>
-                                <th></th>
-                            </tr>
-                            </thead>
+                        <div class="table-responsive">
+                            <table class="table nowrap">
+                                <thead>
+                                <tr>
+                                    <th>Contract #</th>
+                                    <th>Client</th>
+                                    <th>Date Created</th>
+                                    <th>Start Date</th>
+                                    <th>Expected End Date</th>
+                                    <th>Quantity</th>
+                                    <th>Rate</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
 
-                            <tbody>
-                            <tr v-for="contract in contracts">
-                                <td>
-                                    <router-link :to="'/contracts/' + contract.id">CNTR{{ contract.id }}</router-link></td>
-                                <td>{{ contract.client.Name }}</td>
-                                <td>{{ date2(contract.created_at) }}</td>
-                                <td>{{ date2(contract.start_date) }}</td>
-                                <td>{{ date2(contract.end_date) }}</td>
-                                <td>{{ Number(contract.quantity).toLocaleString() }} Tonnes</td>
-                                <td>{{ $root.currency }} {{ Number(contract.amount).toLocaleString() }} {{ contract.rate }}</td>
-                                <td class="text-center" v-if="contract.status == 'Pending Approval'">
-                                    <span @click="edit(contract)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
-                                    <button data-toggle="popover" :data-item="contract.id" class="btn btn-xs btn-danger btn-destroy">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
-                                </td>
-                                <td v-else></td>
-                            </tr>
-                            </tbody>
+                                <tbody>
+                                <tr v-for="contract in contracts">
+                                    <td>
+                                        <router-link :to="'/contracts/' + contract.id">CNTR{{ contract.id }}</router-link></td>
+                                    <td>{{ contract.client.Name }}</td>
+                                    <td>{{ date2(contract.created_at) }}</td>
+                                    <td>{{ date2(contract.start_date) }}</td>
+                                    <td>{{ date2(contract.end_date) }}</td>
+                                    <td>{{ Number(contract.quantity).toLocaleString() }} Tonnes</td>
+                                    <td>{{ $root.currency }} {{ Number(contract.amount).toLocaleString() }} {{ contract.rate }}</td>
+                                    <td class="text-center" v-if="contract.status == 'Pending Approval'">
+                                        <span @click="edit(contract)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
+                                        <button data-toggle="popover" :data-item="contract.id" class="btn btn-xs btn-danger btn-destroy">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </td>
+                                    <td v-else></td>
+                                </tr>
+                                </tbody>
 
-                            <tfoot>
-                            <tr>
-                                <th>Contract #</th>
-                                <th>Client</th>
-                                <th>Date Created</th>
-                                <th>Start Date</th>
-                                <th>End Date</th>
-                                <th>Quantity</th>
-                                <th>Rate</th>
-                                <th></th>
-                            </tr>
-                            </tfoot>
-                        </table>
+                                <tfoot>
+                                <tr>
+                                    <th>Contract #</th>
+                                    <th>Client</th>
+                                    <th>Date Created</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Quantity</th>
+                                    <th>Rate</th>
+                                    <th></th>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

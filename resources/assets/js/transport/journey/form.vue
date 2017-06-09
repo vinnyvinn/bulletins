@@ -1,7 +1,7 @@
 <template>
     <div class="panel panel-default">
         <div class="panel-heading">
-            <strong>Contract Details</strong>
+            <strong>Journey Details</strong>
         </div>
 
         <div class="panel-body">
@@ -9,357 +9,203 @@
                 <div class="row">
                     <div class="col-sm-3">
                         <div class="form-group">
-                            <label for="name">Contract Name</label>
-                            <input v-model="contract.name" type="text" class="form-control input-sm" id="name" name="name" required>
+                            <label for="is_contract_related">Contract Related?</label>
+                            <select v-model="journey.is_contract_related" @change="fetchContracts" class="form-control input-sm" id="is_contract_related" name="is_contract_related" required>
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
                         </div>
 
-                        <div class="form-group">
-                            <label for="cargo_classification_id">Cargo Classification</label>
-                            <select v-model="contract.cargo_classification_id" name="cargo_classification_id" id="cargo_classification_id" class="form-control input-sm select2" required>
-                                <option v-for="classification in classifications" :value="classification.id">{{ classification.name }}</option>
+                        <div class="form-group" v-if="journey.is_contract_related == '1'">
+                            <label for="contract_id">Contract</label>
+                            <select @change="updateFields" v-model="journey.contract_id" class="form-control input-sm" id="contract_id" name="contract_id" required>
+                                <option v-for="item in contracts" :value="item.id">CNTR{{ item.id }}</option>
                             </select>
                         </div>
 
                         <div class="form-group">
                             <label for="job_description">Job Description</label>
-                            <textarea v-model="contract.job_description" name="job_description" id="job_description" rows="5" class="form-control input-sm"></textarea>
+                            <textarea :disabled="journey.is_contract_related == '1'" v-model="journey.job_description" name="job_description" id="job_description" rows="5" class="form-control input-sm"></textarea>
                         </div>
 
                     </div>
 
                     <div class="col-sm-3">
                         <div class="form-group">
+                            <label for="journey_type">Job Type</label>
+                            <select v-model="journey.journey_type" class="form-control input-sm" id="journey_type" name="journey_type" required>
+                                <option value="Local">Local</option>
+                                <option value="International">International</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="route_id">Route</label>
+                            <select :disabled="journey.is_contract_related == '1'" name="route_id" id="route_id" v-model="journey.route_id" class="form-control input-sm select2" required>
+                                <option v-for="route in routes" :value="route.id">{{ route.source }} - {{ route.destination }} ({{ route.distance }} KM)</option>
+                            </select>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="driver_id">Driver</label>
+                            <select name="driver_id" id="driver_id" v-model="journey.driver_id" class="form-control input-sm select2" required>
+                                <option v-for="driver in drivers" :value="driver.id">{{ driver.first_name }} {{ driver.last_name }} ({{ driver.mobile_phone }})</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="truck_id">Vehicle Reg. No</label>
+                            <select v-model="journey.truck_id" class="form-control input-sm" id="truck_id" name="truck_id" required>
+                                <option v-for="truck in trucks" :value="truck.id">{{ truck.plate_number }}</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="enquiry_from">Enquiry from</label>
+                            <input :disabled="journey.is_contract_related == '1'" type="text" v-model="journey.enquiry_from" class="form-control input-sm datepicker" id="enquiry_from" name="enquiry_from">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="job_date">Job Date</label>
+                            <input type="text" v-model="journey.job_date" class="form-control input-sm datepicker" id="job_date" name="job_date" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ref_no">Ref No</label>
+                            <input type="text" v-model="journey.ref_no" class="form-control input-sm" id="ref_no" name="ref_no">
+                        </div>
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <div class="row" v-if="journey.is_contract_related == '1'">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="name">Contract Name</label>
+                            <input disabled v-model="contract.name" type="text" class="form-control input-sm" id="name" name="name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cargo_classification_id">Cargo Classification</label>
+                            <select disabled v-model="contract.cargo_classification_id" name="cargo_classification_id" id="cargo_classification_id" class="form-control input-sm select2" required>
+                                <option v-for="classification in classifications" :value="classification.id">{{ classification.name }}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group">
                             <label for="client_id">Client</label>
-                            <select v-model="contract.client_id" name="client_id" id="client_id" class="form-control input-sm select2" required>
+                            <select disabled v-model="contract.client_id" name="client_id" id="client_id" class="form-control input-sm select2" required>
                                 <option v-for="client in clients" :value="client.DCLink">{{ client.Name }} ({{ client.Account }})</option>
                             </select>
                         </div>
 
                         <div class="form-group">
                             <label for="cargo_type_id">Cargo Type</label>
-                            <select v-model="contract.cargo_type_id" name="cargo_type_id" id="cargo_type_id" class="form-control input-sm select2" required>
+                            <select disabled v-model="contract.cargo_type_id" name="cargo_type_id" id="cargo_type_id" class="form-control input-sm select2" required>
                                 <option v-for="type in viableCargoTypes" :value="type.id">{{ type.name }}</option>
                             </select>
                         </div>
 
-                        <div class="form-group">
-                            <label>Weights</label>
-                            <div class="checkbox">
-                                <label>
-                                    <input v-model="contract.capture_loading_weights" type="checkbox"> Weights captured at loading point?
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="checkbox">
-                                <label>
-                                    <input v-model="contract.capture_offloading_weights" type="checkbox"> Weights captured at offloading point?
-                                </label>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label for="start_date">Contract Start</label>
-                            <input v-model="contract.start_date" type="text" class="datepicker form-control input-sm" id="start_date" name="start_date" required>
+                            <input disabled v-model="contract.start_date" type="text" class="datepicker form-control input-sm" id="start_date" name="start_date" required>
                         </div>
 
                         <div class="form-group">
                             <label for="quantity">Quantity</label>
                             <div class="input-group">
-                                <input v-model="contract.quantity" min="0" type="number" class="form-control input-sm" id="quantity" name="quantity" describedby="quantity-addon" required>
+                                <input disabled v-model="contract.quantity" min="0" type="number" class="form-control input-sm" id="quantity" name="quantity" describedby="quantity-addon" required>
                                 <span class="input-group-addon" id="quantity-addon">KGs</span>
                             </div>
                         </div>
-
-
-                        <div class="form-group" v-if="contract.capture_loading_weights">
-                            <div class="checkbox">
-                                <label>
-                                    <input v-model="contract.ls_loading_weights" type="checkbox"> Loading capture from weighbridge (LS)
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group" v-if="contract.capture_offloading_weights">
-                            <div class="checkbox">
-                                <label>
-                                    <input v-model="contract.ls_offloading_weights" type="checkbox"> Offloading capture from weighbridge (LS)
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group" v-if="contract.capture_loading_weights">
-                            <div class="checkbox">
-                                <label>
-                                    <input v-model="contract.lh_loading_weights" type="checkbox"> Loading capture from weighbridge (LH)
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group" v-if="contract.capture_offloading_weights">
-                            <div class="checkbox">
-                                <label>
-                                    <input v-model="contract.lh_offloading_weights" type="checkbox"> Offloading capture from weighbridge (LH)
-                                </label>
-                            </div>
-                        </div>
-
                     </div>
 
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label for="route_id">Route</label>
-                            <select v-model="contract.route_id" name="route_id" id="route_id" class="form-control input-sm select2" required>
+                            <select disabled v-model="contract.route_id" class="form-control input-sm select2" required>
                                 <option v-for="route in routes" :value="route.id">{{ route.source }} - {{ route.destination }} ({{ route.distance }} KM)</option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="trucks_allocated">Trucks Allocated</label>
-                            <input v-model="contract.trucks_allocated" min="0" type="number" class="form-control input-sm" id="trucks_allocated" name="trucks_allocated" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="loading_point">Loading Point</label>
-                            <select v-model="contract.loading_point_id" name="loading_point_id" id="loading_point_id" class="form-control input-sm select2" required>
+                            <label for="loading_point_id">Loading Point</label>
+                            <select disabled v-model="contract.loading_point_id" name="loading_point_id" id="loading_point_id" class="form-control input-sm select2" required>
                                 <option v-for="point in carriage_points" :value="point.id">{{ point.name }}</option>
                             </select>
                         </div>
 
-                        <div class="form-group">
-                            <label for="unloading_point">Unloading Point</label>
-                            <div class="input-group">
-                                <select v-model="unloadingPoint" name="unloading_point" id="unloading_point" class="form-control input-sm select2">
-                                    <option v-for="point in carriage_points" :value="point.id">{{ point.name }}</option>
-                                </select>
-                                <span class="input-group-btn">
-                                    <button @click.prevent="addUnloadingPoint" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Add</button>
-                                </span>
-                            </div>
-
-                        </div>
-
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="enquiry_from">Enquiry From</label>
-                            <input v-model="contract.enquiry_from" type="text" class="form-control input-sm" id="enquiry_from" name="enquiry_from">
-                        </div>
+                <hr>
 
+                <div class="row" v-if="journey.is_contract_related == '0'">
+                    <div class="col-sm-12">
                         <div class="form-group">
-                            <label>Packages</label>
+                            <label>Sub-Contracts</label>
                             <div class="checkbox">
                                 <label>
-                                    <input v-model="contract.packages_captured" type="checkbox"> Packages captured at loading?
+                                    <input v-model="journey.subcontracted" type="checkbox">
+                                    Check if the trucks have been subcontracted by another company.
+                                    Note that the delivery note will be processed in the name of the other company.
                                 </label>
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="contract_head">Head of Contract</label>
-                            <input v-model="contract.contract_head" type="text" class="form-control input-sm" id="contract_head" name="contract_head">
-                        </div>
-
-
-                        <div class="form-group">
-                            <label for="estimated_days">Estimated Period</label>
-                            <div class="input-group">
-                                <input v-model="contract.estimated_days" min="0" type="number" class="form-control input-sm" id="estimated_days" name="estimated_days" describedby="estimated_days-addon" required>
-                                <span class="input-group-addon" id="estimated_days-addon">Days</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-3">
-                      <div class="form-group">
-                          <label for="lot_number">Lot Number</label>
-                          <input v-model="contract.lot_number" type="text" class="form-control input-sm" id="lot_number" name="lot_number">
-                      </div>
-                    </div>
-
-                    <div class="col-sm-3">
-                        <table class="table table-striped">
-                           <thead>
-                             <tr>
-                               <th>Unloading Point</th>
-                               <th></th>
-                             </tr>
-                           </thead>
-                           <tbody>
-                             <tr v-for="point in contract.unloading_points">
-                               <td>{{ point.name }}</td>
-                               <td><button @click.prevent="removeUnloadingPoint(point)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button></td>
-                             </tr>
-                           </tbody>
-                        </table>
-                    </div>
                 </div>
 
-                <h4><strong>Ship Details</strong></h4>
-
-                <hr>
-
-                <div class="row">
-                    <div class="col-sm-4">
-                      <div class="form-group">
-                          <label for="shipping_line">Shipping Line</label>
-                          <input v-model="contract.shipping_line" type="text" class="form-control input-sm" id="shipping_line" name="shipping_line">
-                      </div>
-
-                      <div class="form-group">
-                          <label for="berth_no">Berth No</label>
-                          <input v-model="contract.berth_no" type="text" class="form-control input-sm" id="berth_no" name="berth_no">
-                      </div>
-                    </div>
-
-                    <div class="col-sm-4">
-
-                      <div class="form-group">
-                          <label for="vessel_name">Vessel Name</label>
-                          <input v-model="contract.vessel_name" type="text" class="form-control input-sm" id="vessel_name" name="vessel_name" required>
-                      </div>
-
-                      <div class="form-group">
-                          <label for="berthing_date">Berthing Date</label>
-                          <input v-model="contract.berthing_date" type="text" class="datepicker form-control input-sm" id="berthing_date" name="berthing_date" required>
-                      </div>
-
-                    </div>
-
-                    <div class="col-sm-4">
-                      <div class="form-group">
-                          <label for="no_of_shifts">No of Shifts</label>
-                          <input number v-model="contract.no_of_shifts" type="number" min="1" class="form-control input-sm" id="no_of_shifts" name="no_of_shifts" required>
-                      </div>
-
-                      <div class="form-group">
-                          <label for="vessel_arrival_date">Vessel Arrival Date</label>
-                          <input v-model="contract.vessel_arrival_date" type="text" class="datepicker form-control input-sm" id="vessel_arrival_date" name="vessel_arrival_date" required>
-                      </div>
-
-                    </div>
-                </div>
-
-                <h4><strong>Shifts Details</strong></h4>
-
-                <hr>
-
-                <div class="row">
-                    <div class="col-sm-3">
-                      <div class="form-group">
-                          <label for="shift_number">Shift Number</label>
-                          <select v-model="shift.shift_number" name="shift_number" id="shift_number" class="form-control input-sm">
-                              <option v-for="item in parseInt(contract.no_of_shifts)" :value="item">{{ item }}</option>
-                          </select>
-                      </div>
-                    </div>
-
-                    <div class="col-sm-3">
-                      <div class="form-group">
-                          <label for="from_time">From Time</label>
-                          <input v-model="shift.from_time" type="time" name="from_time" class="form-control input-sm">
-                      </div>
-                    </div>
-
-                    <div class="col-sm-3">
+                <div class="row" v-if="journey.subcontracted && journey.is_contract_related == '0'">
+                    <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="hours">No of Hours</label>
-                            <select v-model="shift.hours" name="hours" id="hours" class="form-control input-sm">
-                                <option v-for="item in 24" :value="item">{{ item + (item > 1 ? ' Hours' : ' Hour') }}</option>
-                            </select>
+                            <label for="sub_company_name">Company Name</label>
+                            <input required v-model="journey.sub_company_name" type="text" class="form-control input-sm" id="sub_company_name" name="sub_company_name">
                         </div>
                     </div>
-
-                    <div class="col-sm-3">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="to_time">To Time</label>
-                                    <input disabled type="time" name="to_time" id="to_time" :value="toTime" class="form-control input-sm">
-                                </div>
-                            </div>
-
-                            <div class="col-sm-6">
-                                <br>
-                                <button class="btn btn-primary" @click.prevent="addShift"><i class="fa fa-plus"></i> Add</button>
-                            </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="sub_address_3">Address Line 3</label>
+                            <input v-model="journey.sub_address_3" type="text" class="form-control input-sm" id="sub_address_3" name="sub_address_3">
                         </div>
                     </div>
-
-                    <div class="col-sm-12">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Shift No</th>
-                                    <th>Start Time</th>
-                                    <th>End Time</th>
-                                    <th>Hours</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="shift in contract.shifts">
-                                  <td>{{ shift.shift_number }}</td>
-                                  <td><input disabled type="time" :value="shift.from_time"></td>
-                                  <td><input disabled type="time" :value="shift.to_time"></td>
-                                  <td class="text-right">{{ shift.hours }}</td>
-                                  <td><button class="btn btn-danger btn-xs" @click.prevent="removeShift(shift)"><i class="fa fa-trash"></i></button></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <h4><strong>Billing Details</strong></h4>
-
-                <hr>
-
-                <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="rate">Rate</label>
-                            <select v-model="contract.rate" name="rate" id="rate" class="form-control input-sm select2" required>
-                                <option value="Per Hour">Per Hour</option>
-                                <option value="Per KM">Per KM</option>
-                                <option value="Per Tonne">Per Tonne</option>
-                            </select>
-                        </div>
-
-
-                    </div>
-
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            <label for="amount">Price {{ contract.rate }}</label>
-                            <input v-model="contract.amount" type="number" class="form-control input-sm" id="amount" name="amount" required>
+                            <label for="sub_address_1">Address Line 1</label>
+                            <input required v-model="journey.sub_address_1" type="text" class="form-control input-sm" id="sub_address_1" name="sub_address_1">
                         </div>
                     </div>
-
-
-                    <div class="col-sm-4">
+                    <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="stock_item_id">Billable Item</label>
-                            <select v-model="contract.stock_item_id" name="stock_item_id" id="stock_item_id" class="form-control input-sm select2" required>
-                                <option v-for="item in stockItems" :value="item.StockLink">{{ item.Description_1 }}</option>
-                            </select>
+                            <label for="sub_address_4">Address Line 4</label>
+                            <input v-model="journey.sub_address_4" type="text" class="form-control input-sm" id="sub_address_4" name="sub_address_4">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="sub_address_2">Address Line 2</label>
+                            <input required v-model="journey.sub_address_2" type="text" class="form-control input-sm" id="sub_address_2" name="sub_address_2">
                         </div>
                     </div>
                 </div>
 
                 <hr>
-
-                <div class="row">
-                    <udf module="Contracts" :state="contract" :uploads="uploads" cols="col-sm-4"></udf>
-                </div>
 
                 <div class="form-group">
                     <button class="btn btn-success">Save</button>
-                    <router-link to="/contracts" class="btn btn-danger">Back</router-link>
+                    <router-link to="/journey" class="btn btn-danger">Back</router-link>
                 </div>
             </form>
 
@@ -370,13 +216,14 @@
 <script>
     export default {
         created() {
-            http.get('/api/contract/create').then((response) => {
+            http.get('/api/journey/create').then((response) => {
                 this.clients = response.clients;
-                this.stockItems = response.stockItems;
                 this.routes = response.routes;
                 this.classifications = response.cargo_classifications;
                 this.cargo_types = response.cargo_types;
                 this.carriage_points = response.carriage_points;
+                this.trucks = response.trucks;
+                this.drivers = response.drivers;
             });
         },
 
@@ -389,58 +236,68 @@
 
         data() {
             return {
+                contracts: [],
+                drivers: [],
+                trucks: [],
+
+
+
                 classifications: [],
                 cargo_types: [],
                 carriage_points: [],
                 unloadingPoint: null,
-                shift: {
-                  shift_number: null,
-                  from_time: '08:00',
-                  hours: 1,
-                  to_time: null,
-                },
+
                 clients: [],
                 routes: [],
                 uploads: [],
                 stockItems: [],
-                contract: {
-                    cargo_classification_id: null,
-                    cargo_type_id: null,
-                    trucks_allocated: 0,
-                    job_description: '',
-                    capture_loading_weights: false,
-                    capture_offloading_weights: false,
-                    ls_loading_weights: false,
-                    ls_offloading_weights: false,
-                    lh_loading_weights: false,
-                    lh_offloading_weights: false,
-                    loading_point_id: '',
-                    unloading_points: [],
-                    enquiry_from: '',
-                    contract_head: '',
-                    packages_captured: false,
-                    estimated_days: 0,
-                    lot_number: '',
-                    shipping_line: '',
-                    berth_no: '',
-                    vessel_name: '',
-                    berthing_date: null,
-                    no_of_shifts: 1,
-                    vessel_arrival_date: null,
-                    shifts: [],
-                    name: null,
-                    rate: 'Per Tonne',
-                    amount: null,
-                    client_id: null,
-                    stock_item_id: null,
+                journey: {
+                    is_contract_related: 0,
+                    contract_id: null,
+                    journey_type: 'Local',
+                    job_date: null,
+                    truck_id: null,
+                    driver_id: null,
+                    ref_no: '',
                     route_id: null,
-                    start_date: null,
-                    quantity: null,
+                    job_description: '',
+                    enquiry_from: '',
+
+                    subcontracted: false,
+                    sub_company_name: '',
+                    sub_address_1: '',
+                    sub_address_2: '',
+                    sub_address_3: '',
+                    sub_address_4: '',
                 }
             };
         },
 
         computed: {
+            contract() {
+                let contract = this.contracts.filter(e => e.id == this.journey.contract_id);
+                if (contract.length) {
+                    return JSON.parse(contract[0].raw);
+                }
+
+                return {
+                    cargo_classification_id: null,
+                    cargo_type_id: null,
+                    name: '',
+                    client_id: null,
+                    loading_point_id: null,
+                    quantity: null,
+                    route_id: null,
+                    start_date: null,
+                };
+            },
+
+
+
+
+
+
+
             viableCargoTypes() {
                 return this.cargo_types.filter(e => e.cargo_classification_id == this.contract.cargo_classification_id);
             },
@@ -462,52 +319,45 @@
         },
 
         methods: {
-            addUnloadingPoint() {
-                if (this.contract.unloading_points.some(point => point.id == this.unloadingPoint)) return;
-
-                let selectedPoint = this.carriage_points.filter(point => point.id == this.unloadingPoint);
-
-                if (selectedPoint.length < 1) return;
-
-                if (this.contract.unloading_points.some(point => point.id == this.unloadingPoint));
-                this.contract.unloading_points.push({
-                    id: selectedPoint[0].id,
-                    name: selectedPoint[0].name
+            fetchContracts() {
+                this.$root.isLoading = true;
+                return http.get('/api/journey/create?contracts=true').then((response) => {
+                    this.contracts = response.contracts;
+                    this.$root.isLoading = false;
                 });
-                this.unloadingPoint = 0;
             },
 
-            removeUnloadingPoint(point) {
-                this.contract.unloading_points.splice(this.contract.unloading_points.indexOf(point), 1);
-            },
-
-            addShift() {
-              if (! this.shift.shift_number) return;
-              if (this.contract.shifts.some(shift => shift.shift_number == this.shift.shift_number)) return;
-              this.shift.to_time = this.toTime;
-              this.contract.shifts.push(this.shift);
-              this.shift = {
-                shift_number: null,
-                from_time: '08:00',
-                hours: 1,
-                to_time: null,
-              };
-            },
-
-            removeShift(shift) {
-              this.contract.shifts.splice(this.contract.shifts.indexOf(shift), 1);
+            updateFields() {
+                $('#route_id').select2('destroy');
+                setTimeout(() => {
+                    this.journey.route_id = this.contract.route_id;
+                    this.journey.job_description = this.contract.job_description;
+                    this.journey.enquiry_from = this.contract.enquiry_from == 'null' ? '' : this.contract.enquiry_from;
+                    $('#route_id').select2().on('change', e => this.journey.route_id = e.target.value);
+                }, 1000);
             },
 
             checkState() {
                 if (this.$route.params.id) {
-                    http.get('/api/contract/' + this.$route.params.id).then((response) => {
-                        this.contract = response.contract.raw;
-                        this.contract.start_date = this.formatDate(this.contract.start_date);
-                        this.contract.end_date = this.formatDate(this.contract.end_date);
-                        this.setupUI();
-                    });
+                    this.fetchContracts().then(() => {
+                        http.get('/api/journey/' + this.$route.params.id).then((response) => {
+                            this.clients = response.clients;
+                            this.routes = response.routes;
+                            this.classifications = response.cargo_classifications;
+                            this.cargo_types = response.cargo_types;
+                            this.carriage_points = response.carriage_points;
+                            this.trucks = response.trucks;
+                            this.drivers = response.drivers;
+//                            this.contract = response.contract;
+                            this.journey = response.journey.raw;
+                            this.journey.enquiry_from = this.journey.enquiry_from == 'null' ? '' : this.journey.enquiry_from;
+                            this.journey.ref_no = this.journey.ref_no == 'null' ? '' : this.journey.ref_no;
+                            this.status = response.journey.status;
+                            this.setupUI();
+                        });
 
-                    return;
+                        return;
+                    });
                 }
                 this.setupUI();
             },
@@ -525,61 +375,37 @@
                     todayHighlight: true,
                 });
 
-                $('#start_date').datepicker().on('changeDate', (e) => {
-                    this.contract.start_date = e.date.toLocaleDateString('en-GB');
-                    $('#end_date').datepicker('setStartDate', e.date);
+                $('#job_date').datepicker().on('changeDate', (e) => {
+                    this.journey.job_date = e.date.toLocaleDateString('en-GB');
                 });
-
-                $('#end_date').datepicker().on('changeDate', (e) => {
-                    this.contract.end_date = e.date.toLocaleDateString('en-GB');
-                });
-
-                $('#berthing_date').datepicker().on('changeDate', (e) => {
-                    this.contract.berthing_date = e.date.toLocaleDateString('en-GB');
-                });
-
-                $('#vessel_arrival_date').datepicker().on('changeDate', (e) => {
-                    this.contract.vessel_arrival_date = e.date.toLocaleDateString('en-GB');
-                });
-
 
                 setTimeout(() => {
-                    $('#client_id').select2().on('change', e => this.contract.client_id = e.target.value);
-                    $('#route_id').select2().on('change', e => this.contract.route_id = e.target.value);
-                    $('#stock_item_id').select2().on('change', e => this.contract.stock_item_id = e.target.value);
+                    $('#truck_id').select2().on('change', e => this.journey.truck_id = e.target.value);
+                    $('#driver_id').select2().on('change', e => this.journey.driver_id = e.target.value);
+                    $('#route_id').select2().on('change', e => this.journey.route_id = e.target.value);
                 }, 1000);
             },
 
-
-
             store() {
                 this.$root.isLoading = true;
-                let contract = JSON.parse(JSON.stringify(this.contract));
-                contract.unloading_points = JSON.stringify(this.contract.unloading_points);
-                contract.shifts = JSON.stringify(this.contract.shifts);
-
                 let request = null;
-                let data = mapToFormData(contract, this.uploads, typeof this.$route.params.id === 'string');
+                let data = mapToFormData(this.journey, this.uploads, typeof this.$route.params.id === 'string');
 
                 if (this.$route.params.id) {
-                    request = http.put('/api/contract/' + this.$route.params.id, data, true);
+                    request = http.put('/api/journey/' + this.$route.params.id, data, true);
                 } else {
-                    request = http.post('/api/contract', data, true);
+                    request = http.post('/api/journey', data, true);
                 }
 
                 request.then((response) => {
                     this.$root.isLoading = false;
                     alert2(this.$root, [response.message], 'success');
-                    window._router.push({ path: '/contracts' });
+                    window._router.push({ path: '/journey' });
                 }).catch((error) => {
                     this.$root.isLoading = false;
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                 });
             },
-
-            addUdfToObject (slug) {
-              Vue.set(this.contract,slug,'');
-            }
         }
     }
 </script>

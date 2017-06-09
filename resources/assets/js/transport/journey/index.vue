@@ -4,56 +4,51 @@
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <strong>Contracts</strong>
-                        <router-link to="/contracts/create" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i> Add New</router-link>
+                        <strong>Journey Creation</strong>
+                        <router-link to="/journey/create" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i> Add New</router-link>
                     </div>
                     <div class="panel-body">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th>Contract #</th>
-                                <th>Client</th>
-                                <th>Date Created</th>
-                                <th>Start Date</th>
-                                <th>End Date</th>
-                                <th>Quantity</th>
-                                <th>Rate</th>
-                                <th></th>
-                            </tr>
-                            </thead>
+                        <div class="table-responsive">
+                            <table class="table no-wrap">
+                                <thead>
+                                <tr>
+                                    <th>Journey #</th>
+                                    <th>Contract Related</th>
+                                    <th>Journey Type</th>
+                                    <th>Job Date</th>
+                                    <th>Ref. No.</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="journey in journeys">
+                                    <td><router-link :to="'/journey/' + journey.id">JRNY-{{ journey.id }}</router-link></td>
+                                    <td>{{ journey.is_contract_related ? 'Yes' : 'No' }}</td>
+                                    <td>{{ journey.journey_type }}</td>
+                                    <td>{{ date2(journey.job_date) }}</td>
+                                    <td>{{ journey.ref_no }}</td>
+                                    <td class="text-center" v-if="journey.status == 'Pending Approval'">
+                                        <span @click="edit(journey)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
+                                        <button data-toggle="popover" :data-item="journey.id" class="btn btn-xs btn-danger btn-destroy">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </td>
+                                    <td v-else></td>
+                                </tr>
+                                </tbody>
 
-                            <tbody>
-                            <tr v-for="contract in contracts">
-                                <td>
-                                    <router-link :to="'/contracts/' + contract.id">CNTR{{ contract.id }}</router-link></td>
-                                <td>{{ contract.client.Name }}</td>
-                                <td>{{ date2(contract.created_at) }}</td>
-                                <td>{{ date2(contract.start_date) }}</td>
-                                <td>{{ date2(contract.end_date) }}</td>
-                                <td>{{ Number(contract.quantity).toLocaleString() }} Tonnes</td>
-                                <td>{{ $root.currency }} {{ Number(contract.amount).toLocaleString() }} {{ contract.rate }}</td>
-                                <td class="text-center">
-                                    <span @click="edit(contract)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
-                                    <button data-toggle="popover" :data-item="contract.id" class="btn btn-xs btn-danger btn-destroy">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            </tbody>
-
-                            <tfoot>
-                            <tr>
-                                <th>Contract #</th>
-                                <th>Client</th>
-                                <th>Date Created</th>
-                                <th>Start Date</th>
-                                <th>End Date</th>
-                                <th>Quantity</th>
-                                <th>Rate</th>
-                                <th></th>
-                            </tr>
-                            </tfoot>
-                        </table>
+                                <tfoot>
+                                <tr>
+                                    <th>Journey #</th>
+                                    <th>Contract Related</th>
+                                    <th>Journey Type</th>
+                                    <th>Job Date</th>
+                                    <th>Ref. No.</th>
+                                    <th></th>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -64,8 +59,8 @@
 <script>
     export default {
         created() {
-            http.get('/api/contract').then(response => {
-                this.contracts = response.contracts;
+            http.get('/api/journey').then(response => {
+                this.journeys = response.journeys;
                 this.setupConfirm();
                 prepareTable();
             });
@@ -73,7 +68,7 @@
 
         data() {
             return {
-                contracts: []
+                journeys: []
             };
         },
 
@@ -88,14 +83,14 @@
                 return window._date2(value);
             },
 
-            edit(contract) {
-                window._router.push({path: '/contracts/' + contract.id + '/edit'})
+            edit(journey) {
+                window._router.push({path: '/journey/' + journey.id + '/edit'})
             },
 
             destroy(id) {
                 this.$root.isLoading = true;
 
-                http.destroy('api/contract/' + id).then(response => {
+                http.destroy('api/journey/' + id).then(response => {
                     if (response.status != 'success') {
                         this.$root.isLoading = false;
                         alert2(this.$root, [response.message], 'danger');

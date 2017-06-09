@@ -18,8 +18,11 @@ class CreateTrailersTable extends Migration
             $table->string('trailer_number')->unique();
             $table->string('make')->nullable();
             $table->string('type')->nullable();
+            $table->integer('truck_id')->nullable()->unsigned()->index();
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('truck_id')->references('id')->on('trucks')->onDelete('set null');
         });
     }
 

@@ -149,6 +149,7 @@ a.active:not(.btn) {
 }
 
 .bottom-nav {
+  overflow-x: scroll;
   position: fixed;
   bottom: 0;
   left: 0;
@@ -168,6 +169,7 @@ a.active:not(.btn) {
   margin: 5px;
   width: 100%;
   cursor: pointer;
+  min-width: 80px;
 
   img {
     max-height: 40px;

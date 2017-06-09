@@ -3,7 +3,7 @@
         <div class="panel-heading">
             <div class="row">
                 <div class="col-sm-6">
-                    <h4><strong>Contract Details</strong></h4>
+                    <h4><strong>Contract Details: {{ status }}</strong></h4>
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group pull-right">

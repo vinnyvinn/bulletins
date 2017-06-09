@@ -15,7 +15,7 @@
                 <div class="caption">Contracts</div>
             </router-link>
 
-            <router-link to="/contracts" class="nav-items">
+            <router-link to="/journey" class="nav-items">
                 <img src="/images/journey.png" alt="journey" class="img-responsive">
                 <div class="caption">Journey Creation</div>
             </router-link>

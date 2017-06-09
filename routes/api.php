@@ -54,9 +54,13 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('parts/{id}/disapprove', '\SmoDav\Controllers\API\PartsController@disapprove');
 
 
-    Route::resource('contract', 'ContractController');
     Route::post('contract/{id}/approve', 'ContractController@approve');
     Route::post('contract/{id}/close', 'ContractController@close');
     Route::post('contract/{id}/reopen', 'ContractController@reopen');
+    Route::resource('contract', 'ContractController');
+    Route::post('journey/{id}/approve', '\SmoDav\Controllers\API\JourneyController@approve');
+    Route::post('journey/{id}/close', '\SmoDav\Controllers\API\JourneyController@close');
+    Route::post('journey/{id}/reopen', '\SmoDav\Controllers\API\JourneyController@reopen');
+    Route::resource('journey', '\SmoDav\Controllers\API\JourneyController');
 
 });
