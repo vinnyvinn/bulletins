@@ -19,7 +19,7 @@ class CreateJourneysTable extends Migration
             $table->text('raw');
             $table->string('status')->default(Constants::STATUS_PENDING);
             $table->boolean('is_contract_related')->default('false');
-            $table->bigInteger('contract_id')->index()->unsigned()->nullable();
+            $table->bigInteger('contract_id')->default(0)->index()->unsigned();
             $table->string('journey_type');
             $table->date('job_date');
             $table->integer('truck_id')->index()->unsigned();
