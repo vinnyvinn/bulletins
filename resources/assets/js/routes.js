@@ -60,6 +60,11 @@ module.exports = [
     { path: '/journey/:id', component: require('./transport/journey/view.vue'), beforeEnter: authMiddleware },
     { path: '/journey/:id/edit', component: require('./transport/journey/form.vue'), beforeEnter: authMiddleware },
 
+    { path: '/inspection', component: require('./transport/inspection/index.vue'), beforeEnter: authMiddleware },
+    { path: '/inspection/create', component: require('./transport/inspection/form.vue'), beforeEnter: authMiddleware },
+    { path: '/inspection/:id', component: require('./transport/inspection/view.vue'), beforeEnter: authMiddleware },
+    { path: '/inspection/:id/edit', component: require('./transport/inspection/form.vue'), beforeEnter: authMiddleware },
+
 
 
 

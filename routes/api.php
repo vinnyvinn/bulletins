@@ -63,4 +63,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('journey/{id}/reopen', '\SmoDav\Controllers\API\JourneyController@reopen');
     Route::resource('journey', '\SmoDav\Controllers\API\JourneyController');
 
+    Route::resource('inspection', '\SmoDav\Controllers\API\InspectionController');
+    Route::get('dashboard', '\SmoDav\Controllers\API\DashboardController@index');
+
 });

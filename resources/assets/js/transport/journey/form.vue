@@ -355,8 +355,6 @@
                             this.status = response.journey.status;
                             this.setupUI();
                         });
-
-                        return;
                     });
                 }
                 this.setupUI();
@@ -389,6 +387,14 @@
             store() {
                 this.$root.isLoading = true;
                 let request = null;
+
+                let truck = this.trucks.filter(e => e.id == this.journey.truck_id)[0];
+                let route = this.routes.filter(e => e.id == this.journey.route_id)[0];
+
+                this.journey.truck_plate_number = truck.plate_number;
+                this.journey.route_source = route.source;
+                this.journey.route_destination = route.destination;
+
                 let data = mapToFormData(this.journey, this.uploads, typeof this.$route.params.id === 'string');
 
                 if (this.$route.params.id) {

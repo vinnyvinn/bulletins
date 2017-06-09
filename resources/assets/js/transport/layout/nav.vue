@@ -20,14 +20,9 @@
                 <div class="caption">Journey Creation</div>
             </router-link>
 
-            <router-link to="/contracts" class="nav-items">
+            <router-link to="/inspection" class="nav-items">
                 <img src="/images/inspection.png" alt="inspection" class="img-responsive">
                 <div class="caption">Truck Inspection</div>
-            </router-link>
-
-            <router-link to="/contracts" class="nav-items">
-                <img src="/images/delivery.png" alt="delivery" class="img-responsive">
-                <div class="caption">Delivery Note</div>
             </router-link>
 
             <router-link to="/contracts" class="nav-items">
@@ -43,6 +38,11 @@
             <router-link to="/contracts" class="nav-items">
                 <img src="/images/card.png" alt="card" class="img-responsive">
                 <div class="caption">Route Card</div>
+            </router-link>
+
+            <router-link to="/contracts" class="nav-items">
+                <img src="/images/delivery.png" alt="delivery" class="img-responsive">
+                <div class="caption">Delivery Note</div>
             </router-link>
 
             <div @click.prevent="logout" class="nav-items">

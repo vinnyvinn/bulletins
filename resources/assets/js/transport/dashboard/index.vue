@@ -1,12 +1,125 @@
 <template>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-sm-6">
                 <div class="panel panel-default">
-                    <div class="panel-body">
+                    <div class="panel-heading">
+                        <strong>Journeys In Progress</strong>
 
+                        <div class="pull-right">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label for="month">Month</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <select @change="fetchMonthData" v-model="month" name="month" id="month" class="form-control input-sm">
+                                        <option v-for="item in months" :value="item">{{ item }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table nowrap datatable">
+                                <thead>
+                                <tr>
+                                    <th>Journey #</th>
+                                    <th>Contract Related</th>
+                                    <th>Journey Type</th>
+                                    <th>Job Date</th>
+                                    <th>Ref. No.</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="journey in open_journeys">
+                                    <td><router-link :to="'/journey/' + journey.id">JRNY-{{ journey.id }}</router-link></td>
+                                    <td>{{ journey.is_contract_related ? 'Yes' : 'No' }}</td>
+                                    <td>{{ journey.journey_type }}</td>
+                                    <td>{{ date2(journey.job_date) }}</td>
+                                    <td>{{ journey.ref_no }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>Pending Fuel &amp; Mileage for journeys created.</strong>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table nowrap datatable">
+                                <thead>
+                                <tr>
+                                    <th>Journey #</th>
+                                    <th>Contract Related</th>
+                                    <th>Journey Type</th>
+                                    <th>Job Date</th>
+                                    <th>Ref. No.</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>Journeys created &amp; pending loadings.</strong>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table nowrap datatable">
+                                <thead>
+                                <tr>
+                                    <th>Journey #</th>
+                                    <th>Contract Related</th>
+                                    <th>Journey Type</th>
+                                    <th>Job Date</th>
+                                    <th>Ref. No.</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>Pending offloading.</strong>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table nowrap datatable">
+                                <thead>
+                                <tr>
+                                    <th>Journey #</th>
+                                    <th>Contract Related</th>
+                                    <th>Journey Type</th>
+                                    <th>Job Date</th>
+                                    <th>Ref. No.</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -15,62 +128,49 @@
 <script>
     export default {
         created() {
-            http.get('/api/truck').then(response => {
-                this.prepareTrucks(response.trucks);
+            this.$root.isLoading = true;
+            http.get('/api/dashboard').then(response => {
+                this.mapFetchedData(response);
             });
         },
 
         data() {
             return {
-                sharedState: window._mainState,
-                awaiting: [],
-                pre_loading: [],
+                open_journeys: [],
                 loading: [],
-                enroute: [],
                 offloading: [],
-                in_yard: [],
-                incident: [],
-                workshop: []
-            };
+                delivery_notes: [],
+                months: [],
+                month: '',
+            }
         },
 
         methods: {
-            prepareTrucks(trucks) {
-                trucks.forEach((truck) => {
-                    if (truck.status == 'Central Truck Yard') {
-                        this.workshop.push(truck);
-                        return;
-                    }
-                    if (truck.location == 'Awaiting Allocation') {
-                        this.awaiting.push(truck);
-                        return;
-                    }
-                    if (truck.location == 'Pre-Loading') {
-                        this.pre_loading.push(truck);
-                        return;
-                    }
-                    if (truck.location == 'Loading') {
-                        this.loading.push(truck);
-                        return;
-                    }
-                    if (truck.location == 'Enroute') {
-                        this.enroute.push(truck);
-                        return;
-                    }
-                    if (truck.location == 'Offloading') {
-                        this.offloading.push(truck);
-                        return;
-                    }
-                    if (truck.location == 'In Yard') {
-                        this.in_yard.push(truck);
-                        return;
-                    }
-                    if (truck.location == 'Incident') {
-                        this.incident.push(truck);
-                    }
-                })
+            date2(value) {
+                return window._date2(value);
+            },
+            getMonth() {
+                let date = new Date();
+
+                return (parseInt(date.getMonth()) + 1).toString() + '-' + date.getYear();
             },
 
+            fetchMonthData() {
+                this.$root.isLoading = true;
+                http.get('/api/dashboard?month=' + this.month).then(response => {
+                    this.mapFetchedData(response);
+                });
+            },
+
+            mapFetchedData(response) {
+                $('.datatable').dataTable().fnDestroy();
+                this.open_journeys = response.open_journeys;
+                this.months = response.months;
+                setTimeout(() => {
+                    $('.datatable').dataTable();
+                    this.$root.isLoading = false;
+                }, 1000);
+            }
         }
     }
 </script>
