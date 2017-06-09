@@ -253,13 +253,13 @@
                 stockItems: [],
                 journey: {
                     is_contract_related: 0,
-                    contract_id: null,
+                    contract_id: '',
                     journey_type: 'Local',
-                    job_date: null,
-                    truck_id: null,
-                    driver_id: null,
+                    job_date: '',
+                    truck_id: '',
+                    driver_id: '',
                     ref_no: '',
-                    route_id: null,
+                    route_id: '',
                     job_description: '',
                     enquiry_from: '',
 
