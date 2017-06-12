@@ -30,7 +30,7 @@
                 <div class="caption">Millage Allocation</div>
             </router-link>
 
-            <router-link to="/contracts" class="nav-items">
+            <router-link to="/fuel" class="nav-items">
                 <img src="/images/fuel.png" alt="fuel" class="img-responsive">
                 <div class="caption">Fuel Allocation</div>
             </router-link>

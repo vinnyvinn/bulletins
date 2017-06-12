@@ -27,7 +27,7 @@ class CreateTrucksTable extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            $table->foreign('trailer_id')->references('id')->on('trailers')->onDelete('set null');
+            // $table->foreign('trailer_id')->references('id')->on('trailers')->onDelete('set null');
         });
     }
 

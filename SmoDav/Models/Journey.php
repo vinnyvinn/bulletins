@@ -7,6 +7,7 @@ use App\Driver;
 use App\Route;
 use App\Truck;
 use SmoDav\Support\Constants;
+use App\Fuel;
 
 class Journey extends SmoDavModel
 {
@@ -50,5 +51,9 @@ class Journey extends SmoDavModel
     public function scopeClosed($builder)
     {
         return $builder->where('status', Constants::STATUS_CLOSED);
+    }
+
+    public function fuel() {
+      return $this->belongsTo(Fuel::class);
     }
 }

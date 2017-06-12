@@ -52,7 +52,7 @@ class Excel
             return false;
         }
 
-        $mime = explode('.', $file->getClientMimeType());
+        $mime = explode('.', $file->getClientOriginalExtension());
         $currentMime = $mime[count($mime) - 1];
 
         if (strtoupper($currentMime) != 'XLS' && strtoupper($currentMime) != 'XLSX') {

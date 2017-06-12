@@ -48,6 +48,8 @@ class TruckController extends Controller
             ]);
         }
 
+
+
         return Response::json([
             'drivers' => Driver::unassigned()->get(['id', 'name']),
             'trailers' => Trailer::unassigned()->get(['id', 'trailer_number']),

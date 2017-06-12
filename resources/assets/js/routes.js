@@ -65,7 +65,8 @@ module.exports = [
     { path: '/inspection/:id', component: require('./transport/inspection/view.vue'), beforeEnter: authMiddleware },
     { path: '/inspection/:id/edit', component: require('./transport/inspection/form.vue'), beforeEnter: authMiddleware },
 
-
+    { path: '/fuel', component: require('./transport/fuel/index.vue'), beforeEnter: authMiddleware },
+    { path: '/fuel/create', component: require('./transport/fuel/form.vue'), beforeEnter: authMiddleware },
 
 
     { path: '/allocation', component: require('./components/allocation/index.vue'), beforeEnter: authMiddleware },
