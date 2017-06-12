@@ -20,8 +20,6 @@
                               <select v-model="udf.input_type" class="form-control" name="input_type">
                                 <option v-for="input_type in input_types" :value="input_type">{{input_type}}</option>
                               </select>
-
-
                           </div>
 
                           <div v-if="udf.input_type == 'Select'" class="form-group">
@@ -53,7 +51,7 @@
                           </div>
 
                           <div class="form-group">
-                              <button class="btn btn-success">Save</button>
+                              <button >Save</button>
                               <router-link to="/udfs" class="btn btn-danger">Back</router-link>
                           </div>
                       </form>
