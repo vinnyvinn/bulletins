@@ -28,18 +28,24 @@
                 </thead>
                 <tbody>
                   <tr v-for="fuel in fuels">
-                    <th>JRNY-{{ fuel.journey_id }}</th>
-                    <th>{{ fuel.date }}</th>
-                    <th>{{ fuel.journey.driver.first_name }}</th>
-                    <th>{{ fuel.journey.truck.plate_number }}</th>
-                    <th>{{ fuel.journey.route.source }}</th>
-                    <th>{{ fuel.journey.route.destination }}</th>
-                    <th>{{ fuel.journey.route.distance }}</th>
-                    <th>{{ fuel.journey.id }}</th>
-                    <th>{{ fuel.current_fuel }}</th>
-                    <th>{{ fuel.fuel_issued }}</th>
-                    <th>{{ fuel.status }}</th>
-                    <th><button type="button" name="button" class="btn btn-sm btn-success">Approve</button></th>
+                    <td>JRNY-{{ fuel.journey_id }}</td>
+                    <td>{{ fuel.date }}</td>
+                    <td>{{ fuel.journey.driver.first_name }}</td>
+                    <td>{{ fuel.journey.truck.plate_number }}</td>
+                    <td>{{ fuel.journey.route.source }}</td>
+                    <td>{{ fuel.journey.route.destination }}</td>
+                    <td>{{ fuel.journey.route.distance }}</td>
+                    <td>{{ fuel.current_fuel }}</td>
+                    <td>{{ fuel.fuel_requested }}</td>
+                    <td>{{ fuel.fuel_issued }}</td>
+                    <td>{{ fuel.status }}</td>
+                    <td>
+                      <button type="button" name="button" class="btn btn-xs btn-success" @click="approveFuel(fuel.id)">Approve</button>
+                      <span @click="edit(fuel)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
+                      <button data-toggle="popover" :data-item="fuel.id" class="btn btn-xs btn-danger btn-destroy">
+                          <i class="fa fa-trash"></i>
+                      </button>
+                    </td>
                   </tr>
                 </tbody>
                 <tfoot>
@@ -98,6 +104,24 @@ export default {
           window._router.push({path: '/fuel/' + fuel.id + '/edit'})
       },
 
+      approveFuel(id) {
+        http.get('/api/approve/' + id).then(response => {
+          if (response.status != 'success') {
+              this.$root.isLoading = false;
+              alert2(this.$root, [response.message], 'danger');
+              return;
+          }
+          $('table').dataTable().fnDestroy();
+          this.fuels = response.fuel;
+          prepareTable();
+          this.$root.isLoading = false;
+          alert2(this.$root, [response.message], 'success');
+          }).catch((error) => {
+          this.$root.isLoading = false;
+          alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
+        });
+      },
+
       destroy(id) {
           this.$root.isLoading = true;
 
@@ -108,7 +132,7 @@ export default {
                   return;
               }
               $('table').dataTable().fnDestroy();
-              this.fuel = response.fuel;
+              this.fuels = response.fuel;
               prepareTable();
               this.$root.isLoading = false;
               alert2(this.$root, [response.message], 'success');

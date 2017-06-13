@@ -67,7 +67,8 @@ module.exports = [
 
     { path: '/fuel', component: require('./transport/fuel/index.vue'), beforeEnter: authMiddleware },
     { path: '/fuel/create', component: require('./transport/fuel/form.vue'), beforeEnter: authMiddleware },
-
+    { path: '/fuel/:id', component: require('./transport/fuel/view.vue'), beforeEnter: authMiddleware },
+    { path: '/fuel/:id/edit', component: require('./transport/fuel/form.vue'), beforeEnter: authMiddleware },
 
     { path: '/allocation', component: require('./components/allocation/index.vue'), beforeEnter: authMiddleware },
     { path: '/allocation/create', component: require('./components/allocation/form.vue'), beforeEnter: authMiddleware },

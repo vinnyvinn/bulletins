@@ -18,8 +18,11 @@ class CreateFuelsTable extends Migration
             $table->integer('journey_id')->unsigned();
             $table->date('date');
             $table->float('current_fuel');
+            $table->float('fuel_requested');
             $table->float('fuel_issued');
-            $table->string('status');
+            $table->float('fuel_total');
+            $table->string('narration')->nullable();
+            $table->string('status')->default('Pending Approval');
             $table->timestamps();
         });
     }

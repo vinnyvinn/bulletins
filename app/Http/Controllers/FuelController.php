@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Fuel;
 use Response;
 use SmoDav\Models\Journey;
+use Carbon\Carbon;
 
 
 class FuelController extends Controller
@@ -27,7 +28,7 @@ class FuelController extends Controller
      */
     public function create()
     {
-        return Response::json(['journeys'=>Journey::all()]);
+        return Response::json(['journeys'=>Journey::with(['driver', 'route', 'truck', 'truck.trailer'])->get()]);
     }
 
     /**
@@ -38,23 +39,13 @@ class FuelController extends Controller
      */
     public function store(Request $request)
     {
-
-        $fuel = new Fuel;
-        $fuel->journey_id = 1;
-        $fuel->date = '2017-06-13 00:10:14.000';
-        $fuel->current_fuel = 500;
-        $fuel->fuel_issued = 1000;
-        $fuel->status = 'waiting';
-
-        $fuel->save();
+        $data = $request->all();
+        $data['date'] = Carbon::parse(str_replace('/', '-', $data['date']))->format('Y-m-d');
+        $fuel = Fuel::create($data);
 
         return Response::json([
           'message' => 'Fuel Allocation Successfully saved.'
         ]);
-
-        // return Response::json([
-        //   $request->all()
-        // ]);
     }
 
     /**
@@ -65,7 +56,11 @@ class FuelController extends Controller
      */
     public function show($id)
     {
-        //
+        $fuel = Fuel::with('journey')->findOrFail($id);
+
+        return Response::json([
+          'fuel'=>$fuel
+        ]);
     }
 
     /**
@@ -76,7 +71,7 @@ class FuelController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
@@ -88,7 +83,17 @@ class FuelController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      $data = $request->all();
+      unset($data['_token'], $data['_method']);
+      $data['date'] = Carbon::parse(str_replace('/', '-', $data['date']))->format('Y-m-d');
+
+      $fuel = Fuel::findOrFail($id);
+      $fuel->update($data);
+
+      return Response::json([
+        'message' => 'Fuel Allocation Successfully updated.'
+      ]);
+
     }
 
     /**
@@ -99,6 +104,29 @@ class FuelController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $fuel = Fuel::findOrFail($id)->delete();
+        $fuels = Fuel::with(['journey','journey.driver', 'journey.route', 'journey.truck'])->get();
+
+        return Response::json([
+            'status' => 'success',
+            'message' => 'Successfully deleted fuel.',
+            'fuel' => $fuels
+        ]);
+    }
+
+    public function approve($id)
+    {
+      $fuel = Fuel::findOrFail($id);
+      $fuel->status = 'Approved';
+      $fuel->save();
+
+      $fuels = Fuel::with(['journey','journey.driver', 'journey.route', 'journey.truck'])->get();
+
+      return Response::json([
+          'status' => 'success',
+          'message' => 'Successfully Approved fuel request.',
+          'fuel' => $fuels
+      ]);
+
     }
 }
