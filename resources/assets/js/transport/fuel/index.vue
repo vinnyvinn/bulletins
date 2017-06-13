@@ -16,6 +16,8 @@
                     <th>Date</th>
                     <th>Driver</th>
                     <th>Vehicle</th>
+                    <th>Source</th>
+                    <th>Destination</th>
                     <th>Journey Distance</th>
                     <th>Current Fuel</th>
                     <th>Fuel Requested</th>
@@ -25,17 +27,19 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <th>Journey</th>
-                    <th>Date</th>
-                    <th>Driver</th>
-                    <th>Vehicle</th>
-                    <th>Journey Distance</th>
-                    <th>Current Fuel</th>
-                    <th>Fuel Requested</th>
-                    <th>Fuel Issued</th>
-                    <th>Status</th>
-                    <th>Action</th>
+                  <tr v-for="fuel in fuels">
+                    <th>JRNY-{{ fuel.journey_id }}</th>
+                    <th>{{ fuel.date }}</th>
+                    <th>{{ fuel.journey.driver.first_name }}</th>
+                    <th>{{ fuel.journey.truck.plate_number }}</th>
+                    <th>{{ fuel.journey.route.source }}</th>
+                    <th>{{ fuel.journey.route.destination }}</th>
+                    <th>{{ fuel.journey.route.distance }}</th>
+                    <th>{{ fuel.journey.id }}</th>
+                    <th>{{ fuel.current_fuel }}</th>
+                    <th>{{ fuel.fuel_issued }}</th>
+                    <th>{{ fuel.status }}</th>
+                    <th><button type="button" name="button" class="btn btn-sm btn-success">Approve</button></th>
                   </tr>
                 </tbody>
                 <tfoot>
@@ -44,6 +48,8 @@
                     <th>Date</th>
                     <th>Driver</th>
                     <th>Vehicle</th>
+                    <th>Source</th>
+                    <th>Destination</th>
                     <th>Journey Distance</th>
                     <th>Current Fuel</th>
                     <th>Fuel Requested</th>
@@ -51,7 +57,7 @@
                     <th>Status</th>
                     <th>Action</th>
                   </tr>
-                </tfoot>                
+                </tfoot>
               </table>
             </div>
           </div>
@@ -65,7 +71,7 @@
 export default {
   created() {
     http.get('/api/fuel').then(response => {
-        this.fuel = response.fuels;
+        this.fuels = response.fuel;
         this.setupConfirm();
         prepareTable();
     });
@@ -73,7 +79,7 @@ export default {
 
   data() {
       return {
-          fuel: []
+          fuels: []
       };
   },
 

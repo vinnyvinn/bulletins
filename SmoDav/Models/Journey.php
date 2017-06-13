@@ -53,7 +53,8 @@ class Journey extends SmoDavModel
         return $builder->where('status', Constants::STATUS_CLOSED);
     }
 
-    public function fuel() {
+    public function fuel()
+    {
       return $this->belongsTo(Fuel::class);
     }
 }

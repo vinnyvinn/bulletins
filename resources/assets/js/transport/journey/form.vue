@@ -292,12 +292,6 @@
                 };
             },
 
-
-
-
-
-
-
             viableCargoTypes() {
                 return this.cargo_types.filter(e => e.cargo_classification_id == this.contract.cargo_classification_id);
             },

@@ -3,15 +3,16 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Smodav\Models\Journey;
+use SmoDav\Models\Journey;
 
 class Fuel extends Model
 {
     protected $fillable = [
-      'journey_id','date','current_fuel','fuel_issued','status'
+      'journey_id','date','current_fuel','fuel_issued'
     ];
 
-    public function journey(){
-      return $this->hasMany(Journey::class);
-    }
+    public function journey()
+    {
+      return $this->belongsTo(Journey::class);
+    }    
 }

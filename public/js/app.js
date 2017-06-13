@@ -76809,6 +76809,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
     created: function created() {
@@ -76819,7 +76837,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
     },
     mounted: function mounted() {
-
+        this.setupUI();
         $('input[type="number"]').on('focus', function () {
             this.select();
         });
@@ -76827,7 +76845,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             journeys: [],
-
             fuel: {
                 journey_id: '',
                 date: '',
@@ -76840,25 +76857,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
     methods: {
-        store: function store() {
+        setupUI: function setupUI() {
             var _this2 = this;
+
+            $('.datepicker').datepicker({
+                autoclose: true,
+                format: 'dd/mm/yyyy',
+                todayHighlight: true
+            });
+
+            $('#date').datepicker().on('changeDate', function (e) {
+                _this2.fuel.date = e.date.toLocaleDateString('en-GB');
+            });
+        },
+        store: function store() {
+            var _this3 = this;
 
             this.$root.isLoading = true;
             var request = null;
 
             if (this.$route.params.id) {
-                request = http.put('/api/fuel/' + this.$route.params.id, data, true);
+                request = http.put('/api/fuel/' + this.$route.params.id, this.fuel, true);
             } else {
-                request = http.post('/api/fuel', data, true);
+                request = http.post('/api/fuel', this.fuel, true);
             }
 
             request.then(function (response) {
-                _this2.$root.isLoading = false;
-                alert2(_this2.$root, [response.message], 'success');
+                _this3.$root.isLoading = false;
+                alert2(_this3.$root, [response.message], 'success');
                 window._router.push({ path: '/fuel' });
             }).catch(function (error) {
-                _this2.$root.isLoading = false;
-                alert2(_this2.$root, Object.values(JSON.parse(error.message)), 'danger');
+                _this3.$root.isLoading = false;
+                alert2(_this3.$root, Object.values(JSON.parse(error.message)), 'danger');
             });
         }
     }
@@ -76934,20 +76964,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
     created: function created() {
         var _this = this;
 
         http.get('/api/fuel').then(function (response) {
-            _this.fuel = response.fuels;
+            _this.fuels = response.fuel;
             _this.setupConfirm();
             prepareTable();
         });
     },
     data: function data() {
         return {
-            fuel: []
+            fuels: []
         };
     },
 
@@ -83984,7 +84020,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 236 */
@@ -94402,7 +94438,136 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.store($event)
       }
     }
-  }, [_vm._m(1), _vm._v(" "), _c('div', {
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "journey_id"
+    }
+  }, [_vm._v("Journey")]), _vm._v(" "), _c('select', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.fuel.journey_id),
+      expression: "fuel.journey_id"
+    }],
+    staticClass: "form-control input-sm select2",
+    attrs: {
+      "name": "journey_id",
+      "class": "form-control input-sm select2",
+      "required": ""
+    },
+    on: {
+      "change": function($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+          return o.selected
+        }).map(function(o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val
+        });
+        _vm.fuel.journey_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      }
+    }
+  }, _vm._l((_vm.journeys), function(journey) {
+    return _c('option', {
+      domProps: {
+        "value": journey.id
+      }
+    }, [_vm._v("JRNY-" + _vm._s(journey.id))])
+  }))])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "date"
+    }
+  }, [_vm._v("Date")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.fuel.date),
+      expression: "fuel.date"
+    }],
+    staticClass: "form-control input-sm datepicker",
+    attrs: {
+      "type": "text",
+      "id": "date",
+      "name": "date",
+      "required": ""
+    },
+    domProps: {
+      "value": (_vm.fuel.date)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.fuel.date = $event.target.value
+      }
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "current_fuel"
+    }
+  }, [_vm._v("Current Fuel (Litres)")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.fuel.current_fuel),
+      expression: "fuel.current_fuel"
+    }],
+    staticClass: "form-control input-sm",
+    attrs: {
+      "type": "text",
+      "name": "current_fuel"
+    },
+    domProps: {
+      "value": (_vm.fuel.current_fuel)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.fuel.current_fuel = $event.target.value
+      }
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "fuel_issued"
+    }
+  }, [_vm._v("Fuel Issued (Litres)")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.fuel.fuel_issued),
+      expression: "fuel.fuel_issued"
+    }],
+    staticClass: "form-control input-sm",
+    attrs: {
+      "type": "text",
+      "name": "fuel_issued"
+    },
+    domProps: {
+      "value": (_vm.fuel.fuel_issued)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.fuel.fuel_issued = $event.target.value
+      }
+    }
+  })])])]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('button', {
     staticClass: "btn btn-success"
@@ -94416,16 +94581,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', {
     staticClass: "panel-heading"
   }, [_c('strong', [_vm._v("Fuel Allocation")])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-sm-3"
-  }), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  })])
 }]}
 module.exports.render._withStripped = true
 if (false) {
@@ -103554,11 +103709,19 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "table-responsive"
   }, [_c('table', {
     staticClass: "table no-wrap"
-  }, [_vm._m(0), _vm._v(" "), _vm._m(1), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("Journey")]), _vm._v(" "), _c('th', [_vm._v("Date")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th', [_vm._v("Vehicle")]), _vm._v(" "), _c('th', [_vm._v("Journey Distance")]), _vm._v(" "), _c('th', [_vm._v("Current Fuel")]), _vm._v(" "), _c('th', [_vm._v("Fuel Requested")]), _vm._v(" "), _c('th', [_vm._v("Fuel Issued")]), _vm._v(" "), _c('th', [_vm._v("Status")]), _vm._v(" "), _c('th', [_vm._v("Action")])])])], 1)])])])])])])
+  }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.fuels), function(fuel) {
+    return _c('tr', [_c('th', [_vm._v("JRNY-" + _vm._s(fuel.journey_id))]), _vm._v(" "), _c('th', [_vm._v(_vm._s(fuel.date))]), _vm._v(" "), _c('th', [_vm._v(_vm._s(fuel.journey.driver.first_name))]), _vm._v(" "), _c('th', [_vm._v(_vm._s(fuel.journey.truck.plate_number))]), _vm._v(" "), _c('th', [_vm._v(_vm._s(fuel.journey.route.source))]), _vm._v(" "), _c('th', [_vm._v(_vm._s(fuel.journey.route.destination))]), _vm._v(" "), _c('th', [_vm._v(_vm._s(fuel.journey.route.distance))]), _vm._v(" "), _c('th', [_vm._v(_vm._s(fuel.journey.id))]), _vm._v(" "), _c('th', [_vm._v(_vm._s(fuel.current_fuel))]), _vm._v(" "), _c('th', [_vm._v(_vm._s(fuel.fuel_issued))]), _vm._v(" "), _c('th', [_vm._v(_vm._s(fuel.status))]), _vm._v(" "), _vm._m(1, true)])
+  })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("Journey")]), _vm._v(" "), _c('th', [_vm._v("Date")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th', [_vm._v("Vehicle")]), _vm._v(" "), _c('th', [_vm._v("Source")]), _vm._v(" "), _c('th', [_vm._v("Destination")]), _vm._v(" "), _c('th', [_vm._v("Journey Distance")]), _vm._v(" "), _c('th', [_vm._v("Current Fuel")]), _vm._v(" "), _c('th', [_vm._v("Fuel Requested")]), _vm._v(" "), _c('th', [_vm._v("Fuel Issued")]), _vm._v(" "), _c('th', [_vm._v("Status")]), _vm._v(" "), _c('th', [_vm._v("Action")])])])], 1)])])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('thead', [_c('tr', [_c('th', [_vm._v("Journey")]), _vm._v(" "), _c('th', [_vm._v("Date")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th', [_vm._v("Vehicle")]), _vm._v(" "), _c('th', [_vm._v("Journey Distance")]), _vm._v(" "), _c('th', [_vm._v("Current Fuel")]), _vm._v(" "), _c('th', [_vm._v("Fuel Requested")]), _vm._v(" "), _c('th', [_vm._v("Fuel Issued")]), _vm._v(" "), _c('th', [_vm._v("Status")]), _vm._v(" "), _c('th', [_vm._v("Action")])])])
+  return _c('thead', [_c('tr', [_c('th', [_vm._v("Journey")]), _vm._v(" "), _c('th', [_vm._v("Date")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th', [_vm._v("Vehicle")]), _vm._v(" "), _c('th', [_vm._v("Source")]), _vm._v(" "), _c('th', [_vm._v("Destination")]), _vm._v(" "), _c('th', [_vm._v("Journey Distance")]), _vm._v(" "), _c('th', [_vm._v("Current Fuel")]), _vm._v(" "), _c('th', [_vm._v("Fuel Requested")]), _vm._v(" "), _c('th', [_vm._v("Fuel Issued")]), _vm._v(" "), _c('th', [_vm._v("Status")]), _vm._v(" "), _c('th', [_vm._v("Action")])])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('tbody', [_c('tr', [_c('th', [_vm._v("Journey")]), _vm._v(" "), _c('th', [_vm._v("Date")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th', [_vm._v("Vehicle")]), _vm._v(" "), _c('th', [_vm._v("Journey Distance")]), _vm._v(" "), _c('th', [_vm._v("Current Fuel")]), _vm._v(" "), _c('th', [_vm._v("Fuel Requested")]), _vm._v(" "), _c('th', [_vm._v("Fuel Issued")]), _vm._v(" "), _c('th', [_vm._v("Status")]), _vm._v(" "), _c('th', [_vm._v("Action")])])])
+  return _c('th', [_c('button', {
+    staticClass: "btn btn-sm btn-success",
+    attrs: {
+      "type": "button",
+      "name": "button"
+    }
+  }, [_vm._v("Approve")])])
 }]}
 module.exports.render._withStripped = true
 if (false) {

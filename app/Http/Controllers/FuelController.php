@@ -17,7 +17,7 @@ class FuelController extends Controller
      */
     public function index()
     {
-        return Response::json(Fuel::with('journey')->get());
+        return Response::json(['fuel'=>Fuel::with(['journey','journey.driver', 'journey.route', 'journey.truck'])->get()]);
     }
 
     /**
@@ -38,7 +38,23 @@ class FuelController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $fuel = new Fuel;
+        $fuel->journey_id = 1;
+        $fuel->date = '2017-06-13 00:10:14.000';
+        $fuel->current_fuel = 500;
+        $fuel->fuel_issued = 1000;
+        $fuel->status = 'waiting';
+
+        $fuel->save();
+
+        return Response::json([
+          'message' => 'Fuel Allocation Successfully saved.'
+        ]);
+
+        // return Response::json([
+        //   $request->all()
+        // ]);
     }
 
     /**
