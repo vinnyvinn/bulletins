@@ -12,12 +12,12 @@
               <table class="table no-wrap">
                 <thead>
                   <tr>
+                    <th>Fuel No.</th>
                     <th>Journey</th>
                     <th>Date</th>
                     <th>Driver</th>
                     <th>Vehicle</th>
-                    <th>Source</th>
-                    <th>Destination</th>
+                    <th>Source - Destination</th>
                     <th>Journey Distance</th>
                     <th>Current Fuel</th>
                     <th>Fuel Requested</th>
@@ -28,22 +28,19 @@
                 </thead>
                 <tbody>
                   <tr v-for="fuel in fuels">
+                    <td><router-link :to="'/fuel/' + fuel.id">FUEL-{{ fuel.id }}</router-link></td>
                     <td>JRNY-{{ fuel.journey_id }}</td>
                     <td>{{ fuel.date }}</td>
                     <td>{{ fuel.journey.driver.first_name }}</td>
                     <td>{{ fuel.journey.truck.plate_number }}</td>
-                    <td>{{ fuel.journey.route.source }}</td>
-                    <td>{{ fuel.journey.route.destination }}</td>
+                    <td>{{ fuel.journey.route.source }} - {{ fuel.journey.route.destination }}</td>
                     <td>{{ fuel.journey.route.distance }}</td>
                     <td>{{ fuel.current_fuel }}</td>
                     <td>{{ fuel.fuel_requested }}</td>
                     <td>{{ fuel.fuel_issued }}</td>
                     <td>{{ fuel.status }}</td>
                     <td>
-                      <button type="button" name="button" v-if="fuel.status == 'Awaiting Approval'" class="btn btn-xs btn-success" @click="approveFuel(fuel.id)">Approve</button>
-                      <button type="button" name="button" v-else class="btn btn-xs btn-success" @click="approveFuel(fuel.id)">Cancel Approval</button>
                       <span @click="edit(fuel)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
-                      <span @click="edit(fuel)" class="btn btn-xs btn-success"><i class="fa fa-print"></i></span>
                       <button data-toggle="popover" :data-item="fuel.id" class="btn btn-xs btn-danger btn-destroy">
                           <i class="fa fa-trash"></i>
                       </button>
@@ -105,25 +102,6 @@ export default {
       edit(fuel) {
           window._router.push({path: '/fuel/' + fuel.id + '/edit'})
       },
-
-      approveFuel(id) {
-        http.get('/api/approve/' + id).then(response => {
-          if (response.status != 'success') {
-              this.$root.isLoading = false;
-              alert2(this.$root, [response.message], 'danger');
-              return;
-          }
-          $('table').dataTable().fnDestroy();
-          this.fuels = response.fuel;
-          prepareTable();
-          this.$root.isLoading = false;
-          alert2(this.$root, [response.message], 'success');
-          }).catch((error) => {
-          this.$root.isLoading = false;
-          alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
-        });
-      },
-
       destroy(id) {
           this.$root.isLoading = true;
 

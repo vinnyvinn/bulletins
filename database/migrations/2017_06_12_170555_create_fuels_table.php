@@ -25,7 +25,7 @@ class CreateFuelsTable extends Migration
             $table->integer('previous_km')->default(0);
             $table->integer('previous_fuel')->default(0);
             $table->integer('current_km')->default(0);
-            $table->string('status')->default('Pending Approval');
+            $table->string('status')->default('Awaiting Approval');
             $table->integer('user_id')->nullable();
             $table->timestamps();
         });

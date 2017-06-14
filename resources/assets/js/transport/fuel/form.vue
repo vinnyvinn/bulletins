@@ -175,7 +175,7 @@ import axios from 'axios';
                     previous_km: 0,
                     previous_fuel: 0,
                     current_km: 0,
-                    status: 'Pending Approval'
+                    status: 'Awaiting Approval'
                 }
             };
         },

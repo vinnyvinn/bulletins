@@ -132,12 +132,12 @@ class FuelController extends Controller
         $fuel->user_id = Auth::id();
         $fuel->save();
 
-        $fuels = Fuel::with(['journey','journey.driver', 'journey.route', 'journey.truck'])->get();
+        $fuel = Fuel::with(['journey','journey.driver', 'journey.route', 'journey.truck'])->where('id',$id)->first();
 
         return Response::json([
             'status' => 'success',
             'message' => 'Successfully Approved fuel request.',
-            'fuel' => $fuels
+            'fuel' => $fuel
         ]);
       }
       else {
@@ -145,12 +145,13 @@ class FuelController extends Controller
         $fuel->user_id = '';
         $fuel->save();
 
-        $fuels = Fuel::with(['journey','journey.driver', 'journey.route', 'journey.truck'])->get();
+        // $fuels = Fuel::with(['journey','journey.driver', 'journey.route', 'journey.truck'])->get();
+        $fuel = Fuel::with(['journey','journey.driver', 'journey.route', 'journey.truck'])->where('id',$id)->first();
 
         return Response::json([
             'status' => 'success',
             'message' => 'Approval Revoked.',
-            'fuel' => $fuels
+            'fuel' => $fuel
         ]);
       }
     }
