@@ -7,6 +7,7 @@ use App\Fuel;
 use Response;
 use SmoDav\Models\Journey;
 use Carbon\Carbon;
+use Auth;
 
 
 class FuelController extends Controller
@@ -117,16 +118,31 @@ class FuelController extends Controller
     public function approve($id)
     {
       $fuel = Fuel::findOrFail($id);
-      $fuel->status = 'Approved';
-      $fuel->save();
+      if($fuel->status == 'Awaiting Approval'){
+        $fuel->status = 'Approved';
+        $fuel->user_id = Auth::id();
+        $fuel->save();
 
-      $fuels = Fuel::with(['journey','journey.driver', 'journey.route', 'journey.truck'])->get();
+        $fuels = Fuel::with(['journey','journey.driver', 'journey.route', 'journey.truck'])->get();
 
-      return Response::json([
-          'status' => 'success',
-          'message' => 'Successfully Approved fuel request.',
-          'fuel' => $fuels
-      ]);
+        return Response::json([
+            'status' => 'success',
+            'message' => 'Successfully Approved fuel request.',
+            'fuel' => $fuels
+        ]);
+      }
+      else {
+        $fuel->status = 'Awaiting Approval';
+        $fuel->user_id = '';
+        $fuel->save();
 
+        $fuels = Fuel::with(['journey','journey.driver', 'journey.route', 'journey.truck'])->get();
+
+        return Response::json([
+            'status' => 'success',
+            'message' => 'Approval Revoked.',
+            'fuel' => $fuels
+        ]);
+      }
     }
 }

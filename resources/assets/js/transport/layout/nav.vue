@@ -26,6 +26,11 @@
             </router-link>
 
             <router-link to="/contracts" class="nav-items">
+                <img src="/images/delivery.png" alt="delivery" class="img-responsive">
+                <div class="caption">Delivery Note</div>
+            </router-link>
+
+            <router-link to="/contracts" class="nav-items">
                 <img src="/images/millage.png" alt="millage" class="img-responsive">
                 <div class="caption">Millage Allocation</div>
             </router-link>
@@ -38,11 +43,6 @@
             <router-link to="/contracts" class="nav-items">
                 <img src="/images/card.png" alt="card" class="img-responsive">
                 <div class="caption">Route Card</div>
-            </router-link>
-
-            <router-link to="/contracts" class="nav-items">
-                <img src="/images/delivery.png" alt="delivery" class="img-responsive">
-                <div class="caption">Delivery Note</div>
             </router-link>
 
             <div @click.prevent="logout" class="nav-items">

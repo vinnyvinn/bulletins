@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
+use App\Fuel;
 
 class User extends Authenticatable
 {
@@ -108,5 +109,10 @@ class User extends Authenticatable
             $unread = $this->hasMany('App\Message')->where('parent_id', 0)->where('is_read', 0)->count();
         }
         return $unread;
+    }
+
+    public function fuels_approved()
+    {
+      return $this->hasMany(Fuel::class);
     }
 }

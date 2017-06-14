@@ -19,7 +19,6 @@
                         <option v-for="journey in journeys" :value="journey.id">JRNY-{{ journey.id }}</option>
                       </select>
                     </div>
-
                   </div>
 
                     <div class="col-sm-3">
@@ -27,7 +26,6 @@
                       From: {{ current_route.source }}<br>
                       To: {{ current_route.destination }}<br>
                       Deliveries:<br>
-                      <hr>
                     </div>
 
                     <div class="col-sm-3">
@@ -39,16 +37,21 @@
                         Trailer: {{ current_trailer.trailer_number }}<br>
                         Trailer Category: {{ current_trailer.type }} <br>
                       </div>
-                      <hr>
                     </div>
 
                     <div class="col-sm-3">
                       <strong>Driver</strong><br>
-                      Passport: <img src="" alt=""> <br>
+                      <img :src="getSource()" alt="" width="100" height="100"> <br>
+                      Passport: <br>
                       Name: {{ current_driver.first_name  }}<br>
-                      <hr>
-                    </div>
+                      Id No: {{ current_driver.identification_number }}<br>
+                      Mobile No: {{ current_driver.mobile_phone                                                                                                                                                                                                                                                                                                                                                                                                        }}<br>
+                      DL number: {{ current_driver.dl_number }}<br>
 
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
                     <div class="col-sm-3">
                       <div class="form-group">
                         <label for="current_fuel">Current Fuel (Litres)</label>
@@ -91,6 +94,38 @@
                       </div>
                     </div>
                 </div>
+                <br>
+                <strong>Mileage Readings</strong>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label for="previous_km">Previous KM</label>
+                      <input type="number" name="previous_km" class="form-control input-sm" v-model="fuel.previous_km" @keyup="calculateKms">
+                    </div>
+                  </div>
+
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label for="previous_fuel">Previous Fuel</label>
+                      <input type="number" name="previous_fuel" class="form-control input-sm" v-model="fuel.previous_fuel" @keyup="calculateKms">
+                    </div>
+                  </div>
+
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label for="current_km">Current KM</label>
+                      <input type="number" :min="minimumKm" name="current_km" class="form-control input-sm" v-model="fuel.current_km" @keyup="calculateKms">
+                    </div>
+                  </div>
+
+                  <div class="col-sm-3">
+                    KM Covered: {{ km_covered }}<br>
+                    Fuel Used: {{ fuel_used }}<br>
+                    KM/Ltr: {{ km_per_litre }}<br>
+                  </div>
+
+                </div>
 
                 <div class="form-group pull-right">
                     <button class="btn btn-success">Save</button>
@@ -126,6 +161,9 @@ import axios from 'axios';
                 current_vehicle: {},
                 current_trailer: {},
                 current_route: {},
+                km_covered: 0,
+                fuel_used: 0,
+                km_per_litre: 0,
                 fuel: {
                     journey_id: '',
                     date: '',
@@ -134,6 +172,9 @@ import axios from 'axios';
                     fuel_issued: 0,
                     fuel_total: 0,
                     narration: '',
+                    previous_km: 0,
+                    previous_fuel: 0,
+                    current_km: 0,
                     status: 'Pending Approval'
                 }
             };
@@ -149,6 +190,9 @@ import axios from 'axios';
 
                 return this.current_journey = JSON.parse(JSON.stringify(journey[0]));
             }
+          },
+          minimumKm () {
+            return this.fuel.previous_km;
           }
         },
 
@@ -178,7 +222,22 @@ import axios from 'axios';
             return this.fuel.fuel_total = parseInt(this.fuel.fuel_issued) + parseInt(this.fuel.current_fuel);
           },
 
-            store() {
+          calculateKms() {
+            if(this.fuel.current_km < this.fuel.previous_km) {
+              return alert2(this.$root, ['Current Km readings should be greater than previous Km reading'], 'danger');
+            }
+            this.fuel_used = parseInt(this.fuel.previous_fuel) - parseInt(this.fuel.current_fuel);
+            this.km_covered = parseInt(this.fuel.current_km) - parseInt(this.fuel.previous_km);
+
+            return this.km_per_litre = parseInt(this.km_covered)/parseInt(this.fuel_used);
+          },
+          getSource() {
+            if(this.current_driver.avatar){
+              return '/images/'+this.current_driver.avatar;
+            }
+            return '/images/default_avatar.png';
+          },
+          store() {
                 this.$root.isLoading = true;
                 let request = null;
 

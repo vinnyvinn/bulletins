@@ -40,8 +40,10 @@
                     <td>{{ fuel.fuel_issued }}</td>
                     <td>{{ fuel.status }}</td>
                     <td>
-                      <button type="button" name="button" class="btn btn-xs btn-success" @click="approveFuel(fuel.id)">Approve</button>
+                      <button type="button" name="button" v-if="fuel.status == 'Awaiting Approval'" class="btn btn-xs btn-success" @click="approveFuel(fuel.id)">Approve</button>
+                      <button type="button" name="button" v-else class="btn btn-xs btn-success" @click="approveFuel(fuel.id)">Cancel Approval</button>
                       <span @click="edit(fuel)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
+                      <span @click="edit(fuel)" class="btn btn-xs btn-success"><i class="fa fa-print"></i></span>
                       <button data-toggle="popover" :data-item="fuel.id" class="btn btn-xs btn-danger btn-destroy">
                           <i class="fa fa-trash"></i>
                       </button>
