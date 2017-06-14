@@ -9,4 +9,6 @@ class Delivery extends SmoDavModel
         'loading_weighbridge_number', 'offloading_gross_weight', 'offloading_tare_weight', 'offloading_net_weight',
         'offloading_weighbridge_number', 'loading_time', 'offloading_time', 'raw', 'status', 'bags_loaded'
     ];
+
+    
 }

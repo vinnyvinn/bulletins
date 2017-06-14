@@ -7,7 +7,7 @@
         <div class="panel-body">
             <form action="#" role="form" @submit.prevent="store">
                 <div class="row">
-                  <div class="col-sm-3">
+                  <div class="col-xs-3">
                       Date: {{ fuel.date }}<br>
                       Journey: JRNY-{{ fuel.journey_id }}<br>
                       Status: {{ fuel.status }}
@@ -27,7 +27,7 @@
                       </div>
                   </div>
 
-                    <div class="col-sm-3">
+                    <div class="col-xs-3">
                       <strong>Driver</strong><br>
                       <img :src="getSource()" alt="" width="100" height="100"> <br>
                       Passport: <br>
@@ -37,7 +37,7 @@
                       DL number: {{ current_driver.dl_number }}<br>
                     </div>
 
-                    <div class="col-sm-3">
+                    <div class="col-xs-3">
                       <strong>Fuel</strong><br>
                       Standard Quantity for this route (Ltrs): {{ current_route.fuel_required }}<br>
                       Current Fuel (Litres): {{ fuel.current_fuel }}<br>
@@ -49,7 +49,7 @@
                       {{ fuel.narration }}
                     </div>
 
-                    <div class="col-sm-3">
+                    <div class="col-xs-3">
                       <strong>Mileage Readings</strong><br>
                       Previous KM: {{ fuel.previous_km }}<br>
                       Previous Fuel: {{ fuel.previous_fuel }}<br>
