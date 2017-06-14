@@ -30,7 +30,7 @@
                 <div class="caption">Delivery Note</div>
             </router-link>
 
-            <router-link to="/contracts" class="nav-items">
+            <router-link to="/mileage" class="nav-items">
                 <img src="/images/millage.png" alt="millage" class="img-responsive">
                 <div class="caption">Millage Allocation</div>
             </router-link>

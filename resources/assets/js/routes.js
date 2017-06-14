@@ -24,10 +24,10 @@ module.exports = [
     { path: '/drivers/:id/edit', component: require('./components/drivers/form.vue'), beforeEnter: authMiddleware },
     { path: '/drivers/:id', component: require('./components/drivers/view.vue'), beforeEnter: authMiddleware },
 
-    { path: '/trucks', component: require('./components/trucks/index.vue'), beforeEnter: authMiddleware },
-    { path: '/trucks/create', component: require('./components/trucks/form.vue'), beforeEnter: authMiddleware },
-    { path: '/trucks/:id', component: require('./components/trucks/view.vue'), beforeEnter: authMiddleware },
-    { path: '/trucks/:id/edit', component: require('./components/trucks/form.vue'), beforeEnter: authMiddleware },
+    { path: '/trucks', component: require('./transport/trucks/index.vue'), beforeEnter: authMiddleware },
+    { path: '/trucks/create', component: require('./transport/trucks/form.vue'), beforeEnter: authMiddleware },
+    { path: '/trucks/:id', component: require('./transport/trucks/view.vue'), beforeEnter: authMiddleware },
+    { path: '/trucks/:id/edit', component: require('./transport/trucks/form.vue'), beforeEnter: authMiddleware },
 
     { path: '/trailers', component: require('./components/trailers/index.vue'), beforeEnter: authMiddleware },
     { path: '/trailers/create', component: require('./components/trailers/form.vue'), beforeEnter: authMiddleware },
@@ -69,6 +69,11 @@ module.exports = [
     { path: '/fuel/create', component: require('./transport/fuel/form.vue'), beforeEnter: authMiddleware },
     { path: '/fuel/:id', component: require('./transport/fuel/view.vue'), beforeEnter: authMiddleware },
     { path: '/fuel/:id/edit', component: require('./transport/fuel/form.vue'), beforeEnter: authMiddleware },
+
+    { path: '/mileage', component: require('./transport/mileage/index.vue'), beforeEnter: authMiddleware },
+    { path: '/mileage/create', component: require('./transport/mileage/form.vue'), beforeEnter: authMiddleware },
+    { path: '/mileage/:id', component: require('./transport/mileage/view.vue'), beforeEnter: authMiddleware },
+    { path: '/mileage/:id/edit', component: require('./transport/mileage/form.vue'), beforeEnter: authMiddleware },
 
     { path: '/allocation', component: require('./components/allocation/index.vue'), beforeEnter: authMiddleware },
     { path: '/allocation/create', component: require('./components/allocation/form.vue'), beforeEnter: authMiddleware },

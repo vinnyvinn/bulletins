@@ -37,21 +37,16 @@ class TruckController extends Controller
     public function create()
     {
         if (request('truck_id')) {
-            $assigned = TruckFactory::allAssignedDrivers(request('truck_id'))->toArray();
-
-
             return Response::json([
-                'drivers' => Driver::whereNotIn('id', $assigned)->get(['id', 'first_name', 'last_name']),
+                'drivers' => [],
                 'trailers' => Trailer::whereNull('truck_id')
                     ->orWhere('truck_id', request('truck_id'))
                     ->get(['id', 'trailer_number']),
             ]);
         }
 
-
-
         return Response::json([
-            'drivers' => Driver::unassigned()->get(['id', 'name']),
+            'drivers' => [],
             'trailers' => Trailer::unassigned()->get(['id', 'trailer_number']),
         ]);
     }
@@ -59,14 +54,15 @@ class TruckController extends Controller
     public function store(TruckRequest $request)
     {
         $data = $request->all();
-        foreach ($request->all() as $key=>$item) {
-            if ($request->hasFile($key)){
+        foreach ($request->all() as $key => $item) {
+            if ($request->hasFile($key)) {
                 $extension = $request->file($key)->getClientOriginalExtension();
                 $filename = time().".".$extension;
                 $request->file($key)->move(public_path('uploads'), $filename);
                 $data[$key] = $filename;
             }
         }
+
         TruckFactory::create($data);
 
         return Response::json([

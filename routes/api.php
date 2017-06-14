@@ -63,9 +63,13 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('journey/{id}/reopen', '\SmoDav\Controllers\API\JourneyController@reopen');
     Route::resource('journey', '\SmoDav\Controllers\API\JourneyController');
 
+    Route::post('mileage/{id}/approve', '\SmoDav\Controllers\API\MileageController@approve');
+    Route::post('mileage/{id}/close', '\SmoDav\Controllers\API\MileageController@close');
+    Route::post('mileage/{id}/reopen', '\SmoDav\Controllers\API\MileageController@reopen');
+    Route::resource('mileage', '\SmoDav\Controllers\API\MileageController');
+
     Route::resource('inspection', '\SmoDav\Controllers\API\InspectionController');
     Route::get('dashboard', '\SmoDav\Controllers\API\DashboardController@index');
     Route::resource('fuel', 'FuelController');
     Route::get('approve/{id}', 'FuelController@approve');
-
 });

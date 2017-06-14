@@ -68,8 +68,17 @@ class TruckFactory
     {
         $attributes['plate_number'] = strtoupper($attributes['plate_number']);
         $attributes['project_id'] = self::createInSAGE($attributes);
-        $truck = new Truck();
-        return Truck::create($attributes);
+        $truck = Truck::create($attributes);
+
+        unset($attributes['_method'], $attributes['_token'], $attributes['driver'], $attributes['trailer']);
+
+        foreach ($attributes as $attribute => $value) {
+            $truck->{$attribute} = $value;
+        }
+
+        $truck->save();
+
+        return $truck;
     }
 
     private static function createInSAGE($attributes)
@@ -113,14 +122,13 @@ class TruckFactory
             }
         }
 
-        unset($attributes['_method'], $attributes['_token'], $attributes['driver']);
+        unset($attributes['_method'], $attributes['_token'], $attributes['driver'], $attributes['trailer']);
 
         foreach ($attributes as $key => $value) {
             $truck->{$key} = $value;
         }
 
         $truck->save();
-
 
         DB::table('Project')->where('ProjectLink', $truck->project_id)->update(self::mapSAGEFields($attributes));
 
