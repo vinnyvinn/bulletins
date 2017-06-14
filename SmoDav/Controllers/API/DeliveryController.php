@@ -14,11 +14,11 @@ use Response;
 use SmoDav\Models\CargoClassification;
 use SmoDav\Models\CargoType;
 use SmoDav\Models\CarriagePoint;
-use SmoDav\Models\Inspection;
 use SmoDav\Models\Journey;
+use SmoDav\Models\Mileage;
 use SmoDav\Support\Constants;
 
-class InspectionController extends Controller
+class DeliveryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,12 +27,8 @@ class InspectionController extends Controller
      */
     public function index()
     {
-        $inspections = Inspection::with(['journey'])->get([
-            'id', 'journey_id', 'status', 'from_station', 'to_station', 'created_at'
-        ]);
-
         return Response::json([
-            'inspections' => $inspections
+            'mileages' => Mileage::all()
         ]);
     }
 
@@ -44,10 +40,13 @@ class InspectionController extends Controller
     public function create()
     {
         return Response::json([
-            'status' => 'success',
-            'journeys' => Journey::open()->doesntHave('inspection')->get(['id', 'raw']),
-            'supervisor' => false,
-            'inspector' => true,
+            'journeys' => Journey::open()
+                ->whereHas('inspection', function ($query) {
+                    $query->where('suitable_for_loading', true);
+                })
+//                ->doesntHave('delivery')
+                ->with(['driver', 'truck.trailer', 'route', 'contract'])
+                ->get(),
         ]);
     }
 
@@ -62,15 +61,18 @@ class InspectionController extends Controller
     {
         $data = $request->all();
         unset($data['_token'], $data['_method']);
-        $data['fields'] = json_encode($data);
-        $data['inspector_id'] = \Auth::id();
-        $data['status'] = Constants::STATUS_APPROVED;
-        $data['suitable_for_loading'] = $data['suitable_for_loading'] != 0;
+        $data['raw'] = json_encode($data);
 
-        $inspection = Inspection::create($data);
+        foreach ($data as $key => $value) {
+            if ($value == 'null') {
+                unset($data[$key]);
+            }
+        }
+
+        $mileage = Mileage::create($data);
 
         return Response::json([
-            'message' => 'Successfully created new inspection number INSP-' . $inspection->id
+            'message' => 'Successfully created new mileage voucher number MLG-' . $mileage->id
         ]);
     }
 
@@ -83,15 +85,8 @@ class InspectionController extends Controller
      */
     public function show($id)
     {
-        $inspection = Inspection::findOrFail($id);
-        $inspection->fields = json_decode($inspection->fields);
-
         return Response::json([
-            'status' => 'success',
-            'journeys' => Journey::open()->get(['id', 'raw']),
-            'supervisor' => true,
-            'inspector' => false,
-            'inspection' => $inspection
+            'mileage' => Mileage::findOrFail($id),
         ]);
     }
 
@@ -100,43 +95,46 @@ class InspectionController extends Controller
      *
      * @param  \Illuminate\Http\Request $request
      *
-     * @param Inspection                $inspection
-     *
+     * @param Mileage $mileage
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
-    public function update(Request $request, Inspection $inspection)
+    public function update(Request $request, Mileage $mileage)
     {
         $data = $request->all();
         unset($data['_token'], $data['_method']);
-        $data['fields'] = json_encode($data);
-        $data['inspector_id'] = \Auth::id();
-        $data['status'] = Constants::STATUS_APPROVED;
+        $data['raw'] = json_encode($data);
 
-        $inspection->update($data);
+        foreach ($data as $key => $value) {
+            if ($value == 'null') {
+                unset($data[$key]);
+            }
+        }
+
+        $data['balance_amount'] = $data['standard_amount'] - $data['approved_amount'];
+
+        $mileage->update($data);
 
         return Response::json([
-            'message' => 'Successfully updated inspection number INSP-' . $inspection->id
+            'message' => 'Successfully updated mileage voucher number MLG-' . $mileage->id
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param Inspection $inspection
+     * @param Mileage $mileage
      *
      * @return \Illuminate\Http\JsonResponse
+     *
      */
-    public function destroy(Inspection $inspection)
+    public function destroy(Mileage $mileage)
     {
-        $inspection->delete();
-        $inspections = Inspection::with(['journey'])->get([
-            'id', 'journey_id', 'status', 'from_station', 'to_station', 'created_at'
-        ]);
+        $mileage->delete();
 
         return Response::json([
             'status' => 'success',
-            'message' => 'Successfully deleted inspection.',
-            'inspections' => $inspections
+            'message' => 'Successfully deleted mileage voucher.',
+            'mileages' => Mileage::all()
         ]);
     }
 

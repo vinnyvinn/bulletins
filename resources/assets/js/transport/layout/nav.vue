@@ -25,7 +25,7 @@
                 <div class="caption">Truck Inspection</div>
             </router-link>
 
-            <router-link to="/contracts" class="nav-items">
+            <router-link to="/delivery" class="nav-items">
                 <img src="/images/delivery.png" alt="delivery" class="img-responsive">
                 <div class="caption">Delivery Note</div>
             </router-link>

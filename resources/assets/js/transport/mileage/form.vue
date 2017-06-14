@@ -1,7 +1,7 @@
 <template>
     <div class="panel panel-default">
         <div class="panel-heading">
-            <strong>Journey Details</strong>
+            <strong>Mileage Allocation</strong>
         </div>
 
         <div class="panel-body">

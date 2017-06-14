@@ -40,7 +40,12 @@ class MileageController extends Controller
     public function create()
     {
         return Response::json([
-            'journeys' => Journey::open()->with(['driver', 'truck.trailer', 'route'])->get(),
+            'journeys' => Journey::open()
+                ->whereHas('inspection', function ($query) {
+                    $query->where('suitable_for_loading', true);
+                })
+                ->with(['driver', 'truck.trailer', 'route'])
+                ->get(),
         ]);
     }
 

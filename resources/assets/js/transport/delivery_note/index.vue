@@ -4,8 +4,8 @@
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <strong>Mileage Allocation</strong>
-                        <router-link to="/mileage/create" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i> Add New</router-link>
+                        <strong>Delivery Notes</strong>
+                        <router-link to="/delivery/create" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i> Add New</router-link>
                     </div>
                     <div class="panel-body">
                         <div class="table-responsive">
@@ -23,7 +23,7 @@
                                 </thead>
                                 <tbody>
                                 <tr v-for="mileage in mileages">
-                                    <td><router-link :to="'/mileage/' + mileage.id">MLG-{{ mileage.id }}</router-link></td>
+                                    <td><router-link :to="'/journey/' + mileage.id">MLG-{{ mileage.id }}</router-link></td>
                                     <td><router-link :to="'/journey/' + mileage.journey_id">JRNY-{{ mileage.journey_id }}</router-link></td>
                                     <td>{{ mileage.mileage_type }}</td>
                                     <td class="text-right">{{ formatNumber(mileage.standard_amount) }}</td>

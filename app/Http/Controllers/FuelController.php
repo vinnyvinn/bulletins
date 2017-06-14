@@ -15,21 +15,32 @@ class FuelController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        return Response::json(['fuel'=>Fuel::with(['journey','journey.driver', 'journey.route', 'journey.truck'])->get()]);
+        return Response::json([
+            'fuel' => Fuel::with(['journey', 'journey.driver', 'journey.route', 'journey.truck'])->get()
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function create()
     {
-        return Response::json(['journeys'=>Journey::with(['driver', 'route', 'truck', 'truck.trailer'])->get()]);
+        $journeys = Journey::open()
+            ->whereHas('inspection', function ($query) {
+                $query->where('suitable_for_loading', true);
+            })
+            ->with(['driver', 'route', 'truck', 'truck.trailer'])
+            ->get();
+
+        return Response::json([
+            'journeys' => $journeys
+        ]);
     }
 
     /**

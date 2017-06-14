@@ -17,6 +17,26 @@ class Journey extends SmoDavModel
         'sub_address_2', 'sub_address_3', 'sub_address_4', 'raw'
     ];
 
+    public function mileages()
+    {
+        return $this->hasMany(Mileage::class);
+    }
+
+    public function fuel()
+    {
+        return $this->hasMany(Fuel::class);
+    }
+
+    public function inspection()
+    {
+        return $this->hasOne(Inspection::class);
+    }
+
+    public function delivery()
+    {
+        return $this->hasOne(Delivery::class);
+    }
+
     public function contract()
     {
         return $this->belongsTo(Contract::class);
@@ -51,10 +71,5 @@ class Journey extends SmoDavModel
     public function scopeClosed($builder)
     {
         return $builder->where('status', Constants::STATUS_CLOSED);
-    }
-
-    public function fuel()
-    {
-      return $this->belongsTo(Fuel::class);
     }
 }
