@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Fuel;
 use Response;
 use SmoDav\Models\Journey;
+use SmoDav\Models\Delivery;
+use SmoDav\Models\Mileage;
 use Carbon\Carbon;
 use Auth;
 
@@ -67,9 +69,12 @@ class FuelController extends Controller
     public function show($id)
     {
         $fuel = Fuel::with('journey')->findOrFail($id);
-
+        $delivery_note = Delivery::where('journey_id',$fuel->journey_id)->first();
+        $mileage = Mileage::where('journey_id',$fuel->journey_id)->first();
         return Response::json([
-          'fuel'=>$fuel
+          'fuel'=>$fuel,
+          'delivery_note'=>$delivery_note,
+          'mileage'=>$mileage
         ]);
     }
 

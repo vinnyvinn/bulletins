@@ -6,11 +6,11 @@
 
         <div class="panel-body" id="printable">
             <form action="#" role="form" @submit.prevent="store">
-                <div class="row" >
-                  <h4>FUEL VOUCHER</h4>
+                <div class="row print-row" >
+                  <h4>FUEL VOUCHER (Delivery Note N0. {{ delivery_note.id }})</h4>
                   <div class="col-xs-3">
                     <strong>Driver</strong><br>
-                    <img :src="getSource()" alt="" width="100" height="100"> <br>                    
+                    <img :src="getSource()" alt="" width="100" height="100"> <br>
                     Name: {{ current_driver.first_name  }}<br>
                     Id No: {{ current_driver.identification_number }}<br>
                     Mobile No: {{ current_driver.mobile_phone                                                                                                                                                                                                                                                                                                                                                                                                        }}<br>
@@ -62,7 +62,29 @@
                   </div>
 
             </form>
+            <hr class="print-hr">
+            <div class="row print-row">
+              <h4>MILEAGE ALLOCATION (Delivery Note N0. {{ delivery_note.id }})</h4>
+              <div class="col-xs-4">
+                Journey Number: {{ mileage.journey_id }}<br>
+                Mileage Type: {{ mileage.mileage_type }}<br>
+                Requested Amount: {{ mileage.requested_amount }}<br>
+                Standard Amount: {{ mileage.standard_amount }}<br>
+              </div>
+              <div class="col-xs-3">
+                Mileage Allocation No: {{ mileage.id }}<br>
+                Status: {{ mileage.status }}<br>
+                Amount Approved: {{ mileage.approved_amount }}<br>
+              </div>
+
+              <div class="col-xs-4">
+                Narration:<br>
+                {{ mileage.narration }}
+              </div>
+            </div>
         </div>
+
+
         <div class="form-group pull-right">
           <button type="button" name="button" v-if="fuel.status == 'Awaiting Approval'" class="btn btn-success" @click="approveFuel(fuel.id)">Approve</button>
           <button type="button" name="button" v-else class="btn btn-warn btn-warning" @click="approveFuel(fuel.id)">Cancel Approval</button>
@@ -111,8 +133,10 @@ import axios from 'axios';
                     previous_km: 0,
                     previous_fuel: 0,
                     current_km: 0,
-                    status: 'Pending Approval'
-                }
+                    status: 'Awaiting Approval'
+                },
+                delivery_note: '',
+                mileage: ''
             };
         },
         computed: {
@@ -150,6 +174,8 @@ import axios from 'axios';
               if (this.$route.params.id) {
                       http.get('/api/fuel/' + this.$route.params.id).then((response) => {
                           this.fuel = response.fuel;
+                          this.delivery_note = response.delivery_note;
+                          this.mileage = response.mileage;
                           this.selectJourney();
                           this.setupUI();
                       });

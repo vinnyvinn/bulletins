@@ -77621,6 +77621,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = {
@@ -77660,8 +77682,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 previous_km: 0,
                 previous_fuel: 0,
                 current_km: 0,
-                status: 'Pending Approval'
-            }
+                status: 'Awaiting Approval'
+            },
+            delivery_note: '',
+            mileage: ''
         };
     },
 
@@ -77706,6 +77730,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (this.$route.params.id) {
                 http.get('/api/fuel/' + this.$route.params.id).then(function (response) {
                     _this4.fuel = response.fuel;
+                    _this4.delivery_note = response.delivery_note;
+                    _this4.mileage = response.mileage;
                     _this4.selectJourney();
                     _this4.setupUI();
                 });
@@ -100667,8 +100693,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_c('div', {
-    staticClass: "row"
-  }, [_c('h4', [_vm._v("FUEL VOUCHER")]), _vm._v(" "), _c('div', {
+    staticClass: "row print-row"
+  }, [_c('h4', [_vm._v("FUEL VOUCHER (Delivery Note N0. " + _vm._s(_vm.delivery_note.id) + ")")]), _vm._v(" "), _c('div', {
     staticClass: "col-xs-3"
   }, [_c('strong', [_vm._v("Driver")]), _c('br'), _vm._v(" "), _c('img', {
     attrs: {
@@ -100677,7 +100703,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "width": "100",
       "height": "100"
     }
-  }), _vm._v(" "), _c('br'), _vm._v("                    \n                Name: " + _vm._s(_vm.current_driver.first_name)), _c('br'), _vm._v("\n                Id No: " + _vm._s(_vm.current_driver.identification_number)), _c('br'), _vm._v("\n                Mobile No: " + _vm._s(_vm.current_driver.mobile_phone)), _c('br'), _vm._v("\n                DL number: " + _vm._s(_vm.current_driver.dl_number)), _c('br')]), _vm._v(" "), _c('div', {
+  }), _vm._v(" "), _c('br'), _vm._v("\n                Name: " + _vm._s(_vm.current_driver.first_name)), _c('br'), _vm._v("\n                Id No: " + _vm._s(_vm.current_driver.identification_number)), _c('br'), _vm._v("\n                Mobile No: " + _vm._s(_vm.current_driver.mobile_phone)), _c('br'), _vm._v("\n                DL number: " + _vm._s(_vm.current_driver.dl_number)), _c('br')]), _vm._v(" "), _c('div', {
     staticClass: "col-xs-3"
   }, [_vm._v("\n                  Date: " + _vm._s(_vm.fuel.date)), _c('br'), _vm._v("\n                  Journey: JRNY-" + _vm._s(_vm.fuel.journey_id)), _c('br'), _vm._v("\n                  Status: " + _vm._s(_vm.fuel.status) + "\n                  "), _c('hr'), _vm._v(" "), _c('strong', [_vm._v("Route")]), _vm._v("\n                  Route: Route: RT-" + _vm._s(_vm.current_route.id)), _c('br'), _vm._v("\n                  From: " + _vm._s(_vm.current_route.source)), _c('br'), _vm._v("\n                  To: " + _vm._s(_vm.current_route.destination)), _c('br'), _vm._v(" "), _c('hr'), _vm._v(" "), _c('strong', [_vm._v("Vehicle")]), _vm._v("\n                  Reg.No: " + _vm._s(_vm.current_vehicle.plate_number)), _c('br'), _vm._v("\n                  Model: " + _vm._s(_vm.current_vehicle.model)), _c('br'), _vm._v("\n                  Trailer Attached: "), _c('input', {
     attrs: {
@@ -100691,7 +100717,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "col-xs-3"
   }, [_c('strong', [_vm._v("Fuel")]), _c('br'), _vm._v("\n                  Standard Quantity for this route (Ltrs): " + _vm._s(_vm.current_route.fuel_required)), _c('br'), _vm._v("\n                  Current Fuel (Litres): " + _vm._s(_vm.fuel.current_fuel)), _c('br'), _vm._v("\n                  Requested Quantity: " + _vm._s(_vm.fuel.fuel_requested)), _c('br'), _vm._v("\n                  Fuel Issued: " + _vm._s(_vm.fuel.fuel_issued)), _c('br'), _vm._v("\n                  Total Fuel in Tank: " + _vm._s(_vm.fuel.fuel_total)), _c('br'), _vm._v(" "), _c('hr'), _vm._v(" "), _c('strong', [_vm._v("Narration")]), _c('br'), _vm._v("\n                  " + _vm._s(_vm.fuel.narration) + "\n                ")]), _vm._v(" "), _c('div', {
     staticClass: "col-xs-3"
-  }, [_c('strong', [_vm._v("Mileage Readings")]), _c('br'), _vm._v("\n                  Previous KM: " + _vm._s(_vm.fuel.previous_km)), _c('br'), _vm._v("\n                  Previous Fuel: " + _vm._s(_vm.fuel.previous_fuel)), _c('br'), _vm._v("\n                  Current Km: " + _vm._s(_vm.fuel.current_km)), _c('br'), _vm._v("\n                  KM Covered: " + _vm._s(_vm.km_covered)), _c('br'), _vm._v("\n                  Fuel Used: " + _vm._s(_vm.fuel_used)), _c('br'), _vm._v("\n                  KM/Ltr: " + _vm._s(_vm.km_per_litre)), _c('br')])])])]), _vm._v(" "), _c('div', {
+  }, [_c('strong', [_vm._v("Mileage Readings")]), _c('br'), _vm._v("\n                  Previous KM: " + _vm._s(_vm.fuel.previous_km)), _c('br'), _vm._v("\n                  Previous Fuel: " + _vm._s(_vm.fuel.previous_fuel)), _c('br'), _vm._v("\n                  Current Km: " + _vm._s(_vm.fuel.current_km)), _c('br'), _vm._v("\n                  KM Covered: " + _vm._s(_vm.km_covered)), _c('br'), _vm._v("\n                  Fuel Used: " + _vm._s(_vm.fuel_used)), _c('br'), _vm._v("\n                  KM/Ltr: " + _vm._s(_vm.km_per_litre)), _c('br')])])]), _vm._v(" "), _c('hr', {
+    staticClass: "print-hr"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "row print-row"
+  }, [_c('h4', [_vm._v("MILEAGE ALLOCATION (Delivery Note N0. " + _vm._s(_vm.delivery_note.id) + ")")]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-4"
+  }, [_vm._v("\n            Journey Number: " + _vm._s(_vm.mileage.journey_id)), _c('br'), _vm._v("\n            Mileage Type: " + _vm._s(_vm.mileage.mileage_type)), _c('br'), _vm._v("\n            Requested Amount: " + _vm._s(_vm.mileage.requested_amount)), _c('br'), _vm._v("\n            Standard Amount: " + _vm._s(_vm.mileage.standard_amount)), _c('br')]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-3"
+  }, [_vm._v("\n            Mileage Allocation No: " + _vm._s(_vm.mileage.id)), _c('br'), _vm._v("\n            Status: " + _vm._s(_vm.mileage.status)), _c('br'), _vm._v("\n            Amount Approved: " + _vm._s(_vm.mileage.approved_amount)), _c('br')]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-4"
+  }, [_vm._v("\n            Narration:"), _c('br'), _vm._v("\n            " + _vm._s(_vm.mileage.narration) + "\n          ")])])]), _vm._v(" "), _c('div', {
     staticClass: "form-group pull-right"
   }, [(_vm.fuel.status == 'Awaiting Approval') ? _c('button', {
     staticClass: "btn btn-success",

@@ -128,15 +128,27 @@ a.active:not(.btn) {
     }
 
     #printable {
-      border: 1px solid;
+
       position: absolute;
       left: 0;
       top: 0;
     }
 
+    .print-row {
+      border: 1px solid;
+    }
+
     h4 {
       text-align: center;
-      
+    }
+
+    .print-hr {
+      border:none;
+      border-top:1px dotted #f00;
+      color:#fff;
+      background-color:#fff;
+      height:1px;
+      width:100%;
     }
   }
 
