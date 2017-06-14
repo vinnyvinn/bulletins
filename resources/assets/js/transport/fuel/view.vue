@@ -4,9 +4,19 @@
             <strong>Fuel Allocation</strong>
         </div>
 
-        <div class="panel-body">
+        <div class="panel-body" id="printable">
             <form action="#" role="form" @submit.prevent="store">
-                <div class="row">
+                <div class="row" >
+                  <h4>FUEL VOUCHER</h4>
+                  <div class="col-xs-3">
+                    <strong>Driver</strong><br>
+                    <img :src="getSource()" alt="" width="100" height="100"> <br>                    
+                    Name: {{ current_driver.first_name  }}<br>
+                    Id No: {{ current_driver.identification_number }}<br>
+                    Mobile No: {{ current_driver.mobile_phone                                                                                                                                                                                                                                                                                                                                                                                                        }}<br>
+                    DL number: {{ current_driver.dl_number }}<br>
+                  </div>
+
                   <div class="col-xs-3">
                       Date: {{ fuel.date }}<br>
                       Journey: JRNY-{{ fuel.journey_id }}<br>
@@ -26,16 +36,6 @@
                         Trailer Category: {{ current_trailer.type }} <br>
                       </div>
                   </div>
-
-                    <div class="col-xs-3">
-                      <strong>Driver</strong><br>
-                      <img :src="getSource()" alt="" width="100" height="100"> <br>
-                      Passport: <br>
-                      Name: {{ current_driver.first_name  }}<br>
-                      Id No: {{ current_driver.identification_number }}<br>
-                      Mobile No: {{ current_driver.mobile_phone                                                                                                                                                                                                                                                                                                                                                                                                        }}<br>
-                      DL number: {{ current_driver.dl_number }}<br>
-                    </div>
 
                     <div class="col-xs-3">
                       <strong>Fuel</strong><br>
@@ -60,15 +60,15 @@
                     </div>
 
                   </div>
-                  <div class="form-group pull-right">
-                    <button type="button" name="button" v-if="fuel.status == 'Awaiting Approval'" class="btn btn-success" @click="approveFuel(fuel.id)">Approve</button>
-                    <button type="button" name="button" v-else class="btn btn-warn btn-warning" @click="approveFuel(fuel.id)">Cancel Approval</button>
-                    <button type="button" class="btn btn-info" @click="printFuelVoucher"><i class="fa fa-print fa-fw"></i> Print</button>
-                    <router-link to="/fuel" class="btn btn-danger">Back</router-link>
-                </div>
-            </form>
 
+            </form>
         </div>
+        <div class="form-group pull-right">
+          <button type="button" name="button" v-if="fuel.status == 'Awaiting Approval'" class="btn btn-success" @click="approveFuel(fuel.id)">Approve</button>
+          <button type="button" name="button" v-else class="btn btn-warn btn-warning" @click="approveFuel(fuel.id)">Cancel Approval</button>
+          <button type="button" class="btn btn-info" @click="printFuelVoucher"><i class="fa fa-print fa-fw"></i> Print</button>
+          <router-link to="/fuel" class="btn btn-danger">Back</router-link>
+      </div>
     </div>
 </template>
 
@@ -198,7 +198,7 @@ import axios from 'axios';
                 });
             },
             printFuelVoucher() {
-              window.print('template');
+              window.print();
             },
             approveFuel(id) {
               http.get('/api/approve/' + id).then(response => {

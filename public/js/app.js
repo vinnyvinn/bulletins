@@ -77755,7 +77755,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         printFuelVoucher: function printFuelVoucher() {
-            window.print('template');
+            window.print();
         },
         approveFuel: function approveFuel(id) {
             var _this6 = this;
@@ -100651,7 +100651,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', {
     staticClass: "panel panel-default"
   }, [_vm._m(0), _vm._v(" "), _c('div', {
-    staticClass: "panel-body"
+    staticClass: "panel-body",
+    attrs: {
+      "id": "printable"
+    }
   }, [_c('form', {
     attrs: {
       "action": "#",
@@ -100665,7 +100668,16 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('div', {
     staticClass: "row"
-  }, [_c('div', {
+  }, [_c('h4', [_vm._v("FUEL VOUCHER")]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-3"
+  }, [_c('strong', [_vm._v("Driver")]), _c('br'), _vm._v(" "), _c('img', {
+    attrs: {
+      "src": _vm.getSource(),
+      "alt": "",
+      "width": "100",
+      "height": "100"
+    }
+  }), _vm._v(" "), _c('br'), _vm._v("                    \n                Name: " + _vm._s(_vm.current_driver.first_name)), _c('br'), _vm._v("\n                Id No: " + _vm._s(_vm.current_driver.identification_number)), _c('br'), _vm._v("\n                Mobile No: " + _vm._s(_vm.current_driver.mobile_phone)), _c('br'), _vm._v("\n                DL number: " + _vm._s(_vm.current_driver.dl_number)), _c('br')]), _vm._v(" "), _c('div', {
     staticClass: "col-xs-3"
   }, [_vm._v("\n                  Date: " + _vm._s(_vm.fuel.date)), _c('br'), _vm._v("\n                  Journey: JRNY-" + _vm._s(_vm.fuel.journey_id)), _c('br'), _vm._v("\n                  Status: " + _vm._s(_vm.fuel.status) + "\n                  "), _c('hr'), _vm._v(" "), _c('strong', [_vm._v("Route")]), _vm._v("\n                  Route: Route: RT-" + _vm._s(_vm.current_route.id)), _c('br'), _vm._v("\n                  From: " + _vm._s(_vm.current_route.source)), _c('br'), _vm._v("\n                  To: " + _vm._s(_vm.current_route.destination)), _c('br'), _vm._v(" "), _c('hr'), _vm._v(" "), _c('strong', [_vm._v("Vehicle")]), _vm._v("\n                  Reg.No: " + _vm._s(_vm.current_vehicle.plate_number)), _c('br'), _vm._v("\n                  Model: " + _vm._s(_vm.current_vehicle.model)), _c('br'), _vm._v("\n                  Trailer Attached: "), _c('input', {
     attrs: {
@@ -100677,18 +100689,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _c('br'), _vm._v(" "), (_vm.current_trailer) ? _c('div', {}, [_vm._v("\n                    Trailer: " + _vm._s(_vm.current_trailer.trailer_number)), _c('br'), _vm._v("\n                    Trailer Category: " + _vm._s(_vm.current_trailer.type) + " "), _c('br')]) : _vm._e()]), _vm._v(" "), _c('div', {
     staticClass: "col-xs-3"
-  }, [_c('strong', [_vm._v("Driver")]), _c('br'), _vm._v(" "), _c('img', {
-    attrs: {
-      "src": _vm.getSource(),
-      "alt": "",
-      "width": "100",
-      "height": "100"
-    }
-  }), _vm._v(" "), _c('br'), _vm._v("\n                  Passport: "), _c('br'), _vm._v("\n                  Name: " + _vm._s(_vm.current_driver.first_name)), _c('br'), _vm._v("\n                  Id No: " + _vm._s(_vm.current_driver.identification_number)), _c('br'), _vm._v("\n                  Mobile No: " + _vm._s(_vm.current_driver.mobile_phone)), _c('br'), _vm._v("\n                  DL number: " + _vm._s(_vm.current_driver.dl_number)), _c('br')]), _vm._v(" "), _c('div', {
-    staticClass: "col-xs-3"
   }, [_c('strong', [_vm._v("Fuel")]), _c('br'), _vm._v("\n                  Standard Quantity for this route (Ltrs): " + _vm._s(_vm.current_route.fuel_required)), _c('br'), _vm._v("\n                  Current Fuel (Litres): " + _vm._s(_vm.fuel.current_fuel)), _c('br'), _vm._v("\n                  Requested Quantity: " + _vm._s(_vm.fuel.fuel_requested)), _c('br'), _vm._v("\n                  Fuel Issued: " + _vm._s(_vm.fuel.fuel_issued)), _c('br'), _vm._v("\n                  Total Fuel in Tank: " + _vm._s(_vm.fuel.fuel_total)), _c('br'), _vm._v(" "), _c('hr'), _vm._v(" "), _c('strong', [_vm._v("Narration")]), _c('br'), _vm._v("\n                  " + _vm._s(_vm.fuel.narration) + "\n                ")]), _vm._v(" "), _c('div', {
     staticClass: "col-xs-3"
-  }, [_c('strong', [_vm._v("Mileage Readings")]), _c('br'), _vm._v("\n                  Previous KM: " + _vm._s(_vm.fuel.previous_km)), _c('br'), _vm._v("\n                  Previous Fuel: " + _vm._s(_vm.fuel.previous_fuel)), _c('br'), _vm._v("\n                  Current Km: " + _vm._s(_vm.fuel.current_km)), _c('br'), _vm._v("\n                  KM Covered: " + _vm._s(_vm.km_covered)), _c('br'), _vm._v("\n                  Fuel Used: " + _vm._s(_vm.fuel_used)), _c('br'), _vm._v("\n                  KM/Ltr: " + _vm._s(_vm.km_per_litre)), _c('br')])]), _vm._v(" "), _c('div', {
+  }, [_c('strong', [_vm._v("Mileage Readings")]), _c('br'), _vm._v("\n                  Previous KM: " + _vm._s(_vm.fuel.previous_km)), _c('br'), _vm._v("\n                  Previous Fuel: " + _vm._s(_vm.fuel.previous_fuel)), _c('br'), _vm._v("\n                  Current Km: " + _vm._s(_vm.fuel.current_km)), _c('br'), _vm._v("\n                  KM Covered: " + _vm._s(_vm.km_covered)), _c('br'), _vm._v("\n                  Fuel Used: " + _vm._s(_vm.fuel_used)), _c('br'), _vm._v("\n                  KM/Ltr: " + _vm._s(_vm.km_per_litre)), _c('br')])])])]), _vm._v(" "), _c('div', {
     staticClass: "form-group pull-right"
   }, [(_vm.fuel.status == 'Awaiting Approval') ? _c('button', {
     staticClass: "btn btn-success",
@@ -100727,7 +100730,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "to": "/fuel"
     }
-  }, [_vm._v("Back")])], 1)])])])
+  }, [_vm._v("Back")])], 1)])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "panel-heading"

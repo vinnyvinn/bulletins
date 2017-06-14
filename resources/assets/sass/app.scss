@@ -118,8 +118,27 @@ a.active:not(.btn) {
     page-break-after: always;
   }
 
-  
-}
+  body * {
+      visibility: hidden;
+    }
+
+    #printable, #printable * {
+      visibility: visible;
+
+    }
+
+    #printable {
+      border: 1px solid;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    h4 {
+      text-align: center;
+      
+    }
+  }
 
 .select2-selection {
   height: 30px !important;
