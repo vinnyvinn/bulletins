@@ -32,9 +32,7 @@ class FuelController extends Controller
     public function create()
     {
         $journeys = Journey::open()
-            ->whereHas('inspection', function ($query) {
-                $query->where('suitable_for_loading', true);
-            })
+            ->has('delivery')
             ->with(['driver', 'route', 'truck', 'truck.trailer'])
             ->get();
 

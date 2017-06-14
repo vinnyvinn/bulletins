@@ -10,7 +10,7 @@
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label for="journey_id">Journey Number</label>
-                            <select v-model="deliveryNote.journey_id" class="form-control input-sm" id="journey_id" name="journey_id" required>
+                            <select :disabled="typeof $route.params.id === 'string'" v-model="deliveryNote.journey_id" class="form-control input-sm" id="journey_id" name="journey_id" required>
                                 <option v-for="journey in journeys" :value="journey.id">JRNY-{{ journey.id }}</option>
                             </select>
                         </div>
@@ -41,26 +41,6 @@
                             <label>Journey Ref No.</label>
                             <h5>{{ journey.ref_no }}</h5>
                         </div>
-
-                        <div class="form-group">
-                            <label>Vehicle Number</label>
-                            <h5>{{ journey.truck.plate_number }}</h5>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Trailer Type</label>
-                            <h5>{{ journey.truck.trailer.type }}</h5>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Trailer Attached</label>
-                            <h5>{{ journey.truck.trailer.trailer_number }}</h5>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Driver Name</label>
-                            <h5>{{ journey.driver.first_name }} {{ journey.driver.last_name }}</h5>
-                        </div>
                     </div>
 
                     <div class="col-sm-3">
@@ -68,57 +48,96 @@
                             <label>Journey Date</label>
                             <h5>{{ journey.job_date }}</h5>
                         </div>
-
-                        <div class="form-group">
-                            <img :src="getSource()" class="img-responsive">
-                        </div>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <div class="form-group">
-                            <label for="mileage_type">Mileage Type</label>
-                            <select v-model="deliveryNote.mileage_type" class="form-control input-sm" id="mileage_type" name="mileage_type" required>
-                                <option value="Fixed Mileage">Fixed Mileage</option>
-                            </select>
+                            <label>Vehicle Number</label>
+                            <h5>{{ journey.truck.plate_number }}</h5>
                         </div>
                     </div>
-                </div>
-
-                <div class="row">
-
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <div class="form-group">
-                            <label for="mileage_type">Standard Mileage Amount</label>
-                            <h5><strong>{{ formatNumber(journey.route.allowance_amount) }}</strong></h5>
+                            <label>Trailer Type</label>
+                            <h5>{{ journey.truck.trailer.type }}</h5>
                         </div>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <div class="form-group">
-                            <label for="requested_amount">Requested Amount</label>
-                            <input min="0" v-model="deliveryNote.requested_amount" type="number" class="form-control input-sm" id="requested_amount" name="requested_amount">
+                            <label>Trailer Attached</label>
+                            <h5>{{ journey.truck.trailer.trailer_number }}</h5>
                         </div>
                     </div>
-                    <div class="col-sm-4" v-if="$route.params.id">
+                    <div class="col-sm-3">
                         <div class="form-group">
-                            <label for="approved_amount">Approved Amount</label>
-                            <input min="0" v-model="deliveryNote.approved_amount" type="number" class="form-control input-sm" id="approved_amount" name="approved_amount">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-sm-8">
-                        <div class="form-group">
-                            <label for="narration">Narration</label>
-                            <textarea v-model="deliveryNote.narration" name="narration" id="narration" rows="5" class="form-control input-sm"></textarea>
+                            <label>Driver Name</label>
+                            <h5>{{ journey.driver.first_name }} {{ journey.driver.last_name }}</h5>
                         </div>
                     </div>
                 </div>
 
                 <hr>
 
+                <div class="row">
+                    <div class="col-sm-5">
+                        <h4><strong>Loading Details</strong></h4>
+                        <hr>
+                        <div class="form-group">
+                            <label for="bags_loaded">Bags Loaded</label>
+                            <input :disabled="typeof $route.params.id === 'string'" id="bags_loaded" min="0" v-model="deliveryNote.bags_loaded" type="number" class="form-control input-sm">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="loading_gross_weight">Gross Weight</label>
+                            <input :disabled="typeof $route.params.id === 'string'" @keyup="updateNote" id="loading_gross_weight" min="0" v-model="deliveryNote.loading_gross_weight" type="number" class="form-control input-sm">
+                        </div>
+                        <div class="form-group">
+                            <label for="loading_tare_weight">Tare Weight</label>
+                            <input :disabled="typeof $route.params.id === 'string'" @keyup="updateNote" id="loading_tare_weight" min="0" v-model="deliveryNote.loading_tare_weight" type="number" class="form-control input-sm">
+                        </div>
+                        <div class="form-group">
+                            <label for="loading_net_weight">Net Weight</label>
+                            <input disabled id="loading_net_weight" min="0" v-model="deliveryNote.loading_net_weight" type="number" class="form-control input-sm">
+                        </div>
+                        <div class="form-group">
+                            <label for="loading_weighbridge_number">Weighbridge Ticket Number</label>
+                            <input :disabled="typeof $route.params.id === 'string'" id="loading_weighbridge_number" v-model="deliveryNote.loading_weighbridge_number" type="text" class="form-control input-sm">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-5">
+                        <h4><strong>Offloading Details</strong></h4>
+                        <hr>
+
+                        <div class="form-group">
+                            <label for="offloading_gross_weight">Gross Weight</label>
+                            <input :disabled="typeof $route.params.id !== 'string'" @keyup="updateNote" id="offloading_gross_weight" min="0" v-model="deliveryNote.offloading_gross_weight" type="number" class="form-control input-sm">
+                        </div>
+                        <div class="form-group">
+                            <label for="offloading_tare_weight">Tare Weight</label>
+                            <input :disabled="typeof $route.params.id !== 'string'" @keyup="updateNote" id="offloading_tare_weight" min="0" v-model="deliveryNote.offloading_tare_weight" type="number" class="form-control input-sm">
+                        </div>
+                        <div class="form-group">
+                            <label for="offloading_net_weight">Net Weight</label>
+                            <input disabled id="offloading_net_weight" min="0" v-model="deliveryNote.offloading_net_weight" type="number" class="form-control input-sm">
+                        </div>
+                        <div class="form-group">
+                            <label for="offloading_weighbridge_number">Weighbridge Ticket Number</label>
+                            <input :disabled="typeof $route.params.id !== 'string'" id="offloading_weighbridge_number" v-model="deliveryNote.offloading_weighbridge_number" type="text" class="form-control input-sm">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <h4><strong>Narration</strong></h4>
+                        <hr>
+                        <div class="form-group">
+                            <label for="narration">Narration</label>
+                            <textarea v-model="deliveryNote.narration" name="narration" id="narration" rows="15" class="form-control input-sm"></textarea>
+                        </div>
+                    </div>
+                </div>
                 <div class="form-group">
                     <button class="btn btn-success">Process</button>
                     <router-link to="/mileage" class="btn btn-danger">Back</router-link>
@@ -137,24 +156,32 @@
                 uploads: [],
                 deliveryNote: {
                     journey_id: '',
-                    mileage_type: 'Fixed Mileage',
-                    standard_amount: 0,
-                    requested_amount: 0,
-                    approved_amount: '',
-                    balance_amount: '',
                     narration: '',
+                    bags_loaded: 0,
+                    loading_gross_weight: 0,
+                    loading_tare_weight: 0,
+                    loading_net_weight: 0,
+                    loading_weighbridge_number: '',
+                    offloading_gross_weight: 0,
+                    offloading_tare_weight: 0,
+                    offloading_net_weight: 0,
+                    offloading_weighbridge_number: '',
                 }
             };
         },
 
         created() {
+            if (this.$route.params.id) {
+                this.checkState();
+                return;
+            }
+
             http.get('/api/delivery/create').then((response) => {
                 this.journeys = response.journeys;
             });
         },
 
         mounted() {
-            this.checkState();
             $('input[type="number"]').on('focus', function () {
                 this.select();
             });
@@ -174,42 +201,27 @@
                         trailer: {},
                     },
                     route: {},
-
                 };
             },
         },
 
         methods: {
-            getSource() {
-                if(this.journey.driver.avatar){
-                    return this.journey.driver.avatar;
-                }
-
-                return '/images/default_avatar.png';
+            updateNote() {
+                this.deliveryNote.loading_net_weight = parseFloat(this.deliveryNote.loading_gross_weight) - parseFloat(this.deliveryNote.loading_tare_weight);
+                this.deliveryNote.offloading_net_weight = parseFloat(this.deliveryNote.offloading_gross_weight) - parseFloat(this.deliveryNote.offloading_tare_weight);
             },
 
             checkState() {
-                if (this.$route.params.id) {
-                    http.get('/api/delivery/' + this.$route.params.id).then((response) => {
-                        this.mileage = response.mileage;
-                    });
-                }
+                return http.get('/api/delivery/' + this.$route.params.id).then((response) => {
+                    this.deliveryNote = response.delivery;
+                    this.journeys = response.journeys;
+                });
             },
-
-            formatNumber(number) {
-               if (! number) {
-                   return '';
-               }
-
-               return parseFloat(number).toLocaleString();
-            },
-
             store() {
                 this.$root.isLoading = true;
                 let request = null;
-                this.deliveryNote.standard_amount = parseInt(this.journey.route.allowance_amount);
 
-                let data = mapToFormData(this.mileage, this.uploads, typeof this.$route.params.id === 'string');
+                let data = mapToFormData(this.deliveryNote, this.uploads, typeof this.$route.params.id === 'string');
 
                 if (this.$route.params.id) {
                     request = http.put('/api/delivery/' + this.$route.params.id, data, true);

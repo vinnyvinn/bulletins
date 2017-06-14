@@ -111,6 +111,7 @@ class InspectionController extends Controller
         $data['fields'] = json_encode($data);
         $data['inspector_id'] = \Auth::id();
         $data['status'] = Constants::STATUS_APPROVED;
+        $data['suitable_for_loading'] = $data['suitable_for_loading'] != 0;
 
         $inspection->update($data);
 

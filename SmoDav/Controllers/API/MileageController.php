@@ -41,9 +41,7 @@ class MileageController extends Controller
     {
         return Response::json([
             'journeys' => Journey::open()
-                ->whereHas('inspection', function ($query) {
-                    $query->where('suitable_for_loading', true);
-                })
+                ->has('delivery')
                 ->with(['driver', 'truck.trailer', 'route'])
                 ->get(),
         ]);

@@ -17,4 +17,7 @@ class Constants
     const STATUS_APPROVED = 'Approved';
     const STATUS_DECLINED = 'Declined';
     const STATUS_CLOSED = 'Closed';
+
+    const LOADED = 'Loaded';
+    const OFFLOADED = 'Offloaded';
 }

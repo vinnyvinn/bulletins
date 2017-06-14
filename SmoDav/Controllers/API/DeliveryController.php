@@ -14,6 +14,7 @@ use Response;
 use SmoDav\Models\CargoClassification;
 use SmoDav\Models\CargoType;
 use SmoDav\Models\CarriagePoint;
+use SmoDav\Models\Delivery;
 use SmoDav\Models\Journey;
 use SmoDav\Models\Mileage;
 use SmoDav\Support\Constants;
@@ -28,7 +29,7 @@ class DeliveryController extends Controller
     public function index()
     {
         return Response::json([
-            'mileages' => Mileage::all()
+            'deliveries' => Delivery::all()
         ]);
     }
 
@@ -44,7 +45,7 @@ class DeliveryController extends Controller
                 ->whereHas('inspection', function ($query) {
                     $query->where('suitable_for_loading', true);
                 })
-//                ->doesntHave('delivery')
+                ->doesntHave('delivery')
                 ->with(['driver', 'truck.trailer', 'route', 'contract'])
                 ->get(),
         ]);
@@ -69,10 +70,11 @@ class DeliveryController extends Controller
             }
         }
 
-        $mileage = Mileage::create($data);
+        $data['loading_time'] = Carbon::now();
+        $delivery = Delivery::create($data);
 
         return Response::json([
-            'message' => 'Successfully created new mileage voucher number MLG-' . $mileage->id
+            'message' => 'Successfully created new delivery note number DLN-' . $delivery->id
         ]);
     }
 
@@ -85,8 +87,19 @@ class DeliveryController extends Controller
      */
     public function show($id)
     {
+        $journeys = Journey::open()
+            ->whereHas('inspection', function ($query) {
+                return $query->where('suitable_for_loading', true);
+            })
+            ->whereHas('delivery', function ($query) use ($id) {
+                return $query->where('id', $id);
+            })
+            ->with(['driver', 'truck.trailer', 'route', 'contract'])
+            ->get();
+
         return Response::json([
-            'mileage' => Mileage::findOrFail($id),
+            'delivery' => Delivery::findOrFail($id),
+            'journeys' => $journeys,
         ]);
     }
 
@@ -94,11 +107,10 @@ class DeliveryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     *
-     * @param Mileage $mileage
+     * @param Delivery $delivery
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
-    public function update(Request $request, Mileage $mileage)
+    public function update(Request $request, Delivery $delivery)
     {
         $data = $request->all();
         unset($data['_token'], $data['_method']);
@@ -110,67 +122,28 @@ class DeliveryController extends Controller
             }
         }
 
-        $data['balance_amount'] = $data['standard_amount'] - $data['approved_amount'];
-
-        $mileage->update($data);
+        $data['offloading_time'] = Carbon::now();
+        $delivery->update($data);
 
         return Response::json([
-            'message' => 'Successfully updated mileage voucher number MLG-' . $mileage->id
+            'message' => 'Successfully updated delivery note number DLN-' . $delivery->id
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param Mileage $mileage
-     *
+     * @param Delivery $delivery
      * @return \Illuminate\Http\JsonResponse
-     *
      */
-    public function destroy(Mileage $mileage)
+    public function destroy(Delivery $delivery)
     {
-        $mileage->delete();
+        $delivery->delete();
 
         return Response::json([
             'status' => 'success',
-            'message' => 'Successfully deleted mileage voucher.',
-            'mileages' => Mileage::all()
-        ]);
-    }
-
-    public function approve($id)
-    {
-        Journey::where('id', $id)->update([
-            'status' => Constants::STATUS_APPROVED
-        ]);
-
-        return Response::json([
-            'status' => 'success',
-            'message' => 'Successfully approved journey.',
-        ]);
-    }
-
-    public function close($id)
-    {
-        Journey::where('id', $id)->update([
-            'status' => Constants::STATUS_CLOSED
-        ]);
-
-        return Response::json([
-            'status' => 'success',
-            'message' => 'Successfully closed journey.',
-        ]);
-    }
-
-    public function reopen($id)
-    {
-        Journey::where('id', $id)->update([
-            'status' => Constants::STATUS_APPROVED
-        ]);
-
-        return Response::json([
-            'status' => 'success',
-            'message' => 'Successfully reopened journey.',
+            'message' => 'Successfully deleted delivery note.',
+            'deliveries' => Delivery::all()
         ]);
     }
 }
