@@ -97,7 +97,7 @@ class ContractController extends Controller
         $contract = Contract::create($data);
         foreach ($request->all() as $key => $item) {
             if ($key == 'start_date' || $key == 'end_date' ||$key == '_token' || $key == '_method' || $key == 'updated_at' ||
-                $key == 'deleted_at') {
+                $key == 'deleted_at' || $key = 'berthing_date' || $key = 'vessel_arrival_date') {
                 continue;
             }
             $contract->{$key} = $item;
@@ -173,7 +173,7 @@ class ContractController extends Controller
 
         foreach ($data as $key => $item) {
             if ($key == 'start_date' || $key == 'end_date' ||$key == '_token' || $key == '_method' || $key == 'updated_at' ||
-                $key == 'deleted_at') {
+                $key == 'deleted_at' || $key = 'berthing_date' || $key = 'vessel_arrival_date') {
                 continue;
             }
             if ($item == 'null') {
