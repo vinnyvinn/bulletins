@@ -73,4 +73,5 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('dashboard', '\SmoDav\Controllers\API\DashboardController@index');
     Route::resource('fuel', 'FuelController');
     Route::get('approve/{id}', 'FuelController@approve');
+    Route::resource('route-card', 'RouteCardController');
 });

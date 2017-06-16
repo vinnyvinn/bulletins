@@ -307,7 +307,7 @@
                                   <td>{{ shift.shift_number }}</td>
                                   <td><input disabled type="time" :value="shift.from_time"></td>
                                   <td><input disabled type="time" :value="shift.to_time"></td>
-                                  <td class="text-right">{{ shift.hours }}</td>
+                                  <td class="text-left">{{ shift.hours }}</td>
                                   <td><button class="btn btn-danger btn-xs" @click.prevent="removeShift(shift)"><i class="fa fa-trash"></i></button></td>
                                 </tr>
                             </tbody>

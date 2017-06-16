@@ -13,6 +13,7 @@
                                 <thead>
                                 <tr>
                                     <th>Journey #</th>
+                                    <th>Status</th>
                                     <th>Contract Related</th>
                                     <th>Journey Type</th>
                                     <th>Job Date</th>
@@ -23,6 +24,10 @@
                                 <tbody>
                                 <tr v-for="journey in journeys">
                                     <td><router-link :to="'/journey/' + journey.id">JRNY-{{ journey.id }}</router-link></td>
+                                    <td>
+                                      <span class="label label-default" v-if="journey.status == 'Pending Approval'">Pending Approval</span>
+                                      <span class="label label-success" v-if="journey.status == 'Approved'">Approved</span>
+                                    </td>
                                     <td>{{ journey.is_contract_related ? 'Yes' : 'No' }}</td>
                                     <td>{{ journey.journey_type }}</td>
                                     <td>{{ date2(journey.job_date) }}</td>
