@@ -49,6 +49,8 @@ class ContractController extends Controller
             ->select(['StockLink', 'Description_1'])
             ->get();
 
+
+
         return Response::json([
             'routes' => Route::all(['id', 'source', 'destination', 'distance']),
             'clients' => Client::all(['DCLink', 'Name', 'Account']),
@@ -69,6 +71,7 @@ class ContractController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
+
         $data['start_date'] = Carbon::parse(str_replace('/', '-', $data['start_date']))->format('Y-m-d');
         $data['end_date'] = Carbon::parse(str_replace('/', '-', $data['start_date']))
             ->addDays($data['estimated_days'])
@@ -152,7 +155,7 @@ class ContractController extends Controller
      */
     public function update(Request $request, Contract $contract)
     {
-        $data = $request->all();
+        $data = $request->all();        
         $data['start_date'] = Carbon::parse(str_replace('/', '-', $data['start_date']))->format('Y-m-d');
         $data['end_date'] = Carbon::parse(str_replace('/', '-', $data['start_date']))
             ->addDays($data['estimated_days'])

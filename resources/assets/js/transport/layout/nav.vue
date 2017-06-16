@@ -40,7 +40,7 @@
                 <div class="caption">Mileage Allocation</div>
             </router-link>
 
-            <router-link to="/contracts" class="nav-items">
+            <router-link to="/route-card/create" class="nav-items">
                 <img src="/images/card.png" alt="card" class="img-responsive">
                 <div class="caption">Route Card</div>
             </router-link>

@@ -2,6 +2,9 @@
 
 namespace SmoDav\Models;
 
+use SmoDav\Models\Journey;
+use App\RouteCard;
+
 class Delivery extends SmoDavModel
 {
     protected $fillable = [
@@ -10,5 +13,13 @@ class Delivery extends SmoDavModel
         'offloading_weighbridge_number', 'loading_time', 'offloading_time', 'raw', 'status', 'bags_loaded'
     ];
 
-    
+    public function journey()
+    {
+      return $this->belongsTo(Journey::class);
+    }
+
+    public function routecard()
+    {
+      return $this->hasOne(RouteCard::class);
+    }
 }

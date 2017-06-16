@@ -13,6 +13,7 @@
                                 <thead>
                                 <tr>
                                     <th>Contract #</th>
+                                    <th>Status</th>
                                     <th>Client</th>
                                     <th>Date Created</th>
                                     <th>Start Date</th>
@@ -26,7 +27,12 @@
                                 <tbody>
                                 <tr v-for="contract in contracts">
                                     <td>
-                                        <router-link :to="'/contracts/' + contract.id">CNTR{{ contract.id }}</router-link></td>
+                                        <router-link :to="'/contracts/' + contract.id">CNTR{{ contract.id }}</router-link>
+                                    </td>
+                                    <td>
+                                      <span class="label label-default" v-if="contract.status == 'Pending Approval'">Pending Approval</span>
+                                      <span class="label label-success" v-if="contract.status == 'Approved'">Approved</span>
+                                    </td>
                                     <td>{{ contract.client.Name }}</td>
                                     <td>{{ date2(contract.created_at) }}</td>
                                     <td>{{ date2(contract.start_date) }}</td>

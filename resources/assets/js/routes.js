@@ -75,6 +75,9 @@ module.exports = [
     { path: '/mileage/:id', component: require('./transport/mileage/view.vue'), beforeEnter: authMiddleware },
     { path: '/mileage/:id/edit', component: require('./transport/mileage/form.vue'), beforeEnter: authMiddleware },
 
+    // { path: '/route-card', component: require('./transport/routecard/index.vue'), beforeEnter: authMiddleware },
+    { path: '/route-card/create', component: require('./transport/routecard/form.vue'), beforeEnter: authMiddleware },
+
     { path: '/delivery', component: require('./transport/delivery_note/index.vue'), beforeEnter: authMiddleware },
     { path: '/delivery/create', component: require('./transport/delivery_note/form.vue'), beforeEnter: authMiddleware },
     { path: '/delivery/:id', component: require('./transport/delivery_note/view.vue'), beforeEnter: authMiddleware },
