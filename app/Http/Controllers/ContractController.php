@@ -98,11 +98,16 @@ class ContractController extends Controller
         }
 
         $contract = Contract::create($data);
+        $ignore = [
+            'start_date', 'end_date', '_token', '_method', 'updated_at', 'deleted_at', 'berthing_date',
+            'vessel_arrival_date'
+        ];
+
         foreach ($request->all() as $key => $item) {
-            if ($key == 'start_date' || $key == 'end_date' ||$key == '_token' || $key == '_method' || $key == 'updated_at' ||
-                $key == 'deleted_at' || $key = 'berthing_date' || $key = 'vessel_arrival_date') {
+            if (in_array($key, $ignore)) {
                 continue;
             }
+
             $contract->{$key} = $item;
             if ($request->hasFile($key)) {
                 $extension = $request->file($key)->getClientOriginalExtension();
@@ -155,7 +160,7 @@ class ContractController extends Controller
      */
     public function update(Request $request, Contract $contract)
     {
-        $data = $request->all();        
+        $data = $request->all();
         $data['start_date'] = Carbon::parse(str_replace('/', '-', $data['start_date']))->format('Y-m-d');
         $data['end_date'] = Carbon::parse(str_replace('/', '-', $data['start_date']))
             ->addDays($data['estimated_days'])
@@ -173,18 +178,23 @@ class ContractController extends Controller
         $data['unloading_points'] = json_encode($data['unloading_points']);
 
         unset($data['_token'], $data['_method']);
+        $ignore = [
+            'start_date', 'end_date', '_token', '_method', 'updated_at', 'deleted_at', 'berthing_date',
+            'vessel_arrival_date'
+        ];
 
         foreach ($data as $key => $item) {
-            if ($key == 'start_date' || $key == 'end_date' ||$key == '_token' || $key == '_method' || $key == 'updated_at' ||
-                $key == 'deleted_at' || $key = 'berthing_date' || $key = 'vessel_arrival_date') {
+            if (in_array($key, $ignore)) {
                 continue;
             }
+
             if ($item == 'null') {
                 unset($data[$key]);
                 continue;
             }
 
             $contract->{$key} = $item;
+
             if ($request->hasFile($key)) {
                 $extension = $request->file($key)->getClientOriginalExtension();
                 $filename = time().".".$extension;
