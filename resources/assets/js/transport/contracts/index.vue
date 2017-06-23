@@ -51,10 +51,11 @@
                                 <tfoot>
                                 <tr>
                                     <th>Contract #</th>
+                                    <th>Status</th>
                                     <th>Client</th>
                                     <th>Date Created</th>
                                     <th>Start Date</th>
-                                    <th>End Date</th>
+                                    <th>Expected End Date</th>
                                     <th>Quantity</th>
                                     <th>Rate</th>
                                     <th></th>

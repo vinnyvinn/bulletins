@@ -73,6 +73,16 @@ class JourneyController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
+
+        $total_trucks = Journey::where('contract_id',$data['contract_id'])->distinct()->count();
+        $contract_allocated_trucks = Contract::findOrFail($data['contract_id'])->trucks_allocated;
+        if($total_trucks >= $contract_allocated_trucks)
+        {
+          return Response::json([
+            'message' => 'Maximum trucks for this contract reached. This contract has been allocated '.$contract_allocated_trucks.' trucks'
+          ]);
+        }
+        
         unset($data['_token'], $data['_method']);
         $data['raw'] = json_encode($data);
         $data['job_date'] = Carbon::parse(str_replace('/', '-', $data['job_date']))->format('Y-m-d');
@@ -130,9 +140,20 @@ class JourneyController extends Controller
     public function update(Request $request, Journey $journey)
     {
         $data = $request->all();
+
+        $total_trucks = Journey::where('contract_id',$data['contract_id'])->distinct()->count();
+        $contract_allocated_trucks = Contract::findOrFail($data['contract_id'])->trucks_allocated;
+        if($total_trucks >= $contract_allocated_trucks)
+        {
+          return Response::json([
+            'message' => 'Maximum trucks for this contract reached. This contract has been allocated '.$contract_allocated_trucks.' trucks'
+          ]);
+        }
+
         unset($data['_token'], $data['_method']);
         $data['raw'] = json_encode($data);
         $data['job_date'] = Carbon::parse(str_replace('/', '-', $data['job_date']))->format('Y-m-d');
+
 
         foreach ($data as $key => $value) {
             if ($value == 'null') {

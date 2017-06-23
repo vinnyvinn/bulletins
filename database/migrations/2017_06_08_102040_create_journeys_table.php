@@ -25,11 +25,9 @@ class CreateJourneysTable extends Migration
             $table->integer('truck_id')->index()->unsigned();
             $table->bigInteger('driver_id')->index()->unsigned();
             $table->string('ref_no')->nullable();
-
             $table->integer('route_id')->index()->unsigned()->nullable();
             $table->text('job_description')->nullable();
             $table->string('enquiry_from')->nullable();
-
             $table->boolean('subcontracted')->default('false');
             $table->string('sub_company_name')->nullable();
             $table->string('sub_address_1')->nullable();

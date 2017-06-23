@@ -76177,6 +76177,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     created: function created() {
@@ -79286,6 +79287,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     created: function created() {
@@ -79312,12 +79317,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             contracts: [],
             drivers: [],
             trucks: [],
-
             classifications: [],
             cargo_types: [],
             carriage_points: [],
             unloadingPoint: null,
-
             clients: [],
             routes: [],
             uploads: [],
@@ -79328,6 +79331,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 journey_type: 'Local',
                 job_date: '',
                 truck_id: '',
+                trucks: [],
                 driver_id: '',
                 ref_no: '',
                 route_id: '',
@@ -79391,6 +79395,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
+        addTruck: function addTruck() {
+            this.journey.trucks.push({ 'id': this.journey.truck_id });
+        },
         updateBooleans: function updateBooleans() {
             var _this4 = this;
 
@@ -79471,7 +79478,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             setTimeout(function () {
                 $('#truck_id').select2().on('change', function (e) {
-                    return _this8.journey.truck_id = e.target.value;
+                    _this8.journey.truck_id = e.target.value;
+                    _this8.addTruck();
                 });
                 $('#driver_id').select2().on('change', function (e) {
                     return _this8.journey.driver_id = e.target.value;
@@ -101225,7 +101233,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('i', {
       staticClass: "fa fa-trash"
     })])])])
-  })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("Contract #")]), _vm._v(" "), _c('th', [_vm._v("Client")]), _vm._v(" "), _c('th', [_vm._v("Date Created")]), _vm._v(" "), _c('th', [_vm._v("Start Date")]), _vm._v(" "), _c('th', [_vm._v("End Date")]), _vm._v(" "), _c('th', [_vm._v("Quantity")]), _vm._v(" "), _c('th', [_vm._v("Rate")]), _vm._v(" "), _c('th')])])], 1)])])])])])])
+  })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("Contract #")]), _vm._v(" "), _c('th', [_vm._v("Status")]), _vm._v(" "), _c('th', [_vm._v("Client")]), _vm._v(" "), _c('th', [_vm._v("Date Created")]), _vm._v(" "), _c('th', [_vm._v("Start Date")]), _vm._v(" "), _c('th', [_vm._v("Expected End Date")]), _vm._v(" "), _c('th', [_vm._v("Quantity")]), _vm._v(" "), _c('th', [_vm._v("Rate")]), _vm._v(" "), _c('th')])])], 1)])])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('thead', [_c('tr', [_c('th', [_vm._v("Contract #")]), _vm._v(" "), _c('th', [_vm._v("Status")]), _vm._v(" "), _c('th', [_vm._v("Client")]), _vm._v(" "), _c('th', [_vm._v("Date Created")]), _vm._v(" "), _c('th', [_vm._v("Start Date")]), _vm._v(" "), _c('th', [_vm._v("Expected End Date")]), _vm._v(" "), _c('th', [_vm._v("Quantity")]), _vm._v(" "), _c('th', [_vm._v("Rate")]), _vm._v(" "), _c('th')])])
 }]}
@@ -107355,7 +107363,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_vm._v(_vm._s(driver.first_name) + " " + _vm._s(driver.last_name) + " (" + _vm._s(driver.mobile_phone) + ")")])
   }))])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-3"
-  }, [_c('div', {
+  }, [(_vm.journey.is_contract_related == '1') ? _c('div', [_c('h5', [_c('strong', [_vm._v("Trucks Allocated: " + _vm._s(_vm.contract.trucks_allocated))])])]) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
@@ -107375,7 +107383,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "required": ""
     },
     on: {
-      "change": function($event) {
+      "change": [function($event) {
         var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
           return o.selected
         }).map(function(o) {
@@ -107383,7 +107391,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           return val
         });
         _vm.journey.truck_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
+      }, _vm.addTruck]
     }
   }, _vm._l((_vm.trucks), function(truck) {
     return _c('option', {

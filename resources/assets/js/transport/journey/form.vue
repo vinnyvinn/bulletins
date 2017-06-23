@@ -57,9 +57,13 @@
                     </div>
 
                     <div class="col-sm-3">
+                        <div v-if="journey.is_contract_related == '1'">
+                            <h5><strong>Trucks Allocated: {{ contract.trucks_allocated }}</strong></h5>
+                        </div>
+
                         <div class="form-group">
                             <label for="truck_id">Vehicle Reg. No</label>
-                            <select v-model="journey.truck_id" class="form-control input-sm" id="truck_id" name="truck_id" required>
+                            <select @change="addTruck" v-model="journey.truck_id"  class="form-control input-sm" id="truck_id" name="truck_id" required>
                                 <option v-for="truck in trucks" :value="truck.id">{{ truck.plate_number }}</option>
                             </select>
                         </div>
@@ -239,14 +243,10 @@
                 contracts: [],
                 drivers: [],
                 trucks: [],
-
-
-
                 classifications: [],
                 cargo_types: [],
                 carriage_points: [],
                 unloadingPoint: null,
-
                 clients: [],
                 routes: [],
                 uploads: [],
@@ -257,6 +257,7 @@
                     journey_type: 'Local',
                     job_date: '',
                     truck_id: '',
+                    trucks: [],
                     driver_id: '',
                     ref_no: '',
                     route_id: '',
@@ -313,6 +314,10 @@
         },
 
         methods: {
+            addTruck() {
+              this.journey.trucks.push({'id': this.journey.truck_id});
+            },
+
             updateBooleans() {
                 let keys = [
                     'subcontracted',
@@ -329,6 +334,7 @@
                 this.$root.isLoading = true;
                 return http.get('/api/journey/create?contracts=true').then((response) => {
                     this.contracts = response.contracts;
+                    this.trucks = 
                     this.$root.isLoading = false;
                 });
             },
@@ -386,7 +392,10 @@
                 });
 
                 setTimeout(() => {
-                    $('#truck_id').select2().on('change', e => this.journey.truck_id = e.target.value);
+                    $('#truck_id').select2().on('change', e => {
+                      this.journey.truck_id = e.target.value;
+                      this.addTruck();
+                    });
                     $('#driver_id').select2().on('change', e => this.journey.driver_id = e.target.value);
                     $('#route_id').select2().on('change', e => this.journey.route_id = e.target.value);
                 }, 1000);
