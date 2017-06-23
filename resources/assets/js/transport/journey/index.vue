@@ -32,13 +32,12 @@
                                     <td>{{ journey.journey_type }}</td>
                                     <td>{{ date2(journey.job_date) }}</td>
                                     <td>{{ journey.ref_no }}</td>
-                                    <td class="text-center" v-if="journey.status == 'Pending Approval'">
+                                    <td class="text-center">
                                         <span @click="edit(journey)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
                                         <button data-toggle="popover" :data-item="journey.id" class="btn btn-xs btn-danger btn-destroy">
                                             <i class="fa fa-trash"></i>
                                         </button>
-                                    </td>
-                                    <td v-else></td>
+                                    </td>                                   
                                 </tr>
                                 </tbody>
 

@@ -27,13 +27,12 @@
                                     <td>{{ date2(inspection.created_at) }}</td>
                                     <td>{{ inspection.from_station }}</td>
                                     <td>{{ inspection.to_station }}</td>
-                                    <td class="text-center" v-if="inspection.status == 'Pending Approval'">
+                                    <td class="text-center">
                                         <span @click="edit(inspection)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
                                         <button data-toggle="popover" :data-item="inspection.id" class="btn btn-xs btn-danger btn-destroy">
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </td>
-                                    <td v-else></td>
                                 </tr>
                                 </tbody>
 
