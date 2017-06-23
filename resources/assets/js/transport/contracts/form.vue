@@ -121,7 +121,7 @@
 
                         <div class="form-group">
                             <label for="loading_point">Loading Point</label>
-                            <select v-model="contract.loading_point_id" name="loading_point_id" id="loading_point_id" class="form-control input-sm select2" required>
+                            <select v-model="contract.loading_point_id" name="loading_point_id" id="loading_point_id" class="form-control input-sm select2"x>
                                 <option v-for="point in carriage_points" :value="point.id">{{ point.name }}</option>
                             </select>
                         </div>
@@ -169,7 +169,7 @@
                         <div class="form-group">
                             <label for="estimated_days">Estimated Period</label>
                             <div class="input-group">
-                                <input v-model="contract.estimated_days" min="0" type="number" class="form-control input-sm" id="estimated_days" name="estimated_days" describedby="estimated_days-addon" required>
+                                <input v-model="contract.estimated_days" min="0" type="number" class="form-control input-sm" id="estimated_days" name="estimated_days" describedby="estimated_days-addon">
                                 <span class="input-group-addon" id="estimated_days-addon">Days</span>
                             </div>
                         </div>
@@ -221,12 +221,12 @@
 
                       <div class="form-group">
                           <label for="vessel_name">Vessel Name</label>
-                          <input v-model="contract.vessel_name" type="text" class="form-control input-sm" id="vessel_name" name="vessel_name" required>
+                          <input v-model="contract.vessel_name" type="text" class="form-control input-sm" id="vessel_name" name="vessel_name" >
                       </div>
 
                       <div class="form-group">
                           <label for="berthing_date">Berthing Date</label>
-                          <input v-model="contract.berthing_date" type="text" class="datepicker form-control input-sm" id="berthing_date" name="berthing_date" required>
+                          <input v-model="contract.berthing_date" type="text" class="datepicker form-control input-sm" id="berthing_date" name="berthing_date">
                       </div>
 
                     </div>
@@ -234,12 +234,12 @@
                     <div class="col-sm-4">
                       <div class="form-group">
                           <label for="no_of_shifts">No of Shifts</label>
-                          <input number v-model="contract.no_of_shifts" type="number" min="1" class="form-control input-sm" id="no_of_shifts" name="no_of_shifts" required>
+                          <input number v-model="contract.no_of_shifts" type="number" min="1" class="form-control input-sm" id="no_of_shifts" name="no_of_shifts">
                       </div>
 
                       <div class="form-group">
                           <label for="vessel_arrival_date">Vessel Arrival Date</label>
-                          <input v-model="contract.vessel_arrival_date" type="text" class="datepicker form-control input-sm" id="vessel_arrival_date" name="vessel_arrival_date" required>
+                          <input v-model="contract.vessel_arrival_date" type="text" class="datepicker form-control input-sm" id="vessel_arrival_date" name="vessel_arrival_date">
                       </div>
 
                     </div>
@@ -323,7 +323,7 @@
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label for="rate">Rate</label>
-                            <select v-model="contract.rate" name="rate" id="rate" class="form-control input-sm select2" required>
+                            <select v-model="contract.rate" name="rate" id="rate" class="form-control input-sm select2">
                                 <option value="Per Hour">Per Hour</option>
                                 <option value="Per KM">Per KM</option>
                                 <option value="Per Tonne">Per Tonne</option>
@@ -336,7 +336,7 @@
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label for="amount">Price {{ contract.rate }}</label>
-                            <input v-model="contract.amount" type="number" class="form-control input-sm" id="amount" name="amount" required>
+                            <input v-model="contract.amount" type="number" class="form-control input-sm" id="amount" name="amount">
                         </div>
                     </div>
 
@@ -344,7 +344,7 @@
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label for="stock_item_id">Billable Item</label>
-                            <select v-model="contract.stock_item_id" name="stock_item_id" id="stock_item_id" class="form-control input-sm select2" required>
+                            <select v-model="contract.stock_item_id" name="stock_item_id" id="stock_item_id" class="form-control input-sm select2">
                                 <option v-for="item in stockItems" :value="item.StockLink">{{ item.Description_1 }}</option>
                             </select>
                         </div>

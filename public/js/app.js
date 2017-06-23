@@ -79416,7 +79416,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.$root.isLoading = true;
             return http.get('/api/journey/create?contracts=true').then(function (response) {
                 _this5.contracts = response.contracts;
-                _this5.$root.isLoading = false;
+                _this5.trucks = _this5.$root.isLoading = false;
             });
         },
         updateFields: function updateFields() {
@@ -103218,7 +103218,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "name": "loading_point_id",
       "id": "loading_point_id",
-      "required": ""
+      "x": ""
     },
     on: {
       "change": function($event) {
@@ -103404,8 +103404,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "type": "number",
       "id": "estimated_days",
       "name": "estimated_days",
-      "describedby": "estimated_days-addon",
-      "required": ""
+      "describedby": "estimated_days-addon"
     },
     domProps: {
       "value": (_vm.contract.estimated_days)
@@ -103549,8 +103548,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "type": "text",
       "id": "vessel_name",
-      "name": "vessel_name",
-      "required": ""
+      "name": "vessel_name"
     },
     domProps: {
       "value": (_vm.contract.vessel_name)
@@ -103578,8 +103576,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "type": "text",
       "id": "berthing_date",
-      "name": "berthing_date",
-      "required": ""
+      "name": "berthing_date"
     },
     domProps: {
       "value": (_vm.contract.berthing_date)
@@ -103611,8 +103608,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "type": "number",
       "min": "1",
       "id": "no_of_shifts",
-      "name": "no_of_shifts",
-      "required": ""
+      "name": "no_of_shifts"
     },
     domProps: {
       "value": (_vm.contract.no_of_shifts)
@@ -103643,8 +103639,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "type": "text",
       "id": "vessel_arrival_date",
-      "name": "vessel_arrival_date",
-      "required": ""
+      "name": "vessel_arrival_date"
     },
     domProps: {
       "value": (_vm.contract.vessel_arrival_date)
@@ -103849,8 +103844,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-control input-sm select2",
     attrs: {
       "name": "rate",
-      "id": "rate",
-      "required": ""
+      "id": "rate"
     },
     on: {
       "change": function($event) {
@@ -103894,8 +103888,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "type": "number",
       "id": "amount",
-      "name": "amount",
-      "required": ""
+      "name": "amount"
     },
     domProps: {
       "value": (_vm.contract.amount)
@@ -103927,8 +103920,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-control input-sm select2",
     attrs: {
       "name": "stock_item_id",
-      "id": "stock_item_id",
-      "required": ""
+      "id": "stock_item_id"
     },
     on: {
       "change": function($event) {
