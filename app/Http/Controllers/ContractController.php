@@ -71,16 +71,23 @@ class ContractController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
+        foreach ($data as $key => $value) {
+            if ($value == 'null') {
+                unset($data[$key]);
+            }
+        }
 
         $data['start_date'] = Carbon::parse(str_replace('/', '-', $data['start_date']))->format('Y-m-d');
         $data['end_date'] = Carbon::parse(str_replace('/', '-', $data['start_date']))
             ->addDays($data['estimated_days'])
             ->format('Y-m-d');
 
-        $data['berthing_date'] = is_null($data['berthing_date']) ? null :
-            Carbon::parse(str_replace('/', '-', $data['berthing_date']))->format('Y-m-d');
-        $data['vessel_arrival_date'] = is_null($data['vessel_arrival_date']) ? null :
-            Carbon::parse(str_replace('/', '-', $data['vessel_arrival_date']))->format('Y-m-d');
+        $data['berthing_date'] = isset($data['berthing_date']) ?
+            Carbon::parse(str_replace('/', '-', $data['berthing_date']))->format('Y-m-d') :
+            null;
+        $data['vessel_arrival_date'] = isset($data['vessel_arrival_date']) ?
+            Carbon::parse(str_replace('/', '-', $data['vessel_arrival_date']))->format('Y-m-d') :
+            null;
 
         $data['unloading_points'] = json_decode($data['unloading_points']);
         $data['shifts'] = json_decode($data['shifts']);
@@ -90,12 +97,6 @@ class ContractController extends Controller
         $data['unloading_points'] = json_encode($data['unloading_points']);
 
         unset($data['_token'], $data['_method']);
-
-        foreach ($data as $key => $value) {
-            if ($value == 'null') {
-                unset($data[$key]);
-            }
-        }
 
         $contract = Contract::create($data);
         $ignore = [
@@ -161,14 +162,23 @@ class ContractController extends Controller
     public function update(Request $request, Contract $contract)
     {
         $data = $request->all();
+        foreach ($data as $key => $value) {
+            if ($value == 'null') {
+                unset($data[$key]);
+            }
+        }
         $data['start_date'] = Carbon::parse(str_replace('/', '-', $data['start_date']))->format('Y-m-d');
         $data['end_date'] = Carbon::parse(str_replace('/', '-', $data['start_date']))
             ->addDays($data['estimated_days'])
             ->format('Y-m-d');
-        $data['berthing_date'] = is_null($data['berthing_date']) ? null :
-            Carbon::parse(str_replace('/', '-', $data['berthing_date']))->format('Y-m-d');
-        $data['vessel_arrival_date'] = is_null($data['vessel_arrival_date']) ? null :
-            Carbon::parse(str_replace('/', '-', $data['vessel_arrival_date']))->format('Y-m-d');
+
+        $data['berthing_date'] = isset($data['berthing_date']) ?
+            Carbon::parse(str_replace('/', '-', $data['berthing_date']))->format('Y-m-d') :
+            null;
+        $data['vessel_arrival_date'] = isset($data['vessel_arrival_date']) ?
+            Carbon::parse(str_replace('/', '-', $data['vessel_arrival_date']))->format('Y-m-d') :
+            null;
+
 
         $data['unloading_points'] = json_decode($data['unloading_points']);
         $data['shifts'] = json_decode($data['shifts']);
