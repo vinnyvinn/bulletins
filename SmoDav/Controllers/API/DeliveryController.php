@@ -146,4 +146,28 @@ class DeliveryController extends Controller
             'deliveries' => Delivery::all()
         ]);
     }
+
+    public function printNote($id)
+    {
+        $note = Delivery::with([
+            'journey.contract.cargoType', 'journey.route', 'journey.driver', 'journey.truck.trailer'
+        ])->findOrFail($id);
+        $note->contract = $note->journey->contract;
+        $note->route = $note->journey->route;
+        $note->driver = $note->journey->driver;
+        $note->truck = $note->journey->truck;
+        if (! $note->journey->is_contract_related) {
+            $note->contract = new \stdClass();
+            $note->contract->client = new \stdClass();
+        }
+        unset($note->journey->contract, $note->journey->route, $note->journey->driver, $note->journey->truck);
+
+        $printout = view('printouts.deliverynote')->with('trip', $note)->render();
+
+        return Response::json([
+            'message' => 'Successfully completed loading.',
+            'shouldPrint' => true,
+            'printout' => $printout
+        ]);
+    }
 }

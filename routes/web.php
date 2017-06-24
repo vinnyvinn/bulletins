@@ -13,7 +13,6 @@
 
 use App\Trip;
 use Carbon\Carbon;
-
 Auth::routes();
 
 Route::group(['prefix' => 'super', 'as' => 'super.', 'middleware' => 'auth'], function () {
@@ -22,6 +21,7 @@ Route::group(['prefix' => 'super', 'as' => 'super.', 'middleware' => 'auth'], fu
 });
 
 Route::group(['middleware' => 'auth'], function () {
+    Route::get('delivery/print/{id}', '\SmoDav\Controllers\API\DeliveryController@printNote');
     Route::get('/home', 'HomeController@index');
 
     Route::get('/', function () {

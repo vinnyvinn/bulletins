@@ -334,7 +334,6 @@
                 this.$root.isLoading = true;
                 return http.get('/api/journey/create?contracts=true').then((response) => {
                     this.contracts = response.contracts;
-                    this.trucks = 
                     this.$root.isLoading = false;
                 });
             },
