@@ -24,16 +24,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('delivery/print/{id}', '\SmoDav\Controllers\API\DeliveryController@printNote');
     Route::get('/home', 'HomeController@index');
 
-    Route::get('/', function () {
-        return view('home');
-    });
-
+    Route::get('/', 'HomeController@home');
 
 
     include(__DIR__ . '/workshop.php');
     Route::get('integration/payroll/{id}', '\SmoDav\Controllers\APIIntegrationController@finalize');
 
-    Route::any('{a}/{b?}/{c?}', function () {
-        return view('home');
-    });
+    Route::any('{a}/{b?}/{c?}', 'HomeController@home');
 });

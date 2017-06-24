@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use function redirect;
+use Response;
 
 class HomeController extends Controller
 {
@@ -25,5 +26,17 @@ class HomeController extends Controller
     public function index()
     {
         return redirect('/');
+    }
+
+    public function home()
+    {
+        return view('home');
+    }
+
+    public function user(Request $request)
+    {
+        return Response::json([
+            'user' => $request->user()
+        ]);
     }
 }

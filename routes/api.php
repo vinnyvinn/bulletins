@@ -13,11 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return Response::json([
-        'user' => $request->user()
-    ]);
-});
+Route::middleware('auth:api')->get('/user', 'HomeController@user');
 
 Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('driver', 'DriverController');
