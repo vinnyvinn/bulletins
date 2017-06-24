@@ -2281,11 +2281,6 @@
             ],
             "description": "A library to read, parse and export to PDF SVG files.",
             "homepage": "https://github.com/PhenX/php-svg-lib",
-            "keywords": [
-                "csprng",
-                "pseudorandom",
-                "random"
-            ],
             "time": "2016-12-13T20:25:45+00:00"
         },
         {

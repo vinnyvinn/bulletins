@@ -104,7 +104,7 @@ class ContractController extends Controller
             'vessel_arrival_date'
         ];
 
-        foreach ($request->all() as $key => $item) {
+        foreach ($data as $key => $item) {
             if (in_array($key, $ignore)) {
                 continue;
             }

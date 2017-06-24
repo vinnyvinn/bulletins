@@ -586,8 +586,8 @@
                         this.contract = response.contract.raw;
                         this.updateBooleans();
                         this.contract.start_date = this.formatDate(this.contract.start_date);
-                        this.contract.vessel_arrival_date = this.formatDate(this.contract.vessel_arrival_date);
-                        this.contract.berthing_date = this.formatDate(this.contract.berthing_date);
+                        this.contract.vessel_arrival_date = this.contract.vessel_arrival_date ? this.formatDate(this.contract.vessel_arrival_date) : null;
+                        this.contract.berthing_date = this.contract.berthing_date ? this.formatDate(this.contract.berthing_date) : null;
                         this.setupUI();
                         this.$root.isLoading = false;
                     });
