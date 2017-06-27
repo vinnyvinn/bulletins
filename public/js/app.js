@@ -102726,8 +102726,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-control input-sm select2",
     attrs: {
       "name": "cargo_classification_id",
-      "id": "cargo_classification_id",
-      "required": ""
+      "id": "cargo_classification_id"
     },
     on: {
       "change": function($event) {
@@ -102792,8 +102791,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-control input-sm select2",
     attrs: {
       "name": "client_id",
-      "id": "client_id",
-      "required": ""
+      "id": "client_id"
     },
     on: {
       "change": function($event) {
@@ -102828,8 +102826,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-control input-sm select2",
     attrs: {
       "name": "cargo_type_id",
-      "id": "cargo_type_id",
-      "required": ""
+      "id": "cargo_type_id"
     },
     on: {
       "change": function($event) {
@@ -102937,8 +102934,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "type": "text",
       "id": "start_date",
-      "name": "start_date",
-      "required": ""
+      "name": "start_date"
     },
     domProps: {
       "value": (_vm.contract.start_date)
@@ -102970,8 +102966,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "type": "number",
       "id": "quantity",
       "name": "quantity",
-      "describedby": "quantity-addon",
-      "required": ""
+      "describedby": "quantity-addon"
     },
     domProps: {
       "value": (_vm.contract.quantity)
@@ -103148,8 +103143,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-control input-sm select2",
     attrs: {
       "name": "route_id",
-      "id": "route_id",
-      "required": ""
+      "id": "route_id"
     },
     on: {
       "change": function($event) {
@@ -103186,8 +103180,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "min": "0",
       "type": "number",
       "id": "trucks_allocated",
-      "name": "trucks_allocated",
-      "required": ""
+      "name": "trucks_allocated"
     },
     domProps: {
       "value": (_vm.contract.trucks_allocated)
