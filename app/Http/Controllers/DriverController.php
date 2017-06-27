@@ -32,9 +32,26 @@ class DriverController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
-    public function store(DriverRequest $request)
+    public function store(Request $request)
     {
-        $driver = DriverFactory::create($request->all());
+        $driver = Driver::create($request->all());
+
+        foreach ($request->all() as $key => $item) {
+            if ($key == '_token' || $key == '_method' || $key == 'updated_at' || $key == 'deleted_at') {
+                continue;
+            }
+
+            $driver->{$key} = $item;
+
+            if ($request->hasFile($key)) {
+                $extension = $request->file($key)->getClientOriginalExtension();
+                $filename = time().".".$extension;
+                $request->file($key)->move(public_path('uploads'), $filename);
+                $driver->{$key} = $filename;
+            }
+        }
+
+        $driver->save();
 
         return Response::json([
             'message' => 'Successfully added new driver.',
@@ -68,8 +85,24 @@ class DriverController extends Controller
     public function update(DriverRequest $request, $id)
     {
         $driver = DriverFactory::findOrFail($id);
+        $driver->fill($request->all());
 
-        DriverFactory::update($driver, $request->all());
+        foreach ($request->all() as $key => $item) {
+            if ($key == '_token' || $key == '_method' || $key == 'updated_at' || $key == 'deleted_at') {
+                continue;
+            }
+
+            $driver->{$key} = $item;
+
+            if ($request->hasFile($key)) {
+                $extension = $request->file($key)->getClientOriginalExtension();
+                $filename = time().".".$extension;
+                $request->file($key)->move(public_path('uploads'), $filename);
+                $driver->{$key} = $filename;
+            }
+        }
+
+        $driver->save();
 
         return Response::json([
             'message' => 'Successfully updated driver details.',
@@ -112,15 +145,17 @@ class DriverController extends Controller
             ]);
         }
 
-        $existingDrivers = Driver::all(['national_id'])->map(function ($driver) {
+        $existingDrivers = Driver::all(['identification_number'])->map(function ($driver) {
             return $driver->national_id;
         })->values()->toArray();
 
         $rows = Excel::prepare($file)
             ->usingHeaders([
-                'name', 'national_id', 'dl_number', 'mobile'
+                'first_name', 'identification_number', 'dl_number', 'mobile_phone'
             ])
             ->includeColumns([
+                'last_name' => '',
+                'identification_type' => 'National ID',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ])

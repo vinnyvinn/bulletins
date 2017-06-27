@@ -1,0 +1,77 @@
+<?php
+
+namespace SmoDav\Models;
+
+use App\Contract;
+use App\Driver;
+use App\Route;
+use App\Truck;
+use SmoDav\Support\Constants;
+use App\Fuel;
+use SmoDav\Models\Delivery;
+
+class Journey extends SmoDavModel
+{
+    protected $fillable = [
+        'status', 'is_contract_related', 'contract_id', 'journey_type', 'job_date', 'truck_id', 'driver_id', 'ref_no',
+        'route_id', 'job_description', 'enquiry_from', 'subcontracted', 'sub_company_name', 'sub_address_1',
+        'sub_address_2', 'sub_address_3', 'sub_address_4', 'raw'
+    ];
+
+    public function mileages()
+    {
+        return $this->hasMany(Mileage::class);
+    }
+
+    public function fuel()
+    {
+        return $this->hasMany(Fuel::class);
+    }
+
+    public function inspection()
+    {
+        return $this->hasOne(Inspection::class);
+    }
+
+    public function delivery()
+    {
+        return $this->hasOne(Delivery::class);
+    }
+
+    public function contract()
+    {
+        return $this->belongsTo(Contract::class);
+    }
+
+    public function route()
+    {
+        return $this->belongsTo(Route::class);
+    }
+
+    public function truck()
+    {
+        return $this->belongsTo(Truck::class);
+    }
+
+    public function driver()
+    {
+        return $this->belongsTo(Driver::class);
+    }
+
+
+    public function scopePending($builder)
+    {
+        return $builder->where('status', Constants::STATUS_PENDING);
+    }
+
+    public function scopeOpen($builder)
+    {
+        return $builder->where('status', Constants::STATUS_APPROVED);
+    }
+
+    public function scopeClosed($builder)
+    {
+        return $builder->where('status', Constants::STATUS_CLOSED);
+    }
+
+}

@@ -37,11 +37,8 @@ class TruckController extends Controller
     public function create()
     {
         if (request('truck_id')) {
-            $assigned = TruckFactory::allAssignedDrivers(request('truck_id'))->toArray();
-
-
             return Response::json([
-                'drivers' => Driver::whereNotIn('id', $assigned)->get(['id', 'name']),
+                'drivers' => [],
                 'trailers' => Trailer::whereNull('truck_id')
                     ->orWhere('truck_id', request('truck_id'))
                     ->get(['id', 'trailer_number']),
@@ -49,14 +46,24 @@ class TruckController extends Controller
         }
 
         return Response::json([
-            'drivers' => Driver::unassigned()->get(['id', 'name']),
+            'drivers' => [],
             'trailers' => Trailer::unassigned()->get(['id', 'trailer_number']),
         ]);
     }
 
     public function store(TruckRequest $request)
     {
-        TruckFactory::create($request->all());
+        $data = $request->all();
+        foreach ($request->all() as $key => $item) {
+            if ($request->hasFile($key)) {
+                $extension = $request->file($key)->getClientOriginalExtension();
+                $filename = time().".".$extension;
+                $request->file($key)->move(public_path('uploads'), $filename);
+                $data[$key] = $filename;
+            }
+        }
+
+        TruckFactory::create($data);
 
         return Response::json([
             'message' => 'Successfully added new truck.'
@@ -88,7 +95,19 @@ class TruckController extends Controller
      */
     public function update(TruckRequest $request, $id)
     {
-        TruckFactory::update($request->all(), $id);
+        $data = $request->all();
+
+        foreach ($request->all() as $key => $item) {
+            $data[$key] = $item;
+            if ($request->hasFile($key)) {
+                $extension = $request->file($key)->getClientOriginalExtension();
+                $filename = time().".".$extension;
+                $request->file($key)->move(public_path('uploads'), $filename);
+                $data[$key] = $filename;
+            }
+        }
+
+        TruckFactory::update($data, $id);
 
         return Response::json([
             'message' => 'Successfully updated truck.'

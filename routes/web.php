@@ -13,17 +13,22 @@
 
 use App\Trip;
 use Carbon\Carbon;
-
 Auth::routes();
 
+Route::group(['prefix' => 'super', 'as' => 'super.', 'middleware' => 'auth'], function () {
+    Route::get('employee/import/payroll', '\SmoDav\Controllers\EmployeeController@importFromPayroll')->name('employee.import.payroll');
+    Route::resource('employee', '\SmoDav\Controllers\EmployeeController');
+});
+
 Route::group(['middleware' => 'auth'], function () {
+    Route::get('delivery/print/{id}', '\SmoDav\Controllers\API\DeliveryController@printNote');
     Route::get('/home', 'HomeController@index');
 
-    Route::get('/', function () {
-        return view('home');
-    });
+    Route::get('/', 'HomeController@home');
 
-    Route::any('{a}/{b?}/{c?}', function () {
-        return view('home');
-    });
+
+    include(__DIR__ . '/workshop.php');
+    Route::get('integration/payroll/{id}', '\SmoDav\Controllers\APIIntegrationController@finalize');
+
+    Route::any('{a}/{b?}/{c?}', 'HomeController@home');
 });

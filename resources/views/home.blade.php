@@ -24,16 +24,19 @@
 </head>
 <body>
 <div id="app">
-    <core-nav v-if="isLoggedIn" app="{{ config('app.name') }}"></core-nav>
     <alert v-show="showAlert" :errors="errors" :level="level"></alert>
     <loader v-if="isLoading"></loader>
+    <transport-nav v-if="isLoggedIn" app="{{ config('app.name') }}"></transport-nav>
 
-    <transition
-        name="custom-classes-transition"
-        enter-active-class="animated fadeIn"
-    >
-        <router-view></router-view>
-    </transition>
+    <div class="main-content">
+        <transition
+                name="custom-classes-transition"
+                enter-active-class="animated fadeIn"
+        >
+            <router-view></router-view>
+        </transition>
+    </div>
+
 </div>
 
 <!-- Scripts -->

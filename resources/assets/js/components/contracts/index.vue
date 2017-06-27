@@ -24,7 +24,8 @@
 
                             <tbody>
                             <tr v-for="contract in contracts">
-                                <td>CNTR{{ contract.id }}</td>
+                                <td>
+                                    <router-link :to="'/contracts/' + contract.id">CNTR{{ contract.id }}</router-link></td>
                                 <td>{{ contract.client.Name }}</td>
                                 <td>{{ date2(contract.created_at) }}</td>
                                 <td>{{ date2(contract.start_date) }}</td>
@@ -33,7 +34,9 @@
                                 <td>{{ $root.currency }} {{ Number(contract.amount).toLocaleString() }} {{ contract.rate }}</td>
                                 <td class="text-center">
                                     <span @click="edit(contract)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
-                                    <span @click="destroy(contract)" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></span>
+                                    <button data-toggle="popover" :data-item="contract.id" class="btn btn-xs btn-danger btn-destroy">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
                                 </td>
                             </tr>
                             </tbody>
@@ -63,6 +66,7 @@
         created() {
             http.get('/api/contract').then(response => {
                 this.contracts = response.contracts;
+                this.setupConfirm();
                 prepareTable();
             });
         },
@@ -74,6 +78,12 @@
         },
 
         methods: {
+            setupConfirm() {
+                $('.btn-destroy').off();
+                confirm2('.btn-destroy', (element) => {
+                    this.destroy(element.dataset.item);
+                });
+            },
             date2(value) {
                 return window._date2(value);
             },
@@ -82,8 +92,24 @@
                 window._router.push({path: '/contracts/' + contract.id + '/edit'})
             },
 
-            destroy(contract) {
-                this.sharedState.state.contracts.splice(this.sharedState.state.contracts.indexOf(contract), 1);
+            destroy(id) {
+                this.$root.isLoading = true;
+
+                http.destroy('api/contract/' + id).then(response => {
+                    if (response.status != 'success') {
+                        this.$root.isLoading = false;
+                        alert2(this.$root, [response.message], 'danger');
+                        return;
+                    }
+                    $('table').dataTable().fnDestroy();
+                    this.contracts = response.contracts;
+                    prepareTable();
+                    this.$root.isLoading = false;
+                    alert2(this.$root, [response.message], 'success');
+                }).catch((error) => {
+                    this.$root.isLoading = false;
+                    alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
+                });
             }
         }
     }

@@ -45,7 +45,7 @@
                                 <label for="driver_id">Assigned Drivers</label>
                                 <select v-model="truck.driver_id" name="driver_id" id="driver_id" class="form-control">
                                     <option value="">No Driver</option>
-                                    <option v-for="driver in drivers" :value="driver.id">{{ driver.name }}</option>
+                                    <option v-for="driver in drivers" :value="driver.id">{{ truck.driver.first_name + ' ' + truck.driver.last_name }}</option>
                                 </select>
                             </div>
 

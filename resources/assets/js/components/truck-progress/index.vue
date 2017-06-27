@@ -20,7 +20,7 @@
                             <tbody>
                             <tr v-for="truck in trucks">
                                 <td>{{ truck.plate_number }}</td>
-                                <td>{{ truck.driver ? truck.driver.name : 'No Driver' }}</td>
+                                <td>{{ truck.driver ? truck.driver.first_name + ' ' + truck.driver.last_name : 'No Driver' }}</td>
                                 <td>{{ truck.location }}</td>
                                 <td class="text-center">
                                     <span @click="progress(truck)" class="btn btn-xs btn-info"><i class="fa fa-check"></i> Next Step</span>

@@ -23,16 +23,16 @@ class TruckFactory
         switch ($location) {
             default:
             case 'pre-loading':
-                return Truck::with(['driver'])->preLoading()->get();
+                return Truck::with(['trailer'])->preLoading()->get();
                 break;
             case 'loading':
-                return Truck::with(['driver'])->loading()->get();
+                return Truck::with(['trailer'])->loading()->get();
                 break;
             case 'enroute':
-                return Truck::with(['driver'])->enroute()->get();
+                return Truck::with(['trailer'])->enroute()->get();
                 break;
             case 'offloading':
-                return Truck::with(['driver'])->offloading()->get();
+                return Truck::with(['trailer'])->offloading()->get();
                 break;
             case 'in-yard':
                 return Truck::inYard()->get();
@@ -56,20 +56,29 @@ class TruckFactory
 
     public static function all($columns = ['*'])
     {
-        return Truck::with(['driver', 'trailer'])->get($columns);
+        return Truck::with(['trailer'])->get($columns);
     }
 
     public static function findOrFail($id)
     {
-        return Truck::with(['driver'])->findOrFail($id);
+        return Truck::with(['trailer'])->findOrFail($id);
     }
 
     public static function create($attributes)
     {
         $attributes['plate_number'] = strtoupper($attributes['plate_number']);
         $attributes['project_id'] = self::createInSAGE($attributes);
+        $truck = Truck::create($attributes);
 
-        return Truck::create($attributes);
+        unset($attributes['_method'], $attributes['_token'], $attributes['driver'], $attributes['trailer']);
+
+        foreach ($attributes as $attribute => $value) {
+            $truck->{$attribute} = $value;
+        }
+
+        $truck->save();
+
+        return $truck;
     }
 
     private static function createInSAGE($attributes)
@@ -113,7 +122,13 @@ class TruckFactory
             }
         }
 
-        $truck->update($attributes);
+        unset($attributes['_method'], $attributes['_token'], $attributes['driver'], $attributes['trailer']);
+
+        foreach ($attributes as $key => $value) {
+            $truck->{$key} = $value;
+        }
+
+        $truck->save();
 
         DB::table('Project')->where('ProjectLink', $truck->project_id)->update(self::mapSAGEFields($attributes));
 
@@ -123,20 +138,19 @@ class TruckFactory
     public static function unassigned()
     {
         return Truck::whereNull('contract_id')
-            ->whereNotNull('driver_id')
             ->whereNotNull('trailer_id')
             ->get();
     }
 
     public static function assigned()
     {
-        return Truck::with(['driver', 'contract' => function ($query) {
+        return Truck::with(['contract' => function ($query) {
             $query->select(['id', 'name', 'client_id', 'start_date', 'end_date']);
         }, 'contract.client' => function ($query) {
             return $query->select(['DCLink','Name', 'Account']);
         }])
             ->whereNotNull('contract_id')
-            ->get(['id', 'plate_number', 'max_load', 'contract_id', 'driver_id', 'location']);
+            ->get(['id', 'plate_number', 'max_load', 'contract_id', 'location']);
     }
 
     public static function createBilling(Trip $trip)

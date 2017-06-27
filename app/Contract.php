@@ -4,6 +4,10 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use SmoDav\Models\CargoClassification;
+use SmoDav\Models\CargoType;
+use SmoDav\Models\CarriagePoint;
+use SmoDav\Support\Constants;
 
 class Contract extends Model
 {
@@ -12,8 +16,31 @@ class Contract extends Model
     const PER_TONNE = 'Per Tonne';
 
     protected $fillable = [
-        'client_id', 'route_id', 'name', 'rate', 'amount', 'start_date', 'end_date', 'quantity', 'stock_item_id'
+        'raw', 'cargo_classification_id', 'cargo_type_id', 'trucks_allocated', 'job_description',
+        'capture_loading_weights', 'capture_offloading_weights', 'ls_loading_weights', 'ls_offloading_weights',
+        'lh_loading_weights', 'lh_offloading_weights', 'loading_point_id', 'unloading_points', 'enquiry_from',
+        'contract_head', 'packages_captured', 'estimated_days', 'lot_number', 'shipping_line', 'berth_no',
+        'vessel_name', 'berthing_date', 'vessel_arrival_date', 'shifts', 'no_of_shifts',
+        'no_of_shifts', 'stock_item_id', 'client_id', 'route_id', 'name', 'rate', 'amount', 'start_date',
+        'end_date', 'quantity', 'status', 'subcontracted', 'sub_company_name', 'sub_address_1', 'sub_address_2',
+        'sub_address_3', 'sub_address_4', 'sub_delivery_to', 'sub_delivery_address'
     ];
+
+
+    public function classification()
+    {
+        return $this->belongsTo(CargoClassification::class, 'cargo_classification_id');
+    }
+
+    public function cargoType()
+    {
+        return $this->belongsTo(CargoType::class, 'cargo_type_id');
+    }
+
+    public function loadingPoint()
+    {
+        return $this->belongsTo(CarriagePoint::class, 'loading_point_id');
+    }
 
     public function client()
     {
@@ -28,5 +55,20 @@ class Contract extends Model
     public function scopeCurrent($builder)
     {
         return $builder->where('end_date', '>=', Carbon::now());
+    }
+
+    public function scopePending($builder)
+    {
+        return $builder->where('status', Constants::STATUS_PENDING);
+    }
+
+    public function scopeOpen($builder)
+    {
+        return $builder->where('status', Constants::STATUS_APPROVED);
+    }
+
+    public function scopeClosed($builder)
+    {
+        return $builder->where('status', Constants::STATUS_CLOSED);
     }
 }

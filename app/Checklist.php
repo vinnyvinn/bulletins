@@ -13,14 +13,4 @@ class Checklist extends Model
         'status', 'driver_id', 'truck_id', 'type', 'from_station', 'to_station', 'fields', 'inspector_id',
         'supervisor_id', 'inspectors_comments', 'supervisors_comments', 'suitable_for_loading', 'for_date'
     ];
-
-    public function inspector()
-    {
-        return $this->belongsTo(User::class, 'inspector_id');
-    }
-
-    public function supervisor()
-    {
-        return $this->belongsTo(User::class, 'supervisor_id');
-    }
 }

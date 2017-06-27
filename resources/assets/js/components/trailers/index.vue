@@ -54,6 +54,7 @@
                                 <td>{{ trailer.type }}</td>
                                 <td>{{ trailer.truck ? trailer.truck.plate_number : 'No Truck' }}</td>
                                 <td class="text-center">
+                                    <span @click="view(trailer)" class="btn btn-xs btn-success"><i class="fa fa-eye"></i></span>
                                     <span @click="edit(trailer)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
                                     <button data-toggle="popover" :data-item="trailer.id" class="btn btn-xs btn-danger btn-destroy"><i class="fa fa-trash"></i></button>
                                 </td>
@@ -117,6 +118,10 @@
 
             edit(trailer) {
                 window._router.push({path: '/trailers/' + trailer.id + '/edit'})
+            },
+
+            view(trailer) {
+                window._router.push({path: '/trailers/' + trailer.id})
             },
 
             destroy(id) {

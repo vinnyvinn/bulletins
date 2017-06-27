@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -25,7 +26,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -40,5 +41,37 @@ class LoginController extends Controller
     public function showLoginForm()
     {
         return view('home');
+    }
+
+    protected function authenticated(Request $request, $user)
+    {
+        session()->put('userLevel', 'user_admin.');
+
+        return response()->json([
+            'success' => 'true',
+            'access_token' => 'test',
+            'user' => $user
+        ]);
+    }
+
+    /**
+     * Log the user out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function logout(Request $request)
+    {
+        $this->guard()->logout();
+
+        $request->session()->flush();
+
+        $request->session()->regenerate();
+
+        if ($request->ajax()) {
+            return response()->json(['success' => 'true']);
+        }
+
+        return redirect('/');
     }
 }
