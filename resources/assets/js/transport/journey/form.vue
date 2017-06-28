@@ -78,12 +78,7 @@
                         <div class="form-group">
                             <label for="job_date">Job Date</label>
                             <input type="text" v-model="journey.job_date" class="form-control input-sm datepicker" id="job_date" name="job_date" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="ref_no">Ref No</label>
-                            <input type="text" v-model="journey.ref_no" class="form-control input-sm" id="ref_no" name="ref_no">
-                        </div>
+                        </div>                
                     </div>
 
                 </div>

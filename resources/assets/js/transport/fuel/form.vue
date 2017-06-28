@@ -41,13 +41,15 @@
 
                     <div class="col-sm-3">
                       <strong>Driver</strong><br>
-                      <img :src="getSource()" alt="" width="100" height="100"> <br>
-                      Passport: <br>
-                      Name: {{ current_driver.first_name  }}<br>
-                      Id No: {{ current_driver.identification_number }}<br>
-                      Mobile No: {{ current_driver.mobile_phone                                                                                                                                                                                                                                                                                                                                                                                                        }}<br>
-                      DL number: {{ current_driver.dl_number }}<br>
-
+                      <div class="col-sm-4">
+                        <img :src="getSource()" alt="" width="100%" height="100%"> <br>
+                      </div>
+                      <div class="col-sm-8">
+                        Name: {{ current_driver.first_name  }}<br>
+                        Id No: {{ current_driver.identification_number }}<br>
+                        Mobile No: {{ current_driver.mobile_phone                                                                                                                                                                                                                                                                                                                                                                                                        }}<br>
+                        DL number: {{ current_driver.dl_number }}<br>
+                      </div>
                     </div>
                   </div>
                   <hr>
@@ -55,7 +57,8 @@
                     <div class="col-sm-3">
                       <div class="form-group">
                         <label for="current_fuel">Current Fuel (Litres)</label>
-                        <input type="number" name="current_fuel" class="form-control input-sm" v-model="fuel.current_fuel" @keyup="calculateTotal">
+                        <input type="number" name="current_fuel" class="form-control input-sm" v-model="fuel.current_fuel" @change="calculateTotal">
+                        <p v-if="below_reserve">Current fuel below reserve. Driver to pay for {{ this.deficit }} litre(s).</p>
                       </div>
                     </div>
 
@@ -82,6 +85,20 @@
 
                     <div class="col-sm-3">
                       <div class="form-group">
+                        <label for="tank">Tank to fill</label>
+                        <input type="text" name="tank" id="pump" class="form-control input-sm" v-model="fuel.tank">
+                      </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                      <div class="form-group">
+                        <label for="pump">Pump</label>
+                        <input type="text" name="pump" id="pump" class="form-control input-sm" v-model="fuel.pump">
+                      </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                      <div class="form-group">
                         <label for="fuel_issued">Total Fuel in Tank(Litres)</label>
                         <input type="text" name="fuel_total" class="form-control input-sm" v-model="fuel.fuel_total">
                       </div>
@@ -93,6 +110,17 @@
                         <textarea name="narration" class="form-control input-sm" v-model="fuel.narration"></textarea>
                       </div>
                     </div>
+                    <hr>
+                    <div class="col-sm-3">
+                      <label for="top_up">Top Up?</label>
+                      <input type="checkbox" name="top_up" id="top_up" v-model="fuel.top_up" @change="!fuel.top_up">
+                      <div class="form-group" v-if="fuel.top_up">
+                        <label for="top_up_quantity">Top Up quantity?</label>
+                        <input type="number" name="top_up_quantity" v-model="fuel.top_up_quantity">
+                        <label for="top_up_reason">Top up reason</label>
+                        <textarea name="narration" id="top_up_reason" class="form-control input-sm" v-model="fuel.top_up_reason"></textarea>
+                      </div>
+                    </div>
                 </div>
                 <br>
                 <strong>Mileage Readings</strong>
@@ -101,7 +129,7 @@
                   <div class="col-sm-3">
                     <div class="form-group">
                       <label for="previous_km">Previous KM</label>
-                      <input type="number" name="previous_km" class="form-control input-sm" v-model="fuel.previous_km" @keyup="calculateKms">
+                      <input type="number" name="previous_km" class="form-control input-sm" v-model="fuel.previous_km" @change="calculateKms">
                     </div>
                   </div>
 
@@ -115,20 +143,20 @@
                   <div class="col-sm-3">
                     <div class="form-group">
                       <label for="current_km">Current KM</label>
-                      <input type="number" :min="minimumKm" name="current_km" class="form-control input-sm" v-model="fuel.current_km" @keyup="calculateKms">
+                      <input type="number" :min="minimumKm" name="current_km" class="form-control input-sm" v-model="fuel.current_km" @change="calculateKms">
                     </div>
                   </div>
 
                   <div class="col-sm-3">
                     KM Covered: {{ km_covered }}<br>
                     Fuel Used: {{ fuel_used }}<br>
-                    KM/Ltr: {{ km_per_litre }}<br>
+                    KM/Ltr: {{ km_per_litre.toFixed(2) }}<br>
                   </div>
 
                 </div>
 
                 <div class="form-group pull-right">
-                    <button class="btn btn-success">Save</button>
+                    <button class="btn btn-success" :disabled="!can_save">Save</button>
                     <router-link to="/fuel" class="btn btn-danger">Back</router-link>
                 </div>
             </form>
@@ -141,9 +169,13 @@
 import axios from 'axios';
     export default {
         created() {
+          this.$root.isLoading = true;
             http.get('/api/fuel/create').then((response) => {
                 this.journeys = response.journeys;
+                this.calculateKms();
+                this.$root.isLoading = false;
             });
+
         },
 
         mounted() {
@@ -175,8 +207,16 @@ import axios from 'axios';
                     previous_km: 0,
                     previous_fuel: 0,
                     current_km: 0,
-                    status: 'Awaiting Approval'
-                }
+                    status: 'Awaiting Approval',
+                    tank: '',
+                    pump: '',
+                    top_up: false,
+                    top_up_reason: '',
+                    top_up_quantity: 0,
+                },
+                can_save: false,
+                below_reserve: false,
+                deficit: ''
             };
         },
         computed: {
@@ -219,17 +259,32 @@ import axios from 'axios';
               this.setupUI();
           },
           calculateTotal() {
+            if(parseInt(this.fuel.current_fuel) < 25){
+              this.deficit = 25 - parseInt(this.fuel.current_fuel);
+              this.below_reserve  = true;
+            }else{
+              this.below_reserve = false;
+            }
+
+            this.fuel.fuel_requested = parseInt(this.current_route.fuel_required) - parseInt(this.fuel.current_fuel);
             return this.fuel.fuel_total = parseInt(this.fuel.fuel_issued) + parseInt(this.fuel.current_fuel);
           },
 
           calculateKms() {
-            if(this.fuel.current_km < this.fuel.previous_km) {
+            if(parseInt(this.fuel.current_km) < parseInt(this.fuel.previous_km)) {
+              this.can_save = false;
+
               return alert2(this.$root, ['Current Km readings should be greater than previous Km reading'], 'danger');
             }
             this.fuel_used = parseInt(this.fuel.previous_fuel) - parseInt(this.fuel.current_fuel);
             this.km_covered = parseInt(this.fuel.current_km) - parseInt(this.fuel.previous_km);
 
+            if(parseInt(this.fuel.current_km) > 0 && parseInt(this.fuel.current_km) > parseInt(this.fuel.previous_km)) {
+              this.can_save = true;
+            }
+
             return this.km_per_litre = parseInt(this.km_covered)/parseInt(this.fuel_used);
+
           },
           getSource() {
             if(this.current_driver.avatar){

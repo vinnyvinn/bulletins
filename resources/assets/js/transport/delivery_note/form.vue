@@ -10,7 +10,7 @@
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label for="journey_id">Journey Number</label>
-                            <select :disabled="typeof $route.params.id === 'string'" v-model="deliveryNote.journey_id" class="form-control input-sm" id="journey_id" name="journey_id" required>
+                            <select :disabled="typeof $route.params.id === 'string'" v-model="deliveryNote.journey_id" @change="journey" class="form-control input-sm" id="journey_id" name="journey_id" required>
                                 <option v-for="journey in journeys" :value="journey.id">JRNY-{{ journey.id }}</option>
                             </select>
                         </div>

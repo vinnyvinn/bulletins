@@ -8,6 +8,11 @@
             <h5>{{ config('app.email') }}</h5>
             <h5>{{ config('app.location') }}</h5>
         </header>
+
+        <div class="col-xs-12 pull-right">
+          <h5><strong>Delivery Note No:</strong></h5> <h3>RKS - {{ $trip->id }}</h3>
+        </div>
+
         <br>
         <br>
         <br>
@@ -21,12 +26,11 @@
                 <h5><strong>Route: </strong> {{ $trip->route->source }} <strong>TO</strong> {{ $trip->route->destination }}</h5>
             </div>
             <div class="col-xs-6">
-                <h5><strong>Delivery Note No:</strong> DNL - {{ $trip->id }}</h5>
-                <h5><strong>Delivery Date: </strong> {{ Carbon\Carbon::parse($trip->journey->job_date)->format('d F Y') }}</h5>
-                <h5><strong>Journey No: </strong> JRNY-{{ $trip->journey->id }}</h5>
-                <h5><strong>Delivery To: </strong> {{ $trip->route->destination }}</h5>
-                <h5><strong>Weighbridge Ticket No: </strong> {{ $trip->loading_weighbridge_number }}</h5>
-                <h5><strong>Delivery: </strong> {{ $trip->route->destination }}</h5>
+                <h4><strong>Delivery Date: </strong> {{ Carbon\Carbon::parse($trip->journey->job_date)->format('d F Y') }}</h4>
+                <h4><strong>Journey No: </strong> JRNY-{{ $trip->journey->id }}</h4>
+                <h4><strong>Delivery To: </strong> {{ $trip->route->destination }}</h4>
+                <h4><strong>Weighbridge Ticket No: </strong> {{ $trip->loading_weighbridge_number }}</h4>
+                <h4><strong>Delivery: </strong> {{ $trip->route->destination }}</h4>
             </div>
 
             <div class="col-xs-12">

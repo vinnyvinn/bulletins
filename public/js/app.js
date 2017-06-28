@@ -77782,14 +77782,45 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     created: function created() {
         var _this = this;
 
+        this.$root.isLoading = true;
         http.get('/api/fuel/create').then(function (response) {
             _this.journeys = response.journeys;
+            _this.calculateKms();
+            _this.$root.isLoading = false;
         });
     },
     mounted: function mounted() {
@@ -77820,8 +77851,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 previous_km: 0,
                 previous_fuel: 0,
                 current_km: 0,
-                status: 'Awaiting Approval'
-            }
+                status: 'Awaiting Approval',
+                tank: '',
+                pump: '',
+                top_up: false,
+                top_up_reason: '',
+                top_up_quantity: 0
+            },
+            can_save: false,
+            below_reserve: false,
+            deficit: ''
         };
     },
 
@@ -77872,14 +77911,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.setupUI();
         },
         calculateTotal: function calculateTotal() {
+            if (parseInt(this.fuel.current_fuel) < 25) {
+                this.deficit = 25 - parseInt(this.fuel.current_fuel);
+                this.below_reserve = true;
+            } else {
+                this.below_reserve = false;
+            }
+
+            this.fuel.fuel_requested = parseInt(this.current_route.fuel_required) - parseInt(this.fuel.current_fuel);
             return this.fuel.fuel_total = parseInt(this.fuel.fuel_issued) + parseInt(this.fuel.current_fuel);
         },
         calculateKms: function calculateKms() {
-            if (this.fuel.current_km < this.fuel.previous_km) {
+            if (parseInt(this.fuel.current_km) < parseInt(this.fuel.previous_km)) {
+                this.can_save = false;
+
                 return alert2(this.$root, ['Current Km readings should be greater than previous Km reading'], 'danger');
             }
             this.fuel_used = parseInt(this.fuel.previous_fuel) - parseInt(this.fuel.current_fuel);
             this.km_covered = parseInt(this.fuel.current_km) - parseInt(this.fuel.previous_km);
+
+            if (parseInt(this.fuel.current_km) > 0 && parseInt(this.fuel.current_km) > parseInt(this.fuel.previous_km)) {
+                this.can_save = true;
+            }
 
             return this.km_per_litre = parseInt(this.km_covered) / parseInt(this.fuel_used);
         },
@@ -78060,8 +78113,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -78161,165 +78223,120 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    created: function created() {
-        var _this = this;
+  data: function data() {
+    return {
+      km_covered: 0,
+      fuel_used: 0,
+      km_per_litre: 0,
+      fuel: {
+        journey: {
+          driver: {
+            first_name: '',
+            identification_number: '',
+            mobile_phone: '',
+            dl_number: '',
+            avatar: ''
+          },
+          route: {
+            id: '',
+            source: '',
+            destination: ''
+          },
+          truck: {
+            model: '',
+            trailer_id: ''
+          }
+        },
+        fuel_required: '',
+        current_fuel: '',
+        fuel_requested: '',
+        fuel_issued: '',
+        fuel_total: '',
+        narration: '',
+        tank: '',
+        pump: '',
+        top_up_reason: '',
+        top_up_quantity: 0
+      },
+      delivery_note: '',
+      mileage: {
+        journey_id: '',
+        mileage_type: '',
+        requested_amount: '',
+        standard_amount: '',
+        id: '',
+        status: '',
+        approved_amount: '',
+        narration: ''
+      }
+    };
+  },
+  created: function created() {
+    var _this = this;
 
-        http.get('/api/fuel/create').then(function (response) {
-            _this.journeys = response.journeys;
-            _this.selectJourney();
-        });
+    http.get('/api/fuel/' + this.$route.params.id).then(function (response) {
+      _this.fuel = response.fuel;
+      _this.delivery_note = response.delivery_note;
+      _this.mileage = response.mileage;
+    });
+  },
+
+  computed: {
+    disablePrint: function disablePrint() {
+      if (this.fuel.status == "Approved" && this.mileage.status == "Approved") {
+        return false;
+      } else {
+        return true;
+      }
     },
-    mounted: function mounted() {
-        this.checkState();
-        $('input[type="number"]').on('focus', function () {
-            this.select();
-        });
-    },
-    data: function data() {
-        return {
-            journeys: [],
-            current_journey: {},
-            current_driver: {},
-            current_vehicle: {},
-            current_trailer: {},
-            current_route: {},
-            km_covered: 0,
-            fuel_used: 0,
-            km_per_litre: 0,
-            fuel: {
-                journey_id: '',
-                date: '',
-                current_fuel: 0,
-                fuel_requested: 0,
-                fuel_issued: 0,
-                fuel_total: 0,
-                narration: '',
-                previous_km: 0,
-                previous_fuel: 0,
-                current_km: 0,
-                status: 'Awaiting Approval'
-            },
-            delivery_note: '',
-            mileage: ''
-        };
-    },
-
-    computed: {
-        minimumKm: function minimumKm() {
-            return this.fuel.previous_km;
-        }
-    },
-
-    methods: {
-        selectJourney: function selectJourney() {
-            var _this2 = this;
-
-            var journey = this.journeys.filter(function (e) {
-                return e.id == _this2.fuel.journey_id;
-            });
-            if (journey.length) {
-                this.current_driver = JSON.parse(JSON.stringify(journey[0].driver));
-                this.current_vehicle = JSON.parse(JSON.stringify(journey[0].truck));
-                this.current_trailer = JSON.parse(JSON.stringify(journey[0].truck.trailer));
-                this.current_route = JSON.parse(JSON.stringify(journey[0].route));
-
-                return this.current_journey = JSON.parse(JSON.stringify(journey[0]));
-            }
-        },
-        setupUI: function setupUI() {
-            var _this3 = this;
-
-            $('.datepicker').datepicker({
-                autoclose: true,
-                format: 'dd/mm/yyyy',
-                todayHighlight: true
-            });
-
-            $('#date').datepicker().on('changeDate', function (e) {
-                _this3.fuel.date = e.date.toLocaleDateString('en-GB');
-            });
-        },
-        checkState: function checkState() {
-            var _this4 = this;
-
-            if (this.$route.params.id) {
-                http.get('/api/fuel/' + this.$route.params.id).then(function (response) {
-                    _this4.fuel = response.fuel;
-                    _this4.delivery_note = response.delivery_note;
-                    _this4.mileage = response.mileage;
-                    _this4.selectJourney();
-                    _this4.setupUI();
-                });
-            }
-            this.selectJourney();
-            this.setupUI();
-        },
-        calculateTotal: function calculateTotal() {
-            return this.fuel.fuel_total = parseInt(this.fuel.fuel_issued) + parseInt(this.fuel.current_fuel);
-        },
-        calculateKms: function calculateKms() {
-            if (this.fuel.current_km < this.fuel.previous_km) {
-                return alert2(this.$root, ['Current Km readings should be greater than previous Km reading'], 'danger');
-            }
-            this.fuel_used = parseInt(this.fuel.previous_fuel) - parseInt(this.fuel.current_fuel);
-            this.km_covered = parseInt(this.fuel.current_km) - parseInt(this.fuel.previous_km);
-
-            return this.km_per_litre = parseInt(this.km_covered) / parseInt(this.fuel_used);
-        },
-        getSource: function getSource() {
-            if (this.current_driver.avatar) {
-                return '/images/' + this.current_driver.avatar;
-            }
-            return '/images/default_avatar.png';
-        },
-        store: function store() {
-            var _this5 = this;
-
-            this.$root.isLoading = true;
-            var request = null;
-
-            var body = Object.assign({}, this.fuel);
-
-            if (this.$route.params.id) {
-                request = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.put('/api/fuel/' + this.$route.params.id, body);
-            } else {
-                request = __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/api/fuel', body);
-            }
-
-            request.then(function (response) {
-                _this5.$root.isLoading = false;
-                alert2(_this5.$root, [response.message], 'success');
-                window._router.push({ path: '/fuel' });
-            }).catch(function (error) {
-                _this5.$root.isLoading = false;
-                alert2(_this5.$root, Object.values(JSON.parse(error.message)), 'danger');
-            });
-        },
-        printFuelVoucher: function printFuelVoucher() {
-            window.print();
-        },
-        approveFuel: function approveFuel(id) {
-            var _this6 = this;
-
-            http.get('/api/approve/' + id).then(function (response) {
-                if (response.status != 'success') {
-                    _this6.$root.isLoading = false;
-                    alert2(_this6.$root, [response.message], 'danger');
-                    return;
-                }
-
-                _this6.fuel = response.fuel;
-
-                _this6.$root.isLoading = false;
-                alert2(_this6.$root, [response.message], 'success');
-            }).catch(function (error) {
-                _this6.$root.isLoading = false;
-                alert2(_this6.$root, Object.values(JSON.parse(error.message)), 'danger');
-            });
-        }
+    minimumKm: function minimumKm() {
+      return this.fuel.previous_km;
     }
+  },
+
+  methods: {
+    calculateTotal: function calculateTotal() {
+      return this.fuel.fuel_total = parseInt(this.fuel.fuel_issued) + parseInt(this.fuel.current_fuel);
+    },
+    calculateKms: function calculateKms() {
+      if (this.fuel.current_km < this.fuel.previous_km) {
+        return alert2(this.$root, ['Current Km readings should be greater than previous Km reading'], 'danger');
+      }
+      this.fuel_used = parseInt(this.fuel.previous_fuel) - parseInt(this.fuel.current_fuel);
+      this.km_covered = parseInt(this.fuel.current_km) - parseInt(this.fuel.previous_km);
+
+      return this.km_per_litre = parseInt(this.km_covered) / parseInt(this.fuel_used);
+    },
+    getSource: function getSource() {
+      if (this.fuel.journey.driver.avatar) {
+        return '/images/' + this.journey.driver.avatar;
+      }
+      return '/images/default_avatar.png';
+    },
+    printFuelVoucher: function printFuelVoucher() {
+      window.print();
+    },
+    approveFuel: function approveFuel(id) {
+      var _this2 = this;
+
+      http.get('/api/approve/' + id).then(function (response) {
+        if (response.status != 'success') {
+          _this2.$root.isLoading = false;
+          alert2(_this2.$root, [response.message], 'danger');
+          return;
+        }
+
+        _this2.fuel = response.fuel;
+
+        _this2.$root.isLoading = false;
+        alert2(_this2.$root, [response.message], 'success');
+      }).catch(function (error) {
+        _this2.$root.isLoading = false;
+        alert2(_this2.$root, Object.values(JSON.parse(error.message)), 'danger');
+      });
+    }
+  }
 });
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
 
 /***/ }),
 /* 214 */
@@ -79098,11 +79115,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function($) {//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -95986,34 +95998,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.journey.job_date = $event.target.value
       }
     }
-  })]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "ref_no"
-    }
-  }, [_vm._v("Ref No")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.journey.ref_no),
-      expression: "journey.ref_no"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "type": "text",
-      "id": "ref_no",
-      "name": "ref_no"
-    },
-    domProps: {
-      "value": (_vm.journey.ref_no)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.journey.ref_no = $event.target.value
-      }
-    }
   })])])]), _vm._v(" "), _c('hr'), _vm._v(" "), (_vm.journey.is_contract_related == '1') ? _c('div', {
     staticClass: "row"
   }, [_c('div', {
@@ -103472,14 +103456,18 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _c('br'), _vm._v(" "), (_vm.current_trailer) ? _c('div', {}, [_vm._v("\n                    Trailer: " + _vm._s(_vm.current_trailer.trailer_number)), _c('br'), _vm._v("\n                    Trailer Category: " + _vm._s(_vm.current_trailer.type) + " "), _c('br')]) : _vm._e()]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-3"
-  }, [_c('strong', [_vm._v("Driver")]), _c('br'), _vm._v(" "), _c('img', {
+  }, [_c('strong', [_vm._v("Driver")]), _c('br'), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-4"
+  }, [_c('img', {
     attrs: {
       "src": _vm.getSource(),
       "alt": "",
-      "width": "100",
-      "height": "100"
+      "width": "100%",
+      "height": "100%"
     }
-  }), _vm._v(" "), _c('br'), _vm._v("\n                  Passport: "), _c('br'), _vm._v("\n                  Name: " + _vm._s(_vm.current_driver.first_name)), _c('br'), _vm._v("\n                  Id No: " + _vm._s(_vm.current_driver.identification_number)), _c('br'), _vm._v("\n                  Mobile No: " + _vm._s(_vm.current_driver.mobile_phone)), _c('br'), _vm._v("\n                  DL number: " + _vm._s(_vm.current_driver.dl_number)), _c('br')])]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
+  }), _vm._v(" "), _c('br')]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-8"
+  }, [_vm._v("\n                    Name: " + _vm._s(_vm.current_driver.first_name)), _c('br'), _vm._v("\n                    Id No: " + _vm._s(_vm.current_driver.identification_number)), _c('br'), _vm._v("\n                    Mobile No: " + _vm._s(_vm.current_driver.mobile_phone)), _c('br'), _vm._v("\n                    DL number: " + _vm._s(_vm.current_driver.dl_number)), _c('br')])])]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-3"
@@ -103505,7 +103493,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "value": (_vm.fuel.current_fuel)
     },
     on: {
-      "keyup": _vm.calculateTotal,
+      "change": _vm.calculateTotal,
       "input": function($event) {
         if ($event.target.composing) { return; }
         _vm.fuel.current_fuel = $event.target.value
@@ -103514,7 +103502,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.$forceUpdate()
       }
     }
-  })])]), _vm._v(" "), _c('div', {
+  }), _vm._v(" "), (_vm.below_reserve) ? _c('p', [_vm._v("Current fuel below reserve. Driver to pay for " + _vm._s(this.deficit) + " litre(s).")]) : _vm._e()])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-3"
   }, [_c('div', {
     staticClass: "form-group"
@@ -103586,6 +103574,66 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
+      "for": "tank"
+    }
+  }, [_vm._v("Tank to fill")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.fuel.tank),
+      expression: "fuel.tank"
+    }],
+    staticClass: "form-control input-sm",
+    attrs: {
+      "type": "text",
+      "name": "tank",
+      "id": "pump"
+    },
+    domProps: {
+      "value": (_vm.fuel.tank)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.fuel.tank = $event.target.value
+      }
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "pump"
+    }
+  }, [_vm._v("Pump")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.fuel.pump),
+      expression: "fuel.pump"
+    }],
+    staticClass: "form-control input-sm",
+    attrs: {
+      "type": "text",
+      "name": "pump",
+      "id": "pump"
+    },
+    domProps: {
+      "value": (_vm.fuel.pump)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.fuel.pump = $event.target.value
+      }
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
       "for": "fuel_issued"
     }
   }, [_vm._v("Total Fuel in Tank(Litres)")]), _vm._v(" "), _c('input', {
@@ -103637,7 +103685,103 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.fuel.narration = $event.target.value
       }
     }
-  })])])]), _vm._v(" "), _c('br'), _vm._v(" "), _c('strong', [_vm._v("Mileage Readings")]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
+  })])]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('label', {
+    attrs: {
+      "for": "top_up"
+    }
+  }, [_vm._v("Top Up?")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.fuel.top_up),
+      expression: "fuel.top_up"
+    }],
+    attrs: {
+      "type": "checkbox",
+      "name": "top_up",
+      "id": "top_up"
+    },
+    domProps: {
+      "checked": Array.isArray(_vm.fuel.top_up) ? _vm._i(_vm.fuel.top_up, null) > -1 : (_vm.fuel.top_up)
+    },
+    on: {
+      "change": function($event) {
+        !_vm.fuel.top_up
+      },
+      "__c": function($event) {
+        var $$a = _vm.fuel.top_up,
+          $$el = $event.target,
+          $$c = $$el.checked ? (true) : (false);
+        if (Array.isArray($$a)) {
+          var $$v = null,
+            $$i = _vm._i($$a, $$v);
+          if ($$c) {
+            $$i < 0 && (_vm.fuel.top_up = $$a.concat($$v))
+          } else {
+            $$i > -1 && (_vm.fuel.top_up = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+          }
+        } else {
+          _vm.fuel.top_up = $$c
+        }
+      }
+    }
+  }), _vm._v(" "), (_vm.fuel.top_up) ? _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "top_up_quantity"
+    }
+  }, [_vm._v("Top Up quantity?")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.fuel.top_up_quantity),
+      expression: "fuel.top_up_quantity"
+    }],
+    attrs: {
+      "type": "number",
+      "name": "top_up_quantity"
+    },
+    domProps: {
+      "value": (_vm.fuel.top_up_quantity)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.fuel.top_up_quantity = $event.target.value
+      },
+      "blur": function($event) {
+        _vm.$forceUpdate()
+      }
+    }
+  }), _vm._v(" "), _c('label', {
+    attrs: {
+      "for": "top_up_reason"
+    }
+  }, [_vm._v("Top up reason")]), _vm._v(" "), _c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.fuel.top_up_reason),
+      expression: "fuel.top_up_reason"
+    }],
+    staticClass: "form-control input-sm",
+    attrs: {
+      "name": "narration",
+      "id": "top_up_reason"
+    },
+    domProps: {
+      "value": (_vm.fuel.top_up_reason)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.fuel.top_up_reason = $event.target.value
+      }
+    }
+  })]) : _vm._e()])]), _vm._v(" "), _c('br'), _vm._v(" "), _c('strong', [_vm._v("Mileage Readings")]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-3"
@@ -103663,7 +103807,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "value": (_vm.fuel.previous_km)
     },
     on: {
-      "keyup": _vm.calculateKms,
+      "change": _vm.calculateKms,
       "input": function($event) {
         if ($event.target.composing) { return; }
         _vm.fuel.previous_km = $event.target.value
@@ -103730,7 +103874,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "value": (_vm.fuel.current_km)
     },
     on: {
-      "keyup": _vm.calculateKms,
+      "change": _vm.calculateKms,
       "input": function($event) {
         if ($event.target.composing) { return; }
         _vm.fuel.current_km = $event.target.value
@@ -103741,10 +103885,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-3"
-  }, [_vm._v("\n                KM Covered: " + _vm._s(_vm.km_covered)), _c('br'), _vm._v("\n                Fuel Used: " + _vm._s(_vm.fuel_used)), _c('br'), _vm._v("\n                KM/Ltr: " + _vm._s(_vm.km_per_litre)), _c('br')])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n                KM Covered: " + _vm._s(_vm.km_covered)), _c('br'), _vm._v("\n                Fuel Used: " + _vm._s(_vm.fuel_used)), _c('br'), _vm._v("\n                KM/Ltr: " + _vm._s(_vm.km_per_litre.toFixed(2))), _c('br')])]), _vm._v(" "), _c('div', {
     staticClass: "form-group pull-right"
   }, [_c('button', {
-    staticClass: "btn btn-success"
+    staticClass: "btn btn-success",
+    attrs: {
+      "disabled": !_vm.can_save
+    }
   }, [_vm._v("Save")]), _vm._v(" "), _c('router-link', {
     staticClass: "btn btn-danger",
     attrs: {
@@ -103809,7 +103956,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "required": ""
     },
     on: {
-      "change": function($event) {
+      "change": [function($event) {
         var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
           return o.selected
         }).map(function(o) {
@@ -103817,7 +103964,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           return val
         });
         _vm.deliveryNote.journey_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
+      }, _vm.journey]
     }
   }, _vm._l((_vm.journeys), function(journey) {
     return _c('option', {
@@ -107767,20 +107914,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "id": "printable"
     }
-  }, [_c('form', {
-    attrs: {
-      "action": "#",
-      "role": "form"
-    },
-    on: {
-      "submit": function($event) {
-        $event.preventDefault();
-        _vm.store($event)
-      }
-    }
   }, [_c('div', {
     staticClass: "row print-row"
-  }, [_c('h4', [_vm._v("FUEL VOUCHER (Delivery Note N0. " + _vm._s(_vm.delivery_note.id) + ")")]), _vm._v(" "), _c('div', {
+  }, [_c('div', {
+    staticClass: "col-xs-12"
+  }, [_c('h4', [_c('strong', [_vm._v("FUEL VOUCHER (Delivery Note N0: RKS " + _vm._s(_vm.delivery_note.id) + ")")])])]), _vm._v(" "), _c('div', {
     staticClass: "col-xs-3"
   }, [_c('strong', [_vm._v("Driver")]), _c('br'), _vm._v(" "), _c('img', {
     attrs: {
@@ -107789,25 +107927,29 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "width": "100",
       "height": "100"
     }
-  }), _vm._v(" "), _c('br'), _vm._v("\n                Name: " + _vm._s(_vm.current_driver.first_name)), _c('br'), _vm._v("\n                Id No: " + _vm._s(_vm.current_driver.identification_number)), _c('br'), _vm._v("\n                Mobile No: " + _vm._s(_vm.current_driver.mobile_phone)), _c('br'), _vm._v("\n                DL number: " + _vm._s(_vm.current_driver.dl_number)), _c('br')]), _vm._v(" "), _c('div', {
+  }), _vm._v(" "), _c('br'), _vm._v("\n                Name: " + _vm._s(_vm.fuel.journey.driver.first_name)), _c('br'), _vm._v("\n                Id No: " + _vm._s(_vm.fuel.journey.driver.identification_number)), _c('br'), _vm._v("\n                Mobile No: " + _vm._s(_vm.fuel.journey.driver.mobile_phone)), _c('br'), _vm._v("\n                DL number: " + _vm._s(_vm.fuel.journey.driver.dl_number) + "\n              ")]), _vm._v(" "), _c('div', {
     staticClass: "col-xs-3"
-  }, [_vm._v("\n                  Date: " + _vm._s(_vm.fuel.date)), _c('br'), _vm._v("\n                  Journey: JRNY-" + _vm._s(_vm.fuel.journey_id)), _c('br'), _vm._v("\n                  Status: " + _vm._s(_vm.fuel.status) + "\n                  "), _c('hr'), _vm._v(" "), _c('strong', [_vm._v("Route")]), _vm._v("\n                  Route: Route: RT-" + _vm._s(_vm.current_route.id)), _c('br'), _vm._v("\n                  From: " + _vm._s(_vm.current_route.source)), _c('br'), _vm._v("\n                  To: " + _vm._s(_vm.current_route.destination)), _c('br'), _vm._v(" "), _c('hr'), _vm._v(" "), _c('strong', [_vm._v("Vehicle")]), _vm._v("\n                  Reg.No: " + _vm._s(_vm.current_vehicle.plate_number)), _c('br'), _vm._v("\n                  Model: " + _vm._s(_vm.current_vehicle.model)), _c('br'), _vm._v("\n                  Trailer Attached: "), _c('input', {
+  }, [_vm._v("\n                  Date: " + _vm._s(_vm.fuel.date)), _c('br'), _vm._v("\n                  Journey: JRNY-" + _vm._s(_vm.fuel.journey_id)), _c('br'), _vm._v("\n                  Status: " + _vm._s(_vm.fuel.status) + "\n                  "), _c('hr'), _vm._v(" "), _c('strong', [_vm._v("Route")]), _vm._v("\n                  Route: Route: RT-" + _vm._s(_vm.fuel.journey.route.id)), _c('br'), _vm._v("\n                  From: " + _vm._s(_vm.fuel.journey.route.source)), _c('br'), _vm._v("\n                  To: " + _vm._s(_vm.fuel.journey.route.destination)), _c('br'), _vm._v(" "), _c('hr'), _vm._v(" "), _c('strong', [_vm._v("Vehicle")]), _vm._v("\n                  Reg.No: " + _vm._s(_vm.fuel.journey.truck.plate_number)), _c('br'), _vm._v("\n                  Model: " + _vm._s(_vm.fuel.journey.truck.model)), _c('br'), _vm._v("\n                  Trailer Attached: "), _c('input', {
     attrs: {
       "type": "checkbox",
       "name": "trailer_attached"
     },
     domProps: {
-      "checked": _vm.current_vehicle.trailer
+      "checked": _vm.fuel.journey.truck.trailer_id
     }
-  }), _c('br'), _vm._v(" "), (_vm.current_trailer) ? _c('div', {}, [_vm._v("\n                    Trailer: " + _vm._s(_vm.current_trailer.trailer_number)), _c('br'), _vm._v("\n                    Trailer Category: " + _vm._s(_vm.current_trailer.type) + " "), _c('br')]) : _vm._e()]), _vm._v(" "), _c('div', {
+  }), _c('br'), _vm._v(" "), (_vm.fuel.journey.truck.trailer_id) ? _c('div', {}, [_vm._v("\n                    Trailer: " + _vm._s(_vm.fuel.journey.truck.trailer_id)), _c('br'), _vm._v("\n                    Trailer Category: " + _vm._s(_vm.fuel.journey.truck.trailer_id) + " "), _c('br')]) : _vm._e()]), _vm._v(" "), _c('div', {
     staticClass: "col-xs-3"
-  }, [_c('strong', [_vm._v("Fuel")]), _c('br'), _vm._v("\n                  Standard Quantity for this route (Ltrs): " + _vm._s(_vm.current_route.fuel_required)), _c('br'), _vm._v("\n                  Current Fuel (Litres): " + _vm._s(_vm.fuel.current_fuel)), _c('br'), _vm._v("\n                  Requested Quantity: " + _vm._s(_vm.fuel.fuel_requested)), _c('br'), _vm._v("\n                  Fuel Issued: " + _vm._s(_vm.fuel.fuel_issued)), _c('br'), _vm._v("\n                  Total Fuel in Tank: " + _vm._s(_vm.fuel.fuel_total)), _c('br'), _vm._v(" "), _c('hr'), _vm._v(" "), _c('strong', [_vm._v("Narration")]), _c('br'), _vm._v("\n                  " + _vm._s(_vm.fuel.narration) + "\n                ")]), _vm._v(" "), _c('div', {
+  }, [_c('strong', [_vm._v("Fuel")]), _c('br'), _vm._v("\n                  Standard Quantity for this route (Ltrs): " + _vm._s(_vm.fuel.fuel_required)), _c('br'), _vm._v("\n                  Current Fuel (Litres): " + _vm._s(_vm.fuel.current_fuel)), _c('br'), _vm._v("\n                  Requested Quantity: " + _vm._s(_vm.fuel.fuel_requested)), _c('br'), _vm._v("\n                  Fuel Issued: " + _vm._s(_vm.fuel.fuel_issued)), _c('br'), _vm._v("\n                  Total Fuel in Tank: " + _vm._s(_vm.fuel.fuel_total)), _c('br'), _vm._v(" "), _c('hr'), _vm._v(" "), _c('strong', [_vm._v("Narration")]), _c('br'), _vm._v("\n                  " + _vm._s(_vm.fuel.narration) + "\n                ")]), _vm._v(" "), (_vm.fuel.top_up_quantity) ? _c('div', {
     staticClass: "col-xs-3"
-  }, [_c('strong', [_vm._v("Mileage Readings")]), _c('br'), _vm._v("\n                  Previous KM: " + _vm._s(_vm.fuel.previous_km)), _c('br'), _vm._v("\n                  Previous Fuel: " + _vm._s(_vm.fuel.previous_fuel)), _c('br'), _vm._v("\n                  Current Km: " + _vm._s(_vm.fuel.current_km)), _c('br'), _vm._v("\n                  KM Covered: " + _vm._s(_vm.km_covered)), _c('br'), _vm._v("\n                  Fuel Used: " + _vm._s(_vm.fuel_used)), _c('br'), _vm._v("\n                  KM/Ltr: " + _vm._s(_vm.km_per_litre)), _c('br')])])]), _vm._v(" "), _c('hr', {
+  }, [_c('strong', [_vm._v("Top Up fuel")]), _vm._v("\n                  Top Up: " + _vm._s(_vm.fuel.top_up_quantity)), _c('br'), _vm._v("\n                  Top Up reason: " + _vm._s(_vm.fuel.top_up_reason) + "\n                ")]) : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-3"
+  }, [_c('strong', [_vm._v("Mileage Readings")]), _c('br'), _vm._v("\n                  Previous KM: " + _vm._s(_vm.fuel.previous_km)), _c('br'), _vm._v("\n                  Previous Fuel: " + _vm._s(_vm.fuel.previous_fuel)), _c('br'), _vm._v("\n                  Current Km: " + _vm._s(_vm.fuel.current_km)), _c('br'), _vm._v("\n                  KM Covered: " + _vm._s(_vm.km_covered)), _c('br'), _vm._v("\n                  Fuel Used: " + _vm._s(_vm.fuel_used)), _c('br'), _vm._v("\n                  KM/Ltr: " + _vm._s(_vm.km_per_litre)), _c('br')])]), _vm._v(" "), _c('hr', {
     staticClass: "print-hr"
   }), _vm._v(" "), _c('div', {
     staticClass: "row print-row"
-  }, [_c('h4', [_vm._v("MILEAGE ALLOCATION (Delivery Note N0. " + _vm._s(_vm.delivery_note.id) + ")")]), _vm._v(" "), _c('div', {
+  }, [_c('div', {
+    staticClass: "col-xs-12"
+  }, [_c('h4', [_c('strong', [_vm._v("MILEAGE ALLOCATION (Delivery Note N0: RKS " + _vm._s(_vm.delivery_note.id) + ")")])])]), _vm._v(" "), _c('div', {
     staticClass: "col-xs-4"
   }, [_vm._v("\n            Journey Number: " + _vm._s(_vm.mileage.journey_id)), _c('br'), _vm._v("\n            Mileage Type: " + _vm._s(_vm.mileage.mileage_type)), _c('br'), _vm._v("\n            Requested Amount: " + _vm._s(_vm.mileage.requested_amount)), _c('br'), _vm._v("\n            Standard Amount: " + _vm._s(_vm.mileage.standard_amount)), _c('br')]), _vm._v(" "), _c('div', {
     staticClass: "col-xs-3"
@@ -107838,9 +107980,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_vm._v("Cancel Approval")]), _vm._v(" "), _c('button', {
-    staticClass: "btn btn-info",
+    staticClass: "btn btn-success",
     attrs: {
-      "type": "button"
+      "type": "button",
+      "disabled": _vm.disablePrint
     },
     on: {
       "click": _vm.printFuelVoucher

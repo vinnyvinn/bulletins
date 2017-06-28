@@ -5,16 +5,18 @@
         </div>
 
         <div class="panel-body" id="printable">
-            <form action="#" role="form" @submit.prevent="store">
+
                 <div class="row print-row" >
-                  <h4>FUEL VOUCHER (Delivery Note N0. {{ delivery_note.id }})</h4>
+                  <div class="col-xs-12">
+                    <h4><strong>FUEL VOUCHER (Delivery Note N0: RKS {{ delivery_note.id }})</strong></h4>
+                  </div>
                   <div class="col-xs-3">
                     <strong>Driver</strong><br>
                     <img :src="getSource()" alt="" width="100" height="100"> <br>
-                    Name: {{ current_driver.first_name  }}<br>
-                    Id No: {{ current_driver.identification_number }}<br>
-                    Mobile No: {{ current_driver.mobile_phone                                                                                                                                                                                                                                                                                                                                                                                                        }}<br>
-                    DL number: {{ current_driver.dl_number }}<br>
+                    Name: {{ fuel.journey.driver.first_name  }}<br>
+                    Id No: {{ fuel.journey.driver.identification_number }}<br>
+                    Mobile No: {{ fuel.journey.driver.mobile_phone }}<br>
+                    DL number: {{ fuel.journey.driver.dl_number }}
                   </div>
 
                   <div class="col-xs-3">
@@ -23,23 +25,23 @@
                       Status: {{ fuel.status }}
                       <hr>
                       <strong>Route</strong>
-                      Route: Route: RT-{{ current_route.id}}<br>
-                      From: {{ current_route.source }}<br>
-                      To: {{ current_route.destination }}<br>
+                      Route: Route: RT-{{ fuel.journey.route.id}}<br>
+                      From: {{ fuel.journey.route.source }}<br>
+                      To: {{ fuel.journey.route.destination }}<br>
                       <hr>
                       <strong>Vehicle</strong>
-                      Reg.No: {{ current_vehicle.plate_number }}<br>
-                      Model: {{ current_vehicle.model}}<br>
-                      Trailer Attached: <input type="checkbox" name="trailer_attached" :checked="current_vehicle.trailer"><br>
-                      <div class="" v-if="current_trailer">
-                        Trailer: {{ current_trailer.trailer_number }}<br>
-                        Trailer Category: {{ current_trailer.type }} <br>
+                      Reg.No: {{ fuel.journey.truck.plate_number }}<br>
+                      Model: {{ fuel.journey.truck.model}}<br>
+                      Trailer Attached: <input type="checkbox" name="trailer_attached" :checked="fuel.journey.truck.trailer_id"><br>
+                      <div class="" v-if="fuel.journey.truck.trailer_id">
+                        Trailer: {{ fuel.journey.truck.trailer_id }}<br>
+                        Trailer Category: {{ fuel.journey.truck.trailer_id }} <br>
                       </div>
                   </div>
 
                     <div class="col-xs-3">
                       <strong>Fuel</strong><br>
-                      Standard Quantity for this route (Ltrs): {{ current_route.fuel_required }}<br>
+                      Standard Quantity for this route (Ltrs): {{ fuel.fuel_required }}<br>
                       Current Fuel (Litres): {{ fuel.current_fuel }}<br>
                       Requested Quantity: {{ fuel.fuel_requested }}<br>
                       Fuel Issued: {{ fuel.fuel_issued }}<br>
@@ -47,6 +49,11 @@
                       <hr>
                       <strong>Narration</strong><br>
                       {{ fuel.narration }}
+                    </div>
+                    <div class="col-xs-3" v-if="fuel.top_up_quantity">
+                      <strong>Top Up fuel</strong>
+                      Top Up: {{ fuel.top_up_quantity }}<br>
+                      Top Up reason: {{ fuel.top_up_reason}}
                     </div>
 
                     <div class="col-xs-3">
@@ -61,10 +68,12 @@
 
                   </div>
 
-            </form>
+
             <hr class="print-hr">
             <div class="row print-row">
-              <h4>MILEAGE ALLOCATION (Delivery Note N0. {{ delivery_note.id }})</h4>
+              <div class="col-xs-12">
+                <h4><strong>MILEAGE ALLOCATION (Delivery Note N0: RKS {{ delivery_note.id }})</strong></h4>
+              </div>
               <div class="col-xs-4">
                 Journey Number: {{ mileage.journey_id }}<br>
                 Mileage Type: {{ mileage.mileage_type }}<br>
@@ -88,7 +97,7 @@
         <div class="form-group pull-right">
           <button type="button" name="button" v-if="fuel.status == 'Awaiting Approval'" class="btn btn-success" @click="approveFuel(fuel.id)">Approve</button>
           <button type="button" name="button" v-else class="btn btn-warn btn-warning" @click="approveFuel(fuel.id)">Cancel Approval</button>
-          <button type="button" class="btn btn-info" @click="printFuelVoucher"><i class="fa fa-print fa-fw"></i> Print</button>
+          <button type="button" class="btn btn-success" @click="printFuelVoucher" :disabled="disablePrint"><i class="fa fa-print fa-fw"></i> Print</button>
           <router-link to="/fuel" class="btn btn-danger">Back</router-link>
       </div>
     </div>
@@ -97,49 +106,70 @@
 <script>
 import axios from 'axios';
     export default {
-        created() {
-            http.get('/api/fuel/create').then((response) => {
-                this.journeys = response.journeys;
-                this.selectJourney();
-            });
-        },
-
-        mounted() {
-            this.checkState();
-            $('input[type="number"]').on('focus', function () {
-                this.select();
-            });
-        },
-
         data() {
             return {
-                journeys: [],
-                current_journey: {},
-                current_driver: {},
-                current_vehicle: {},
-                current_trailer: {},
-                current_route: {},
                 km_covered: 0,
                 fuel_used: 0,
                 km_per_litre: 0,
                 fuel: {
-                    journey_id: '',
-                    date: '',
-                    current_fuel: 0,
-                    fuel_requested: 0,
-                    fuel_issued: 0,
-                    fuel_total: 0,
-                    narration: '',
-                    previous_km: 0,
-                    previous_fuel: 0,
-                    current_km: 0,
-                    status: 'Awaiting Approval'
+                  journey: {
+                    driver: {
+                      first_name: '',
+                      identification_number: '',
+                      mobile_phone: '',
+                      dl_number: '',
+                      avatar: ''
+                    },
+                    route: {
+                      id: '',
+                      source: '',
+                      destination: ''
+                    },
+                    truck: {
+                      model: '',
+                      trailer_id: ''
+                    }
+                  },
+                  fuel_required: '',
+                  current_fuel: '',
+                  fuel_requested: '',
+                  fuel_issued: '',
+                  fuel_total: '',
+                  narration: '',
+                  tank: '',
+                  pump: '',
+                  top_up_reason: '',
+                  top_up_quantity: 0,
                 },
                 delivery_note: '',
-                mileage: ''
+                mileage: {
+                  journey_id: '',
+                  mileage_type: '',
+                  requested_amount: '',
+                  standard_amount: '',
+                  id: '',
+                  status: '',
+                  approved_amount: '',
+                  narration: ''
+                }
             };
         },
+        created() {
+            http.get('/api/fuel/' + this.$route.params.id).then((response) => {
+                this.fuel = response.fuel;
+                this.delivery_note = response.delivery_note;
+                this.mileage = response.mileage;
+            });
+        },
         computed: {
+          disablePrint(){
+            if(this.fuel.status == "Approved" && this.mileage.status == "Approved"){
+              return false;
+            }
+            else{
+              return true;
+            }
+          },
 
           minimumKm () {
             return this.fuel.previous_km;
@@ -147,42 +177,6 @@ import axios from 'axios';
         },
 
         methods: {
-          selectJourney() {
-            let journey = this.journeys.filter(e => e.id == this.fuel.journey_id);
-            if (journey.length) {
-              this.current_driver = JSON.parse(JSON.stringify(journey[0].driver));
-              this.current_vehicle = JSON.parse(JSON.stringify(journey[0].truck));
-              this.current_trailer = JSON.parse(JSON.stringify(journey[0].truck.trailer));
-              this.current_route = JSON.parse(JSON.stringify(journey[0].route));
-
-              return this.current_journey = JSON.parse(JSON.stringify(journey[0]));
-            }
-          },
-          setupUI() {
-              $('.datepicker').datepicker({
-                  autoclose: true,
-                  format: 'dd/mm/yyyy',
-                  todayHighlight: true,
-              });
-
-              $('#date').datepicker().on('changeDate', (e) => {
-                  this.fuel.date = e.date.toLocaleDateString('en-GB');
-              });
-          },
-
-          checkState() {
-              if (this.$route.params.id) {
-                      http.get('/api/fuel/' + this.$route.params.id).then((response) => {
-                          this.fuel = response.fuel;
-                          this.delivery_note = response.delivery_note;
-                          this.mileage = response.mileage;
-                          this.selectJourney();
-                          this.setupUI();
-                      });
-              }
-              this.selectJourney();
-              this.setupUI();
-          },
           calculateTotal() {
             return this.fuel.fuel_total = parseInt(this.fuel.fuel_issued) + parseInt(this.fuel.current_fuel);
           },
@@ -197,32 +191,11 @@ import axios from 'axios';
             return this.km_per_litre = parseInt(this.km_covered)/parseInt(this.fuel_used);
           },
           getSource() {
-            if(this.current_driver.avatar){
-              return '/images/'+this.current_driver.avatar;
+            if(this.fuel.journey.driver.avatar){
+              return '/images/'+this.journey.driver.avatar;
             }
             return '/images/default_avatar.png';
           },
-          store() {
-                this.$root.isLoading = true;
-                let request = null;
-
-                let body = Object.assign({}, this.fuel)
-
-                if(this.$route.params.id) {
-                  request = axios.put('/api/fuel/'+ this.$route.params.id, body)
-                } else {
-                  request = axios.post('/api/fuel', body)
-                }
-
-                request.then((response) => {
-                    this.$root.isLoading = false;
-                    alert2(this.$root, [response.message], 'success');
-                    window._router.push({ path: '/fuel' });
-                }).catch((error) => {
-                    this.$root.isLoading = false;
-                    alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
-                });
-            },
             printFuelVoucher() {
               window.print();
             },
