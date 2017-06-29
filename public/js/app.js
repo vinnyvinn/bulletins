@@ -103727,7 +103727,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }
-  }), _vm._v(" "), (_vm.fuel.top_up) ? _c('div', {
+  }), _vm._v(" "), (parseInt(_vm.fuel.top_up_quantity) > 0) ? _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
@@ -107939,7 +107939,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _c('br'), _vm._v(" "), (_vm.fuel.journey.truck.trailer_id) ? _c('div', {}, [_vm._v("\n                    Trailer: " + _vm._s(_vm.fuel.journey.truck.trailer_id)), _c('br'), _vm._v("\n                    Trailer Category: " + _vm._s(_vm.fuel.journey.truck.trailer_id) + " "), _c('br')]) : _vm._e()]), _vm._v(" "), _c('div', {
     staticClass: "col-xs-3"
-  }, [_c('strong', [_vm._v("Fuel")]), _c('br'), _vm._v("\n                  Standard Quantity for this route (Ltrs): " + _vm._s(_vm.fuel.fuel_required)), _c('br'), _vm._v("\n                  Current Fuel (Litres): " + _vm._s(_vm.fuel.current_fuel)), _c('br'), _vm._v("\n                  Requested Quantity: " + _vm._s(_vm.fuel.fuel_requested)), _c('br'), _vm._v("\n                  Fuel Issued: " + _vm._s(_vm.fuel.fuel_issued)), _c('br'), _vm._v("\n                  Total Fuel in Tank: " + _vm._s(_vm.fuel.fuel_total)), _c('br'), _vm._v(" "), _c('hr'), _vm._v(" "), _c('strong', [_vm._v("Narration")]), _c('br'), _vm._v("\n                  " + _vm._s(_vm.fuel.narration) + "\n                ")]), _vm._v(" "), (_vm.fuel.top_up_quantity) ? _c('div', {
+  }, [_c('strong', [_vm._v("Fuel")]), _c('br'), _vm._v("\n                  Standard Quantity for this route (Ltrs): " + _vm._s(_vm.fuel.fuel_required)), _c('br'), _vm._v("\n                  Current Fuel (Litres): " + _vm._s(_vm.fuel.current_fuel)), _c('br'), _vm._v("\n                  Requested Quantity: " + _vm._s(_vm.fuel.fuel_requested)), _c('br'), _vm._v("\n                  Fuel Issued: " + _vm._s(_vm.fuel.fuel_issued)), _c('br'), _vm._v("\n                  Total Fuel in Tank: " + _vm._s(_vm.fuel.fuel_total)), _c('br'), _vm._v(" "), _c('hr'), _vm._v(" "), _c('strong', [_vm._v("Narration")]), _c('br'), _vm._v("\n                  " + _vm._s(_vm.fuel.narration) + "\n                ")]), _vm._v(" "), (parseInt(_vm.fuel.top_up_quantity) > 0) ? _c('div', {
     staticClass: "col-xs-3"
   }, [_c('strong', [_vm._v("Top Up fuel")]), _vm._v("\n                  Top Up: " + _vm._s(_vm.fuel.top_up_quantity)), _c('br'), _vm._v("\n                  Top Up reason: " + _vm._s(_vm.fuel.top_up_reason) + "\n                ")]) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "col-xs-3"

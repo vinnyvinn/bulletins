@@ -59,6 +59,7 @@ class JourneyController extends Controller
             'cargo_types' => CargoType::all(['id', 'name', 'cargo_classification_id']),
             'carriage_points' => CarriagePoint::all(['id', 'name']),
             'drivers' => Driver::all(['id', 'first_name', 'last_name', 'mobile_phone']),
+            // 'trucks' => Truck::with('driver')->get(),
             'trucks' => Truck::all(['id', 'plate_number']),
         ]);
     }
@@ -82,7 +83,7 @@ class JourneyController extends Controller
             'message' => 'Maximum trucks for this contract reached. This contract has been allocated '.$contract_allocated_trucks.' trucks'
           ]);
         }
-        
+
         unset($data['_token'], $data['_method']);
         $data['raw'] = json_encode($data);
         $data['job_date'] = Carbon::parse(str_replace('/', '-', $data['job_date']))->format('Y-m-d');

@@ -50,7 +50,7 @@
                       <strong>Narration</strong><br>
                       {{ fuel.narration }}
                     </div>
-                    <div class="col-xs-3" v-if="fuel.top_up_quantity">
+                    <div class="col-xs-3" v-if="parseInt(fuel.top_up_quantity)>0">
                       <strong>Top Up fuel</strong>
                       Top Up: {{ fuel.top_up_quantity }}<br>
                       Top Up reason: {{ fuel.top_up_reason}}

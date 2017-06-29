@@ -5,6 +5,7 @@ namespace App;
 use App\Support\Core;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Driver;
 
 class Truck extends Model
 {
@@ -57,5 +58,10 @@ class Truck extends Model
     public function trailer()
     {
         return $this->belongsTo(Trailer::class);
+    }
+
+    public function driver()
+    {
+      return $this->hasOne(Driver::class);
     }
 }

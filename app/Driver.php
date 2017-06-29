@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use SmoDav\Factory\TruckFactory;
 
+
 class Driver extends Model
 {
     use SoftDeletes;
