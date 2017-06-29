@@ -79373,6 +79373,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             _this.carriage_points = response.carriage_points;
             _this.trucks = response.trucks;
             _this.drivers = response.drivers;
+            _this.last_journey_id = response.last_journey_id;
         });
     },
     mounted: function mounted() {
@@ -79413,7 +79414,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 sub_address_2: '',
                 sub_address_3: '',
                 sub_address_4: ''
-            }
+            },
+            last_journey_id: ''
         };
     },
 
@@ -95764,7 +95766,9 @@ if (false) {
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "panel panel-default"
-  }, [_vm._m(0), _vm._v(" "), _c('div', {
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_c('strong', [_vm._v("Journey Details:  (Journey Id: " + _vm._s(parseInt(_vm.last_journey_id.id) + 1) + ")")])]), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
   }, [_c('form', {
     attrs: {
@@ -96566,11 +96570,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "to": "/journey"
     }
   }, [_vm._v("Back")])], 1)])])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "panel-heading"
-  }, [_c('strong', [_vm._v("Journey Details")])])
-}]}
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()

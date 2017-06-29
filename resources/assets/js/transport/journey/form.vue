@@ -1,7 +1,7 @@
 <template>
     <div class="panel panel-default">
         <div class="panel-heading">
-            <strong>Journey Details</strong>
+            <strong>Journey Details:  (Journey Id: {{ parseInt(last_journey_id.id) +1 }})</strong>
         </div>
 
         <div class="panel-body">
@@ -238,6 +238,7 @@
                 this.carriage_points = response.carriage_points;
                 this.trucks = response.trucks;
                 this.drivers = response.drivers;
+                this.last_journey_id = response.last_journey_id;
             });
         },
 
@@ -280,7 +281,8 @@
                     sub_address_2: '',
                     sub_address_3: '',
                     sub_address_4: '',
-                }
+                },
+                last_journey_id: '',
             };
         },
 

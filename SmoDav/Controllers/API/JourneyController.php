@@ -65,6 +65,8 @@ class JourneyController extends Controller
             ->whereNotIn('id', $journeys)
             ->get(['driver_id', 'id', 'plate_number']);
 
+        $last_journey_id = Journey::orderBy('created_at','desc')->first(['id']);
+
         return Response::json([
             'routes' => Route::all(['id', 'source', 'destination', 'distance']),
             'clients' => Client::all(['DCLink', 'Name', 'Account']),
@@ -74,6 +76,7 @@ class JourneyController extends Controller
             // 'drivers' => Driver::all(['id', 'first_name', 'last_name', 'mobile_phone']),
             //  'trucks' => Truck::,
             'trucks' => $trucks,
+            'last_journey_id' => $last_journey_id
         ]);
     }
 
