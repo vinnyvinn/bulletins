@@ -71,4 +71,5 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('fuel', 'FuelController');
     Route::get('approve/{id}', 'FuelController@approve');
     Route::resource('route-card', 'RouteCardController');
+    Route::get('approve_mileage/{id}', '\SmoDav\Controllers\API\MileageController@approve');
 });

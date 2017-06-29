@@ -30,14 +30,14 @@
                 <div class="caption">Delivery Note</div>
             </router-link>
 
-            <router-link to="/fuel" class="nav-items">
-                <img src="/images/fuel.png" alt="fuel" class="img-responsive">
-                <div class="caption">Fuel Allocation</div>
-            </router-link>
-
             <router-link to="/mileage" class="nav-items">
                 <img src="/images/millage.png" alt="millage" class="img-responsive">
                 <div class="caption">Mileage Allocation</div>
+            </router-link>
+
+            <router-link to="/fuel" class="nav-items">
+                <img src="/images/fuel.png" alt="fuel" class="img-responsive">
+                <div class="caption">Fuel Allocation</div>
             </router-link>
 
             <router-link to="/route-card/create" class="nav-items">

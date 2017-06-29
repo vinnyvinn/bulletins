@@ -49,11 +49,13 @@
                       <hr>
                       <strong>Narration</strong><br>
                       {{ fuel.narration }}
-                    </div>
-                    <div class="col-xs-3" v-if="parseInt(fuel.top_up_quantity)>0">
+                      <hr>
                       <strong>Top Up fuel</strong>
-                      Top Up: {{ fuel.top_up_quantity }}<br>
-                      Top Up reason: {{ fuel.top_up_reason}}
+                      <div class="col-xs-12" v-if="parseInt(fuel.top_up)">
+                        Top Up: {{ fuel.top_up_quantity}}<br>
+                        Reason: {{ fuel.top_up_reason }}
+                      </div>
+                      <hr>
                     </div>
 
                     <div class="col-xs-3">
@@ -74,19 +76,25 @@
               <div class="col-xs-12">
                 <h4><strong>MILEAGE ALLOCATION (Delivery Note N0: RKS {{ delivery_note.id }})</strong></h4>
               </div>
-              <div class="col-xs-4">
+              <div class="col-xs-3">
                 Journey Number: {{ mileage.journey_id }}<br>
                 Mileage Type: {{ mileage.mileage_type }}<br>
                 Requested Amount: {{ mileage.requested_amount }}<br>
                 Standard Amount: {{ mileage.standard_amount }}<br>
               </div>
+              <div class="col-xs-3" v-if="parseInt(mileage.top_up)">
+                <strong>Top Up</strong><br>
+                Amount: {{ mileage.top_up_amount }}<br>
+                Reason: {{mileage.top_up_reason }}
+              </div>
+
               <div class="col-xs-3">
                 Mileage Allocation No: {{ mileage.id }}<br>
                 Status: {{ mileage.status }}<br>
                 Amount Approved: {{ mileage.approved_amount }}<br>
               </div>
 
-              <div class="col-xs-4">
+              <div class="col-xs-3">
                 Narration:<br>
                 {{ mileage.narration }}
               </div>
@@ -96,7 +104,7 @@
 
         <div class="form-group pull-right">
           <button type="button" name="button" v-if="fuel.status == 'Awaiting Approval'" class="btn btn-success" @click="approveFuel(fuel.id)">Approve</button>
-          <button type="button" name="button" v-else class="btn btn-warn btn-warning" @click="approveFuel(fuel.id)">Cancel Approval</button>
+          <!-- <button type="button" name="button" v-else class="btn btn-warn btn-warning" @click="approveFuel(fuel.id)">Cancel Approval</button> -->
           <button type="button" class="btn btn-success" @click="printFuelVoucher" :disabled="disablePrint"><i class="fa fa-print fa-fw"></i> Print</button>
           <router-link to="/fuel" class="btn btn-danger">Back</router-link>
       </div>
@@ -138,6 +146,7 @@ import axios from 'axios';
                   narration: '',
                   tank: '',
                   pump: '',
+                  top_up: '',
                   top_up_reason: '',
                   top_up_quantity: 0,
                 },
@@ -150,15 +159,20 @@ import axios from 'axios';
                   id: '',
                   status: '',
                   approved_amount: '',
-                  narration: ''
+                  narration: '',
+                  top_up: '',
+                  top_up_reason: '',
+                  top_up_amount: 0,
                 }
             };
         },
         created() {
+          this.$root.isLoading = true;
             http.get('/api/fuel/' + this.$route.params.id).then((response) => {
                 this.fuel = response.fuel;
                 this.delivery_note = response.delivery_note;
                 this.mileage = response.mileage;
+                this.$root.isLoading = false;
             });
         },
         computed: {

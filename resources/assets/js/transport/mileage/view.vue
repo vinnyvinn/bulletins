@@ -103,6 +103,7 @@
 
                 <div class="form-group">
                     <router-link to="/mileage" class="btn btn-danger">Back</router-link>
+                    <button type="button" name="button" v-if="mileage.status == 'Pending Approval'" class="btn btn-success" @click="approveMileage(mileage.id)">Approve</button>
                 </div>
             </form>
 
@@ -117,6 +118,7 @@
                 journeys: [],
                 uploads: [],
                 mileage: {
+                    id: '',
                     journey_id: '',
                     mileage_type: 'Fixed Mileage',
                     standard_amount: 0,
@@ -206,6 +208,23 @@
                     this.$root.isLoading = false;
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                 });
+            },
+            approveMileage(id) {
+              http.get('/api/approve_mileage/' + id).then(response => {
+                if (response.status != 'success') {
+                    this.$root.isLoading = false;
+                    alert2(this.$root, [response.message], 'danger');
+                    return;
+                }
+
+                this.fuel = response.fuel;
+
+                this.$root.isLoading = false;
+                alert2(this.$root, [response.message], 'success');
+                }).catch((error) => {
+                this.$root.isLoading = false;
+                alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
+              });
             },
         }
     }

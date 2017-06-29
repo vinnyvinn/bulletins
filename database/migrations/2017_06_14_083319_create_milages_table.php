@@ -25,7 +25,7 @@ class CreateMilagesTable extends Migration
             $table->text('narration')->nullable();
             $table->text('raw');
             $table->string('status')->default(Constants::STATUS_PENDING);
-            $table->boolean(top_up)->default(false);
+            $table->boolean('top_up')->default(false);
             $table->string('top_up_reason')->nullable();
             $table->integer('top_up_amount')->nullable();
             $table->timestamps();

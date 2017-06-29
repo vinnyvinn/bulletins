@@ -137,13 +137,13 @@ class MileageController extends Controller
 
     public function approve($id)
     {
-        Journey::where('id', $id)->update([
+        Mileage::where('id', $id)->update([
             'status' => Constants::STATUS_APPROVED
         ]);
 
         return Response::json([
             'status' => 'success',
-            'message' => 'Successfully approved journey.',
+            'message' => 'Successfully approved mileage allowance.',
         ]);
     }
 
