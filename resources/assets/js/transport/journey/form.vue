@@ -47,12 +47,14 @@
                         </div>
 
 
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="driver_id">Driver</label>
                             <select name="driver_id" id="driver_id" v-model="journey.driver_id" class="form-control input-sm select2" required>
                                 <option v-for="driver in drivers" :value="driver.id">{{ driver.first_name }} {{ driver.last_name }} ({{ driver.mobile_phone }})</option>
                             </select>
-                        </div>
+                        </div> -->
+
+
 
                     </div>
 
@@ -63,9 +65,22 @@
 
                         <div class="form-group">
                             <label for="truck_id">Vehicle Reg. No</label>
-                            <select @change="addTruck" v-model="journey.truck_id"  class="form-control input-sm" id="truck_id" name="truck_id" required>
+                            <select @change="addTruck()" v-model="journey.truck_id"  class="form-control input-sm" id="truck_id" name="truck_id" required>
                                 <option v-for="truck in trucks" :value="truck.id">{{ truck.plate_number }}</option>
                             </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="driver_id">Driver</label><br>
+                            {{ truck.driver.id }} {{ truck.driver.first_name }} {{ truck.driver.last_name }}
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="job_date">Job Date</label>
+                            <input type="text" v-model="journey.job_date" class="form-control input-sm datepicker" id="job_date" name="job_date" required>
                         </div>
 
                         <div class="form-group">
@@ -74,12 +89,12 @@
                         </div>
                     </div>
 
-                    <div class="col-sm-3">
+                    <!-- <div class="col-sm-3">
                         <div class="form-group">
-                            <label for="job_date">Job Date</label>
-                            <input type="text" v-model="journey.job_date" class="form-control input-sm datepicker" id="job_date" name="job_date" required>
-                        </div>                
-                    </div>
+                            <label for="ref_no">Ref No</label>
+                            <input type="text" v-model="journey.ref_no" class="form-control input-sm" id="ref_no" name="ref_no">
+                        </div>
+                    </div> -->
 
                 </div>
 
@@ -270,6 +285,16 @@
         },
 
         computed: {
+            truck() {
+                let truck = this.trucks.filter(e => e.id == this.journey.truck_id);
+                if (truck.length) {
+                    return truck[0];
+                }
+
+                return {
+                    driver: {},
+                };
+            },
             contract() {
                 let contract = this.contracts.filter(e => e.id == this.journey.contract_id);
                 if (contract.length) {
@@ -311,6 +336,7 @@
         methods: {
             addTruck() {
               this.journey.trucks.push({'id': this.journey.truck_id});
+              this.journey.driver_id = this.truck.driver.id;
             },
 
             updateBooleans() {

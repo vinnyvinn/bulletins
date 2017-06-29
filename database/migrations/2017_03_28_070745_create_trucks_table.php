@@ -24,6 +24,7 @@ class CreateTrucksTable extends Migration
             $table->string('location')->default(Core::AWAITING_ALLOCATION);
             $table->integer('project_id')->index()->unsigned()->nullable();
             $table->integer('trailer_id')->nullable()->index()->unsigned();
+            $table->integer('driver_id')->nullable()->index()->unsigned();
             $table->softDeletes();
             $table->timestamps();
 

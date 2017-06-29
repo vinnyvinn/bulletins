@@ -28,7 +28,7 @@ class CreateContractsTable extends Migration
             $table->boolean('ls_offloading_weights')->default(false);
             $table->boolean('lh_loading_weights')->default(false);
             $table->boolean('lh_offloading_weights')->default(false);
-            $table->boolean('loading_point_id')->default(false);
+            $table->integer('loading_point_id')->nullable();
             $table->text('unloading_points')->nullable();
             $table->string('enquiry_from')->nullable();
             $table->string('contract_head')->nullable();

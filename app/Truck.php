@@ -6,13 +6,14 @@ use App\Support\Core;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Driver;
+use SmoDav\Models\Journey;
 
 class Truck extends Model
 {
     use SoftDeletes;
 
     protected $fillable = [
-        'plate_number', 'make', 'model', 'max_load', 'status', 'location', 'trailer_id', 'project_id'
+        'plate_number', 'make', 'model', 'max_load', 'status', 'location', 'trailer_id', 'project_id','driver_id'
     ];
 
     public function scopePreLoading($query)
@@ -62,6 +63,11 @@ class Truck extends Model
 
     public function driver()
     {
-      return $this->hasOne(Driver::class);
+      return $this->belongsTo(Driver::class);
+    }
+
+    public function journey()
+    {
+      return $this->hasMany(Journey::class);
     }
 }

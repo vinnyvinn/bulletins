@@ -52,15 +52,28 @@ class JourneyController extends Controller
             ]);
         }
 
+        $journeys = Journey::where('status','<>','Closed')
+            ->get(['truck_id'])
+            ->map(function ($journey) {
+                return $journey->truck_id;
+            })
+            ->toArray();
+
+        $trucks = Truck::with(['driver' => function ($builder) {
+            return $builder->select(['id', 'first_name', 'last_name', 'mobile_phone']);
+        }])
+            ->whereNotIn('id', $journeys)
+            ->get(['driver_id', 'id', 'plate_number']);
+
         return Response::json([
             'routes' => Route::all(['id', 'source', 'destination', 'distance']),
             'clients' => Client::all(['DCLink', 'Name', 'Account']),
             'cargo_classifications' => CargoClassification::all(['id', 'name']),
             'cargo_types' => CargoType::all(['id', 'name', 'cargo_classification_id']),
             'carriage_points' => CarriagePoint::all(['id', 'name']),
-            'drivers' => Driver::all(['id', 'first_name', 'last_name', 'mobile_phone']),
-            // 'trucks' => Truck::with('driver')->get(),
-            'trucks' => Truck::all(['id', 'plate_number']),
+            // 'drivers' => Driver::all(['id', 'first_name', 'last_name', 'mobile_phone']),
+            //  'trucks' => Truck::,
+            'trucks' => $trucks,
         ]);
     }
 

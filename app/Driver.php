@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use SmoDav\Factory\TruckFactory;
+use SmoDav\Models\journey;
 
 
 class Driver extends Model
@@ -27,5 +28,10 @@ class Driver extends Model
     public function truck()
     {
         return $this->hasOne(Truck::class);
+    }
+
+    public function journey()
+    {
+      return $this->belongsTo(Journey::class);
     }
 }

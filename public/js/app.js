@@ -79342,6 +79342,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     created: function created() {
@@ -79401,11 +79416,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
     computed: {
-        contract: function contract() {
+        truck: function truck() {
             var _this2 = this;
 
+            var truck = this.trucks.filter(function (e) {
+                return e.id == _this2.journey.truck_id;
+            });
+            if (truck.length) {
+                return truck[0];
+            }
+
+            return {
+                driver: {}
+            };
+        },
+        contract: function contract() {
+            var _this3 = this;
+
             var contract = this.contracts.filter(function (e) {
-                return e.id == _this2.journey.contract_id;
+                return e.id == _this3.journey.contract_id;
             });
             if (contract.length) {
                 return JSON.parse(contract[0].raw);
@@ -79423,10 +79452,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             };
         },
         viableCargoTypes: function viableCargoTypes() {
-            var _this3 = this;
+            var _this4 = this;
 
             return this.cargo_types.filter(function (e) {
-                return e.cargo_classification_id == _this3.contract.cargo_classification_id;
+                return e.cargo_classification_id == _this4.contract.cargo_classification_id;
             });
         },
         toTime: function toTime() {
@@ -79448,62 +79477,63 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         addTruck: function addTruck() {
             this.journey.trucks.push({ 'id': this.journey.truck_id });
+            this.journey.driver_id = this.truck.driver.id;
         },
         updateBooleans: function updateBooleans() {
-            var _this4 = this;
+            var _this5 = this;
 
             var keys = ['subcontracted'];
 
             keys.forEach(function (item) {
-                return _this4.setBoolState(item);
+                return _this5.setBoolState(item);
             });
         },
         setBoolState: function setBoolState(key) {
             this.journey[key] = this.journey[key] == 'true';
         },
         fetchContracts: function fetchContracts() {
-            var _this5 = this;
+            var _this6 = this;
 
             this.$root.isLoading = true;
             return http.get('/api/journey/create?contracts=true').then(function (response) {
-                _this5.contracts = response.contracts;
-                _this5.$root.isLoading = false;
+                _this6.contracts = response.contracts;
+                _this6.$root.isLoading = false;
             });
         },
         updateFields: function updateFields() {
-            var _this6 = this;
+            var _this7 = this;
 
             $('#route_id').select2('destroy');
             setTimeout(function () {
-                _this6.journey.route_id = _this6.contract.route_id;
-                _this6.journey.job_description = _this6.contract.job_description;
-                _this6.journey.enquiry_from = _this6.contract.enquiry_from == 'null' ? '' : _this6.contract.enquiry_from;
+                _this7.journey.route_id = _this7.contract.route_id;
+                _this7.journey.job_description = _this7.contract.job_description;
+                _this7.journey.enquiry_from = _this7.contract.enquiry_from == 'null' ? '' : _this7.contract.enquiry_from;
                 $('#route_id').select2().on('change', function (e) {
-                    return _this6.journey.route_id = e.target.value;
+                    return _this7.journey.route_id = e.target.value;
                 });
             }, 1000);
         },
         checkState: function checkState() {
-            var _this7 = this;
+            var _this8 = this;
 
             if (this.$route.params.id) {
                 this.fetchContracts().then(function () {
-                    http.get('/api/journey/' + _this7.$route.params.id).then(function (response) {
-                        _this7.clients = response.clients;
-                        _this7.routes = response.routes;
-                        _this7.classifications = response.cargo_classifications;
-                        _this7.cargo_types = response.cargo_types;
-                        _this7.carriage_points = response.carriage_points;
-                        _this7.trucks = response.trucks;
-                        _this7.drivers = response.drivers;
+                    http.get('/api/journey/' + _this8.$route.params.id).then(function (response) {
+                        _this8.clients = response.clients;
+                        _this8.routes = response.routes;
+                        _this8.classifications = response.cargo_classifications;
+                        _this8.cargo_types = response.cargo_types;
+                        _this8.carriage_points = response.carriage_points;
+                        _this8.trucks = response.trucks;
+                        _this8.drivers = response.drivers;
                         //                            this.contract = response.contract;
-                        _this7.journey = response.journey.raw;
-                        _this7.journey.enquiry_from = _this7.journey.enquiry_from == 'null' ? '' : _this7.journey.enquiry_from;
-                        _this7.journey.ref_no = _this7.journey.ref_no == 'null' ? '' : _this7.journey.ref_no;
-                        _this7.journey.ref_no = _this7.journey.contract_id == 'null' ? '' : _this7.journey.contract_id;
-                        _this7.updateBooleans();
-                        _this7.status = response.journey.status;
-                        _this7.setupUI();
+                        _this8.journey = response.journey.raw;
+                        _this8.journey.enquiry_from = _this8.journey.enquiry_from == 'null' ? '' : _this8.journey.enquiry_from;
+                        _this8.journey.ref_no = _this8.journey.ref_no == 'null' ? '' : _this8.journey.ref_no;
+                        _this8.journey.ref_no = _this8.journey.contract_id == 'null' ? '' : _this8.journey.contract_id;
+                        _this8.updateBooleans();
+                        _this8.status = response.journey.status;
+                        _this8.setupUI();
                     });
                 });
             }
@@ -79515,7 +79545,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return date[2] + '/' + date[1] + '/' + date[0];
         },
         setupUI: function setupUI() {
-            var _this8 = this;
+            var _this9 = this;
 
             $('.datepicker').datepicker({
                 autoclose: true,
@@ -79524,33 +79554,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
 
             $('#job_date').datepicker().on('changeDate', function (e) {
-                _this8.journey.job_date = e.date.toLocaleDateString('en-GB');
+                _this9.journey.job_date = e.date.toLocaleDateString('en-GB');
             });
 
             setTimeout(function () {
                 $('#truck_id').select2().on('change', function (e) {
-                    _this8.journey.truck_id = e.target.value;
-                    _this8.addTruck();
+                    _this9.journey.truck_id = e.target.value;
+                    _this9.addTruck();
                 });
                 $('#driver_id').select2().on('change', function (e) {
-                    return _this8.journey.driver_id = e.target.value;
+                    return _this9.journey.driver_id = e.target.value;
                 });
                 $('#route_id').select2().on('change', function (e) {
-                    return _this8.journey.route_id = e.target.value;
+                    return _this9.journey.route_id = e.target.value;
                 });
             }, 1000);
         },
         store: function store() {
-            var _this9 = this;
+            var _this10 = this;
 
             this.$root.isLoading = true;
             var request = null;
 
             var truck = this.trucks.filter(function (e) {
-                return e.id == _this9.journey.truck_id;
+                return e.id == _this10.journey.truck_id;
             })[0];
             var route = this.routes.filter(function (e) {
-                return e.id == _this9.journey.route_id;
+                return e.id == _this10.journey.route_id;
             })[0];
 
             this.journey.truck_plate_number = truck.plate_number;
@@ -79566,12 +79596,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
 
             request.then(function (response) {
-                _this9.$root.isLoading = false;
-                alert2(_this9.$root, [response.message], 'success');
+                _this10.$root.isLoading = false;
+                alert2(_this10.$root, [response.message], 'success');
                 window._router.push({ path: '/journey' });
             }).catch(function (error) {
-                _this9.$root.isLoading = false;
-                alert2(_this9.$root, Object.values(JSON.parse(error.message)), 'danger');
+                _this10.$root.isLoading = false;
+                alert2(_this10.$root, Object.values(JSON.parse(error.message)), 'danger');
             });
         }
     }
@@ -95928,42 +95958,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "value": route.id
       }
     }, [_vm._v(_vm._s(route.source) + " - " + _vm._s(route.destination) + " (" + _vm._s(route.distance) + " KM)")])
-  }))]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "driver_id"
-    }
-  }, [_vm._v("Driver")]), _vm._v(" "), _c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.journey.driver_id),
-      expression: "journey.driver_id"
-    }],
-    staticClass: "form-control input-sm select2",
-    attrs: {
-      "name": "driver_id",
-      "id": "driver_id",
-      "required": ""
-    },
-    on: {
-      "change": function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.journey.driver_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
-    }
-  }, _vm._l((_vm.drivers), function(driver) {
-    return _c('option', {
-      domProps: {
-        "value": driver.id
-      }
-    }, [_vm._v(_vm._s(driver.first_name) + " " + _vm._s(driver.last_name) + " (" + _vm._s(driver.mobile_phone) + ")")])
   }))])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-3"
   }, [(_vm.journey.is_contract_related == '1') ? _c('div', [_c('h5', [_c('strong', [_vm._v("Trucks Allocated: " + _vm._s(_vm.contract.trucks_allocated))])])]) : _vm._e(), _vm._v(" "), _c('div', {
@@ -95994,7 +95988,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           return val
         });
         _vm.journey.truck_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }, _vm.addTruck]
+      }, function($event) {
+        _vm.addTruck()
+      }]
     }
   }, _vm._l((_vm.trucks), function(truck) {
     return _c('option', {
@@ -96006,32 +96002,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
-      "for": "enquiry_from"
+      "for": "driver_id"
     }
-  }, [_vm._v("Enquiry from")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.journey.enquiry_from),
-      expression: "journey.enquiry_from"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "disabled": _vm.journey.is_contract_related == '1',
-      "type": "text",
-      "id": "enquiry_from",
-      "name": "enquiry_from"
-    },
-    domProps: {
-      "value": (_vm.journey.enquiry_from)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.journey.enquiry_from = $event.target.value
-      }
-    }
-  })])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Driver")]), _c('br'), _vm._v("\n                        " + _vm._s(_vm.truck.driver.id) + " " + _vm._s(_vm.truck.driver.first_name) + " " + _vm._s(_vm.truck.driver.last_name) + "\n                    ")])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-3"
   }, [_c('div', {
     staticClass: "form-group"
@@ -96060,6 +96033,35 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "input": function($event) {
         if ($event.target.composing) { return; }
         _vm.journey.job_date = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "enquiry_from"
+    }
+  }, [_vm._v("Enquiry from")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.journey.enquiry_from),
+      expression: "journey.enquiry_from"
+    }],
+    staticClass: "form-control input-sm",
+    attrs: {
+      "disabled": _vm.journey.is_contract_related == '1',
+      "type": "text",
+      "id": "enquiry_from",
+      "name": "enquiry_from"
+    },
+    domProps: {
+      "value": (_vm.journey.enquiry_from)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.journey.enquiry_from = $event.target.value
       }
     }
   })])])]), _vm._v(" "), _c('hr'), _vm._v(" "), (_vm.journey.is_contract_related == '1') ? _c('div', {
