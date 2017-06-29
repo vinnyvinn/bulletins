@@ -80297,6 +80297,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -80310,7 +80326,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 requested_amount: 0,
                 approved_amount: '',
                 balance_amount: '',
-                narration: ''
+                narration: '',
+                top_up: false,
+                top_up_amount: 0,
+                top_up_reason: ''
             }
         };
     },
@@ -80352,6 +80371,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
+        toggleTop_Up: function toggleTop_Up() {
+            this.mileage.top_up = !this.mileage.top_up;
+            return this.mileage.top_up_amount = 0;
+        },
         validateRequestedAmount: function validateRequestedAmount() {
             if (parseInt(this.mileage.requested_amount) > parseInt(this.journey.route.allowance_amount)) {
                 this.mileage.requested_amount = 0;
@@ -100584,7 +100607,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("Fixed Mileage")])])])])]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
-    staticClass: "col-sm-4"
+    staticClass: "col-sm-3"
   }, [_c('div', {
     staticClass: "form-group"
   }, [_c('label', {
@@ -100592,7 +100615,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "for": "mileage_type"
     }
   }, [_vm._v("Standard Mileage Amount")]), _vm._v(" "), _c('h5', [_c('strong', [_vm._v(_vm._s(_vm.formatNumber(_vm.journey.route.allowance_amount)))])])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-4"
+    staticClass: "col-sm-3"
   }, [_c('div', {
     staticClass: "form-group"
   }, [_c('label', {
@@ -100627,7 +100650,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   })])]), _vm._v(" "), (_vm.$route.params.id) ? _c('div', {
-    staticClass: "col-sm-4"
+    staticClass: "col-sm-3"
   }, [_c('div', {
     staticClass: "form-group"
   }, [_c('label', {
@@ -100660,7 +100683,110 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.$forceUpdate()
       }
     }
-  })])]) : _vm._e()]), _vm._v(" "), _c('div', {
+  })])]) : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('label', {
+    attrs: {
+      "for": "top_up"
+    }
+  }, [_vm._v("Top Up?")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.mileage.top_up),
+      expression: "mileage.top_up"
+    }],
+    attrs: {
+      "type": "checkbox",
+      "name": "top_up",
+      "id": "top_up"
+    },
+    domProps: {
+      "checked": Array.isArray(_vm.mileage.top_up) ? _vm._i(_vm.mileage.top_up, null) > -1 : (_vm.mileage.top_up)
+    },
+    on: {
+      "change": function($event) {
+        !_vm.mileage.top_up
+      },
+      "__c": function($event) {
+        var $$a = _vm.mileage.top_up,
+          $$el = $event.target,
+          $$c = $$el.checked ? (true) : (false);
+        if (Array.isArray($$a)) {
+          var $$v = null,
+            $$i = _vm._i($$a, $$v);
+          if ($$c) {
+            $$i < 0 && (_vm.mileage.top_up = $$a.concat($$v))
+          } else {
+            $$i > -1 && (_vm.mileage.top_up = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+          }
+        } else {
+          _vm.mileage.top_up = $$c
+        }
+      }
+    }
+  }), _vm._v(" "), (_vm.mileage.top_up) ? _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "top_up_amount"
+    }
+  }, [_vm._v("Top Up Amount:")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.mileage.top_up_amount),
+      expression: "mileage.top_up_amount"
+    }],
+    attrs: {
+      "type": "number",
+      "name": "top_up_amount",
+      "id": "top_up_amount"
+    },
+    domProps: {
+      "value": (_vm.mileage.top_up_amount)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.mileage.top_up_amount = $event.target.value
+      },
+      "blur": function($event) {
+        _vm.$forceUpdate()
+      }
+    }
+  }), _vm._v(" "), _c('label', {
+    attrs: {
+      "for": "top_up_reason"
+    }
+  }, [_vm._v("Top up reason")]), _vm._v(" "), _c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.mileage.top_up_reason),
+      expression: "mileage.top_up_reason"
+    }],
+    staticClass: "form-control input-sm",
+    attrs: {
+      "name": "narration",
+      "id": "top_up_reason"
+    },
+    domProps: {
+      "value": (_vm.mileage.top_up_reason)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.mileage.top_up_reason = $event.target.value
+      }
+    }
+  })]) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('label', {
+    attrs: {
+      "for": "total_amount_given"
+    }
+  }, [_vm._v("Total Amount: " + _vm._s(parseInt(_vm.mileage.requested_amount) + parseInt(_vm.mileage.top_up_amount)))])])]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-8"
@@ -103740,7 +103866,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "for": "top_up_quantity"
     }
-  }, [_vm._v("Top Up quantity?")]), _vm._v(" "), _c('input', {
+  }, [_vm._v("Top Up quantity:")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",

@@ -70,24 +70,40 @@
 
                 <div class="row">
 
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <div class="form-group">
                             <label for="mileage_type">Standard Mileage Amount</label>
                             <h5><strong>{{ formatNumber(journey.route.allowance_amount) }}</strong></h5>
                         </div>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <div class="form-group">
                             <label for="requested_amount">Requested Amount</label>
                             <input min="0" v-model="mileage.requested_amount" @change="validateRequestedAmount" type="number" class="form-control input-sm" id="requested_amount" name="requested_amount">
                         </div>
                     </div>
-                    <div class="col-sm-4" v-if="$route.params.id">
+                    <div class="col-sm-3" v-if="$route.params.id">
                         <div class="form-group">
                             <label for="approved_amount">Approved Amount</label>
                             <input min="0" v-model="mileage.approved_amount" type="number" class="form-control input-sm" id="approved_amount" name="approved_amount">
                         </div>
                     </div>
+                    <div class="col-sm-3">
+                      <label for="top_up">Top Up?</label>
+                      <input type="checkbox" name="top_up" id="top_up" v-model="mileage.top_up" @change="!mileage.top_up">
+                      <div class="form-group" v-if="mileage.top_up">
+                        <label for="top_up_amount">Top Up Amount:</label>
+                        <input type="number" name="top_up_amount" id="top_up_amount" v-model="mileage.top_up_amount">
+                        <label for="top_up_reason">Top up reason</label>
+                        <textarea name="narration" id="top_up_reason" class="form-control input-sm" v-model="mileage.top_up_reason"></textarea>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                      <label for="total_amount_given">Total Amount: {{ parseInt(mileage.requested_amount) + parseInt(mileage.top_up_amount)}}</label>
+
+                    </div>
+
                 </div>
 
                 <div class="row">
@@ -125,6 +141,9 @@
                     approved_amount: '',
                     balance_amount: '',
                     narration: '',
+                    top_up: false,
+                    top_up_amount: 0,
+                    top_up_reason: ''
                 }
             };
         },
@@ -162,6 +181,11 @@
         },
 
         methods: {
+
+          toggleTop_Up(){
+            this.mileage.top_up = !this.mileage.top_up;
+            return this.mileage.top_up_amount = 0;
+          },
             validateRequestedAmount() {
               if(parseInt(this.mileage.requested_amount) > parseInt(this.journey.route.allowance_amount)){
                 this.mileage.requested_amount = 0;
