@@ -170,6 +170,9 @@ import axios from 'axios';
     export default {
         created() {
           this.$root.isLoading = true;
+          if(this.$route.params.id){
+            this.can_save = true;
+          }
             http.get('/api/fuel/create').then((response) => {
                 this.journeys = response.journeys;
                 this.calculateKms();

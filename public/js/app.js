@@ -77817,6 +77817,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         var _this = this;
 
         this.$root.isLoading = true;
+        if (this.$route.params.id) {
+            this.can_save = true;
+        }
         http.get('/api/fuel/create').then(function (response) {
             _this.journeys = response.journeys;
             _this.calculateKms();
