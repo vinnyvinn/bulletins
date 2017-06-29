@@ -80352,6 +80352,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
+        validateRequestedAmount: function validateRequestedAmount() {
+            if (parseInt(this.mileage.requested_amount) > parseInt(this.journey.route.allowance_amount)) {
+                this.mileage.requested_amount = 0;
+                return alert2(this.$root, ['Requested amount cannot be more than standard allowance'], 'danger');
+            }
+        },
         getSource: function getSource() {
             if (this.journey.driver.avatar) {
                 return this.journey.driver.avatar;
@@ -100611,6 +100617,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "value": (_vm.mileage.requested_amount)
     },
     on: {
+      "change": _vm.validateRequestedAmount,
       "input": function($event) {
         if ($event.target.composing) { return; }
         _vm.mileage.requested_amount = $event.target.value
@@ -103727,7 +103734,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }
-  }), _vm._v(" "), (parseInt(_vm.fuel.top_up_quantity) > 0) ? _c('div', {
+  }), _vm._v(" "), (_vm.fuel.top_up) ? _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {

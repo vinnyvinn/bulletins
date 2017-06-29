@@ -29,7 +29,7 @@ class CreateFuelsTable extends Migration
             $table->string('tank')->nullable();
             $table->string('pump')->nullable();
             $table->boolean('top_up')->default(false);
-            $table->boolean('top_up_reason')->nullable();
+            $table->string('top_up_reason')->nullable();
             $table->integer('top_up_quantity')->nullable();
             $table->integer('user_id')->nullable();
             $table->timestamps();

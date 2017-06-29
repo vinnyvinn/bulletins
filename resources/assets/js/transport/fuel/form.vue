@@ -114,7 +114,7 @@
                     <div class="col-sm-3">
                       <label for="top_up">Top Up?</label>
                       <input type="checkbox" name="top_up" id="top_up" v-model="fuel.top_up" @change="!fuel.top_up">
-                      <div class="form-group" v-if="parseInt(fuel.top_up_quantity)>0">
+                      <div class="form-group" v-if="fuel.top_up">
                         <label for="top_up_quantity">Top Up quantity?</label>
                         <input type="number" name="top_up_quantity" v-model="fuel.top_up_quantity">
                         <label for="top_up_reason">Top up reason</label>

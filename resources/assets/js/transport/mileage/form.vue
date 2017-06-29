@@ -79,7 +79,7 @@
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label for="requested_amount">Requested Amount</label>
-                            <input min="0" v-model="mileage.requested_amount" type="number" class="form-control input-sm" id="requested_amount" name="requested_amount">
+                            <input min="0" v-model="mileage.requested_amount" @change="validateRequestedAmount" type="number" class="form-control input-sm" id="requested_amount" name="requested_amount">
                         </div>
                     </div>
                     <div class="col-sm-4" v-if="$route.params.id">
@@ -162,6 +162,12 @@
         },
 
         methods: {
+            validateRequestedAmount() {
+              if(parseInt(this.mileage.requested_amount) > parseInt(this.journey.route.allowance_amount)){
+                this.mileage.requested_amount = 0;
+                return alert2(this.$root, ['Requested amount cannot be more than standard allowance'], 'danger');
+              }
+            },
             getSource() {
                 if(this.journey.driver.avatar){
                     return this.journey.driver.avatar;
