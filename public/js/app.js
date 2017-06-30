@@ -79373,7 +79373,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             _this.carriage_points = response.carriage_points;
             _this.trucks = response.trucks;
             _this.drivers = response.drivers;
-            _this.last_journey_id = response.last_journey_id;
+            if (response.last_journey_id) {
+                _this.last_journey_id = response.last_journey_id;
+            }
         });
     },
     mounted: function mounted() {
@@ -79415,7 +79417,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 sub_address_3: '',
                 sub_address_4: ''
             },
-            last_journey_id: ''
+            last_journey_id: {
+                id: 0
+            }
         };
     },
 

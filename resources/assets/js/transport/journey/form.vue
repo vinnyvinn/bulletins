@@ -238,7 +238,9 @@
                 this.carriage_points = response.carriage_points;
                 this.trucks = response.trucks;
                 this.drivers = response.drivers;
-                this.last_journey_id = response.last_journey_id;
+                if(response.last_journey_id){
+                  this.last_journey_id = response.last_journey_id;
+                }
             });
         },
 
@@ -282,7 +284,9 @@
                     sub_address_3: '',
                     sub_address_4: '',
                 },
-                last_journey_id: '',
+                last_journey_id: {
+                  id: 0
+                },
             };
         },
 
