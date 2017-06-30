@@ -9,7 +9,7 @@
             <div class="row">
                 <div class="col-sm-6">
                     <h5><strong>Driver</strong></h5>
-                    {{ truck.trailer_number }}
+                    {{ truck.driver.first_name }} {{ truck.driver.last_name }}
                     <hr>
 
                     <h5><strong>Trailer</strong></h5>

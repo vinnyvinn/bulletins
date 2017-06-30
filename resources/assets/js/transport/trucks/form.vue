@@ -49,6 +49,15 @@
                                     <option v-for="trailer in trailers" :value="trailer.id">{{ trailer.trailer_number }}</option>
                                 </select>
                             </div>
+
+                            <div class="form-group">
+                                <label for="driver_id">Assigned Driver</label>
+                                <select v-model="truck.driver_id" name="driver_id" id="driver_id" class="form-control">
+                                    <option value="">No Driver</option>
+                                    <option v-for="driver in drivers" :value="driver.id">{{ driver.first_name }} {{ driver.last_name }}</option>
+                                </select>
+                            </div>
+
                             <udf module="Trucks" v-on:udfAdded="addUdfToObject" :state="truck"></udf>
                             <div class="form-group">
                                 <button class="btn btn-success">Save</button>
@@ -65,8 +74,18 @@
 <script>
     export default {
         created() {
-            http.get('/api/truck/create?truck_id=' + this.$route.params.id).then((response) => {
+            if (this.$route.params.id) {
+                http.get('/api/truck/create?truck_id=' + this.$route.params.id).then((response) => {
+                    this.trailers = response.trailers;
+                    this.drivers = response.drivers;
+                });
+
+                return;
+            }
+
+            http.get('/api/truck/create').then((response) => {
                 this.trailers = response.trailers;
+                this.drivers = response.drivers;
             });
         },
 
@@ -77,6 +96,7 @@
         data() {
             return {
                 trailers: [],
+                drivers: [],
                 truck: {
                     trailer_id: '',
                     plate_number: '',
@@ -85,6 +105,7 @@
                     model: '',
                     status: 'Active',
                     location: 'Awaiting Allocation',
+                    driver_id: ''
                 }
             };
         },

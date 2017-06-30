@@ -81018,13 +81018,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     created: function created() {
         var _this = this;
 
-        http.get('/api/truck/create?truck_id=' + this.$route.params.id).then(function (response) {
+        if (this.$route.params.id) {
+            http.get('/api/truck/create?truck_id=' + this.$route.params.id).then(function (response) {
+                _this.trailers = response.trailers;
+                _this.drivers = response.drivers;
+            });
+
+            return;
+        }
+
+        http.get('/api/truck/create').then(function (response) {
             _this.trailers = response.trailers;
+            _this.drivers = response.drivers;
         });
     },
     mounted: function mounted() {
@@ -81033,6 +81052,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             trailers: [],
+            drivers: [],
             truck: {
                 trailer_id: '',
                 plate_number: '',
@@ -81040,7 +81060,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 make: '',
                 model: '',
                 status: 'Active',
-                location: 'Awaiting Allocation'
+                location: 'Awaiting Allocation',
+                driver_id: ''
             }
         };
     },
@@ -99596,6 +99617,45 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "value": trailer.id
       }
     }, [_vm._v(_vm._s(trailer.trailer_number))])
+  })], 2)]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "driver_id"
+    }
+  }, [_vm._v("Assigned Driver")]), _vm._v(" "), _c('select', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.truck.driver_id),
+      expression: "truck.driver_id"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "name": "driver_id",
+      "id": "driver_id"
+    },
+    on: {
+      "change": function($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+          return o.selected
+        }).map(function(o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val
+        });
+        _vm.truck.driver_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      }
+    }
+  }, [_c('option', {
+    attrs: {
+      "value": ""
+    }
+  }, [_vm._v("No Driver")]), _vm._v(" "), _vm._l((_vm.drivers), function(driver) {
+    return _c('option', {
+      domProps: {
+        "value": driver.id
+      }
+    }, [_vm._v(_vm._s(driver.first_name) + " " + _vm._s(driver.last_name))])
   })], 2)]), _vm._v(" "), _c('udf', {
     attrs: {
       "module": "Trucks",
@@ -102182,7 +102242,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-6"
-  }, [_vm._m(0), _vm._v("\n                  " + _vm._s(_vm.truck.trailer_number) + "\n                  "), _c('hr'), _vm._v(" "), _vm._m(1), _vm._v("\n                  " + _vm._s(_vm.truck.type) + "\n                  "), _c('hr'), _vm._v(" "), _vm._m(2), _vm._v("\n                  " + _vm._s(_vm.truck.make) + "\n                  "), _c('hr')]), _vm._v(" "), _c('div', {
+  }, [_vm._m(0), _vm._v("\n                  " + _vm._s(_vm.truck.driver.first_name) + " " + _vm._s(_vm.truck.driver.last_name) + "\n                  "), _c('hr'), _vm._v(" "), _vm._m(1), _vm._v("\n                  " + _vm._s(_vm.truck.type) + "\n                  "), _c('hr'), _vm._v(" "), _vm._m(2), _vm._v("\n                  " + _vm._s(_vm.truck.make) + "\n                  "), _c('hr')]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
   }, [_vm._m(3), _vm._v("\n                  " + _vm._s(_vm.truck.max_load) + "\n                  "), _c('hr'), _vm._v(" "), _vm._m(4), _vm._v("\n                  " + _vm._s(_vm.truck.make) + "\n                  "), _c('hr'), _vm._v(" "), _vm._m(5), _vm._v("\n                  " + _vm._s(_vm.truck.model) + "\n                  "), _c('hr')]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
