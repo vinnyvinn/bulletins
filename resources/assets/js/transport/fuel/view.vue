@@ -60,12 +60,16 @@
 
                     <div class="col-xs-3">
                       <strong>Mileage Readings</strong><br>
-                      Previous KM: {{ fuel.previous_km }}<br>
-                      Previous Fuel: {{ fuel.previous_fuel }}<br>
                       Current Km: {{ fuel.current_km }}<br>
-                      KM Covered: {{ km_covered }}<br>
-                      Fuel Used: {{ fuel_used }}<br>
-                      KM/Ltr: {{ km_per_litre }}<br>
+                      Previous KM: {{ fuel.previous_km }}<br>
+                      <strong>KM Covered: {{ parseInt(fuel.current_km)-parseInt(fuel.previous_km) }} Kms<br></strong>
+                      Current Fuel (Litres): {{ fuel.current_fuel }}<br>
+                      Previous Fuel: {{ fuel.previous_fuel }}<br>
+                      <strong>Fuel Used: {{ parseInt(fuel.previous_fuel)-parseInt(fuel.current_fuel) }} Ltrs<br></strong>
+                      <hr>
+                      <strong>
+                        KM/Ltr: {{ parseInt((parseInt(fuel.current_km)-parseInt(fuel.previous_km))/parseInt(parseInt(fuel.previous_fuel)-parseInt(fuel.current_fuel))).toFixed(2) }}<br>
+                      </strong>
                     </div>
 
                   </div>

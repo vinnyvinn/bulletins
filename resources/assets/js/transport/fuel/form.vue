@@ -128,6 +128,13 @@
                 <div class="row">
                   <div class="col-sm-3">
                     <div class="form-group">
+                      <label for="current_km">Current KM</label>
+                      <input type="number" :min="minimumKm" name="current_km" class="form-control input-sm" v-model="fuel.current_km" @change="calculateKms">
+                    </div>
+                  </div>
+                  
+                  <div class="col-sm-3">
+                    <div class="form-group">
                       <label for="previous_km">Previous KM</label>
                       <input type="number" name="previous_km" class="form-control input-sm" v-model="fuel.previous_km" @change="calculateKms">
                     </div>
@@ -137,13 +144,6 @@
                     <div class="form-group">
                       <label for="previous_fuel">Previous Fuel</label>
                       <input type="number" name="previous_fuel" class="form-control input-sm" v-model="fuel.previous_fuel" @keyup="calculateKms">
-                    </div>
-                  </div>
-
-                  <div class="col-sm-3">
-                    <div class="form-group">
-                      <label for="current_km">Current KM</label>
-                      <input type="number" :min="minimumKm" name="current_km" class="form-control input-sm" v-model="fuel.current_km" @change="calculateKms">
                     </div>
                   </div>
 
