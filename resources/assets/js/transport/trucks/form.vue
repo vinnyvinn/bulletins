@@ -74,11 +74,16 @@
 <script>
     export default {
         created() {
+            this.$root.isLoading = true;
             if (this.$route.params.id) {
-                http.get('/api/truck/create?truck_id=' + this.$route.params.id).then((response) => {
-                    this.trailers = response.trailers;
-                    this.drivers = response.drivers;
-                });
+                http.get('/api/truck/create?truck_id=' + this.$route.params.id)
+                    .then((response) => {
+                        this.trailers = response.trailers;
+                        this.drivers = response.drivers;
+                    })
+                    .then(() => this.checkState())
+                    .then(() => this.$root.isLoading = false)
+                    .catch(() => this.$root.isLoading = false);
 
                 return;
             }
@@ -86,12 +91,11 @@
             http.get('/api/truck/create').then((response) => {
                 this.trailers = response.trailers;
                 this.drivers = response.drivers;
-            });
+            })
+            .then(() => this.$root.isLoading = false)
+            .catch(() => this.$root.isLoading = false);
         },
 
-        mounted() {
-            this.checkState();
-        },
 
         data() {
             return {
@@ -113,9 +117,10 @@
         methods: {
             checkState() {
                 if (this.$route.params.id) {
-                    http.get('/api/truck/' + this.$route.params.id).then((response) => {
-                        this.truck = response.truck;
-                    });
+                    return http.get('/api/truck/' + this.$route.params.id)
+                        .then((response) => {
+                            this.truck = response.truck;
+                        });
                 }
             },
 
