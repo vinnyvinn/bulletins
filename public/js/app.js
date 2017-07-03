@@ -78598,6 +78598,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
@@ -78624,7 +78631,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             journeys: [],
-            journey_details: [],
+            truck_details: {
+                driver: {},
+                trailer: {}
+            },
             printout: '',
             isSupervisor: false,
             isInspector: true,
@@ -78677,8 +78687,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return {};
             }
             var id = journey[0].id;
+            this.truck_details = journey[0].truck;
             journey = JSON.parse(journey[0].raw);
-            this.journey_details = journey[0];
+
             journey.id = id;
             this.checklist.from_station = journey.route_source;
             this.checklist.to_station = journey.route_destination;
@@ -106645,7 +106656,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "row"
   }, [_c('div', {
-    staticClass: "col-sm-4"
+    staticClass: "col-sm-3"
   }, [_c('div', {
     staticClass: "form-group"
   }, [_c('label', {
@@ -106683,11 +106694,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_vm._v("JRNY-" + _vm._s(journey.id))])
   }))])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-4"
+    staticClass: "col-sm-3"
   }, [_c('div', {
     staticClass: "form-group"
-  }, [_c('label', [_vm._v("Vehicle")]), _vm._v(" "), _c('h5', [_c('strong', [_vm._v(_vm._s(_vm.journey.truck_plate_number))])])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-4"
+  }, [_c('h5', [_c('strong', [_vm._v("Vehicle: " + _vm._s(_vm.journey.truck_plate_number))])]), _vm._v(" "), _c('h5', [_c('strong', [_vm._v("Trailer: " + _vm._s(_vm.truck_details.trailer.trailer_number) + "\n                                      (" + _vm._s(_vm.truck_details.trailer.make) + ")")])])])]), _vm._v(" "), (_vm.truck_details) ? _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', [_vm._v("Driver")]), _vm._v(" "), _c('h5', [_c('strong', [_vm._v(_vm._s(_vm.truck_details.driver.first_name) + " " + _vm._s(_vm.truck_details.driver.last_name))])])])]) : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
   }, [_c('div', {
     staticClass: "form-group"
   }, [_c('label', [_vm._v("Route")]), _vm._v(" "), (_vm.journey.route_source) ? _c('h5', [_c('strong', [_vm._v(_vm._s(_vm.journey.route_source) + " to " + _vm._s(_vm.journey.route_destination))])]) : _vm._e()])])]), _vm._v(" "), _c('table', {
