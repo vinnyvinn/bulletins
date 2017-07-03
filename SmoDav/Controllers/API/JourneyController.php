@@ -27,9 +27,9 @@ class JourneyController extends Controller
     public function index()
     {
         $journeys = Journey::with(['truck' => function ($builder) {
-            return $builder->select(['id', 'plate_number']);
-        }])->get([
-            'id', 'is_contract_related', 'journey_type', 'job_date', 'ref_no', 'status'
+            return $builder->select(['id', 'plate_number','driver_id']);
+        }, 'truck.driver'])->get([
+            'id', 'is_contract_related', 'truck_id', 'contract_id','journey_type', 'job_date', 'ref_no', 'status'
         ]);
 
         return Response::json([
@@ -45,11 +45,19 @@ class JourneyController extends Controller
     public function create()
     {
         if (request('contracts')) {
+            $contracts = Contract::open()
+                ->whereRaw("(select count(*) from journeys where contracts.id = journeys.contract_id and status = 'Approved') < contracts.trucks_allocated")
+                ->get();
+
+
             return Response::json([
                 'contracts' => Contract::open()->get([
                     'id', 'raw'
                 ])
             ]);
+          return Response::json([
+              'contracts' => $contracts
+          ]);
         }
 
         $journeys = Journey::where('status','<>','Closed')
@@ -244,5 +252,12 @@ class JourneyController extends Controller
             'status' => 'success',
             'message' => 'Successfully reopened journey.',
         ]);
+    }
+
+    public function trucks_already_allocated($contract_id) {
+
+      return Response::json([
+        'trucks_already_allocated' => Journey::where('contract_id', $contract_id)->distinct()->count()
+      ]);
     }
 }

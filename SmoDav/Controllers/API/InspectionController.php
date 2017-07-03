@@ -45,7 +45,7 @@ class InspectionController extends Controller
     {
         return Response::json([
             'status' => 'success',
-            'journeys' => Journey::open()->doesntHave('inspection')->get(['id', 'raw']),
+            'journeys' => Journey::open()->doesntHave('inspection')->with('truck','truck.driver','truck.trailer')->get(['id', 'raw', 'truck_id']),
             'supervisor' => false,
             'inspector' => true,
         ]);

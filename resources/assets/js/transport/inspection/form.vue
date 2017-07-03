@@ -29,6 +29,7 @@
                                         <h5><strong>{{ journey.truck_plate_number }}</strong></h5>
                                     </div>
                                 </div>
+                                
 
                                 <div class="col-sm-4">
                                     <div class="form-group">
@@ -231,6 +232,7 @@
         data() {
             return {
                 journeys: [],
+                journey_details: [],
                 printout: '',
                 isSupervisor: false,
                 isInspector: true,
@@ -266,7 +268,7 @@
                         item_21: false,
                         item_22: false,
                         item_23: false,
-                    }
+                    },
                 }
             }
         },
@@ -279,6 +281,7 @@
                 }
                 let id = journey[0].id;
                 journey = JSON.parse(journey[0].raw);
+                this.journey_details = journey[0];
                 journey.id = id;
                 this.checklist.from_station = journey.route_source;
                 this.checklist.to_station = journey.route_destination;

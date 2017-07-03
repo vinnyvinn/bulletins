@@ -1,7 +1,7 @@
 <template>
     <div class="panel panel-default">
         <div class="panel-heading">
-            <strong>Contract Details</strong>
+            <strong>Contract Details   (Contract Id: {{ parseInt(last_contract_id.id) +1 }}*)</strong>
         </div>
 
         <div class="panel-body">
@@ -402,8 +402,20 @@
                             <input v-model="contract.sub_delivery_to" type="text" class="form-control input-sm" id="sub_delivery_to" name="sub_delivery_to">
                         </div>
                         <div class="form-group">
-                            <label for="sub_delivery_address">Delivery Address</label>
+                            <label for="sub_delivery_address_1">Delivery Address 1</label>
                             <input v-model="contract.sub_delivery_address" type="text" class="form-control input-sm" id="sub_delivery_address" name="sub_delivery_address">
+                        </div>
+                        <div class="form-group">
+                            <label for="sub_delivery_address_2">Delivery Address 2</label>
+                            <input v-model="contract.sub_delivery_address_2" type="text" class="form-control input-sm" id="sub_delivery_address_2" name="sub_delivery_address_2">
+                        </div>
+                        <div class="form-group">
+                            <label for="sub_delivery_addres_3">Delivery Address 3</label>
+                            <input v-model="contract.sub_delivery_address_3" type="text" class="form-control input-sm" id="sub_delivery_address_3" name="sub_delivery_address_3">
+                        </div>
+                        <div class="form-group">
+                            <label for="sub_delivery_address_4">Delivery Address 4</label>
+                            <input v-model="contract.sub_delivery_address_4" type="text" class="form-control input-sm" id="sub_delivery_address_4" name="sub_delivery_address_4">
                         </div>
                     </div>
                 </div>
@@ -436,6 +448,9 @@
                 this.classifications = response.cargo_classifications;
                 this.cargo_types = response.cargo_types;
                 this.carriage_points = response.carriage_points;
+                if(response.last_contract_id){
+                  this.last_contract_id = response.last_contract_id;
+                }
             });
         },
 
@@ -504,6 +519,12 @@
                     sub_address_4: '',
                     sub_delivery_to: '',
                     sub_delivery_address: '',
+                    sub_delivery_address_2: '',
+                    sub_delivery_address_3: '',
+                    sub_delivery_address_4: '',
+                },
+                last_contract_id: {
+                  id: 0
                 }
             };
         },

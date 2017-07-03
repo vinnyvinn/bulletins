@@ -14,10 +14,10 @@
                                 <tr>
                                     <th>Journey #</th>
                                     <th>Status</th>
-                                    <th>Contract Related</th>
-                                    <th>Journey Type</th>
+                                    <th>Truck</th>
+                                    <th>Contract</th>
                                     <th>Job Date</th>
-                                    <th>Ref. No.</th>
+                                    <th>Driver</th>
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -25,30 +25,33 @@
                                 <tr v-for="journey in journeys">
                                     <td><router-link :to="'/journey/' + journey.id">JRNY-{{ journey.id }}</router-link></td>
                                     <td>
-                                      <span class="label label-default" v-if="journey.status == 'Pending Approval'">Pending Approval</span>
+                                      <span class="label label-info" v-if="journey.status == 'Pending Approval'">Pending Approval</span>
                                       <span class="label label-success" v-if="journey.status == 'Approved'">Approved</span>
+                                      <span class="label label-default" v-if="journey.status == 'Closed'">Closed</span>
+
                                     </td>
-                                    <td>{{ journey.is_contract_related ? 'Yes' : 'No' }}</td>
-                                    <td>{{ journey.journey_type }}</td>
-                                    <td>{{ date2(journey.job_date) }}</td>
-                                    <td>{{ journey.ref_no }}</td>
+                                    <td>{{ journey.truck.plate_number }}</td>
+                                    <td>CTR-{{ journey.contract_id }}</td>
+                                    <td>{{ date2(journey.job_date) }}</td>                                    
+                                    <td>{{ journey.truck.driver.first_name}} {{ journey.truck.driver.last_name}}</td>
                                     <td class="text-center">
-                                        <span @click="edit(journey)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
+                                        <span v-if="journey.status != 'Closed'" @click="edit(journey)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
                                         <button data-toggle="popover" :data-item="journey.id" class="btn btn-xs btn-danger btn-destroy">
                                             <i class="fa fa-trash"></i>
                                         </button>
-                                    </td>                                   
+                                    </td>
                                 </tr>
                                 </tbody>
 
                                 <tfoot>
                                 <tr>
-                                    <th>Journey #</th>
-                                    <th>Contract Related</th>
-                                    <th>Journey Type</th>
-                                    <th>Job Date</th>
-                                    <th>Ref. No.</th>
-                                    <th></th>
+                                  <th>Journey #</th>
+                                  <th>Status</th>
+                                  <th>Truck</th>
+                                  <th>Contract</th>
+                                  <th>Job Date</th>
+                                  <th>Driver</th>
+                                  <th></th>
                                 </tr>
                                 </tfoot>
                             </table>

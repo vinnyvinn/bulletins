@@ -132,7 +132,7 @@
                       <input type="number" :min="minimumKm" name="current_km" class="form-control input-sm" v-model="fuel.current_km" @change="calculateKms">
                     </div>
                   </div>
-                  
+                  we
                   <div class="col-sm-3">
                     <div class="form-group">
                       <label for="previous_km">Previous KM</label>
