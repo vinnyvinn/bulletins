@@ -220,12 +220,12 @@
                     <router-link to="/journey" class="btn btn-danger">Back</router-link>
                 </div>
             </form>
-
         </div>
     </div>
 </template>
 
 <script>
+
     export default {
         created() {
             http.get('/api/journey/create').then((response) => {

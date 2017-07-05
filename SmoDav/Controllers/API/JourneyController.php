@@ -16,6 +16,7 @@ use SmoDav\Models\CargoType;
 use SmoDav\Models\CarriagePoint;
 use SmoDav\Models\Journey;
 use SmoDav\Support\Constants;
+use Auth;
 
 class JourneyController extends Controller
 {
@@ -111,6 +112,8 @@ class JourneyController extends Controller
         unset($data['_token'], $data['_method']);
         $data['raw'] = json_encode($data);
         $data['job_date'] = Carbon::parse(str_replace('/', '-', $data['job_date']))->format('Y-m-d');
+        $data['user_id'] = Auth::id();       
+
 
         foreach ($data as $key => $value) {
             if ($value == 'null') {
@@ -134,7 +137,7 @@ class JourneyController extends Controller
      */
     public function show($id)
     {
-        $journey = Journey::with(['contract'])->findOrFail($id);
+        $journey = Journey::with(['contract','truck','truck.driver','mileage','fuel'])->findOrFail($id);
         $journey->raw = json_decode($journey->raw);
         $contract = $journey->contract ? json_decode($journey->contract->raw): new \stdClass();
         $contract->id = $journey->contract ? $journey->contract->id : '';
@@ -230,11 +233,21 @@ class JourneyController extends Controller
         ]);
     }
 
-    public function close($id)
+
+    public function close(Request $request, Journey $journey, $id)
     {
-        Journey::where('id', $id)->update([
-            'status' => Constants::STATUS_CLOSED
+        $journey = Journey::findOrFail($id);
+        $data = $request->all();
+        $journey->update([
+            'mileage_balance' => $request['mileage_balance'],
+            'status' => Constants::STATUS_CLOSED,
+            'closed_by' => Auth::id()
         ]);
+
+        $truck = $journey->truck;
+        $truck->current_km = $data['current_km'];
+        $truck->current_fuel = $data['current_fuel'];
+        $truck->update();
 
         return Response::json([
             'status' => 'success',

@@ -17,6 +17,7 @@ use SmoDav\Models\CargoType;
 use SmoDav\Models\CarriagePoint;
 use SmoDav\Support\Constants;
 use function str_replace;
+use Auth;
 
 class ContractController extends Controller
 {
@@ -96,6 +97,8 @@ class ContractController extends Controller
         $data['raw'] = json_encode($data);
         $data['shifts'] = json_encode($data['shifts']);
         $data['unloading_points'] = json_encode($data['unloading_points']);
+        $data['user_id'] = Auth::id();
+
 
         unset($data['_token'], $data['_method']);
 

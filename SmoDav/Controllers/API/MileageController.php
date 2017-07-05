@@ -17,6 +17,7 @@ use SmoDav\Models\CarriagePoint;
 use SmoDav\Models\Journey;
 use SmoDav\Models\Mileage;
 use SmoDav\Support\Constants;
+use Auth;
 
 class MileageController extends Controller
 {
@@ -65,6 +66,7 @@ class MileageController extends Controller
                 unset($data[$key]);
             }
         }
+        $data['user_id'] = Auth::id();
 
         $mileage = Mileage::create($data);
 

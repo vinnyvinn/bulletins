@@ -90,15 +90,15 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="loading_gross_weight">Gross Weight</label>
+                            <label for="loading_gross_weight">Gross Weight (Kgs)</label>
                             <input :disabled="typeof $route.params.id === 'string'" @keyup="updateNote" id="loading_gross_weight" min="0" v-model="deliveryNote.loading_gross_weight" type="number" class="form-control input-sm">
                         </div>
                         <div class="form-group">
-                            <label for="loading_tare_weight">Tare Weight</label>
+                            <label for="loading_tare_weight">Tare Weight (Kgs)</label>
                             <input :disabled="typeof $route.params.id === 'string'" @keyup="updateNote" id="loading_tare_weight" min="0" v-model="deliveryNote.loading_tare_weight" type="number" class="form-control input-sm">
                         </div>
                         <div class="form-group">
-                            <label for="loading_net_weight">Net Weight</label>
+                            <label for="loading_net_weight">Net Weight (Kgs)</label>
                             <input disabled id="loading_net_weight" min="0" v-model="deliveryNote.loading_net_weight" type="number" class="form-control input-sm">
                         </div>
                         <div class="form-group">
@@ -140,7 +140,7 @@
                 </div>
                 <div class="form-group">
                     <button class="btn btn-success">Process</button>
-                    <router-link to="/mileage" class="btn btn-danger">Back</router-link>
+                    <router-link to="/delivery" class="btn btn-danger">Back</router-link>
                 </div>
             </form>
 
@@ -207,8 +207,13 @@
 
         methods: {
             updateNote() {
+              if(parseFloat(this.deliveryNote.loading_gross_weight) >= parseFloat(this.deliveryNote.loading_tare_weight)) {
                 this.deliveryNote.loading_net_weight = parseFloat(this.deliveryNote.loading_gross_weight) - parseFloat(this.deliveryNote.loading_tare_weight);
                 this.deliveryNote.offloading_net_weight = parseFloat(this.deliveryNote.offloading_gross_weight) - parseFloat(this.deliveryNote.offloading_tare_weight);
+              } else {
+                alert2(this.$root, ['Tare Weight cannot be more than the gross weight'], 'danger');
+              }
+
             },
 
             checkState() {

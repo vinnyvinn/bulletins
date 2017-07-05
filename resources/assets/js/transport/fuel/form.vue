@@ -136,14 +136,14 @@
                   <div class="col-sm-3">
                     <div class="form-group">
                       <label for="previous_km">Previous KM</label>
-                      <input type="number" name="previous_km" class="form-control input-sm" v-model="fuel.previous_km" @change="calculateKms">
+                      <input disabled type="number" name="previous_km" class="form-control input-sm" v-model="current_vehicle.current_km">
                     </div>
                   </div>
 
                   <div class="col-sm-3">
                     <div class="form-group">
                       <label for="previous_fuel">Previous Fuel</label>
-                      <input type="number" name="previous_fuel" class="form-control input-sm" v-model="fuel.previous_fuel" @keyup="calculateKms">
+                      <input disabled type="number" name="previous_fuel" class="form-control input-sm" v-model="current_vehicle.current_fuel">
                     </div>
                   </div>
 
@@ -274,15 +274,15 @@ import axios from 'axios';
           },
 
           calculateKms() {
-            if(parseInt(this.fuel.current_km) < parseInt(this.fuel.previous_km)) {
+            if(parseInt(this.fuel.current_km) < parseInt(this.current_vehicle.current_km)) {
               this.can_save = false;
 
               return alert2(this.$root, ['Current Km readings should be greater than previous Km reading'], 'danger');
             }
-            this.fuel_used = parseInt(this.fuel.previous_fuel) - parseInt(this.fuel.current_fuel);
-            this.km_covered = parseInt(this.fuel.current_km) - parseInt(this.fuel.previous_km);
+            this.fuel_used = parseInt(this.current_vehicle.current_fuel) - parseInt(this.fuel.current_fuel);
+            this.km_covered = parseInt(this.fuel.current_km) - parseInt(this.current_vehicle.current_km);
 
-            if(parseInt(this.fuel.current_km) > 0 && parseInt(this.fuel.current_km) > parseInt(this.fuel.previous_km)) {
+            if(parseInt(this.fuel.current_km) > 0 && parseInt(this.fuel.current_km) > parseInt(this.current_vehicle.current_km)) {
               this.can_save = true;
             }
 

@@ -63,6 +63,7 @@ class CreateContractsTable extends Migration
             $table->string('sub_delivery_address_2')->nullable();
             $table->string('sub_delivery_address_3')->nullable();
             $table->string('sub_delivery_address_4')->nullable();
+            $table->integer('user_id')->unsigned();
             $table->softDeletes();
             $table->timestamps();
 

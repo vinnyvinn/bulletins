@@ -27,8 +27,8 @@ class InspectionController extends Controller
      */
     public function index()
     {
-        $inspections = Inspection::with(['journey'])->get([
-            'id', 'journey_id', 'status', 'from_station', 'to_station', 'created_at'
+        $inspections = Inspection::with(['journey','journey.truck','journey.truck.trailer','journey.driver'])->get([
+            'id', 'journey_id', 'status', 'from_station', 'to_station', 'created_at','suitable_for_loading'
         ]);
 
         return Response::json([

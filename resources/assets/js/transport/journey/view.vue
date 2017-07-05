@@ -3,12 +3,13 @@
         <div class="panel-heading">
             <div class="row">
                 <div class="col-sm-6">
-                    <h4><strong>Journey Details: {{ status }}</strong></h4>
+                    <h4><strong>Journey Details: JRNY-{{ $route.params.id }} ({{ status }})</strong></h4>
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group pull-right">
                         <button @click.prevent="approveJourney" class="btn btn-success" v-if="status == 'Pending Approval'">Approve Journey</button>
-                        <button @click.prevent="closeJourney" class="btn btn-danger" v-if="(status == 'Pending Approval') || (status == 'Approved')">Close Journey</button>
+                        <!-- <button @click.prevent="closeJourney" class="btn btn-danger" v-if="(status == 'Pending Approval') || (status == 'Approved')">Close Journey</button> -->
+                        <button @click.prevent="showModal = true" class="btn btn-danger" v-if="(status == 'Pending Approval') || (status == 'Approved')">Close Journey</button>
                         <button @click.prevent="reopenJourney" class="btn btn-primary" v-if="status == 'Closed'">Reopen Journey</button>
                     </div>
                 </div>
@@ -217,12 +218,54 @@
                 </div>
             </form>
 
+            <modal :showModal="showModal" :closeAction="closeModal">
+              <h5 slot="header">Close Journey</h5>
+              <div slot="body" class="row">
+                <div class="col-xs-6">
+                  Journey: JNY-{{journey.id}}<br>
+                  Contract: CNTR-{{ journey.contract_id }}<br>
+                  From: {{ journey.route_source }}<br>
+                  To: {{ journey.route_destination }}<br>
+                  Truck: {{ journey.truck_plate_number }}<br>
+                  Driver: {{ journey_close.truck.driver.first_name}} {{ journey_close.truck.driver.last_name}}<br>
+                  <hr>
+                  <p v-if="belowReserve"><i style="color: red;">Fuel in truck ({{journey_close.current_fuel}} ltrs) is below reserve by
+                    {{ fuelDifference }} ltrs.
+                    Driver to pay Ksh. {{ fuelDifference * parseInt(journey_close.fuel_price) }}</i></p>
+                </div>
+                <div class="col-xs-6">
+                  Journey Start Km readings: {{ journey_close.truck.current_km }}<br>
+                  Mileage Allocated: {{ journey_close.mileage.approved_amount }}<br>
+                  Top-up Mileage: {{ journey_close.mileage.top_up_amount }}<br>
+                  Fuel Allocated: {{ journey_close.truck.current_fuel }}<br>
+                  Top-up fuel: {{ journey_close.fuel.top_up }}<br>
+                  <div class="col-xs-12">
+                    <div class="form-group">
+                      <label for="current_km">Truck Current Km reading:</label>
+                      <input type="number" name="current_km" class="form-control input-sm" v-model="journey_close.current_km" @change="validateKms">
+                    </div>
+                  </div>
+                  <div class="col-xs-12">
+                    <div :class="{'form-group': true, 'has-error': belowReserve}">
+                      <label class="control-label" for="current_km">Truck Current fuel reading:</label>
+                      <input type="number" id="current_fuel" name="current_fuel" class="form-control input-sm" v-model="journey_close.current_fuel" @change="">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div slot="footer" class="">
+                <button type="button" @click.prevent="closeJourney" class="btn btn-success" name="button">Process & Close</button>
+              </div>
+            </modal>
+
         </div>
     </div>
 </template>
 
 <script>
+    import Modal from 'modal-vue'
     export default {
+      components: { Modal },
         created() {
             this.$root.isLoading = true;
             http.get('/api/journey/' + this.$route.params.id).then((response) => {
@@ -234,7 +277,20 @@
                 this.trucks = response.trucks;
                 this.drivers = response.drivers;
                 this.contract = response.contract;
+
+
                 this.journey = response.journey.raw;
+
+                let journey = response.journey;
+                journey.current_km = '';
+                journey.current_fuel = '';
+                journey.fuel_reserve = 25;
+                journey.fuel_price = 100;
+                journey.mileage_balance = '';
+                journey.below_reserve = false;
+
+                this.journey_close = journey;
+
                 this.journey.enquiry_from = this.journey.enquiry_from == 'null' ? '' : this.journey.enquiry_from;
                 this.journey.ref_no = this.journey.ref_no == 'null' ? '' : this.journey.ref_no;
                 this.journey.contract_id = this.journey.contract_id == 'null' ? '' : this.journey.contract_id;
@@ -245,14 +301,13 @@
         },
 
         data() {
+
             return {
+                showModal: false,
                 drivers: [],
                 trucks: [],
                 status: '',
                 contract: {},
-
-
-
                 classifications: [],
                 cargo_types: [],
                 carriage_points: [],
@@ -280,6 +335,18 @@
                     sub_address_2: '',
                     sub_address_3: '',
                     sub_address_4: '',
+                },
+                journey_close: {
+                  truck: {
+                    driver: {}
+                  },
+                  fuel: {},
+                  mileage: {},
+                  current_km: '',
+                  current_fuel: '',
+                  fuel_reserve: 25,
+                  fuel_price: 100,
+                  mileage_balance: '',
                 }
             };
         },
@@ -303,9 +370,35 @@
 
                 return hours + ':' + minutes;
             },
+            belowReserve() {
+              return this.fuelDifference > 0;
+            },
+            fuelDifference() {
+              let current = parseInt(this.journey_close.current_fuel);
+
+              if (isNaN(current)) return 0;
+
+              if (current < 0) {
+                this.journey_close.current_fuel = current * -1;
+              }
+
+              let fuel_difference = parseInt(this.journey_close.fuel_reserve) - current;
+
+              if(fuel_difference > 0){
+                this.journey_close.mileage_balance = parseInt(this.journey_close.fuel_price) * fuel_difference;
+              } else {
+                this.journey_close.mileage_balance = 0;
+              }
+
+              return fuel_difference
+            }
+
         },
 
         methods: {
+            closeModal() {
+              this.showModal = false;
+            },
             updateBooleans() {
                 let keys = [
                     'subcontracted',
@@ -360,7 +453,14 @@
             },
 
             closeJourney() {
-                this.processJourney('close');
+                this.$root.isLoading = true;
+                http.post('/api/journey/' + this.$route.params.id + '/close', this.journey_close).then((response) => {
+                  alert2(this.$root, [response.message], 'success');
+                  window._router.push({ path: '/journey' });
+                }).catch((error) => {
+                  alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
+                });
+                this.$root.isLoading = false;
             },
 
             reopenJourney() {
@@ -379,6 +479,17 @@
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                 });
             },
+            validateKms() {
+              if(parseInt(this.journey_close.current_km) < parseInt(this.journey_close.truck.current_km)){
+                this.journey_close.current_km = 0;
+                return alert2(this.$root, ['Current Km readings should be greater than previous Km reading'], 'danger');
+              }
+            },
+
         }
     }
 </script>
+
+<style media="screen" scoped>
+
+</style>

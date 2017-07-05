@@ -31,6 +31,7 @@ class CreateDeliveriesTable extends Migration
             $table->timestamp('offloading_time')->nullable();
             $table->text('raw');
             $table->string('status')->default(Constants::LOADED);
+            $table->integer('user_id')->unsigned();
             $table->timestamps();
 
             $table->foreign('journey_id')->references('id')->on('journeys')->onDelete('cascade');

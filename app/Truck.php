@@ -13,7 +13,9 @@ class Truck extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'plate_number', 'make', 'model', 'max_load', 'status', 'location', 'trailer_id', 'project_id','driver_id'
+        'plate_number', 'make', 'model', 'max_load',
+        'status', 'location', 'trailer_id', 'project_id',
+        'driver_id','current_km','current_fuel'
     ];
 
     public function scopePreLoading($query)

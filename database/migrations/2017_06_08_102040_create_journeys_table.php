@@ -34,6 +34,10 @@ class CreateJourneysTable extends Migration
             $table->string('sub_address_2')->nullable();
             $table->string('sub_address_3')->nullable();
             $table->string('sub_address_4')->nullable();
+            $table->integer('user_id')->unsigned();
+            $table->integer('closed_by')->unsigned()->nullable();
+            $table->integer('mileage_balance')->default(0);
+
 
             $table->timestamps();
 
