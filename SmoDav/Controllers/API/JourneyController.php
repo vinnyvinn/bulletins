@@ -105,7 +105,7 @@ class JourneyController extends Controller
     {
         $data = $request->all();
 
-        $total_trucks = Journey::where('contract_id', $data['contract_id'])->distinct()->count();
+        $total_trucks = Journey::where('contract_id', $data['contract_id'])->where('status','Approved')->count();
         $contract_allocated_trucks = Contract::findOrFail($data['contract_id'])->trucks_allocated;
         if ($total_trucks >= $contract_allocated_trucks) {
             return Response::json([

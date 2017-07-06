@@ -78705,6 +78705,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             journey = JSON.parse(journey[0].raw);
             journey.id = id;
             journey.truck = truck;
+            this.checklist.from_station = journey.route_source;
+            this.checklist.to_station = journey.route_destination;
 
             return journey;
         }
