@@ -88,7 +88,7 @@ class InspectionController extends Controller
 
         return Response::json([
             'status' => 'success',
-            'journeys' => Journey::open()->get(['id', 'raw']),
+            'journeys' => Journey::open()->with(['truck.driver', 'truck.trailer'])->get(['id', 'raw', 'truck_id']),
             'supervisor' => true,
             'inspector' => false,
             'inspection' => $inspection

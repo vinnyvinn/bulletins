@@ -59,9 +59,7 @@
 
                         <div class="form-group">
                             <label for="driver_id">Driver</label>
-                            <select disabled name="driver_id" id="driver_id" v-model="journey.driver_id" class="form-control input-sm select2" required>
-                                <option v-for="driver in drivers" :value="driver.id">{{ driver.first_name }} {{ driver.last_name }} ({{ driver.mobile_phone }})</option>
-                            </select>
+                            <h5>{{ journey_close.truck.driver.first_name }} {{ journey_close.truck.driver.last_name }} ({{ journey_close.truck.driver.mobile_phone }})</h5>
                         </div>
 
                     </div>
@@ -86,10 +84,10 @@
                             <input disabled type="text" v-model="journey.job_date" class="form-control input-sm datepicker" id="job_date" name="job_date" required>
                         </div>
 
-                        <div class="form-group">
-                            <label for="ref_no">Ref No</label>
-                            <input disabled type="text" v-model="journey.ref_no" class="form-control input-sm" id="ref_no" name="ref_no">
-                        </div>
+                        <!--<div class="form-group">-->
+                            <!--<label for="ref_no">Ref No</label>-->
+                            <!--<input disabled type="text" v-model="journey.ref_no" class="form-control input-sm" id="ref_no" name="ref_no">-->
+                        <!--</div>-->
                     </div>
 
                 </div>
@@ -328,7 +326,9 @@
                     route_id: null,
                     job_description: '',
                     enquiry_from: '',
-
+                    truck: {
+                        driver: {}
+                    },
                     subcontracted: false,
                     sub_company_name: '',
                     sub_address_1: '',

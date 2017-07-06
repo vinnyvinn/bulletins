@@ -100,7 +100,7 @@
                     <div class="col-sm-3">
                       <div class="form-group">
                         <label for="fuel_issued">Total Fuel in Tank(Litres)</label>
-                        <input type="text" name="fuel_total" class="form-control input-sm" v-model="fuel.fuel_total">
+                        <input readonly type="text" name="fuel_total" class="form-control input-sm" v-model="fuel.fuel_total">
                       </div>
                     </div>
 
@@ -166,7 +166,6 @@
 </template>
 
 <script>
-import axios from 'axios';
     export default {
         created() {
           this.$root.isLoading = true;

@@ -27,14 +27,24 @@ class JourneyController extends Controller
      */
     public function index()
     {
-        $journeys = Journey::with(['truck' => function ($builder) {
-            return $builder->select(['id', 'plate_number','driver_id']);
-        }, 'truck.driver'])->get([
-            'id', 'is_contract_related', 'truck_id', 'contract_id','journey_type', 'job_date', 'ref_no', 'status'
+        $journeys = Journey::with([
+            'truck' => function ($builder) {
+                return $builder->select(['id', 'plate_number', 'driver_id']);
+            },
+            'truck.driver',
+        ])->get([
+            'id',
+            'is_contract_related',
+            'truck_id',
+            'contract_id',
+            'journey_type',
+            'job_date',
+            'ref_no',
+            'status',
         ]);
 
         return Response::json([
-            'journeys' => $journeys
+            'journeys' => $journeys,
         ]);
     }
 
@@ -48,51 +58,46 @@ class JourneyController extends Controller
         if (request('contracts')) {
             $contracts = Contract::open()
                 ->whereRaw("(select count(*) from journeys where contracts.id = journeys.contract_id and status = 'Approved') < contracts.trucks_allocated")
-                ->get();
+                ->get(['id', 'raw']);
 
 
             return Response::json([
-                'contracts' => Contract::open()->get([
-                    'id', 'raw'
-                ])
+                'contracts' => $contracts,
             ]);
-          return Response::json([
-              'contracts' => $contracts
-          ]);
         }
 
-        $journeys = Journey::where('status','<>','Closed')
+        $journeys = Journey::where('status', '<>', 'Closed')
             ->get(['truck_id'])
             ->map(function ($journey) {
                 return $journey->truck_id;
             })
             ->toArray();
 
-        $trucks = Truck::with(['driver' => function ($builder) {
-            return $builder->select(['id', 'first_name', 'last_name', 'mobile_phone']);
-        }])
+        $trucks = Truck::with([
+            'driver' => function ($builder) {
+                return $builder->select(['id', 'first_name', 'last_name', 'mobile_phone']);
+            },
+        ])
             ->whereNotIn('id', $journeys)
             ->get(['driver_id', 'id', 'plate_number']);
 
-        $last_journey_id = Journey::orderBy('created_at','desc')->first(['id']);
+        $last_journey_id = Journey::orderBy('created_at', 'desc')->first(['id']);
 
         return Response::json([
-            'routes' => Route::all(['id', 'source', 'destination', 'distance']),
-            'clients' => Client::all(['DCLink', 'Name', 'Account']),
+            'routes'                => Route::all(['id', 'source', 'destination', 'distance']),
+            'clients'               => Client::all(['DCLink', 'Name', 'Account']),
             'cargo_classifications' => CargoClassification::all(['id', 'name']),
-            'cargo_types' => CargoType::all(['id', 'name', 'cargo_classification_id']),
-            'carriage_points' => CarriagePoint::all(['id', 'name']),
-            // 'drivers' => Driver::all(['id', 'first_name', 'last_name', 'mobile_phone']),
-            //  'trucks' => Truck::,
-            'trucks' => $trucks,
-            'last_journey_id' => $last_journey_id
+            'cargo_types'           => CargoType::all(['id', 'name', 'cargo_classification_id']),
+            'carriage_points'       => CarriagePoint::all(['id', 'name']),
+            'trucks'                => $trucks,
+            'last_journey_id'       => $last_journey_id,
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
@@ -100,19 +105,18 @@ class JourneyController extends Controller
     {
         $data = $request->all();
 
-        $total_trucks = Journey::where('contract_id',$data['contract_id'])->distinct()->count();
+        $total_trucks = Journey::where('contract_id', $data['contract_id'])->distinct()->count();
         $contract_allocated_trucks = Contract::findOrFail($data['contract_id'])->trucks_allocated;
-        if($total_trucks >= $contract_allocated_trucks)
-        {
-          return Response::json([
-            'message' => 'Maximum trucks for this contract reached. This contract has been allocated '.$contract_allocated_trucks.' trucks'
-          ]);
+        if ($total_trucks >= $contract_allocated_trucks) {
+            return Response::json([
+                'message' => 'Maximum trucks for this contract reached. This contract has been allocated ' . $contract_allocated_trucks . ' trucks',
+            ]);
         }
 
         unset($data['_token'], $data['_method']);
         $data['raw'] = json_encode($data);
         $data['job_date'] = Carbon::parse(str_replace('/', '-', $data['job_date']))->format('Y-m-d');
-        $data['user_id'] = Auth::id();              
+        $data['user_id'] = Auth::id();
 
 
         foreach ($data as $key => $value) {
@@ -124,7 +128,7 @@ class JourneyController extends Controller
         $journey = Journey::create($data);
 
         return Response::json([
-            'message' => 'Successfully created new journey number JRNY-' . $journey->id
+            'message' => 'Successfully created new journey number JRNY-' . $journey->id,
         ]);
     }
 
@@ -137,22 +141,39 @@ class JourneyController extends Controller
      */
     public function show($id)
     {
-        $journey = Journey::with(['contract','truck','truck.driver','mileage','fuel'])->findOrFail($id);
+        $journey = Journey::with(['contract', 'truck.driver', 'mileage', 'fuel'])->findOrFail($id);
         $journey->raw = json_decode($journey->raw);
-        $contract = $journey->contract ? json_decode($journey->contract->raw): new \stdClass();
+        $contract = $journey->contract ? json_decode($journey->contract->raw) : new \stdClass();
         $contract->id = $journey->contract ? $journey->contract->id : '';
         unset($journey->contract);
 
+
+        $journeys = Journey::where('status', '<>', 'Closed')
+            ->where('id', '<>', $id)
+            ->get(['truck_id'])
+            ->map(function ($journey) {
+                return $journey->truck_id;
+            })
+            ->toArray();
+
+        $trucks = Truck::with([
+            'driver' => function ($builder) {
+                return $builder->select(['id', 'first_name', 'last_name', 'mobile_phone']);
+            },
+        ])
+            ->whereNotIn('id', $journeys)
+            ->get(['driver_id', 'id', 'plate_number']);
+
         return Response::json([
-            'routes' => Route::all(['id', 'source', 'destination', 'distance']),
-            'clients' => Client::all(['DCLink', 'Name', 'Account']),
+            'routes'                => Route::all(['id', 'source', 'destination', 'distance']),
+            'clients'               => Client::all(['DCLink', 'Name', 'Account']),
             'cargo_classifications' => CargoClassification::all(['id', 'name']),
-            'cargo_types' => CargoType::all(['id', 'name', 'cargo_classification_id']),
-            'carriage_points' => CarriagePoint::all(['id', 'name']),
-            'drivers' => Driver::all(['id', 'first_name', 'last_name', 'mobile_phone']),
-            'trucks' => Truck::all(['id', 'plate_number']),
-            'journey' => $journey,
-            'contract' => $contract
+            'cargo_types'           => CargoType::all(['id', 'name', 'cargo_classification_id']),
+            'carriage_points'       => CarriagePoint::all(['id', 'name']),
+            'trucks'                => $trucks,
+            'journey'               => $journey,
+            'contract'              => $contract,
+            'allocated' => Journey::open()->where('contract_id', $journey->contract_id)->count() - 1
         ]);
     }
 
@@ -161,7 +182,7 @@ class JourneyController extends Controller
      *
      * @param  \Illuminate\Http\Request $request
      *
-     * @param Journey                   $journey
+     * @param Journey $journey
      *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
@@ -169,13 +190,12 @@ class JourneyController extends Controller
     {
         $data = $request->all();
 
-        $total_trucks = Journey::where('contract_id',$data['contract_id'])->distinct()->count();
+        $total_trucks = Journey::where('contract_id', $data['contract_id'])->distinct()->count();
         $contract_allocated_trucks = Contract::findOrFail($data['contract_id'])->trucks_allocated;
-        if($total_trucks >= $contract_allocated_trucks)
-        {
-          return Response::json([
-            'message' => 'Maximum trucks for this contract reached. This contract has been allocated '.$contract_allocated_trucks.' trucks'
-          ]);
+        if ($total_trucks >= $contract_allocated_trucks) {
+            return Response::json([
+                'message' => 'Maximum trucks for this contract reached. This contract has been allocated ' . $contract_allocated_trucks . ' trucks',
+            ]);
         }
 
         unset($data['_token'], $data['_method']);
@@ -192,7 +212,7 @@ class JourneyController extends Controller
         $journey->update($data);
 
         return Response::json([
-            'message' => 'Successfully updated journey number JRNY-' . $journey->id
+            'message' => 'Successfully updated journey number JRNY-' . $journey->id,
         ]);
     }
 
@@ -208,27 +228,34 @@ class JourneyController extends Controller
     {
         $journey->delete();
 
-        $journeys = Journey::with(['truck' => function ($builder) {
-            return $builder->select(['id', 'plate_number']);
-        }])->get([
-            'id', 'is_contract_related', 'journey_type', 'job_date', 'ref_no', 'status'
+        $journeys = Journey::with([
+            'truck' => function ($builder) {
+                return $builder->select(['id', 'plate_number']);
+            },
+        ])->get([
+            'id',
+            'is_contract_related',
+            'journey_type',
+            'job_date',
+            'ref_no',
+            'status',
         ]);
 
         return Response::json([
-            'status' => 'success',
-            'message' => 'Successfully deleted journey.',
-            'journeys' => $journeys
+            'status'   => 'success',
+            'message'  => 'Successfully deleted journey.',
+            'journeys' => $journeys,
         ]);
     }
 
     public function approve($id)
     {
         Journey::where('id', $id)->update([
-            'status' => Constants::STATUS_APPROVED
+            'status' => Constants::STATUS_APPROVED,
         ]);
 
         return Response::json([
-            'status' => 'success',
+            'status'  => 'success',
             'message' => 'Successfully approved journey.',
         ]);
     }
@@ -240,8 +267,8 @@ class JourneyController extends Controller
         $data = $request->all();
         $journey->update([
             'mileage_balance' => $request['mileage_balance'],
-            'status' => Constants::STATUS_CLOSED,
-            'closed_by' => Auth::id()
+            'status'          => Constants::STATUS_CLOSED,
+            'closed_by'       => Auth::id(),
         ]);
 
         $truck = $journey->truck;
@@ -250,7 +277,7 @@ class JourneyController extends Controller
         $truck->update();
 
         return Response::json([
-            'status' => 'success',
+            'status'  => 'success',
             'message' => 'Successfully closed journey.',
         ]);
     }
@@ -258,19 +285,19 @@ class JourneyController extends Controller
     public function reopen($id)
     {
         Journey::where('id', $id)->update([
-            'status' => Constants::STATUS_APPROVED
+            'status' => Constants::STATUS_APPROVED,
         ]);
 
         return Response::json([
-            'status' => 'success',
+            'status'  => 'success',
             'message' => 'Successfully reopened journey.',
         ]);
     }
 
-    public function trucks_already_allocated($contract_id) {
-
-      return Response::json([
-        'trucks_already_allocated' => Journey::where('contract_id', $contract_id)->distinct()->count()
-      ]);
+    public function trucks_already_allocated($contract_id)
+    {
+        return Response::json([
+            'trucks_already_allocated' => Journey::open()->where('contract_id', $contract_id)->count(),
+        ]);
     }
 }
