@@ -15,7 +15,7 @@
 
                         <div class="form-group">
                             <label for="cargo_classification_id">Cargo Classification</label>
-                            <select v-model="contract.cargo_classification_id" name="cargo_classification_id" id="cargo_classification_id" class="form-control input-sm select2" required>
+                            <select v-model="contract.cargo_classification_id" name="cargo_classification_id" id="cargo_classification_id" class="form-control input-sm select2">
                                 <option v-for="classification in classifications" :value="classification.id">{{ classification.name }}</option>
                             </select>
                         </div>
@@ -30,14 +30,14 @@
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label for="client_id">Client</label>
-                            <select v-model="contract.client_id" name="client_id" id="client_id" class="form-control input-sm select2" required>
+                            <select v-model="contract.client_id" name="client_id" id="client_id" class="form-control input-sm select2">
                                 <option v-for="client in clients" :value="client.DCLink">{{ client.Name }} ({{ client.Account }})</option>
                             </select>
                         </div>
 
                         <div class="form-group">
                             <label for="cargo_type_id">Cargo Type</label>
-                            <select v-model="contract.cargo_type_id" name="cargo_type_id" id="cargo_type_id" class="form-control input-sm select2" required>
+                            <select v-model="contract.cargo_type_id" name="cargo_type_id" id="cargo_type_id" class="form-control input-sm select2">
                                 <option v-for="type in viableCargoTypes" :value="type.id">{{ type.name }}</option>
                             </select>
                         </div>
@@ -63,13 +63,13 @@
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label for="start_date">Contract Start</label>
-                            <input v-model="contract.start_date" type="text" class="datepicker form-control input-sm" id="start_date" name="start_date" required>
+                            <input v-model="contract.start_date" type="text" class="datepicker form-control input-sm" id="start_date" name="start_date">
                         </div>
 
                         <div class="form-group">
                             <label for="quantity">Quantity</label>
                             <div class="input-group">
-                                <input v-model="contract.quantity" min="0" type="number" class="form-control input-sm" id="quantity" name="quantity" describedby="quantity-addon" required>
+                                <input v-model="contract.quantity" min="0" type="number" class="form-control input-sm" id="quantity" name="quantity" describedby="quantity-addon">
                                 <span class="input-group-addon" id="quantity-addon">KGs</span>
                             </div>
                         </div>
@@ -109,14 +109,14 @@
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label for="route_id">Route</label>
-                            <select v-model="contract.route_id" name="route_id" id="route_id" class="form-control input-sm select2" required>
+                            <select v-model="contract.route_id" name="route_id" id="route_id" class="form-control input-sm select2">
                                 <option v-for="route in routes" :value="route.id">{{ route.source }} - {{ route.destination }} ({{ route.distance }} KM)</option>
                             </select>
                         </div>
 
                         <div class="form-group">
                             <label for="trucks_allocated">Trucks Allocated</label>
-                            <input v-model="contract.trucks_allocated" min="0" type="number" class="form-control input-sm" id="trucks_allocated" name="trucks_allocated" required>
+                            <input v-model="contract.trucks_allocated" min="0" type="number" class="form-control input-sm" id="trucks_allocated" name="trucks_allocated">
                         </div>
 
                         <div class="form-group">
