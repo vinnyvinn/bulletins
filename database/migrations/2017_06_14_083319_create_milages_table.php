@@ -28,6 +28,7 @@ class CreateMilagesTable extends Migration
             $table->boolean('top_up')->default(false);
             $table->string('top_up_reason')->nullable();
             $table->integer('top_up_amount')->nullable();
+            $table->integer('user_id')->unsigned();
             $table->timestamps();
 
             $table->foreign('journey_id')->references('id')->on('journeys')->onDelete('cascade');

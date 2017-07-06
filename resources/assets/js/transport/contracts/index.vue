@@ -30,8 +30,10 @@
                                         <router-link :to="'/contracts/' + contract.id">CNTR{{ contract.id }}</router-link>
                                     </td>
                                     <td>
-                                      <span class="label label-default" v-if="contract.status == 'Pending Approval'">Pending Approval</span>
+                                      <span class="label label-info" v-if="contract.status == 'Pending Approval'">Pending Approval</span>
                                       <span class="label label-success" v-if="contract.status == 'Approved'">Approved</span>
+                                      <span class="label label-default" v-if="contract.status == 'Closed'">Closed</span>
+
                                     </td>
                                     <td>{{ contract.client.Name }}</td>
                                     <td>{{ date2(contract.created_at) }}</td>
@@ -40,11 +42,11 @@
                                     <td>{{ Number(contract.quantity).toLocaleString() }} Tonnes</td>
                                     <td>{{ $root.currency }} {{ Number(contract.amount).toLocaleString() }} {{ contract.rate }}</td>
                                     <td class="text-center">
-                                        <span @click="edit(contract)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
+                                        <span v-if="contract.status != 'Closed'" @click="edit(contract)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
                                         <button data-toggle="popover" :data-item="contract.id" class="btn btn-xs btn-danger btn-destroy">
                                             <i class="fa fa-trash"></i>
                                         </button>
-                                    </td>                                    
+                                    </td>
                                 </tr>
                                 </tbody>
 

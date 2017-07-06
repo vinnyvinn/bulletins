@@ -10,6 +10,8 @@ use SmoDav\Models\Delivery;
 use SmoDav\Models\Mileage;
 use Carbon\Carbon;
 use Auth;
+use App\Truck;
+
 
 
 class FuelController extends Controller
@@ -54,6 +56,13 @@ class FuelController extends Controller
         $data = $request->all();
         $data['date'] = Carbon::parse(str_replace('/', '-', $data['date']))->format('Y-m-d');
         $fuel = Fuel::create($data);
+
+        $journey = Journey::findOrFail($data['journey_id']);
+
+        $truck = $journey->truck;
+        $truck->current_km = $data['current_km'];
+        $truck->current_fuel = $data['current_fuel'];
+        $truck->update();
 
         return Response::json([
           'message' => 'Fuel Allocation Successfully saved.'
@@ -104,6 +113,13 @@ class FuelController extends Controller
 
       $fuel = Fuel::findOrFail($id);
       $fuel->update($data);
+
+      $journey = Journey::findOrFail($data['journey_id']);
+
+      $truck = $journey->truck;
+      $truck->current_km = $data['current_km'];
+      $truck->current_fuel = $data['current_fuel'];
+      $truck->update();
 
       return Response::json([
         'message' => 'Fuel Allocation Successfully updated.'

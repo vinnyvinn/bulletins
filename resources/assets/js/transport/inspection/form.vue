@@ -14,7 +14,7 @@
                         <form action="#" @submit.prevent="store">
 
                             <div class="row">
-                                <div class="col-sm-4">
+                                <div class="col-sm-3">
                                     <div class="form-group">
                                         <label for="journey_id">Journey</label>
                                         <select required name="journey_id" id="journey_id" v-model="checklist.journey_id" class="form-control input-sm select2">
@@ -23,21 +23,29 @@
                                     </div>
                                 </div>
 
-                                <div class="col-sm-4">
+                                <div class="col-sm-3">
                                     <div class="form-group">
-                                        <label>Vehicle</label>
-                                        <h5><strong>{{ journey.truck_plate_number }}</strong></h5>
+                                        <h5><strong>Vehicle: {{ journey.truck_plate_number }}</strong></h5>
+                                        <h5><strong>Trailer: {{ truck_details.trailer.trailer_number }}
+                                          ({{truck_details.trailer.make}})</strong></h5>
                                     </div>
                                 </div>
 
-                                <div class="col-sm-4">
+                                <div class="col-sm-3" v-if="truck_details">
+                                    <div class="form-group">
+                                        <label>Driver</label>
+                                        <h5><strong>{{ truck_details.driver.first_name }} {{ truck_details.driver.last_name }}</strong></h5>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
                                     <div class="form-group">
                                         <label>Route</label>
                                         <h5 v-if="journey.route_source"><strong>{{ journey.route_source }} to {{ journey.route_destination }}</strong></h5>
                                     </div>
                                 </div>
 
-                            </div>
+                        </div>
 
                             <table class="table">
                                 <thead>
@@ -231,6 +239,10 @@
         data() {
             return {
                 journeys: [],
+                truck_details: {
+                  driver: {},
+                  trailer: {}
+                },
                 printout: '',
                 isSupervisor: false,
                 isInspector: true,
@@ -266,7 +278,7 @@
                         item_21: false,
                         item_22: false,
                         item_23: false,
-                    }
+                    },
                 }
             }
         },
@@ -278,7 +290,9 @@
                     return {};
                 }
                 let id = journey[0].id;
+                this.truck_details = journey[0].truck;
                 journey = JSON.parse(journey[0].raw);
+
                 journey.id = id;
                 this.checklist.from_station = journey.route_source;
                 this.checklist.to_station = journey.route_destination;

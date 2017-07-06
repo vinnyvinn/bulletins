@@ -39,12 +39,12 @@
                             </select>
                         </div>
 
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="route_id">Route</label>
                             <select :disabled="journey.is_contract_related == '1'" name="route_id" id="route_id" v-model="journey.route_id" class="form-control input-sm select2" required>
                                 <option v-for="route in routes" :value="route.id">{{ route.source }} - {{ route.destination }} ({{ route.distance }} KM)</option>
                             </select>
-                        </div>
+                        </div> -->
 
 
                         <!-- <div class="form-group">
@@ -53,14 +53,11 @@
                                 <option v-for="driver in drivers" :value="driver.id">{{ driver.first_name }} {{ driver.last_name }} ({{ driver.mobile_phone }})</option>
                             </select>
                         </div> -->
-
-
-
-                    </div>
-
-                    <div class="col-sm-3">
                         <div v-if="journey.is_contract_related == '1'">
-                            <h5><strong>Trucks Allocated: {{ contract.trucks_allocated }}</strong></h5>
+                            <h5><strong>Required trucks allocation: {{ contract.trucks_allocated }}</strong></h5>
+                            <h5><strong>Trucks already allocated: {{ trucks_already_allocated }}</strong></h5>
+                            <h5><strong>Trucks to be allocated: {{ parseInt(contract.trucks_allocated)-parseInt(trucks_already_allocated) }}</strong></h5>
+
                         </div>
 
                         <div class="form-group">
@@ -74,8 +71,9 @@
                             <label for="driver_id">Driver</label><br>
                             {{ truck.driver.id }} {{ truck.driver.first_name }} {{ truck.driver.last_name }}
                         </div>
-
                     </div>
+
+
 
                     <div class="col-sm-3">
                         <div class="form-group">
@@ -222,12 +220,12 @@
                     <router-link to="/journey" class="btn btn-danger">Back</router-link>
                 </div>
             </form>
-
         </div>
     </div>
 </template>
 
 <script>
+
     export default {
         created() {
             http.get('/api/journey/create').then((response) => {
@@ -285,8 +283,9 @@
                     sub_address_4: '',
                 },
                 last_journey_id: {
-                  id: 0,
+                  id: 0
                 },
+                trucks_already_allocated: '',
             };
         },
 
@@ -366,13 +365,18 @@
             },
 
             updateFields() {
+
                 $('#route_id').select2('destroy');
                 setTimeout(() => {
+                  http.get('/api/trucks_already_allocated/' + this.journey.contract_id).then((response) => {
+                    this.trucks_already_allocated = response.trucks_already_allocated;
+                  });
                     this.journey.route_id = this.contract.route_id;
                     this.journey.job_description = this.contract.job_description;
                     this.journey.enquiry_from = this.contract.enquiry_from == 'null' ? '' : this.contract.enquiry_from;
                     $('#route_id').select2().on('change', e => this.journey.route_id = e.target.value);
                 }, 1000);
+
             },
 
             checkState() {

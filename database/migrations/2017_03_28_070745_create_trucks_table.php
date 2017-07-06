@@ -25,6 +25,8 @@ class CreateTrucksTable extends Migration
             $table->integer('project_id')->index()->unsigned()->nullable();
             $table->integer('trailer_id')->nullable()->index()->unsigned();
             $table->integer('driver_id')->nullable()->index()->unsigned();
+            $table->integer('current_fuel')->default(0);
+            $table->integer('current_km')->default(0);
             $table->softDeletes();
             $table->timestamps();
 

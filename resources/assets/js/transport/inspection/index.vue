@@ -14,6 +14,11 @@
                                 <tr>
                                     <th>Inspection #</th>
                                     <th>Journey #</th>
+                                    <th>Truck</th>
+                                    <th>Trailer</th>
+                                    <th>Suitable</th>
+                                    <th>Driver</th>
+                                    <th>Phone Number</th>
                                     <th>Inspected On</th>
                                     <th>From</th>
                                     <th>To</th>
@@ -24,6 +29,12 @@
                                 <tr v-for="inspection in inspections">
                                     <td><router-link :to="'/inspection/' + inspection.id">INSP-{{ inspection.id }}</router-link></td>
                                     <td>JRNY-{{ inspection.journey_id }}</td>
+                                    <td>{{ inspection.journey.truck.plate_number }}</td>
+                                    <td>{{ inspection.journey.truck.trailer.trailer_number }}</td>
+                                    <td v-if="parseInt(inspection.suitable_for_loading)"><span class="label label-success">Yes</span></td>
+                                    <td v-if="!parseInt(inspection.suitable_for_loading)"><span class="label label-danger">No</span></td>
+                                    <td>{{ inspection.journey.driver.first_name}} {{ inspection.journey.driver.last_name}}</td>
+                                    <td>{{ inspection.journey.driver.mobile_phone }}</td>
                                     <td>{{ date2(inspection.created_at) }}</td>
                                     <td>{{ inspection.from_station }}</td>
                                     <td>{{ inspection.to_station }}</td>
@@ -40,6 +51,11 @@
                                 <tr>
                                     <th>Inspection #</th>
                                     <th>Journey #</th>
+                                    <th>Truck</th>
+                                    <th>Trailer</th>
+                                    <th>Suitable</th>
+                                    <th>Driver</th>
+                                    <th>Phone Number</th>
                                     <th>Inspected On</th>
                                     <th>From</th>
                                     <th>To</th>

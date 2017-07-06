@@ -18,6 +18,7 @@ use SmoDav\Models\Delivery;
 use SmoDav\Models\Journey;
 use SmoDav\Models\Mileage;
 use SmoDav\Support\Constants;
+use Auth;
 
 class DeliveryController extends Controller
 {
@@ -71,6 +72,7 @@ class DeliveryController extends Controller
         }
 
         $data['loading_time'] = Carbon::now();
+        $data['user_id'] = Auth::id();
         $delivery = Delivery::create($data);
 
         return Response::json([

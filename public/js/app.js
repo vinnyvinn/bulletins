@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "./";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 363);
+/******/ 	return __webpack_require__(__webpack_require__.s = 366);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -72038,7 +72038,7 @@ var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(176),
   /* template */
-  __webpack_require__(344),
+  __webpack_require__(346),
   /* scopeId */
   null,
   /* cssModules */
@@ -72072,7 +72072,7 @@ var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(184),
   /* template */
-  __webpack_require__(336),
+  __webpack_require__(338),
   /* scopeId */
   null,
   /* cssModules */
@@ -72106,7 +72106,7 @@ var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(187),
   /* template */
-  __webpack_require__(325),
+  __webpack_require__(327),
   /* scopeId */
   null,
   /* cssModules */
@@ -72140,7 +72140,7 @@ var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(204),
   /* template */
-  __webpack_require__(295),
+  __webpack_require__(297),
   /* scopeId */
   null,
   /* cssModules */
@@ -72174,7 +72174,7 @@ var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(208),
   /* template */
-  __webpack_require__(332),
+  __webpack_require__(334),
   /* scopeId */
   null,
   /* cssModules */
@@ -72208,7 +72208,7 @@ var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(211),
   /* template */
-  __webpack_require__(331),
+  __webpack_require__(333),
   /* scopeId */
   null,
   /* cssModules */
@@ -72242,7 +72242,7 @@ var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(214),
   /* template */
-  __webpack_require__(342),
+  __webpack_require__(344),
   /* scopeId */
   null,
   /* cssModules */
@@ -72276,7 +72276,7 @@ var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(217),
   /* template */
-  __webpack_require__(299),
+  __webpack_require__(301),
   /* scopeId */
   null,
   /* cssModules */
@@ -72310,7 +72310,7 @@ var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(221),
   /* template */
-  __webpack_require__(315),
+  __webpack_require__(317),
   /* scopeId */
   null,
   /* cssModules */
@@ -72344,7 +72344,7 @@ var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(225),
   /* template */
-  __webpack_require__(313),
+  __webpack_require__(315),
   /* scopeId */
   null,
   /* cssModules */
@@ -72392,16 +72392,16 @@ __webpack_require__(231);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('alert', __webpack_require__(252));
-Vue.component('loader', __webpack_require__(253));
-Vue.component('core-nav', __webpack_require__(256));
+Vue.component('alert', __webpack_require__(254));
+Vue.component('loader', __webpack_require__(255));
+Vue.component('core-nav', __webpack_require__(258));
 
-Vue.component('udf', __webpack_require__(294));
-Vue.component('udf-create', __webpack_require__(292));
-Vue.component('show-udfs', __webpack_require__(293));
+Vue.component('udf', __webpack_require__(296));
+Vue.component('udf-create', __webpack_require__(294));
+Vue.component('show-udfs', __webpack_require__(295));
 Vue.component('driver-form', __webpack_require__(129));
 
-Vue.component('transport-nav', __webpack_require__(286));
+Vue.component('transport-nav', __webpack_require__(288));
 
 var app = new __WEBPACK_IMPORTED_MODULE_0__vuerouter__["a" /* RouterSingleton */].getRouter();
 
@@ -75841,6 +75841,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     created: function created() {
@@ -75853,6 +75865,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             _this.classifications = response.cargo_classifications;
             _this.cargo_types = response.cargo_types;
             _this.carriage_points = response.carriage_points;
+            if (response.last_contract_id) {
+                _this.last_contract_id = response.last_contract_id;
+            }
         });
     },
     mounted: function mounted() {
@@ -75918,7 +75933,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 sub_address_3: '',
                 sub_address_4: '',
                 sub_delivery_to: '',
-                sub_delivery_address: ''
+                sub_delivery_address: '',
+                sub_delivery_address_2: '',
+                sub_delivery_address_3: '',
+                sub_delivery_address_4: ''
+            },
+            last_contract_id: {
+                id: 0
             }
         };
     },
@@ -76107,6 +76128,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function($) {//
+//
+//
 //
 //
 //
@@ -77178,8 +77201,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         updateNote: function updateNote() {
-            this.deliveryNote.loading_net_weight = parseFloat(this.deliveryNote.loading_gross_weight) - parseFloat(this.deliveryNote.loading_tare_weight);
-            this.deliveryNote.offloading_net_weight = parseFloat(this.deliveryNote.offloading_gross_weight) - parseFloat(this.deliveryNote.offloading_tare_weight);
+            if (parseFloat(this.deliveryNote.loading_gross_weight) >= parseFloat(this.deliveryNote.loading_tare_weight)) {
+                this.deliveryNote.loading_net_weight = parseFloat(this.deliveryNote.loading_gross_weight) - parseFloat(this.deliveryNote.loading_tare_weight);
+                this.deliveryNote.offloading_net_weight = parseFloat(this.deliveryNote.offloading_gross_weight) - parseFloat(this.deliveryNote.offloading_tare_weight);
+            } else {
+                alert2(this.$root, ['Tare Weight cannot be more than the gross weight'], 'danger');
+            }
         },
         checkState: function checkState() {
             var _this3 = this;
@@ -77925,15 +77952,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return this.fuel.fuel_total = parseInt(this.fuel.fuel_issued) + parseInt(this.fuel.current_fuel);
         },
         calculateKms: function calculateKms() {
-            if (parseInt(this.fuel.current_km) < parseInt(this.fuel.previous_km)) {
+            if (parseInt(this.fuel.current_km) < parseInt(this.current_vehicle.current_km)) {
                 this.can_save = false;
 
                 return alert2(this.$root, ['Current Km readings should be greater than previous Km reading'], 'danger');
             }
-            this.fuel_used = parseInt(this.fuel.previous_fuel) - parseInt(this.fuel.current_fuel);
-            this.km_covered = parseInt(this.fuel.current_km) - parseInt(this.fuel.previous_km);
+            this.fuel_used = parseInt(this.current_vehicle.current_fuel) - parseInt(this.fuel.current_fuel);
+            this.km_covered = parseInt(this.fuel.current_km) - parseInt(this.current_vehicle.current_km);
 
-            if (parseInt(this.fuel.current_km) > 0 && parseInt(this.fuel.current_km) > parseInt(this.fuel.previous_km)) {
+            if (parseInt(this.fuel.current_km) > 0 && parseInt(this.fuel.current_km) > parseInt(this.current_vehicle.current_km)) {
                 this.can_save = true;
             }
 
@@ -78118,6 +78145,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+//
+//
+//
+//
 //
 //
 //
@@ -78570,6 +78601,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
@@ -78596,6 +78635,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             journeys: [],
+            truck_details: {
+                driver: {},
+                trailer: {}
+            },
             printout: '',
             isSupervisor: false,
             isInspector: true,
@@ -78648,7 +78691,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return {};
             }
             var id = journey[0].id;
+            this.truck_details = journey[0].truck;
             journey = JSON.parse(journey[0].raw);
+
             journey.id = id;
             this.checklist.from_station = journey.route_source;
             this.checklist.to_station = journey.route_destination;
@@ -78697,6 +78742,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function($) {//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -79357,9 +79418,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     created: function created() {
@@ -79419,7 +79478,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             },
             last_journey_id: {
                 id: 0
-            }
+            },
+            trucks_already_allocated: ''
         };
     },
 
@@ -79514,6 +79574,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             $('#route_id').select2('destroy');
             setTimeout(function () {
+                http.get('/api/trucks_already_allocated/' + _this7.journey.contract_id).then(function (response) {
+                    _this7.trucks_already_allocated = response.trucks_already_allocated;
+                });
                 _this7.journey.route_id = _this7.contract.route_id;
                 _this7.journey.job_description = _this7.contract.job_description;
                 _this7.journey.enquiry_from = _this7.contract.enquiry_from == 'null' ? '' : _this7.contract.enquiry_from;
@@ -79685,6 +79748,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     created: function created() {
@@ -79749,7 +79815,50 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* WEBPACK VAR INJECTION */(function($) {//
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_modal_vue__ = __webpack_require__(250);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_modal_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_modal_vue__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -79973,7 +80082,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+    components: { Modal: __WEBPACK_IMPORTED_MODULE_0_modal_vue___default.a },
     created: function created() {
         var _this = this;
 
@@ -79987,7 +80098,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             _this.trucks = response.trucks;
             _this.drivers = response.drivers;
             _this.contract = response.contract;
+
             _this.journey = response.journey.raw;
+
+            var journey = response.journey;
+            journey.current_km = '';
+            journey.current_fuel = '';
+            journey.fuel_reserve = 25;
+            journey.fuel_price = 100;
+            journey.mileage_balance = '';
+            journey.below_reserve = false;
+
+            _this.journey_close = journey;
+
             _this.journey.enquiry_from = _this.journey.enquiry_from == 'null' ? '' : _this.journey.enquiry_from;
             _this.journey.ref_no = _this.journey.ref_no == 'null' ? '' : _this.journey.ref_no;
             _this.journey.contract_id = _this.journey.contract_id == 'null' ? '' : _this.journey.contract_id;
@@ -79997,12 +80120,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
     },
     data: function data() {
+
         return {
+            showModal: false,
             drivers: [],
             trucks: [],
             status: '',
             contract: {},
-
             classifications: [],
             cargo_types: [],
             carriage_points: [],
@@ -80030,6 +80154,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 sub_address_2: '',
                 sub_address_3: '',
                 sub_address_4: ''
+            },
+            journey_close: {
+                truck: {
+                    driver: {}
+                },
+                fuel: {},
+                mileage: {},
+                current_km: '',
+                current_fuel: '',
+                fuel_reserve: 25,
+                fuel_price: 100,
+                mileage_balance: ''
             }
         };
     },
@@ -80056,10 +80192,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             minutes = minutes.length == 1 ? '0' + minutes : minutes;
 
             return hours + ':' + minutes;
+        },
+        belowReserve: function belowReserve() {
+            return this.fuelDifference > 0;
+        },
+        fuelDifference: function fuelDifference() {
+            var current = parseInt(this.journey_close.current_fuel);
+
+            if (isNaN(current)) return 0;
+
+            if (current < 0) {
+                this.journey_close.current_fuel = current * -1;
+            }
+
+            var fuel_difference = parseInt(this.journey_close.fuel_reserve) - current;
+
+            if (fuel_difference > 0) {
+                this.journey_close.mileage_balance = parseInt(this.journey_close.fuel_price) * fuel_difference;
+            } else {
+                this.journey_close.mileage_balance = 0;
+            }
+
+            return fuel_difference;
         }
     },
 
     methods: {
+        closeModal: function closeModal() {
+            this.showModal = false;
+        },
         updateBooleans: function updateBooleans() {
             var _this3 = this;
 
@@ -80117,23 +80278,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.processJourney('approve');
         },
         closeJourney: function closeJourney() {
-            this.processJourney('close');
+            var _this7 = this;
+
+            this.$root.isLoading = true;
+            http.post('/api/journey/' + this.$route.params.id + '/close', this.journey_close).then(function (response) {
+                alert2(_this7.$root, [response.message], 'success');
+                window._router.push({ path: '/journey' });
+            }).catch(function (error) {
+                alert2(_this7.$root, Object.values(JSON.parse(error.message)), 'danger');
+            });
+            this.$root.isLoading = false;
         },
         reopenJourney: function reopenJourney() {
             this.processJourney('reopen');
         },
         processJourney: function processJourney(endpoint) {
-            var _this7 = this;
+            var _this8 = this;
 
             this.$root.isLoading = true;
             http.post('/api/journey/' + this.$route.params.id + '/' + endpoint, {}).then(function (response) {
-                _this7.$root.isLoading = false;
-                alert2(_this7.$root, [response.message], 'success');
+                _this8.$root.isLoading = false;
+                alert2(_this8.$root, [response.message], 'success');
                 window._router.push({ path: '/journey' });
             }).catch(function (error) {
-                _this7.$root.isLoading = false;
-                alert2(_this7.$root, Object.values(JSON.parse(error.message)), 'danger');
+                _this8.$root.isLoading = false;
+                alert2(_this8.$root, Object.values(JSON.parse(error.message)), 'danger');
             });
+        },
+        validateKms: function validateKms() {
+            if (parseInt(this.journey_close.current_km) < parseInt(this.journey_close.truck.current_km)) {
+                this.journey_close.current_km = 0;
+                return alert2(this.$root, ['Current Km readings should be greater than previous Km reading'], 'danger');
+            }
         }
     }
 });
@@ -81018,21 +81194,49 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     created: function created() {
         var _this = this;
 
-        http.get('/api/truck/create?truck_id=' + this.$route.params.id).then(function (response) {
+        this.$root.isLoading = true;
+        if (this.$route.params.id) {
+            http.get('/api/truck/create?truck_id=' + this.$route.params.id).then(function (response) {
+                _this.trailers = response.trailers;
+                _this.drivers = response.drivers;
+            }).then(function () {
+                return _this.checkState();
+            }).then(function () {
+                return _this.$root.isLoading = false;
+            }).catch(function () {
+                return _this.$root.isLoading = false;
+            });
+
+            return;
+        }
+
+        http.get('/api/truck/create').then(function (response) {
             _this.trailers = response.trailers;
+            _this.drivers = response.drivers;
+        }).then(function () {
+            return _this.$root.isLoading = false;
+        }).catch(function () {
+            return _this.$root.isLoading = false;
         });
-    },
-    mounted: function mounted() {
-        this.checkState();
     },
     data: function data() {
         return {
             trailers: [],
+            drivers: [],
             truck: {
                 trailer_id: '',
                 plate_number: '',
@@ -81040,7 +81244,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 make: '',
                 model: '',
                 status: 'Active',
-                location: 'Awaiting Allocation'
+                location: 'Awaiting Allocation',
+                driver_id: ''
             }
         };
     },
@@ -81051,7 +81256,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this2 = this;
 
             if (this.$route.params.id) {
-                http.get('/api/truck/' + this.$route.params.id).then(function (response) {
+                return http.get('/api/truck/' + this.$route.params.id).then(function (response) {
                     _this2.truck = response.truck;
                 });
             }
@@ -81737,7 +81942,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_whatwg_fetch__ = __webpack_require__(161);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_whatwg_fetch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_whatwg_fetch__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(350);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(352);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__core__ = __webpack_require__(152);
 
 
@@ -81761,11 +81966,11 @@ window._ = __webpack_require__(154);
  */
 
 window.$ = window.jQuery = __webpack_require__(2);
-__webpack_require__(249);
+__webpack_require__(251);
 
 __webpack_require__(235);
 __webpack_require__(162);
-__webpack_require__(248);
+__webpack_require__(249);
 __webpack_require__(234);
 __webpack_require__(0);
 
@@ -81828,11 +82033,11 @@ function authMiddleware(to, from, next) {
     return next();
 }
 
-module.exports = [{ path: '/', redirect: '/login', beforeEnter: authMiddleware }, { path: '/dashboard', component: __webpack_require__(277), beforeEnter: authMiddleware }, { path: '/routes', component: __webpack_require__(257), beforeEnter: authMiddleware }, { path: '/routes/create', component: __webpack_require__(164), beforeEnter: authMiddleware }, { path: '/routes/:id/edit', component: __webpack_require__(164), beforeEnter: authMiddleware }, { path: '/routes/:id', component: __webpack_require__(258), beforeEnter: authMiddleware }, { path: '/drivers', component: __webpack_require__(254), beforeEnter: authMiddleware }, { path: '/drivers/create', component: __webpack_require__(129), beforeEnter: authMiddleware }, { path: '/drivers/:id/edit', component: __webpack_require__(129), beforeEnter: authMiddleware }, { path: '/drivers/:id', component: __webpack_require__(255), beforeEnter: authMiddleware }, { path: '/trucks', component: __webpack_require__(290), beforeEnter: authMiddleware }, { path: '/trucks/create', component: __webpack_require__(172), beforeEnter: authMiddleware }, { path: '/trucks/:id', component: __webpack_require__(291), beforeEnter: authMiddleware }, { path: '/trucks/:id/edit', component: __webpack_require__(172), beforeEnter: authMiddleware }, { path: '/trailers', component: __webpack_require__(259), beforeEnter: authMiddleware }, { path: '/trailers/create', component: __webpack_require__(165), beforeEnter: authMiddleware }, { path: '/trailers/:id', component: __webpack_require__(260), beforeEnter: authMiddleware }, { path: '/trailers/:id/edit', component: __webpack_require__(165), beforeEnter: authMiddleware }, { path: '/progress', component: __webpack_require__(262), beforeEnter: authMiddleware }, { path: '/progress/pre-loading', component: __webpack_require__(269), beforeEnter: authMiddleware }, { path: '/progress/pre-loading/:id', component: __webpack_require__(264), beforeEnter: authMiddleware }, { path: '/progress/loading', component: __webpack_require__(267), beforeEnter: authMiddleware }, { path: '/progress/loading/:id', component: __webpack_require__(263), beforeEnter: authMiddleware }, { path: '/progress/enroute', component: __webpack_require__(265), beforeEnter: authMiddleware }, { path: '/progress/enroute/:id', component: __webpack_require__(261), beforeEnter: authMiddleware }, { path: '/progress/offloading', component: __webpack_require__(268), beforeEnter: authMiddleware }, { path: '/progress/in-yard', component: __webpack_require__(266), beforeEnter: authMiddleware }, { path: '/users', component: __webpack_require__(274), beforeEnter: authMiddleware }, { path: '/users/create', component: __webpack_require__(273), beforeEnter: authMiddleware }, { path: '/contracts', component: __webpack_require__(275), beforeEnter: authMiddleware }, { path: '/contracts/create', component: __webpack_require__(166), beforeEnter: authMiddleware }, { path: '/contracts/:id', component: __webpack_require__(276), beforeEnter: authMiddleware }, { path: '/contracts/:id/edit', component: __webpack_require__(166), beforeEnter: authMiddleware }, { path: '/journey', component: __webpack_require__(284), beforeEnter: authMiddleware }, { path: '/journey/create', component: __webpack_require__(170), beforeEnter: authMiddleware }, { path: '/journey/:id', component: __webpack_require__(285), beforeEnter: authMiddleware }, { path: '/journey/:id/edit', component: __webpack_require__(170), beforeEnter: authMiddleware }, { path: '/inspection', component: __webpack_require__(282), beforeEnter: authMiddleware }, { path: '/inspection/create', component: __webpack_require__(169), beforeEnter: authMiddleware }, { path: '/inspection/:id', component: __webpack_require__(283), beforeEnter: authMiddleware }, { path: '/inspection/:id/edit', component: __webpack_require__(169), beforeEnter: authMiddleware }, { path: '/fuel', component: __webpack_require__(280), beforeEnter: authMiddleware }, { path: '/fuel/create', component: __webpack_require__(168), beforeEnter: authMiddleware }, { path: '/fuel/:id', component: __webpack_require__(281), beforeEnter: authMiddleware }, { path: '/fuel/:id/edit', component: __webpack_require__(168), beforeEnter: authMiddleware }, { path: '/mileage', component: __webpack_require__(287), beforeEnter: authMiddleware }, { path: '/mileage/create', component: __webpack_require__(171), beforeEnter: authMiddleware }, { path: '/mileage/:id', component: __webpack_require__(288), beforeEnter: authMiddleware }, { path: '/mileage/:id/edit', component: __webpack_require__(171), beforeEnter: authMiddleware },
+module.exports = [{ path: '/', redirect: '/login', beforeEnter: authMiddleware }, { path: '/dashboard', component: __webpack_require__(279), beforeEnter: authMiddleware }, { path: '/routes', component: __webpack_require__(259), beforeEnter: authMiddleware }, { path: '/routes/create', component: __webpack_require__(164), beforeEnter: authMiddleware }, { path: '/routes/:id/edit', component: __webpack_require__(164), beforeEnter: authMiddleware }, { path: '/routes/:id', component: __webpack_require__(260), beforeEnter: authMiddleware }, { path: '/drivers', component: __webpack_require__(256), beforeEnter: authMiddleware }, { path: '/drivers/create', component: __webpack_require__(129), beforeEnter: authMiddleware }, { path: '/drivers/:id/edit', component: __webpack_require__(129), beforeEnter: authMiddleware }, { path: '/drivers/:id', component: __webpack_require__(257), beforeEnter: authMiddleware }, { path: '/trucks', component: __webpack_require__(292), beforeEnter: authMiddleware }, { path: '/trucks/create', component: __webpack_require__(172), beforeEnter: authMiddleware }, { path: '/trucks/:id', component: __webpack_require__(293), beforeEnter: authMiddleware }, { path: '/trucks/:id/edit', component: __webpack_require__(172), beforeEnter: authMiddleware }, { path: '/trailers', component: __webpack_require__(261), beforeEnter: authMiddleware }, { path: '/trailers/create', component: __webpack_require__(165), beforeEnter: authMiddleware }, { path: '/trailers/:id', component: __webpack_require__(262), beforeEnter: authMiddleware }, { path: '/trailers/:id/edit', component: __webpack_require__(165), beforeEnter: authMiddleware }, { path: '/progress', component: __webpack_require__(264), beforeEnter: authMiddleware }, { path: '/progress/pre-loading', component: __webpack_require__(271), beforeEnter: authMiddleware }, { path: '/progress/pre-loading/:id', component: __webpack_require__(266), beforeEnter: authMiddleware }, { path: '/progress/loading', component: __webpack_require__(269), beforeEnter: authMiddleware }, { path: '/progress/loading/:id', component: __webpack_require__(265), beforeEnter: authMiddleware }, { path: '/progress/enroute', component: __webpack_require__(267), beforeEnter: authMiddleware }, { path: '/progress/enroute/:id', component: __webpack_require__(263), beforeEnter: authMiddleware }, { path: '/progress/offloading', component: __webpack_require__(270), beforeEnter: authMiddleware }, { path: '/progress/in-yard', component: __webpack_require__(268), beforeEnter: authMiddleware }, { path: '/users', component: __webpack_require__(276), beforeEnter: authMiddleware }, { path: '/users/create', component: __webpack_require__(275), beforeEnter: authMiddleware }, { path: '/contracts', component: __webpack_require__(277), beforeEnter: authMiddleware }, { path: '/contracts/create', component: __webpack_require__(166), beforeEnter: authMiddleware }, { path: '/contracts/:id', component: __webpack_require__(278), beforeEnter: authMiddleware }, { path: '/contracts/:id/edit', component: __webpack_require__(166), beforeEnter: authMiddleware }, { path: '/journey', component: __webpack_require__(286), beforeEnter: authMiddleware }, { path: '/journey/create', component: __webpack_require__(170), beforeEnter: authMiddleware }, { path: '/journey/:id', component: __webpack_require__(287), beforeEnter: authMiddleware }, { path: '/journey/:id/edit', component: __webpack_require__(170), beforeEnter: authMiddleware }, { path: '/inspection', component: __webpack_require__(284), beforeEnter: authMiddleware }, { path: '/inspection/create', component: __webpack_require__(169), beforeEnter: authMiddleware }, { path: '/inspection/:id', component: __webpack_require__(285), beforeEnter: authMiddleware }, { path: '/inspection/:id/edit', component: __webpack_require__(169), beforeEnter: authMiddleware }, { path: '/fuel', component: __webpack_require__(282), beforeEnter: authMiddleware }, { path: '/fuel/create', component: __webpack_require__(168), beforeEnter: authMiddleware }, { path: '/fuel/:id', component: __webpack_require__(283), beforeEnter: authMiddleware }, { path: '/fuel/:id/edit', component: __webpack_require__(168), beforeEnter: authMiddleware }, { path: '/mileage', component: __webpack_require__(289), beforeEnter: authMiddleware }, { path: '/mileage/create', component: __webpack_require__(171), beforeEnter: authMiddleware }, { path: '/mileage/:id', component: __webpack_require__(290), beforeEnter: authMiddleware }, { path: '/mileage/:id/edit', component: __webpack_require__(171), beforeEnter: authMiddleware },
 
 // { path: '/route-card', component: require('./transport/routecard/index.vue'), beforeEnter: authMiddleware },
-{ path: '/route-card/create', component: __webpack_require__(289), beforeEnter: authMiddleware }, { path: '/delivery', component: __webpack_require__(278), beforeEnter: authMiddleware }, { path: '/delivery/create', component: __webpack_require__(167), beforeEnter: authMiddleware }, { path: '/delivery/:id', component: __webpack_require__(279), beforeEnter: authMiddleware }, { path: '/delivery/:id/edit', component: __webpack_require__(167), beforeEnter: authMiddleware }, { path: '/allocation', component: __webpack_require__(250), beforeEnter: authMiddleware }, { path: '/allocation/create', component: __webpack_require__(163), beforeEnter: authMiddleware }, { path: '/allocation/:id/edit', component: __webpack_require__(163), beforeEnter: authMiddleware }, { path: '/udfs', component: __webpack_require__(270), beforeEnter: authMiddleware }, { path: '/udfs/create', component: __webpack_require__(132), beforeEnter: authMiddleware }, { path: '/udfs/:id/edit', component: __webpack_require__(132), beforeEnter: authMiddleware }, { path: '/login',
-    component: __webpack_require__(251),
+{ path: '/route-card/create', component: __webpack_require__(291), beforeEnter: authMiddleware }, { path: '/delivery', component: __webpack_require__(280), beforeEnter: authMiddleware }, { path: '/delivery/create', component: __webpack_require__(167), beforeEnter: authMiddleware }, { path: '/delivery/:id', component: __webpack_require__(281), beforeEnter: authMiddleware }, { path: '/delivery/:id/edit', component: __webpack_require__(167), beforeEnter: authMiddleware }, { path: '/allocation', component: __webpack_require__(252), beforeEnter: authMiddleware }, { path: '/allocation/create', component: __webpack_require__(163), beforeEnter: authMiddleware }, { path: '/allocation/:id/edit', component: __webpack_require__(163), beforeEnter: authMiddleware }, { path: '/udfs', component: __webpack_require__(272), beforeEnter: authMiddleware }, { path: '/udfs/create', component: __webpack_require__(132), beforeEnter: authMiddleware }, { path: '/udfs/:id/edit', component: __webpack_require__(132), beforeEnter: authMiddleware }, { path: '/login',
+    component: __webpack_require__(253),
     beforeEnter: function beforeEnter(to, from, next) {
         if (localStorage.getItem('foeiwafwfuwe')) {
             return next({ path: '/dashboard' });
@@ -86493,26 +86698,33 @@ exports.push([module.i, "\n#smo-alert {\n    position: fixed;\n    top: 60px;\n 
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)();
-exports.push([module.i, "\n.loaderContainer {\n    width: 100%;\n    height: 100%;\n    z-index: 1000000;\n    position: fixed;\n    top: 0;\n    left: 0;\n    background-color: rgba(229, 229, 229, .6);\n}\n.spinner {\n    position: relative;\n    top: calc(50% - 20px);\n    left: calc(50% - 20px);\n    width: 40px;\n    height: 40px;\n    text-align: center;\n\n    -webkit-animation: sk-rotate 2.0s infinite linear;\n    animation: sk-rotate 2.0s infinite linear;\n}\n.spinner .dot1, .spinner .dot2 {\n    width: 60%;\n    height: 60%;\n    display: inline-block;\n    position: absolute;\n    top: 0;\n    background-color: #333;\n    border-radius: 100%;\n\n    -webkit-animation: sk-bounce 2.0s infinite ease-in-out;\n    animation: sk-bounce 2.0s infinite ease-in-out;\n}\n.spinner .dot2 {\n    top: auto;\n    bottom: 0;\n    -webkit-animation-delay: -1.0s;\n    animation-delay: -1.0s;\n}\n@-webkit-keyframes sk-rotate {\n100% { -webkit-transform: rotate(360deg)\n}\n}\n@keyframes sk-rotate {\n100% { transform: rotate(360deg); -webkit-transform: rotate(360deg)\n}\n}\n@-webkit-keyframes sk-bounce {\n0%, 100% { -webkit-transform: scale(0.0)\n}\n50% { -webkit-transform: scale(1.0)\n}\n}\n@keyframes sk-bounce {\n0%, 100% {\n        transform: scale(0.0);\n        -webkit-transform: scale(0.0);\n}\n50% {\n          transform: scale(1.0);\n          -webkit-transform: scale(1.0);\n}\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)();
+exports.push([module.i, "\n.loaderContainer {\n    width: 100%;\n    height: 100%;\n    z-index: 1000000;\n    position: fixed;\n    top: 0;\n    left: 0;\n    background-color: rgba(229, 229, 229, .6);\n}\n.spinner {\n    position: relative;\n    top: calc(50% - 20px);\n    left: calc(50% - 20px);\n    width: 40px;\n    height: 40px;\n    text-align: center;\n\n    -webkit-animation: sk-rotate 2.0s infinite linear;\n    animation: sk-rotate 2.0s infinite linear;\n}\n.spinner .dot1, .spinner .dot2 {\n    width: 60%;\n    height: 60%;\n    display: inline-block;\n    position: absolute;\n    top: 0;\n    background-color: #333;\n    border-radius: 100%;\n\n    -webkit-animation: sk-bounce 2.0s infinite ease-in-out;\n    animation: sk-bounce 2.0s infinite ease-in-out;\n}\n.spinner .dot2 {\n    top: auto;\n    bottom: 0;\n    -webkit-animation-delay: -1.0s;\n    animation-delay: -1.0s;\n}\n@-webkit-keyframes sk-rotate {\n100% { -webkit-transform: rotate(360deg)\n}\n}\n@keyframes sk-rotate {\n100% { transform: rotate(360deg); -webkit-transform: rotate(360deg)\n}\n}\n@-webkit-keyframes sk-bounce {\n0%, 100% { -webkit-transform: scale(0.0)\n}\n50% { -webkit-transform: scale(1.0)\n}\n}\n@keyframes sk-bounce {\n0%, 100% {\n        transform: scale(0.0);\n        -webkit-transform: scale(0.0);\n}\n50% {\n          transform: scale(1.0);\n          -webkit-transform: scale(1.0);\n}\n}\n", ""]);
+
+/***/ }),
+/* 245 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(4)();
 exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
-/* 245 */,
-/* 246 */
+/* 246 */,
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)();
 exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
-/* 247 */,
-/* 248 */
+/* 248 */,
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! DataTables Bootstrap 3 integration
@@ -86701,7 +86913,13 @@ return DataTable;
 
 
 /***/ }),
-/* 249 */
+/* 250 */
+/***/ (function(module, exports, __webpack_require__) {
+
+!function(e,t){ true?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports["modal-vue"]=t():e["modal-vue"]=t()}(this,function(){return function(e){function t(r){if(n[r])return n[r].exports;var o=n[r]={i:r,l:!1,exports:{}};return e[r].call(o.exports,o,o.exports,t),o.l=!0,o.exports}var n={};return t.m=e,t.c=n,t.i=function(e){return e},t.d=function(e,n,r){t.o(e,n)||Object.defineProperty(e,n,{configurable:!1,enumerable:!0,get:r})},t.n=function(e){var n=e&&e.__esModule?function(){return e.default}:function(){return e};return t.d(n,"a",n),n},t.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},t.p="",t(t.s=9)}([function(e,t,n){n(6);var r=n(4)(n(1),n(5),"data-v-5e6a9794",null);e.exports=r.exports},function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t.default={props:{showModal:Boolean,closeAction:Function,containerClass:String}}},function(e,t,n){t=e.exports=n(3)(),t.push([e.i,"",""])},function(e,t){e.exports=function(){var e=[];return e.toString=function(){for(var e=[],t=0;t<this.length;t++){var n=this[t];n[2]?e.push("@media "+n[2]+"{"+n[1]+"}"):e.push(n[1])}return e.join("")},e.i=function(t,n){"string"==typeof t&&(t=[[null,t,""]]);for(var r={},o=0;o<this.length;o++){var s=this[o][0];"number"==typeof s&&(r[s]=!0)}for(o=0;o<t.length;o++){var a=t[o];"number"==typeof a[0]&&r[a[0]]||(n&&!a[2]?a[2]=n:n&&(a[2]="("+a[2]+") and ("+n+")"),e.push(a))}},e}},function(e,t){e.exports=function(e,t,n,r){var o,s=e=e||{},a=typeof e.default;"object"!==a&&"function"!==a||(o=e,s=e.default);var i="function"==typeof s?s.options:s;if(t&&(i.render=t.render,i.staticRenderFns=t.staticRenderFns),n&&(i._scopeId=n),r){var u=i.computed||(i.computed={});Object.keys(r).forEach(function(e){var t=r[e];u[e]=function(){return t}})}return{esModule:o,exports:s,options:i}}},function(e,t){e.exports={render:function(){var e=this,t=e.$createElement,n=e._self._c||t;return n("div",{class:e.containerClass},[n("div",{class:{modal:!0,in:e.showModal},style:{display:e.showModal?"block":"none"}},[n("div",{staticClass:"modal-dialog"},[n("div",{staticClass:"modal-content"},[this.$slots.header||e.closeAction?n("div",{staticClass:"modal-header"},[n("button",{staticClass:"close",on:{click:e.closeAction}},[e._v("x")]),e._v(" "),e._t("header")],2):e._e(),e._v(" "),this.$slots.body?n("div",{staticClass:"modal-body"},[e._t("body")],2):e._e(),e._v(" "),this.$slots.footer?n("div",{staticClass:"modal-footer"},[e._t("footer")],2):e._e()])])]),e._v(" "),n("div",{class:{"modal-backdrop":e.showModal,in:e.showModal}})])},staticRenderFns:[]}},function(e,t,n){var r=n(2);"string"==typeof r&&(r=[[e.i,r,""]]),r.locals&&(e.exports=r.locals),n(7)("778b1955",r,!0)},function(e,t,n){function r(e){for(var t=0;t<e.length;t++){var n=e[t],r=l[n.id];if(r){r.refs++;for(var o=0;o<r.parts.length;o++)r.parts[o](n.parts[o]);for(;o<n.parts.length;o++)r.parts.push(a(n.parts[o]));r.parts.length>n.parts.length&&(r.parts.length=n.parts.length)}else{for(var s=[],o=0;o<n.parts.length;o++)s.push(a(n.parts[o]));l[n.id]={id:n.id,refs:1,parts:s}}}}function o(e,t){for(var n=[],r={},o=0;o<t.length;o++){var s=t[o],a=s[0],i=s[1],u=s[2],c=s[3],l={css:i,media:u,sourceMap:c};r[a]?(l.id=e+":"+r[a].parts.length,r[a].parts.push(l)):(l.id=e+":0",n.push(r[a]={id:a,parts:[l]}))}return n}function s(){var e=document.createElement("style");return e.type="text/css",d.appendChild(e),e}function a(e){var t,n,r=document.querySelector('style[data-vue-ssr-id~="'+e.id+'"]'),o=null!=r;if(o&&v)return h;if(m){var a=p++;r=f||(f=s()),t=i.bind(null,r,a,!1),n=i.bind(null,r,a,!0)}else r=r||s(),t=u.bind(null,r),n=function(){r.parentNode.removeChild(r)};return o||t(e),function(r){if(r){if(r.css===e.css&&r.media===e.media&&r.sourceMap===e.sourceMap)return;t(e=r)}else n()}}function i(e,t,n,r){var o=n?"":r.css;if(e.styleSheet)e.styleSheet.cssText=y(t,o);else{var s=document.createTextNode(o),a=e.childNodes;a[t]&&e.removeChild(a[t]),a.length?e.insertBefore(s,a[t]):e.appendChild(s)}}function u(e,t){var n=t.css,r=t.media,o=t.sourceMap;if(r&&e.setAttribute("media",r),o&&(n+="\n/*# sourceURL="+o.sources[0]+" */",n+="\n/*# sourceMappingURL=data:application/json;base64,"+btoa(unescape(encodeURIComponent(JSON.stringify(o))))+" */"),e.styleSheet)e.styleSheet.cssText=n;else{for(;e.firstChild;)e.removeChild(e.firstChild);e.appendChild(document.createTextNode(n))}}var c="undefined"!=typeof document;if("undefined"!=typeof DEBUG&&DEBUG&&!c)throw new Error("vue-style-loader cannot be used in a non-browser environment. Use { target: 'node' } in your Webpack config to indicate a server-rendering environment.");var o=n(8),l={},d=c&&(document.head||document.getElementsByTagName("head")[0]),f=null,p=0,v=!1,h=function(){},m="undefined"!=typeof navigator&&/msie [6-9]\b/.test(navigator.userAgent.toLowerCase());e.exports=function(e,t,n){v=n;var s=o(e,t);return r(s),function(t){for(var n=[],a=0;a<s.length;a++){var i=s[a],u=l[i.id];u.refs--,n.push(u)}t?(s=o(e,t),r(s)):s=[];for(var a=0;a<n.length;a++){var u=n[a];if(0===u.refs){for(var c=0;c<u.parts.length;c++)u.parts[c]();delete l[u.id]}}}};var y=function(){var e=[];return function(t,n){return e[t]=n,e.filter(Boolean).join("\n")}}()},function(e,t){e.exports=function(e,t){for(var n=[],r={},o=0;o<t.length;o++){var s=t[o],a=s[0],i=s[1],u=s[2],c=s[3],l={id:e+":"+o,css:i,media:u,sourceMap:c};r[a]?r[a].parts.push(l):n.push(r[a]={id:a,parts:[l]})}return n}},function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var r=n(0),o=n.n(r);t.default=o.a}])});
+
+/***/ }),
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function($) {var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var require;var require;/*!
@@ -92436,14 +92654,14 @@ S2.define('jquery.select2',[
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
-/* 250 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(177),
   /* template */
-  __webpack_require__(348),
+  __webpack_require__(350),
   /* scopeId */
   null,
   /* cssModules */
@@ -92470,14 +92688,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 251 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(178),
   /* template */
-  __webpack_require__(337),
+  __webpack_require__(339),
   /* scopeId */
   null,
   /* cssModules */
@@ -92504,18 +92722,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 252 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(357)
+__webpack_require__(359)
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(179),
   /* template */
-  __webpack_require__(309),
+  __webpack_require__(311),
   /* scopeId */
   null,
   /* cssModules */
@@ -92542,18 +92760,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 253 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(358)
+__webpack_require__(361)
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(180),
   /* template */
-  __webpack_require__(321),
+  __webpack_require__(323),
   /* scopeId */
   null,
   /* cssModules */
@@ -92580,14 +92798,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 254 */
+/* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(181),
   /* template */
-  __webpack_require__(302),
+  __webpack_require__(304),
   /* scopeId */
   null,
   /* cssModules */
@@ -92614,14 +92832,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 255 */
+/* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(182),
   /* template */
-  __webpack_require__(322),
+  __webpack_require__(324),
   /* scopeId */
   null,
   /* cssModules */
@@ -92648,14 +92866,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 256 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(183),
   /* template */
-  __webpack_require__(316),
+  __webpack_require__(318),
   /* scopeId */
   null,
   /* cssModules */
@@ -92682,14 +92900,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 257 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(185),
   /* template */
-  __webpack_require__(319),
+  __webpack_require__(321),
   /* scopeId */
   null,
   /* cssModules */
@@ -92716,18 +92934,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 258 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(356)
+__webpack_require__(358)
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(186),
   /* template */
-  __webpack_require__(308),
+  __webpack_require__(310),
   /* scopeId */
   null,
   /* cssModules */
@@ -92754,14 +92972,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 259 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(188),
   /* template */
-  __webpack_require__(297),
+  __webpack_require__(299),
   /* scopeId */
   null,
   /* cssModules */
@@ -92788,18 +93006,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 260 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(351)
+__webpack_require__(353)
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(189),
   /* template */
-  __webpack_require__(296),
+  __webpack_require__(298),
   /* scopeId */
   null,
   /* cssModules */
@@ -92826,14 +93044,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 261 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(190),
   /* template */
-  __webpack_require__(306),
+  __webpack_require__(308),
   /* scopeId */
   null,
   /* cssModules */
@@ -92860,14 +93078,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 262 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(191),
   /* template */
-  __webpack_require__(312),
+  __webpack_require__(314),
   /* scopeId */
   null,
   /* cssModules */
@@ -92894,14 +93112,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 263 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(192),
   /* template */
-  __webpack_require__(323),
+  __webpack_require__(325),
   /* scopeId */
   null,
   /* cssModules */
@@ -92928,14 +93146,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 264 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(193),
   /* template */
-  __webpack_require__(328),
+  __webpack_require__(330),
   /* scopeId */
   null,
   /* cssModules */
@@ -92962,14 +93180,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 265 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(194),
   /* template */
-  __webpack_require__(311),
+  __webpack_require__(313),
   /* scopeId */
   null,
   /* cssModules */
@@ -92996,14 +93214,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 266 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(195),
   /* template */
-  __webpack_require__(304),
+  __webpack_require__(306),
   /* scopeId */
   null,
   /* cssModules */
@@ -93030,14 +93248,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 267 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(196),
   /* template */
-  __webpack_require__(326),
+  __webpack_require__(328),
   /* scopeId */
   null,
   /* cssModules */
@@ -93064,14 +93282,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 268 */
+/* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(197),
   /* template */
-  __webpack_require__(330),
+  __webpack_require__(332),
   /* scopeId */
   null,
   /* cssModules */
@@ -93098,14 +93316,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 269 */
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(198),
   /* template */
-  __webpack_require__(324),
+  __webpack_require__(326),
   /* scopeId */
   null,
   /* cssModules */
@@ -93132,14 +93350,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 270 */
+/* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(199),
   /* template */
-  __webpack_require__(338),
+  __webpack_require__(340),
   /* scopeId */
   null,
   /* cssModules */
@@ -93166,16 +93384,16 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 271 */,
-/* 272 */,
-/* 273 */
+/* 273 */,
+/* 274 */,
+/* 275 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(202),
   /* template */
-  __webpack_require__(349),
+  __webpack_require__(351),
   /* scopeId */
   null,
   /* cssModules */
@@ -93202,14 +93420,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 274 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(203),
   /* template */
-  __webpack_require__(301),
+  __webpack_require__(303),
   /* scopeId */
   null,
   /* cssModules */
@@ -93236,14 +93454,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 275 */
+/* 277 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(205),
   /* template */
-  __webpack_require__(335),
+  __webpack_require__(337),
   /* scopeId */
   null,
   /* cssModules */
@@ -93270,14 +93488,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 276 */
+/* 278 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(206),
   /* template */
-  __webpack_require__(310),
+  __webpack_require__(312),
   /* scopeId */
   null,
   /* cssModules */
@@ -93304,14 +93522,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 277 */
+/* 279 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(207),
   /* template */
-  __webpack_require__(341),
+  __webpack_require__(343),
   /* scopeId */
   null,
   /* cssModules */
@@ -93338,14 +93556,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 278 */
+/* 280 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(209),
   /* template */
-  __webpack_require__(334),
+  __webpack_require__(336),
   /* scopeId */
   null,
   /* cssModules */
@@ -93372,14 +93590,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 279 */
+/* 281 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(210),
   /* template */
-  __webpack_require__(343),
+  __webpack_require__(345),
   /* scopeId */
   null,
   /* cssModules */
@@ -93406,18 +93624,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 280 */
+/* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(352)
+__webpack_require__(354)
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(212),
   /* template */
-  __webpack_require__(298),
+  __webpack_require__(300),
   /* scopeId */
   null,
   /* cssModules */
@@ -93444,14 +93662,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 281 */
+/* 283 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(213),
   /* template */
-  __webpack_require__(345),
+  __webpack_require__(347),
   /* scopeId */
   null,
   /* cssModules */
@@ -93478,14 +93696,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 282 */
+/* 284 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(215),
   /* template */
-  __webpack_require__(320),
+  __webpack_require__(322),
   /* scopeId */
   null,
   /* cssModules */
@@ -93512,14 +93730,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 283 */
+/* 285 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(216),
   /* template */
-  __webpack_require__(333),
+  __webpack_require__(335),
   /* scopeId */
   null,
   /* cssModules */
@@ -93546,14 +93764,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 284 */
+/* 286 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(218),
   /* template */
-  __webpack_require__(307),
+  __webpack_require__(309),
   /* scopeId */
   null,
   /* cssModules */
@@ -93580,16 +93798,20 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 285 */
+/* 287 */
 /***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(360)
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(219),
   /* template */
-  __webpack_require__(314),
+  __webpack_require__(316),
   /* scopeId */
-  null,
+  "data-v-37a0c056",
   /* cssModules */
   null
 )
@@ -93614,14 +93836,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 286 */
+/* 288 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(220),
   /* template */
-  __webpack_require__(340),
+  __webpack_require__(342),
   /* scopeId */
   null,
   /* cssModules */
@@ -93648,14 +93870,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 287 */
+/* 289 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(222),
   /* template */
-  __webpack_require__(317),
+  __webpack_require__(319),
   /* scopeId */
   null,
   /* cssModules */
@@ -93682,14 +93904,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 288 */
+/* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(223),
   /* template */
-  __webpack_require__(329),
+  __webpack_require__(331),
   /* scopeId */
   null,
   /* cssModules */
@@ -93716,18 +93938,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 289 */
+/* 291 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(361)
+__webpack_require__(364)
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(224),
   /* template */
-  __webpack_require__(346),
+  __webpack_require__(348),
   /* scopeId */
   null,
   /* cssModules */
@@ -93754,14 +93976,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 290 */
+/* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(226),
   /* template */
-  __webpack_require__(318),
+  __webpack_require__(320),
   /* scopeId */
   null,
   /* cssModules */
@@ -93788,18 +94010,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 291 */
+/* 293 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(359)
+__webpack_require__(362)
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(227),
   /* template */
-  __webpack_require__(327),
+  __webpack_require__(329),
   /* scopeId */
   null,
   /* cssModules */
@@ -93826,18 +94048,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 292 */
+/* 294 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(355)
+__webpack_require__(357)
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(228),
   /* template */
-  __webpack_require__(305),
+  __webpack_require__(307),
   /* scopeId */
   null,
   /* cssModules */
@@ -93864,18 +94086,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 293 */
+/* 295 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(354)
+__webpack_require__(356)
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(229),
   /* template */
-  __webpack_require__(303),
+  __webpack_require__(305),
   /* scopeId */
   null,
   /* cssModules */
@@ -93902,18 +94124,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 294 */
+/* 296 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(353)
+__webpack_require__(355)
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(230),
   /* template */
-  __webpack_require__(300),
+  __webpack_require__(302),
   /* scopeId */
   null,
   /* cssModules */
@@ -93940,13 +94162,15 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 295 */
+/* 297 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "panel panel-default"
-  }, [_vm._m(0), _vm._v(" "), _c('div', {
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_c('strong', [_vm._v("Contract Details   (Contract Id: " + _vm._s(parseInt(_vm.last_contract_id.id) + 1) + "*)")])]), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
   }, [_c('form', {
     attrs: {
@@ -94739,7 +94963,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "col-sm-3"
   }, [_c('table', {
     staticClass: "table table-striped"
-  }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.contract.unloading_points), function(point) {
+  }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.contract.unloading_points), function(point) {
     return _c('tr', [_c('td', [_vm._v(_vm._s(point.name))]), _vm._v(" "), _c('td', [_c('button', {
       staticClass: "btn btn-danger btn-xs",
       on: {
@@ -94751,7 +94975,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('i', {
       staticClass: "fa fa-trash"
     })])])])
-  }))])])]), _vm._v(" "), _vm._m(2), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
+  }))])])]), _vm._v(" "), _vm._m(1), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-4"
@@ -94932,7 +95156,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.contract.vessel_arrival_date = $event.target.value
       }
     }
-  })])])]), _vm._v(" "), _vm._m(3), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
+  })])])]), _vm._v(" "), _vm._m(2), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-3"
@@ -95076,7 +95300,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "col-sm-12"
   }, [_c('table', {
     staticClass: "table table-striped"
-  }, [_vm._m(4), _vm._v(" "), _c('tbody', _vm._l((_vm.contract.shifts), function(shift) {
+  }, [_vm._m(3), _vm._v(" "), _c('tbody', _vm._l((_vm.contract.shifts), function(shift) {
     return _c('tr', [_c('td', [_vm._v(_vm._s(shift.shift_number))]), _vm._v(" "), _c('td', [_c('input', {
       attrs: {
         "disabled": "",
@@ -95106,7 +95330,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('i', {
       staticClass: "fa fa-trash"
     })])])])
-  }))])])]), _vm._v(" "), _vm._m(5), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
+  }))])])]), _vm._v(" "), _vm._m(4), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-4"
@@ -95438,9 +95662,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
-      "for": "sub_delivery_address"
+      "for": "sub_delivery_address_1"
     }
-  }, [_vm._v("Delivery Address")]), _vm._v(" "), _c('input', {
+  }, [_vm._v("Delivery Address 1")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -95460,6 +95684,90 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "input": function($event) {
         if ($event.target.composing) { return; }
         _vm.contract.sub_delivery_address = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "sub_delivery_address_2"
+    }
+  }, [_vm._v("Delivery Address 2")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.contract.sub_delivery_address_2),
+      expression: "contract.sub_delivery_address_2"
+    }],
+    staticClass: "form-control input-sm",
+    attrs: {
+      "type": "text",
+      "id": "sub_delivery_address_2",
+      "name": "sub_delivery_address_2"
+    },
+    domProps: {
+      "value": (_vm.contract.sub_delivery_address_2)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.contract.sub_delivery_address_2 = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "sub_delivery_addres_3"
+    }
+  }, [_vm._v("Delivery Address 3")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.contract.sub_delivery_address_3),
+      expression: "contract.sub_delivery_address_3"
+    }],
+    staticClass: "form-control input-sm",
+    attrs: {
+      "type": "text",
+      "id": "sub_delivery_address_3",
+      "name": "sub_delivery_address_3"
+    },
+    domProps: {
+      "value": (_vm.contract.sub_delivery_address_3)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.contract.sub_delivery_address_3 = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "sub_delivery_address_4"
+    }
+  }, [_vm._v("Delivery Address 4")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.contract.sub_delivery_address_4),
+      expression: "contract.sub_delivery_address_4"
+    }],
+    staticClass: "form-control input-sm",
+    attrs: {
+      "type": "text",
+      "id": "sub_delivery_address_4",
+      "name": "sub_delivery_address_4"
+    },
+    domProps: {
+      "value": (_vm.contract.sub_delivery_address_4)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.contract.sub_delivery_address_4 = $event.target.value
       }
     }
   })])])]) : _vm._e(), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
@@ -95482,10 +95790,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v("Back")])], 1)])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "panel-heading"
-  }, [_c('strong', [_vm._v("Contract Details")])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('thead', [_c('tr', [_c('th', [_vm._v("Unloading Point")]), _vm._v(" "), _c('th')])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('h4', [_c('strong', [_vm._v("Ship Details")])])
@@ -95505,7 +95809,7 @@ if (false) {
 }
 
 /***/ }),
-/* 296 */
+/* 298 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -95550,7 +95854,7 @@ if (false) {
 }
 
 /***/ }),
-/* 297 */
+/* 299 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -95701,7 +96005,7 @@ if (false) {
 }
 
 /***/ }),
-/* 298 */
+/* 300 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -95764,7 +96068,7 @@ if (false) {
 }
 
 /***/ }),
-/* 299 */
+/* 301 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -95932,46 +96236,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "value": "International"
     }
-  }, [_vm._v("International")])])]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "route_id"
-    }
-  }, [_vm._v("Route")]), _vm._v(" "), _c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.journey.route_id),
-      expression: "journey.route_id"
-    }],
-    staticClass: "form-control input-sm select2",
-    attrs: {
-      "disabled": _vm.journey.is_contract_related == '1',
-      "name": "route_id",
-      "id": "route_id",
-      "required": ""
-    },
-    on: {
-      "change": function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.journey.route_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
-    }
-  }, _vm._l((_vm.routes), function(route) {
-    return _c('option', {
-      domProps: {
-        "value": route.id
-      }
-    }, [_vm._v(_vm._s(route.source) + " - " + _vm._s(route.destination) + " (" + _vm._s(route.distance) + " KM)")])
-  }))])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [(_vm.journey.is_contract_related == '1') ? _c('div', [_c('h5', [_c('strong', [_vm._v("Trucks Allocated: " + _vm._s(_vm.contract.trucks_allocated))])])]) : _vm._e(), _vm._v(" "), _c('div', {
+  }, [_vm._v("International")])])]), _vm._v(" "), (_vm.journey.is_contract_related == '1') ? _c('div', [_c('h5', [_c('strong', [_vm._v("Required trucks allocation: " + _vm._s(_vm.contract.trucks_allocated))])]), _vm._v(" "), _c('h5', [_c('strong', [_vm._v("Trucks already allocated: " + _vm._s(_vm.trucks_already_allocated))])]), _vm._v(" "), _c('h5', [_c('strong', [_vm._v("Trucks to be allocated: " + _vm._s(parseInt(_vm.contract.trucks_allocated) - parseInt(_vm.trucks_already_allocated)))])])]) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
@@ -96584,7 +96849,7 @@ if (false) {
 }
 
 /***/ }),
-/* 300 */
+/* 302 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -96876,7 +97141,7 @@ if (false) {
 }
 
 /***/ }),
-/* 301 */
+/* 303 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -96943,7 +97208,7 @@ if (false) {
 }
 
 /***/ }),
-/* 302 */
+/* 304 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -97094,7 +97359,7 @@ if (false) {
 }
 
 /***/ }),
-/* 303 */
+/* 305 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -97143,7 +97408,7 @@ if (false) {
 }
 
 /***/ }),
-/* 304 */
+/* 306 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -97189,7 +97454,7 @@ if (false) {
 }
 
 /***/ }),
-/* 305 */
+/* 307 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -97429,7 +97694,7 @@ if (false) {
 }
 
 /***/ }),
-/* 306 */
+/* 308 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -97688,7 +97953,7 @@ if (false) {
 }
 
 /***/ }),
-/* 307 */
+/* 309 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -97721,12 +97986,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "to": '/journey/' + journey.id
       }
     }, [_vm._v("JRNY-" + _vm._s(journey.id))])], 1), _vm._v(" "), _c('td', [(journey.status == 'Pending Approval') ? _c('span', {
-      staticClass: "label label-default"
+      staticClass: "label label-info"
     }, [_vm._v("Pending Approval")]) : _vm._e(), _vm._v(" "), (journey.status == 'Approved') ? _c('span', {
       staticClass: "label label-success"
-    }, [_vm._v("Approved")]) : _vm._e()]), _vm._v(" "), _c('td', [_vm._v(_vm._s(journey.is_contract_related ? 'Yes' : 'No'))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(journey.journey_type))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.date2(journey.job_date)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(journey.ref_no))]), _vm._v(" "), _c('td', {
+    }, [_vm._v("Approved")]) : _vm._e(), _vm._v(" "), (journey.status == 'Closed') ? _c('span', {
+      staticClass: "label label-default"
+    }, [_vm._v("Closed")]) : _vm._e()]), _vm._v(" "), _c('td', [_vm._v(_vm._s(journey.truck.plate_number))]), _vm._v(" "), _c('td', [_vm._v("CTR-" + _vm._s(journey.contract_id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.date2(journey.job_date)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(journey.truck.driver.first_name) + " " + _vm._s(journey.truck.driver.last_name))]), _vm._v(" "), _c('td', {
       staticClass: "text-center"
-    }, [_c('span', {
+    }, [(journey.status != 'Closed') ? _c('span', {
       staticClass: "btn btn-xs btn-info",
       on: {
         "click": function($event) {
@@ -97735,7 +98002,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_c('i', {
       staticClass: "fa fa-pencil"
-    })]), _vm._v(" "), _c('button', {
+    })]) : _vm._e(), _vm._v(" "), _c('button', {
       staticClass: "btn btn-xs btn-danger btn-destroy",
       attrs: {
         "data-toggle": "popover",
@@ -97744,9 +98011,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('i', {
       staticClass: "fa fa-trash"
     })])])])
-  })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("Journey #")]), _vm._v(" "), _c('th', [_vm._v("Contract Related")]), _vm._v(" "), _c('th', [_vm._v("Journey Type")]), _vm._v(" "), _c('th', [_vm._v("Job Date")]), _vm._v(" "), _c('th', [_vm._v("Ref. No.")]), _vm._v(" "), _c('th')])])], 1)])])])])])])
+  })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("Journey #")]), _vm._v(" "), _c('th', [_vm._v("Status")]), _vm._v(" "), _c('th', [_vm._v("Truck")]), _vm._v(" "), _c('th', [_vm._v("Contract")]), _vm._v(" "), _c('th', [_vm._v("Job Date")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th')])])], 1)])])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('thead', [_c('tr', [_c('th', [_vm._v("Journey #")]), _vm._v(" "), _c('th', [_vm._v("Status")]), _vm._v(" "), _c('th', [_vm._v("Contract Related")]), _vm._v(" "), _c('th', [_vm._v("Journey Type")]), _vm._v(" "), _c('th', [_vm._v("Job Date")]), _vm._v(" "), _c('th', [_vm._v("Ref. No.")]), _vm._v(" "), _c('th')])])
+  return _c('thead', [_c('tr', [_c('th', [_vm._v("Journey #")]), _vm._v(" "), _c('th', [_vm._v("Status")]), _vm._v(" "), _c('th', [_vm._v("Truck")]), _vm._v(" "), _c('th', [_vm._v("Contract")]), _vm._v(" "), _c('th', [_vm._v("Job Date")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th')])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
@@ -97757,7 +98024,7 @@ if (false) {
 }
 
 /***/ }),
-/* 308 */
+/* 310 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -97808,7 +98075,7 @@ if (false) {
 }
 
 /***/ }),
-/* 309 */
+/* 311 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -97837,7 +98104,7 @@ if (false) {
 }
 
 /***/ }),
-/* 310 */
+/* 312 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -99269,7 +99536,7 @@ if (false) {
 }
 
 /***/ }),
-/* 311 */
+/* 313 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -99315,7 +99582,7 @@ if (false) {
 }
 
 /***/ }),
-/* 312 */
+/* 314 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -99361,7 +99628,7 @@ if (false) {
 }
 
 /***/ }),
-/* 313 */
+/* 315 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -99596,6 +99863,45 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "value": trailer.id
       }
     }, [_vm._v(_vm._s(trailer.trailer_number))])
+  })], 2)]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "driver_id"
+    }
+  }, [_vm._v("Assigned Driver")]), _vm._v(" "), _c('select', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.truck.driver_id),
+      expression: "truck.driver_id"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "name": "driver_id",
+      "id": "driver_id"
+    },
+    on: {
+      "change": function($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+          return o.selected
+        }).map(function(o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val
+        });
+        _vm.truck.driver_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      }
+    }
+  }, [_c('option', {
+    attrs: {
+      "value": ""
+    }
+  }, [_vm._v("No Driver")]), _vm._v(" "), _vm._l((_vm.drivers), function(driver) {
+    return _c('option', {
+      domProps: {
+        "value": driver.id
+      }
+    }, [_vm._v(_vm._s(driver.first_name) + " " + _vm._s(driver.last_name))])
   })], 2)]), _vm._v(" "), _c('udf', {
     attrs: {
       "module": "Trucks",
@@ -99628,7 +99934,7 @@ if (false) {
 }
 
 /***/ }),
-/* 314 */
+/* 316 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -99640,7 +99946,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-6"
-  }, [_c('h4', [_c('strong', [_vm._v("Journey Details: " + _vm._s(_vm.status))])])]), _vm._v(" "), _c('div', {
+  }, [_c('h4', [_c('strong', [_vm._v("Journey Details: JRNY-" + _vm._s(_vm.$route.params.id) + " (" + _vm._s(_vm.status) + ")")])])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
   }, [_c('div', {
     staticClass: "form-group pull-right"
@@ -99657,18 +99963,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": function($event) {
         $event.preventDefault();
-        _vm.closeJourney($event)
+        _vm.showModal = true
       }
     }
-  }, [_vm._v("Close Journey")]) : _vm._e(), _vm._v(" "), (_vm.status == 'Closed') ? _c('button', {
-    staticClass: "btn btn-primary",
-    on: {
-      "click": function($event) {
-        $event.preventDefault();
-        _vm.reopenJourney($event)
-      }
-    }
-  }, [_vm._v("Reopen Journey")]) : _vm._e()])])])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Close Journey")]) : _vm._e()])])])]), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
   }, [_c('form', {
     attrs: {
@@ -100515,7 +100813,109 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "to": "/journey"
     }
-  }, [_vm._v("Back")])], 1)])])])
+  }, [_vm._v("Back")])], 1)]), _vm._v(" "), (_vm.showModal) ? _c('modal', {
+    attrs: {
+      "showModal": _vm.showModal,
+      "closeAction": _vm.closeModal
+    }
+  }, [_c('h5', {
+    slot: "header"
+  }, [_vm._v("Close Journey (JRNY-" + _vm._s(_vm.$route.params.id) + ")")]), _vm._v(" "), _c('div', {
+    staticClass: "row",
+    slot: "body"
+  }, [_c('div', {
+    staticClass: "col-xs-6"
+  }, [_vm._v("\n              Journey: JNY-" + _vm._s(_vm.journey.id)), _c('br'), _vm._v("\n              Contract: CNTR-" + _vm._s(_vm.journey.contract_id)), _c('br'), _vm._v("\n              From: " + _vm._s(_vm.journey.route_source)), _c('br'), _vm._v("\n              To: " + _vm._s(_vm.journey.route_destination)), _c('br'), _vm._v("\n              Truck: " + _vm._s(_vm.journey.truck_plate_number)), _c('br'), _vm._v("\n              Driver: " + _vm._s(_vm.journey_close.truck.driver.first_name) + " " + _vm._s(_vm.journey_close.truck.driver.last_name)), _c('br'), _vm._v(" "), _c('hr'), _vm._v(" "), (_vm.belowReserve) ? _c('p', [_c('i', {
+    staticStyle: {
+      "color": "red"
+    }
+  }, [_vm._v("Fuel in truck (" + _vm._s(_vm.journey_close.current_fuel) + " ltrs) is below reserve by\n                " + _vm._s(_vm.fuelDifference) + " ltrs.\n                Driver to pay Ksh. " + _vm._s(_vm.fuelDifference * parseInt(_vm.journey_close.fuel_price)))])]) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-6"
+  }, [_vm._v("\n              Journey Start Km readings: " + _vm._s(_vm.journey_close.truck.current_km)), _c('br'), _vm._v("\n              Mileage Allocated: " + _vm._s(_vm.journey_close.mileage.approved_amount)), _c('br'), _vm._v("\n              Top-up Mileage: " + _vm._s(_vm.journey_close.mileage.top_up_amount)), _c('br'), _vm._v("\n              Fuel Allocated: " + _vm._s(_vm.journey_close.truck.current_fuel)), _c('br'), _vm._v("\n              Top-up fuel: " + _vm._s(_vm.journey_close.fuel.top_up)), _c('br'), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-12"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "current_km"
+    }
+  }, [_vm._v("Truck Current Km reading:")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.journey_close.current_km),
+      expression: "journey_close.current_km"
+    }],
+    staticClass: "form-control input-sm",
+    attrs: {
+      "type": "number",
+      "name": "current_km"
+    },
+    domProps: {
+      "value": (_vm.journey_close.current_km)
+    },
+    on: {
+      "change": _vm.validateKms,
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.journey_close.current_km = $event.target.value
+      },
+      "blur": function($event) {
+        _vm.$forceUpdate()
+      }
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-12"
+  }, [_c('div', {
+    class: {
+      'form-group': true, 'has-error': _vm.belowReserve
+    }
+  }, [_c('label', {
+    staticClass: "control-label",
+    attrs: {
+      "for": "current_km"
+    }
+  }, [_vm._v("Truck Current fuel reading:")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.journey_close.current_fuel),
+      expression: "journey_close.current_fuel"
+    }],
+    staticClass: "form-control input-sm",
+    attrs: {
+      "type": "number",
+      "id": "current_fuel",
+      "name": "current_fuel"
+    },
+    domProps: {
+      "value": (_vm.journey_close.current_fuel)
+    },
+    on: {
+      "change": function($event) {},
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.journey_close.current_fuel = $event.target.value
+      },
+      "blur": function($event) {
+        _vm.$forceUpdate()
+      }
+    }
+  })])])])]), _vm._v(" "), _c('div', {
+    slot: "footer"
+  }, [_c('button', {
+    staticClass: "btn btn-success",
+    attrs: {
+      "type": "button",
+      "name": "button"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.closeJourney($event)
+      }
+    }
+  }, [_vm._v("Process & Close")])])]) : _vm._e()], 1)])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -100526,7 +100926,7 @@ if (false) {
 }
 
 /***/ }),
-/* 315 */
+/* 317 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -100886,7 +101286,7 @@ if (false) {
 }
 
 /***/ }),
-/* 316 */
+/* 318 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -101117,7 +101517,7 @@ if (false) {
 }
 
 /***/ }),
-/* 317 */
+/* 319 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -101204,7 +101604,7 @@ if (false) {
 }
 
 /***/ }),
-/* 318 */
+/* 320 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -101357,7 +101757,7 @@ if (false) {
 }
 
 /***/ }),
-/* 319 */
+/* 321 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -101520,7 +101920,7 @@ if (false) {
 }
 
 /***/ }),
-/* 320 */
+/* 322 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -101552,7 +101952,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "to": '/inspection/' + inspection.id
       }
-    }, [_vm._v("INSP-" + _vm._s(inspection.id))])], 1), _vm._v(" "), _c('td', [_vm._v("JRNY-" + _vm._s(inspection.journey_id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.date2(inspection.created_at)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(inspection.from_station))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(inspection.to_station))]), _vm._v(" "), _c('td', {
+    }, [_vm._v("INSP-" + _vm._s(inspection.id))])], 1), _vm._v(" "), _c('td', [_vm._v("JRNY-" + _vm._s(inspection.journey_id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(inspection.journey.truck.plate_number))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(inspection.journey.truck.trailer.trailer_number))]), _vm._v(" "), (parseInt(inspection.suitable_for_loading)) ? _c('td', [_c('span', {
+      staticClass: "label label-success"
+    }, [_vm._v("Yes")])]) : _vm._e(), _vm._v(" "), (!parseInt(inspection.suitable_for_loading)) ? _c('td', [_c('span', {
+      staticClass: "label label-danger"
+    }, [_vm._v("No")])]) : _vm._e(), _vm._v(" "), _c('td', [_vm._v(_vm._s(inspection.journey.driver.first_name) + " " + _vm._s(inspection.journey.driver.last_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(inspection.journey.driver.mobile_phone))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.date2(inspection.created_at)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(inspection.from_station))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(inspection.to_station))]), _vm._v(" "), _c('td', {
       staticClass: "text-center"
     }, [_c('span', {
       staticClass: "btn btn-xs btn-info",
@@ -101572,9 +101976,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('i', {
       staticClass: "fa fa-trash"
     })])])])
-  })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("Inspection #")]), _vm._v(" "), _c('th', [_vm._v("Journey #")]), _vm._v(" "), _c('th', [_vm._v("Inspected On")]), _vm._v(" "), _c('th', [_vm._v("From")]), _vm._v(" "), _c('th', [_vm._v("To")]), _vm._v(" "), _c('th')])])], 1)])])])])])])
+  })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("Inspection #")]), _vm._v(" "), _c('th', [_vm._v("Journey #")]), _vm._v(" "), _c('th', [_vm._v("Truck")]), _vm._v(" "), _c('th', [_vm._v("Trailer")]), _vm._v(" "), _c('th', [_vm._v("Suitable")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th', [_vm._v("Phone Number")]), _vm._v(" "), _c('th', [_vm._v("Inspected On")]), _vm._v(" "), _c('th', [_vm._v("From")]), _vm._v(" "), _c('th', [_vm._v("To")]), _vm._v(" "), _c('th')])])], 1)])])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('thead', [_c('tr', [_c('th', [_vm._v("Inspection #")]), _vm._v(" "), _c('th', [_vm._v("Journey #")]), _vm._v(" "), _c('th', [_vm._v("Inspected On")]), _vm._v(" "), _c('th', [_vm._v("From")]), _vm._v(" "), _c('th', [_vm._v("To")]), _vm._v(" "), _c('th')])])
+  return _c('thead', [_c('tr', [_c('th', [_vm._v("Inspection #")]), _vm._v(" "), _c('th', [_vm._v("Journey #")]), _vm._v(" "), _c('th', [_vm._v("Truck")]), _vm._v(" "), _c('th', [_vm._v("Trailer")]), _vm._v(" "), _c('th', [_vm._v("Suitable")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th', [_vm._v("Phone Number")]), _vm._v(" "), _c('th', [_vm._v("Inspected On")]), _vm._v(" "), _c('th', [_vm._v("From")]), _vm._v(" "), _c('th', [_vm._v("To")]), _vm._v(" "), _c('th')])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
@@ -101585,7 +101989,7 @@ if (false) {
 }
 
 /***/ }),
-/* 321 */
+/* 323 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -101614,7 +102018,7 @@ if (false) {
 }
 
 /***/ }),
-/* 322 */
+/* 324 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -101663,7 +102067,7 @@ if (false) {
 }
 
 /***/ }),
-/* 323 */
+/* 325 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -101922,7 +102326,7 @@ if (false) {
 }
 
 /***/ }),
-/* 324 */
+/* 326 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -101968,7 +102372,7 @@ if (false) {
 }
 
 /***/ }),
-/* 325 */
+/* 327 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -102113,7 +102517,7 @@ if (false) {
 }
 
 /***/ }),
-/* 326 */
+/* 328 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -102159,7 +102563,7 @@ if (false) {
 }
 
 /***/ }),
-/* 327 */
+/* 329 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -102182,7 +102586,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-6"
-  }, [_vm._m(0), _vm._v("\n                  " + _vm._s(_vm.truck.trailer_number) + "\n                  "), _c('hr'), _vm._v(" "), _vm._m(1), _vm._v("\n                  " + _vm._s(_vm.truck.type) + "\n                  "), _c('hr'), _vm._v(" "), _vm._m(2), _vm._v("\n                  " + _vm._s(_vm.truck.make) + "\n                  "), _c('hr')]), _vm._v(" "), _c('div', {
+  }, [_vm._m(0), _vm._v("\n                  " + _vm._s(_vm.truck.driver.first_name) + " " + _vm._s(_vm.truck.driver.last_name) + "\n                  "), _c('hr'), _vm._v(" "), _vm._m(1), _vm._v("\n                  " + _vm._s(_vm.truck.type) + "\n                  "), _c('hr'), _vm._v(" "), _vm._m(2), _vm._v("\n                  " + _vm._s(_vm.truck.make) + "\n                  "), _c('hr')]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
   }, [_vm._m(3), _vm._v("\n                  " + _vm._s(_vm.truck.max_load) + "\n                  "), _c('hr'), _vm._v(" "), _vm._m(4), _vm._v("\n                  " + _vm._s(_vm.truck.make) + "\n                  "), _c('hr'), _vm._v(" "), _vm._m(5), _vm._v("\n                  " + _vm._s(_vm.truck.model) + "\n                  "), _c('hr')]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
@@ -102218,7 +102622,7 @@ if (false) {
 }
 
 /***/ }),
-/* 328 */
+/* 330 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -103226,7 +103630,7 @@ if (false) {
 }
 
 /***/ }),
-/* 329 */
+/* 331 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -103496,7 +103900,7 @@ if (false) {
 }
 
 /***/ }),
-/* 330 */
+/* 332 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -103542,7 +103946,7 @@ if (false) {
 }
 
 /***/ }),
-/* 331 */
+/* 333 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -103977,72 +104381,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
-      "for": "previous_km"
-    }
-  }, [_vm._v("Previous KM")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.fuel.previous_km),
-      expression: "fuel.previous_km"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "type": "number",
-      "name": "previous_km"
-    },
-    domProps: {
-      "value": (_vm.fuel.previous_km)
-    },
-    on: {
-      "change": _vm.calculateKms,
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.fuel.previous_km = $event.target.value
-      },
-      "blur": function($event) {
-        _vm.$forceUpdate()
-      }
-    }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "previous_fuel"
-    }
-  }, [_vm._v("Previous Fuel")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.fuel.previous_fuel),
-      expression: "fuel.previous_fuel"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "type": "number",
-      "name": "previous_fuel"
-    },
-    domProps: {
-      "value": (_vm.fuel.previous_fuel)
-    },
-    on: {
-      "keyup": _vm.calculateKms,
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.fuel.previous_fuel = $event.target.value
-      },
-      "blur": function($event) {
-        _vm.$forceUpdate()
-      }
-    }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
       "for": "current_km"
     }
   }, [_vm._v("Current KM")]), _vm._v(" "), _c('input', {
@@ -104066,6 +104404,72 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "input": function($event) {
         if ($event.target.composing) { return; }
         _vm.fuel.current_km = $event.target.value
+      },
+      "blur": function($event) {
+        _vm.$forceUpdate()
+      }
+    }
+  })])]), _vm._v("\n              we\n              "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "previous_km"
+    }
+  }, [_vm._v("Previous KM")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.current_vehicle.current_km),
+      expression: "current_vehicle.current_km"
+    }],
+    staticClass: "form-control input-sm",
+    attrs: {
+      "disabled": "",
+      "type": "number",
+      "name": "previous_km"
+    },
+    domProps: {
+      "value": (_vm.current_vehicle.current_km)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.current_vehicle.current_km = $event.target.value
+      },
+      "blur": function($event) {
+        _vm.$forceUpdate()
+      }
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "previous_fuel"
+    }
+  }, [_vm._v("Previous Fuel")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.current_vehicle.current_fuel),
+      expression: "current_vehicle.current_fuel"
+    }],
+    staticClass: "form-control input-sm",
+    attrs: {
+      "disabled": "",
+      "type": "number",
+      "name": "previous_fuel"
+    },
+    domProps: {
+      "value": (_vm.current_vehicle.current_fuel)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.current_vehicle.current_fuel = $event.target.value
       },
       "blur": function($event) {
         _vm.$forceUpdate()
@@ -104100,7 +104504,7 @@ if (false) {
 }
 
 /***/ }),
-/* 332 */
+/* 334 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -104236,7 +104640,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "for": "loading_gross_weight"
     }
-  }, [_vm._v("Gross Weight")]), _vm._v(" "), _c('input', {
+  }, [_vm._v("Gross Weight (Kgs)")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -104269,7 +104673,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "for": "loading_tare_weight"
     }
-  }, [_vm._v("Tare Weight")]), _vm._v(" "), _c('input', {
+  }, [_vm._v("Tare Weight (Kgs)")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -104302,7 +104706,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "for": "loading_net_weight"
     }
-  }, [_vm._v("Net Weight")]), _vm._v(" "), _c('input', {
+  }, [_vm._v("Net Weight (Kgs)")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -104521,7 +104925,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("Process")]), _vm._v(" "), _c('router-link', {
     staticClass: "btn btn-danger",
     attrs: {
-      "to": "/mileage"
+      "to": "/delivery"
     }
   }, [_vm._v("Back")])], 1)])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -104544,7 +104948,7 @@ if (false) {
 }
 
 /***/ }),
-/* 333 */
+/* 335 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -105528,7 +105932,7 @@ if (false) {
 }
 
 /***/ }),
-/* 334 */
+/* 336 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -105609,7 +106013,7 @@ if (false) {
 }
 
 /***/ }),
-/* 335 */
+/* 337 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -105642,12 +106046,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "to": '/contracts/' + contract.id
       }
     }, [_vm._v("CNTR" + _vm._s(contract.id))])], 1), _vm._v(" "), _c('td', [(contract.status == 'Pending Approval') ? _c('span', {
-      staticClass: "label label-default"
+      staticClass: "label label-info"
     }, [_vm._v("Pending Approval")]) : _vm._e(), _vm._v(" "), (contract.status == 'Approved') ? _c('span', {
       staticClass: "label label-success"
-    }, [_vm._v("Approved")]) : _vm._e()]), _vm._v(" "), _c('td', [_vm._v(_vm._s(contract.client.Name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.date2(contract.created_at)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.date2(contract.start_date)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.date2(contract.end_date)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(Number(contract.quantity).toLocaleString()) + " Tonnes")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.$root.currency) + " " + _vm._s(Number(contract.amount).toLocaleString()) + " " + _vm._s(contract.rate))]), _vm._v(" "), _c('td', {
+    }, [_vm._v("Approved")]) : _vm._e(), _vm._v(" "), (contract.status == 'Closed') ? _c('span', {
+      staticClass: "label label-default"
+    }, [_vm._v("Closed")]) : _vm._e()]), _vm._v(" "), _c('td', [_vm._v(_vm._s(contract.client.Name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.date2(contract.created_at)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.date2(contract.start_date)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.date2(contract.end_date)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(Number(contract.quantity).toLocaleString()) + " Tonnes")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.$root.currency) + " " + _vm._s(Number(contract.amount).toLocaleString()) + " " + _vm._s(contract.rate))]), _vm._v(" "), _c('td', {
       staticClass: "text-center"
-    }, [_c('span', {
+    }, [(contract.status != 'Closed') ? _c('span', {
       staticClass: "btn btn-xs btn-info",
       on: {
         "click": function($event) {
@@ -105656,7 +106062,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_c('i', {
       staticClass: "fa fa-pencil"
-    })]), _vm._v(" "), _c('button', {
+    })]) : _vm._e(), _vm._v(" "), _c('button', {
       staticClass: "btn btn-xs btn-danger btn-destroy",
       attrs: {
         "data-toggle": "popover",
@@ -105678,7 +106084,7 @@ if (false) {
 }
 
 /***/ }),
-/* 336 */
+/* 338 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -105931,7 +106337,7 @@ if (false) {
 }
 
 /***/ }),
-/* 337 */
+/* 339 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -106060,7 +106466,7 @@ if (false) {
 }
 
 /***/ }),
-/* 338 */
+/* 340 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -106202,8 +106608,8 @@ if (false) {
 }
 
 /***/ }),
-/* 339 */,
-/* 340 */
+/* 341 */,
+/* 342 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -106344,7 +106750,7 @@ if (false) {
 }
 
 /***/ }),
-/* 341 */
+/* 343 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -106462,7 +106868,7 @@ if (false) {
 }
 
 /***/ }),
-/* 342 */
+/* 344 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -106495,7 +106901,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "row"
   }, [_c('div', {
-    staticClass: "col-sm-4"
+    staticClass: "col-sm-3"
   }, [_c('div', {
     staticClass: "form-group"
   }, [_c('label', {
@@ -106533,11 +106939,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_vm._v("JRNY-" + _vm._s(journey.id))])
   }))])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-4"
+    staticClass: "col-sm-3"
   }, [_c('div', {
     staticClass: "form-group"
-  }, [_c('label', [_vm._v("Vehicle")]), _vm._v(" "), _c('h5', [_c('strong', [_vm._v(_vm._s(_vm.journey.truck_plate_number))])])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-4"
+  }, [_c('h5', [_c('strong', [_vm._v("Vehicle: " + _vm._s(_vm.journey.truck_plate_number))])]), _vm._v(" "), _c('h5', [_c('strong', [_vm._v("Trailer: " + _vm._s(_vm.truck_details.trailer.trailer_number) + "\n                                      (" + _vm._s(_vm.truck_details.trailer.make) + ")")])])])]), _vm._v(" "), (_vm.truck_details) ? _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', [_vm._v("Driver")]), _vm._v(" "), _c('h5', [_c('strong', [_vm._v(_vm._s(_vm.truck_details.driver.first_name) + " " + _vm._s(_vm.truck_details.driver.last_name))])])])]) : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
   }, [_c('div', {
     staticClass: "form-group"
   }, [_c('label', [_vm._v("Route")]), _vm._v(" "), (_vm.journey.route_source) ? _c('h5', [_c('strong', [_vm._v(_vm._s(_vm.journey.route_source) + " to " + _vm._s(_vm.journey.route_destination))])]) : _vm._e()])])]), _vm._v(" "), _c('table', {
@@ -107494,7 +107904,7 @@ if (false) {
 }
 
 /***/ }),
-/* 343 */
+/* 345 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -107963,7 +108373,7 @@ if (false) {
 }
 
 /***/ }),
-/* 344 */
+/* 346 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -108091,7 +108501,7 @@ if (false) {
 }
 
 /***/ }),
-/* 345 */
+/* 347 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -108131,7 +108541,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "col-xs-12"
   }, [_vm._v("\n                    Top Up: " + _vm._s(_vm.fuel.top_up_quantity)), _c('br'), _vm._v("\n                    Reason: " + _vm._s(_vm.fuel.top_up_reason) + "\n                  ")]) : _vm._e(), _vm._v(" "), _c('hr')]), _vm._v(" "), _c('div', {
     staticClass: "col-xs-3"
-  }, [_c('strong', [_vm._v("Mileage Readings")]), _c('br'), _vm._v("\n                  Previous KM: " + _vm._s(_vm.fuel.previous_km)), _c('br'), _vm._v("\n                  Previous Fuel: " + _vm._s(_vm.fuel.previous_fuel)), _c('br'), _vm._v("\n                  Current Km: " + _vm._s(_vm.fuel.current_km)), _c('br'), _vm._v("\n                  KM Covered: " + _vm._s(_vm.km_covered)), _c('br'), _vm._v("\n                  Fuel Used: " + _vm._s(_vm.fuel_used)), _c('br'), _vm._v("\n                  KM/Ltr: " + _vm._s(_vm.km_per_litre)), _c('br')])]), _vm._v(" "), _c('hr', {
+  }, [_c('strong', [_vm._v("Mileage Readings")]), _c('br'), _vm._v("\n                  Current Km: " + _vm._s(_vm.fuel.current_km)), _c('br'), _vm._v("\n                  Previous KM: " + _vm._s(_vm.fuel.previous_km)), _c('br'), _vm._v(" "), _c('strong', [_vm._v("KM Covered: " + _vm._s(parseInt(_vm.fuel.current_km) - parseInt(_vm.fuel.previous_km)) + " Kms"), _c('br')]), _vm._v("\n                  Current Fuel (Litres): " + _vm._s(_vm.fuel.current_fuel)), _c('br'), _vm._v("\n                  Previous Fuel: " + _vm._s(_vm.fuel.previous_fuel)), _c('br'), _vm._v(" "), _c('strong', [_vm._v("Fuel Used: " + _vm._s(parseInt(_vm.fuel.previous_fuel) - parseInt(_vm.fuel.current_fuel)) + " Ltrs"), _c('br')]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('strong', [_vm._v("\n                    KM/Ltr: " + _vm._s(parseInt((parseInt(_vm.fuel.current_km) - parseInt(_vm.fuel.previous_km)) / parseInt(parseInt(_vm.fuel.previous_fuel) - parseInt(_vm.fuel.current_fuel))).toFixed(2))), _c('br')])])]), _vm._v(" "), _c('hr', {
     staticClass: "print-hr"
   }), _vm._v(" "), _c('div', {
     staticClass: "row print-row"
@@ -108189,7 +108599,7 @@ if (false) {
 }
 
 /***/ }),
-/* 346 */
+/* 348 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -108262,8 +108672,8 @@ if (false) {
 }
 
 /***/ }),
-/* 347 */,
-/* 348 */
+/* 349 */,
+/* 350 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -108323,7 +108733,7 @@ if (false) {
 }
 
 /***/ }),
-/* 349 */
+/* 351 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -108625,7 +109035,7 @@ if (false) {
 }
 
 /***/ }),
-/* 350 */
+/* 352 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -111097,7 +111507,7 @@ if (inBrowser && window.Vue) {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(6)))
 
 /***/ }),
-/* 351 */
+/* 353 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -111123,7 +111533,7 @@ if(false) {
 }
 
 /***/ }),
-/* 352 */
+/* 354 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -111149,7 +111559,7 @@ if(false) {
 }
 
 /***/ }),
-/* 353 */
+/* 355 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -111175,7 +111585,7 @@ if(false) {
 }
 
 /***/ }),
-/* 354 */
+/* 356 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -111201,7 +111611,7 @@ if(false) {
 }
 
 /***/ }),
-/* 355 */
+/* 357 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -111227,7 +111637,7 @@ if(false) {
 }
 
 /***/ }),
-/* 356 */
+/* 358 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -111253,7 +111663,7 @@ if(false) {
 }
 
 /***/ }),
-/* 357 */
+/* 359 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -111279,13 +111689,39 @@ if(false) {
 }
 
 /***/ }),
-/* 358 */
+/* 360 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
 var content = __webpack_require__(243);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(5)("5cffd8a3", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-37a0c056&scoped=true!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./view.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-37a0c056&scoped=true!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./view.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 361 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(244);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -111305,13 +111741,13 @@ if(false) {
 }
 
 /***/ }),
-/* 359 */
+/* 362 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(244);
+var content = __webpack_require__(245);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -111331,14 +111767,14 @@ if(false) {
 }
 
 /***/ }),
-/* 360 */,
-/* 361 */
+/* 363 */,
+/* 364 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(246);
+var content = __webpack_require__(247);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -111358,8 +111794,8 @@ if(false) {
 }
 
 /***/ }),
-/* 362 */,
-/* 363 */
+/* 365 */,
+/* 366 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(173);

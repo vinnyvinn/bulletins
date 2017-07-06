@@ -38,7 +38,9 @@ class TruckController extends Controller
     {
         if (request('truck_id')) {
             return Response::json([
-                'drivers' => [],
+                'drivers' => Driver::whereDoesntHave('truck', function ($builder) {
+                  return $builder->where('id', '<>', request('truck_id'));
+                })->get(),
                 'trailers' => Trailer::whereNull('truck_id')
                     ->orWhere('truck_id', request('truck_id'))
                     ->get(['id', 'trailer_number']),
@@ -46,7 +48,7 @@ class TruckController extends Controller
         }
 
         return Response::json([
-            'drivers' => [],
+            'drivers' => Driver::doesntHave('truck')->get(),
             'trailers' => Trailer::unassigned()->get(['id', 'trailer_number']),
         ]);
     }

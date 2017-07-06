@@ -16,6 +16,7 @@ use SmoDav\Models\CargoType;
 use SmoDav\Models\CarriagePoint;
 use SmoDav\Models\Journey;
 use SmoDav\Support\Constants;
+use Auth;
 
 class JourneyController extends Controller
 {
@@ -27,9 +28,9 @@ class JourneyController extends Controller
     public function index()
     {
         $journeys = Journey::with(['truck' => function ($builder) {
-            return $builder->select(['id', 'plate_number']);
-        }])->get([
-            'id', 'is_contract_related', 'journey_type', 'job_date', 'ref_no', 'status'
+            return $builder->select(['id', 'plate_number','driver_id']);
+        }, 'truck.driver'])->get([
+            'id', 'is_contract_related', 'truck_id', 'contract_id','journey_type', 'job_date', 'ref_no', 'status'
         ]);
 
         return Response::json([
@@ -45,11 +46,19 @@ class JourneyController extends Controller
     public function create()
     {
         if (request('contracts')) {
+            $contracts = Contract::open()
+                ->whereRaw("(select count(*) from journeys where contracts.id = journeys.contract_id and status = 'Approved') < contracts.trucks_allocated")
+                ->get();
+
+
             return Response::json([
                 'contracts' => Contract::open()->get([
                     'id', 'raw'
                 ])
             ]);
+          return Response::json([
+              'contracts' => $contracts
+          ]);
         }
 
         $journeys = Journey::where('status','<>','Closed')
@@ -103,6 +112,9 @@ class JourneyController extends Controller
         unset($data['_token'], $data['_method']);
         $data['raw'] = json_encode($data);
         $data['job_date'] = Carbon::parse(str_replace('/', '-', $data['job_date']))->format('Y-m-d');
+        $data['user_id'] = Auth::id();
+        $data['closed_by'] = Auth::id();       
+
 
         foreach ($data as $key => $value) {
             if ($value == 'null') {
@@ -126,7 +138,7 @@ class JourneyController extends Controller
      */
     public function show($id)
     {
-        $journey = Journey::with(['contract'])->findOrFail($id);
+        $journey = Journey::with(['contract','truck','truck.driver','mileage','fuel'])->findOrFail($id);
         $journey->raw = json_decode($journey->raw);
         $contract = $journey->contract ? json_decode($journey->contract->raw): new \stdClass();
         $contract->id = $journey->contract ? $journey->contract->id : '';
@@ -222,11 +234,21 @@ class JourneyController extends Controller
         ]);
     }
 
-    public function close($id)
+
+    public function close(Request $request, Journey $journey, $id)
     {
-        Journey::where('id', $id)->update([
-            'status' => Constants::STATUS_CLOSED
+        $journey = Journey::findOrFail($id);
+        $data = $request->all();
+        $journey->update([
+            'mileage_balance' => $request['mileage_balance'],
+            'status' => Constants::STATUS_CLOSED,
+            'closed_by' => Auth::id()
         ]);
+
+        $truck = $journey->truck;
+        $truck->current_km = $data['current_km'];
+        $truck->current_fuel = $data['current_fuel'];
+        $truck->update();
 
         return Response::json([
             'status' => 'success',
@@ -244,5 +266,12 @@ class JourneyController extends Controller
             'status' => 'success',
             'message' => 'Successfully reopened journey.',
         ]);
+    }
+
+    public function trucks_already_allocated($contract_id) {
+
+      return Response::json([
+        'trucks_already_allocated' => Journey::where('contract_id', $contract_id)->distinct()->count()
+      ]);
     }
 }

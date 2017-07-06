@@ -17,6 +17,7 @@ use SmoDav\Models\CargoType;
 use SmoDav\Models\CarriagePoint;
 use SmoDav\Support\Constants;
 use function str_replace;
+use Auth;
 
 class ContractController extends Controller
 {
@@ -48,7 +49,7 @@ class ContractController extends Controller
         $items = StockItem::where('ItemGroup', Helpers::get_option(Option::BILLABLE_GROUP))
             ->select(['StockLink', 'Description_1'])
             ->get();
-
+        $last_contract_id = Contract::orderBy('created_at','desc')->first(['id']);
 
 
         return Response::json([
@@ -57,7 +58,8 @@ class ContractController extends Controller
             'cargo_classifications' => CargoClassification::all(['id', 'name']),
             'cargo_types' => CargoType::all(['id', 'name', 'cargo_classification_id']),
             'carriage_points' => CarriagePoint::all(['id', 'name']),
-            'stockItems' => $items
+            'stockItems' => $items,
+            'last_contract_id' => $last_contract_id
         ]);
     }
 
@@ -95,6 +97,8 @@ class ContractController extends Controller
         $data['raw'] = json_encode($data);
         $data['shifts'] = json_encode($data['shifts']);
         $data['unloading_points'] = json_encode($data['unloading_points']);
+        $data['user_id'] = Auth::id();
+
 
         unset($data['_token'], $data['_method']);
 

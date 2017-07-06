@@ -8,6 +8,7 @@ use SmoDav\Models\CargoClassification;
 use SmoDav\Models\CargoType;
 use SmoDav\Models\CarriagePoint;
 use SmoDav\Support\Constants;
+use SmoDav\Models\Journey;
 
 class Contract extends Model
 {
@@ -23,7 +24,8 @@ class Contract extends Model
         'vessel_name', 'berthing_date', 'vessel_arrival_date', 'shifts', 'no_of_shifts',
         'no_of_shifts', 'stock_item_id', 'client_id', 'route_id', 'name', 'rate', 'amount', 'start_date',
         'end_date', 'quantity', 'status', 'subcontracted', 'sub_company_name', 'sub_address_1', 'sub_address_2',
-        'sub_address_3', 'sub_address_4', 'sub_delivery_to', 'sub_delivery_address'
+        'sub_address_3', 'sub_address_4', 'sub_delivery_to', 'sub_delivery_address','sub_delivery_address_2',
+        'sub_delivery_address_3','sub_delivery_address_4','user_id'
     ];
 
 
@@ -70,5 +72,15 @@ class Contract extends Model
     public function scopeClosed($builder)
     {
         return $builder->where('status', Constants::STATUS_CLOSED);
+    }
+
+    public function journeys()
+    {
+        return $this->hasMany(Journey::class);
+    }
+
+    public function user()
+    {
+      return $this->belongsTo(User::class);
     }
 }
