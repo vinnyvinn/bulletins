@@ -112,8 +112,7 @@ class JourneyController extends Controller
         unset($data['_token'], $data['_method']);
         $data['raw'] = json_encode($data);
         $data['job_date'] = Carbon::parse(str_replace('/', '-', $data['job_date']))->format('Y-m-d');
-        $data['user_id'] = Auth::id();
-        $data['closed_by'] = Auth::id();       
+        $data['user_id'] = Auth::id();              
 
 
         foreach ($data as $key => $value) {
