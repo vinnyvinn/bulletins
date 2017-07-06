@@ -79436,9 +79436,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.last_journey_id = response.last_journey_id;
             }
         });
+
+        this.checkState();
     },
     mounted: function mounted() {
-        this.checkState();
         $('input[type="number"]').on('focus', function () {
             this.select();
         });
@@ -96273,7 +96274,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "for": "driver_id"
     }
-  }, [_vm._v("Driver")]), _c('br'), _vm._v("\n                        " + _vm._s(_vm.truck.driver.id) + " " + _vm._s(_vm.truck.driver.first_name) + " " + _vm._s(_vm.truck.driver.last_name) + "\n                    ")])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Driver")]), _c('br'), _vm._v("\n                        " + _vm._s(_vm.truck.driver.first_name) + " " + _vm._s(_vm.truck.driver.last_name) + "\n                    ")])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-3"
   }, [_c('div', {
     staticClass: "form-group"

@@ -182,7 +182,7 @@ class TrailerController extends Controller
 
         return Response::json([
             'status' => 'success',
-            'message' => 'Successfully imported trucks.',
+            'message' => 'Successfully imported trailers.',
             'trailers' => Trailer::all()
         ]);
     }

@@ -69,7 +69,7 @@
 
                         <div class="form-group">
                             <label for="driver_id">Driver</label><br>
-                            {{ truck.driver.id }} {{ truck.driver.first_name }} {{ truck.driver.last_name }}
+                            {{ truck.driver.first_name }} {{ truck.driver.last_name }}
                         </div>
                     </div>
 
@@ -228,6 +228,7 @@
 
     export default {
         created() {
+
             http.get('/api/journey/create').then((response) => {
                 this.clients = response.clients;
                 this.routes = response.routes;
@@ -240,10 +241,11 @@
                   this.last_journey_id = response.last_journey_id;
                 }
             });
+
+            this.checkState();
         },
 
         mounted() {
-            this.checkState();
             $('input[type="number"]').on('focus', function () {
                 this.select();
             });
