@@ -7,17 +7,9 @@
             <h5>{{ config('app.telephone') }}</h5>
             <h5>{{ config('app.email') }}</h5>
             <h5>{{ config('app.location') }}</h5>
+            <h2><strong>RKS - {{ str_pad($trip->id, 5, '0', STR_PAD_LEFT) }}</strong></h2>
         </header>
 
-        <div class="col-xs-12">
-          <div class="col-xs-4 pull-right">
-            <h5><strong>Delivery Note No:</strong></h5> <h2><strong>RKS - {{ $trip->id }}</strong></h2>
-
-          </div>
-        </div>
-
-        <br>
-        <br>
         <br>
 
         <div class="row">
@@ -29,14 +21,19 @@
                 <h5><strong>Route: </strong> {{ $trip->route->source }} <strong>TO</strong> {{ $trip->route->destination }}</h5>
             </div>
             <div class="col-xs-6">
-                <h4><strong class="text-left">Delivery Date: </strong> {{ Carbon\Carbon::parse($trip->journey->job_date)->format('d F Y') }}</h4>
-                <h4><strong class="text-left">Journey No: </strong> JRNY-{{ $trip->journey->id }}</h4>
-                <h4><strong class="text-left">Delivery To: </strong> {{ $trip->route->destination }}</h4>
-                <h4><strong class="text-left">Weighbridge Ticket No: </strong> {{ $trip->loading_weighbridge_number }}</h4>
-                <h4><strong class="text-left">Delivery: </strong> {{ $trip->route->destination }}</h4>
+                <div class="pull-right">
+                    <h5><strong>Delivery Date: </strong> {{ Carbon\Carbon::parse($trip->journey->job_date)->format('d F Y') }}</h5>
+                    <h5><strong>Journey No: </strong> JRNY-{{ $trip->journey->id }}</h5>
+                    <h5><strong>Delivery To: </strong> {{ $trip->route->destination }}</h5>
+                    <h5><strong>Weighbridge Ticket No: </strong> {{ $trip->loading_weighbridge_number }}</h5>
+                    <h5><strong>Delivery: </strong> {{ $trip->route->destination }}</h5>
+                </div>
             </div>
 
             <div class="col-xs-12">
+                <br>
+                <br>
+                <br>
                 <table class="table">
                     <thead>
                     <tr>

@@ -3404,6 +3404,10 @@ mkdirp@0.5.x, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0, mkd
   dependencies:
     minimist "0.0.8"
 
+modal-vue@0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/modal-vue/-/modal-vue-0.0.3.tgz#2b179559c63e0074d6c7f4561c9a15fa4524c13c"
+
 moment@^2.18.1:
   version "2.18.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.18.1.tgz#c36193dd3ce1c2eed2adb7c802dbbc77a81b1c0f"

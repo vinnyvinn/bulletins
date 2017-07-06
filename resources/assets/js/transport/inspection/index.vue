@@ -9,7 +9,7 @@
                     </div>
                     <div class="panel-body">
                         <div class="table-responsive">
-                            <table class="table no-wrap">
+                            <table class="table nowrap">
                                 <thead>
                                 <tr>
                                     <th>Inspection #</th>

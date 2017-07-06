@@ -14,39 +14,30 @@
                                 <option v-for="journey in journeys" :value="journey.id">JRNY-{{ journey.id }}</option>
                             </select>
                         </div>
+                    </div>
 
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label>Journey Date</label>
+                            <h5>{{ journey.job_date }}</h5>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
                         <div class="form-group">
                             <label>Route From</label>
                             <h5>{{ journey.route.source }}</h5>
                         </div>
-
-
+                        <!--<div class="form-group">-->
+                            <!--<label>Journey Ref No.</label>-->
+                            <!--<h5>{{ journey.ref_no }}</h5>-->
+                        <!--</div>-->
                     </div>
 
                     <div class="col-sm-3">
-                        <div class="form-group">
-                            <label>Journey Date</label>
-                            <h5>{{ journey.job_date }}</h5>
-                        </div>
-
                         <div class="form-group">
                             <label>Route To</label>
                             <h5>{{ journey.route.destination }}</h5>
-                        </div>
-
-                    </div>
-
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label>Journey Ref No.</label>
-                            <h5>{{ journey.ref_no }}</h5>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label>Journey Date</label>
-                            <h5>{{ journey.job_date }}</h5>
                         </div>
                     </div>
                 </div>

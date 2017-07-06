@@ -26,15 +26,15 @@
                                 <div class="col-sm-3">
                                     <div class="form-group">
                                         <h5><strong>Vehicle: {{ journey.truck_plate_number }}</strong></h5>
-                                        <h5><strong>Trailer: {{ truck_details.trailer.trailer_number }}
-                                          ({{truck_details.trailer.make}})</strong></h5>
+                                        <h5><strong>Trailer: {{ journey.truck.trailer.trailer_number }}
+                                          ({{journey.truck.trailer.make}})</strong></h5>
                                     </div>
                                 </div>
 
-                                <div class="col-sm-3" v-if="truck_details">
+                                <div class="col-sm-3" v-if="journey.truck">
                                     <div class="form-group">
                                         <label>Driver</label>
-                                        <h5><strong>{{ truck_details.driver.first_name }} {{ truck_details.driver.last_name }}</strong></h5>
+                                        <h5><strong>{{ journey.truck.driver.first_name }} {{ journey.truck.driver.last_name }}</strong></h5>
                                     </div>
                                 </div>
 
@@ -224,15 +224,15 @@
             }
 
             http.get(endpoint).then((response) => {
-                if (response.status === 'success') {
-                    if (response.inspection) {
-                        this.checklist = response.inspection.fields;
-                        this.checklist.created_at = response.inspection.created_at;
-                        this.checklist.status = response.inspection.status;
-                    }
-                    this.journeys = response.journeys;
-                    this.isInspector = response.inspector;
-                    this.isSupervisor = response.supervisor;
+                if (response.status !== 'success') return;
+                this.journeys = response.journeys;
+                this.isInspector = response.inspector;
+                this.isSupervisor = response.supervisor;
+
+                if (response.inspection) {
+                    this.checklist = response.inspection.fields;
+                    this.checklist.created_at = response.inspection.created_at;
+                    this.checklist.status = response.inspection.status;
                 }
             });
         },
@@ -284,18 +284,38 @@
         },
 
         computed: {
+//            journey() {
+//                let journey = this.journeys.filter(e => e.id == this.checklist.journey_id);
+//                if (journey.length < 1) {
+//                    return {};
+//                }
+//                let id = journey[0].id;
+//                this.truck_details = journey[0].truck;
+//                journey = JSON.parse(journey[0].raw);
+//
+//                journey.id = id;
+//                this.checklist.from_station = journey.route_source;
+//                this.checklist.to_station = journey.route_destination;
+//
+//                return journey;
+//            },
             journey() {
                 let journey = this.journeys.filter(e => e.id == this.checklist.journey_id);
-                if (journey.length < 1) {
-                    return {};
-                }
-                let id = journey[0].id;
-                this.truck_details = journey[0].truck;
-                journey = JSON.parse(journey[0].raw);
 
+                if (journey.length < 1) {
+                    return {
+                        truck: {
+                            driver: {},
+                            trailer: {}
+                        }
+                    };
+                }
+
+                let id = journey[0].id;
+                let truck = journey[0].truck;
+                journey = JSON.parse(journey[0].raw);
                 journey.id = id;
-                this.checklist.from_station = journey.route_source;
-                this.checklist.to_station = journey.route_destination;
+                journey.truck = truck;
 
                 return journey;
             },

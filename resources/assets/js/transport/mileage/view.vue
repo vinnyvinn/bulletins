@@ -210,21 +210,22 @@
                 });
             },
             approveMileage(id) {
-              http.get('/api/approve_mileage/' + id).then(response => {
-                if (response.status != 'success') {
-                    this.$root.isLoading = false;
-                    alert2(this.$root, [response.message], 'danger');
-                    return;
-                }
+                http.get('/api/approve_mileage/' + id)
+                    .then(response => {
+                        if (response.status !== 'success') {
+                            this.$root.isLoading = false;
+                            alert2(this.$root, [response.message], 'danger');
+                            return;
+                        }
 
-                this.fuel = response.fuel;
-
-                this.$root.isLoading = false;
-                alert2(this.$root, [response.message], 'success');
-                }).catch((error) => {
-                this.$root.isLoading = false;
-                alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
-              });
+                        this.fuel = response.fuel;
+                        this.$root.isLoading = false;
+                        alert2(this.$root, [response.message], 'success');
+                        this.$router.push('/mileage');
+                    }).catch((error) => {
+                        this.$root.isLoading = false;
+                        alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
+                    });
             },
         }
     }

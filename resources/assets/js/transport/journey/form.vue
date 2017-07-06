@@ -23,10 +23,19 @@
                             </select>
                         </div>
 
-                        <div class="form-group">
-                            <label for="job_description">Job Description</label>
-                            <textarea :disabled="journey.is_contract_related == '1'" v-model="journey.job_description" name="job_description" id="job_description" rows="5" class="form-control input-sm"></textarea>
+                        <div class="form-group" v-if="journey.is_contract_related == '0'">
+                            <label for="route_id">Route</label>
+                            <select :disabled="journey.is_contract_related == '1'" name="route_id" id="route_id" v-model="journey.route_id" class="form-control input-sm select2" required>
+                                <option v-for="route in routes" :value="route.id">{{ route.source }} - {{ route.destination }} ({{ route.distance }} KM)</option>
+                            </select>
                         </div>
+
+
+                        <div class="form-group">
+                            <label for="enquiry_from">Enquiry from</label>
+                            <input :disabled="journey.is_contract_related == '1'" type="text" v-model="journey.enquiry_from" class="form-control input-sm" id="enquiry_from" name="enquiry_from">
+                        </div>
+
 
                     </div>
 
@@ -39,12 +48,11 @@
                             </select>
                         </div>
 
-                        <!-- <div class="form-group">
-                            <label for="route_id">Route</label>
-                            <select :disabled="journey.is_contract_related == '1'" name="route_id" id="route_id" v-model="journey.route_id" class="form-control input-sm select2" required>
-                                <option v-for="route in routes" :value="route.id">{{ route.source }} - {{ route.destination }} ({{ route.distance }} KM)</option>
-                            </select>
-                        </div> -->
+                        <div class="form-group">
+                            <label for="job_date">Job Date</label>
+                            <input type="text" v-model="journey.job_date" class="form-control input-sm datepicker" id="job_date" name="job_date" required>
+                        </div>
+
 
 
                         <!-- <div class="form-group">
@@ -53,6 +61,21 @@
                                 <option v-for="driver in drivers" :value="driver.id">{{ driver.first_name }} {{ driver.last_name }} ({{ driver.mobile_phone }})</option>
                             </select>
                         </div> -->
+
+                    </div>
+
+
+
+                    <div class="col-sm-3">
+
+                        <div class="form-group">
+                            <label for="job_description">Job Description</label>
+                            <textarea :disabled="journey.is_contract_related == '1'" v-model="journey.job_description" name="job_description" id="job_description" rows="5" class="form-control input-sm"></textarea>
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-3">
                         <div v-if="journey.is_contract_related == '1'">
                             <h5><strong>Required trucks allocation: {{ contract.trucks_allocated }}</strong></h5>
                             <h5><strong>Trucks already allocated: {{ trucks_already_allocated }}</strong></h5>
@@ -69,21 +92,7 @@
 
                         <div class="form-group">
                             <label for="driver_id">Driver</label><br>
-                            {{ truck.driver.id }} {{ truck.driver.first_name }} {{ truck.driver.last_name }}
-                        </div>
-                    </div>
-
-
-
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="job_date">Job Date</label>
-                            <input type="text" v-model="journey.job_date" class="form-control input-sm datepicker" id="job_date" name="job_date" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="enquiry_from">Enquiry from</label>
-                            <input :disabled="journey.is_contract_related == '1'" type="text" v-model="journey.enquiry_from" class="form-control input-sm" id="enquiry_from" name="enquiry_from">
+                            {{ truck.driver.first_name }} {{ truck.driver.last_name }}
                         </div>
                     </div>
 
@@ -395,6 +404,7 @@
                             this.journey.enquiry_from = this.journey.enquiry_from == 'null' ? '' : this.journey.enquiry_from;
                             this.journey.ref_no = this.journey.ref_no == 'null' ? '' : this.journey.ref_no;
                             this.journey.ref_no = this.journey.contract_id == 'null' ? '' : this.journey.contract_id;
+                            this.trucks_already_allocated = response.allocated;
                             this.updateBooleans();
                             this.status = response.journey.status;
                             this.setupUI();
