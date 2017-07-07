@@ -61,7 +61,7 @@ class FuelController extends Controller
 
         $truck = $journey->truck;
         $truck->current_km = $data['current_km'];
-        $truck->current_fuel = $data['current_fuel'];
+        $truck->current_fuel = $data['fuel_total'];
         $truck->update();
 
         return Response::json([
@@ -118,7 +118,7 @@ class FuelController extends Controller
 
       $truck = $journey->truck;
       $truck->current_km = $data['current_km'];
-      $truck->current_fuel = $data['current_fuel'];
+      $truck->current_fuel = $data['fuel_total'];
       $truck->update();
 
       return Response::json([

@@ -275,7 +275,7 @@
           calculateKms() {
             if(parseInt(this.fuel.current_km) < parseInt(this.current_vehicle.current_km)) {
               this.can_save = false;
-
+              this.fuel.current_km = 0;
               return alert2(this.$root, ['Current Km readings should be greater than previous Km reading'], 'danger');
             }
             this.fuel_used = parseInt(this.current_vehicle.current_fuel) - parseInt(this.fuel.current_fuel);
