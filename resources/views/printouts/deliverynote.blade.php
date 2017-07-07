@@ -85,30 +85,34 @@
 
             </div>
 
-            <div class="col-xs-6">
+            <div class="col-xs-8">
                 <h5>
-                    <strong>Driver: </strong> {{ $trip->driver->name }}
+                    <strong>Driver: </strong> {{ $trip->driver->first_name }}
                 </h5>
                 <h5>
-                    <strong>Driver's Sign: </strong>_______________________________________________________________________
+                    <strong>Driver's Sign: ____________________________________________________________________________</strong>
                 </h5>
                 <h5>
-                    <strong>Supervisor Name: </strong>_________________________________________________________________________
+                    <strong>Supervisor Name: _______________________________________________________________________</strong>
                 </h5>
                 <h5>
-                    <strong>Vehicle Number: </strong> {{ $trip->truck->plate_number }}
+                    <strong>Supervisor's Sign: _______________________________________________________________________</strong>
                 </h5>
+
             </div>
-            <div class="col-xs-6">
-                <h5>
-                    <strong>Vessel Name: </strong>
-                </h5>
-                <h5>
-                    <strong>Lot No: </strong>
-                </h5>
-                <h5>
-                    <strong>Attached Trailer: {{ $trip->truck->trailer->trailer_number }}</strong>
-                </h5>
+            <div class="col-xs-4" style="border: 1px; border-style: solid;">
+              <h5>
+                  <strong>Vehicle Number: </strong> {{ $trip->truck->plate_number }}
+              </h5>
+              <h5>
+                  <strong>Attached Trailer: {{ $trip->truck->trailer->trailer_number }}</strong>
+              </h5>
+              <h5>
+                  <strong>Lot No: {{ $trip->contract->lot_number }}</strong>
+              </h5>
+              <h5>
+                  <strong>Vessel Name: {{ $trip->contract->vessel_name }} </strong>
+              </h5>
             </div>
 
             <div class="col-xs-12">
@@ -127,7 +131,11 @@
                 <h5><strong>Name: </strong>___________________________________________</h5>
             </div>
             <div class="col-xs-4">
-                <h5><strong>Signature & Stamp: </strong>________________________________</h5>
+                <h5><strong>Signature</strong>________________________________</h5>
+                <h5><strong>Stamp:</strong></h5>
+                <div class="" style="border: 1px; border-style: solid;  height: 100px;">
+
+                </div>
             </div>
 
             <div class="col-xs-12">

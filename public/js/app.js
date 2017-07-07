@@ -80566,6 +80566,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -100931,6 +100959,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._m(0), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
   }, [_c('form', {
+    staticClass: "form-horizontal",
     attrs: {
       "action": "#",
       "role": "form"
@@ -100944,14 +100973,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "row"
   }, [_c('div', {
-    staticClass: "col-sm-3"
+    staticClass: "col-sm-4"
   }, [_c('div', {
     staticClass: "form-group"
   }, [_c('label', {
+    staticClass: "col-sm-4",
     attrs: {
       "for": "journey_id"
     }
-  }, [_vm._v("Journey Number")]), _vm._v(" "), _c('select', {
+  }, [_vm._v("Journey Number")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -100981,42 +101013,22 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "value": journey.id
       }
     }, [_vm._v("JRNY-" + _vm._s(journey.id))])
-  }))]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', [_vm._v("Trailer Make")]), _vm._v(" "), _c('h5', [_vm._v(_vm._s(_vm.journey.truck.trailer.make))])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', [_vm._v("Vehicle Number")]), _vm._v(" "), _c('h5', [_vm._v(_vm._s(_vm.journey.truck.plate_number))])]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', [_vm._v("Trailer Type")]), _vm._v(" "), _c('h5', [_vm._v(_vm._s(_vm.journey.truck.trailer.type))])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', [_vm._v("Trailer Attached")]), _vm._v(" "), _c('h5', [_vm._v(_vm._s(_vm.journey.truck.trailer.trailer_number))])]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', [_vm._v("Driver Name")]), _vm._v(" "), _c('h5', [_vm._v(_vm._s(_vm.journey.driver.first_name) + " " + _vm._s(_vm.journey.driver.last_name))])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', [_vm._v("Document Date")]), _vm._v(" "), _c('h5', [_vm._v(_vm._s(new Date().toLocaleDateString('en-GB')))])]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('img', {
-    staticClass: "img-responsive",
-    attrs: {
-      "src": _vm.getSource()
-    }
-  })])])]), _vm._v(" "), _c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-sm-4"
-  }, [_c('div', {
+  }))])]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
+    staticClass: "col-sm-4"
+  }, [_vm._v("Document Date")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('h5', [_vm._v(_vm._s(new Date().toLocaleDateString('en-GB')))])])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-4",
     attrs: {
       "for": "mileage_type"
     }
-  }, [_vm._v("Mileage Type")]), _vm._v(" "), _c('select', {
+  }, [_vm._v("Mileage Type")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -101045,24 +101057,69 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "value": "Fixed Mileage"
     }
   }, [_vm._v("Fixed Mileage")])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-4"
+  }, [_c('strong', [_vm._v("Vehicle Details")]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-4"
+  }, [_vm._v("Vehicle Number")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('h5', [_vm._v(_vm._s(_vm.journey.truck.plate_number))])])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-4"
+  }, [_vm._v("Trailer Attached")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('h5', [_vm._v(_vm._s(_vm.journey.truck.trailer.trailer_number))])])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-4"
+  }, [_vm._v("Trailer Type")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('h5', [_vm._v(_vm._s(_vm.journey.truck.trailer.type))])])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-4"
+  }, [_c('strong', [_vm._v("Driver Details")]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-4"
+  }, [_vm._v("Full Name")]), _vm._v(" "), _c('h5', {
+    staticClass: "col-sm-6"
+  }, [_vm._v(_vm._s(_vm.journey.driver.first_name) + " " + _vm._s(_vm.journey.driver.last_name))])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-4"
+  }, [_vm._v("License Number:")]), _vm._v(" "), _c('h5', {
+    staticClass: "col-sm-6"
+  }, [_vm._v(_vm._s(_vm.journey.driver.dl_number))])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-4"
+  }, [_vm._v("National ID:")]), _vm._v(" "), _c('h5', {
+    staticClass: "col-sm-6"
+  }, [_vm._v(_vm._s(_vm.journey.driver.identification_number))])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('img', {
+    staticClass: "img-responsive",
+    attrs: {
+      "src": _vm.getSource()
+    }
+  })])])]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('strong', [_vm._v("Payment Details")]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
-    attrs: {
-      "for": "mileage_type"
-    }
-  }, [_vm._v("Standard Mileage Amount")]), _vm._v(" "), _c('h5', [_c('strong', [_vm._v(_vm._s(_vm.formatNumber(_vm.journey.route.allowance_amount)))])])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('div', {
+    staticClass: "col-sm-4"
+  }, [_vm._v("Standard Mileage Amount")]), _vm._v(" "), _c('h5', {
+    staticClass: "col-sm-6"
+  }, [_c('strong', [_vm._v(_vm._s(_vm.formatNumber(_vm.journey.route.allowance_amount)))])])]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
-    attrs: {
-      "for": "requested_amount"
-    }
-  }, [_vm._v("Requested Amount")]), _vm._v(" "), _c('input', {
+    staticClass: "col-sm-4"
+  }, [_vm._v("Amount Requested")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -101089,47 +101146,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.$forceUpdate()
       }
     }
-  })])]), _vm._v(" "), (_vm.$route.params.id) ? _c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('div', {
+  })])]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
-    attrs: {
-      "for": "approved_amount"
-    }
-  }, [_vm._v("Approved Amount")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.mileage.approved_amount),
-      expression: "mileage.approved_amount"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "min": "0",
-      "type": "number",
-      "id": "approved_amount",
-      "name": "approved_amount"
-    },
-    domProps: {
-      "value": (_vm.mileage.approved_amount)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.mileage.approved_amount = $event.target.value
-      },
-      "blur": function($event) {
-        _vm.$forceUpdate()
-      }
-    }
-  })])]) : _vm._e(), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('label', {
-    attrs: {
-      "for": "top_up"
-    }
-  }, [_vm._v("Top Up?")]), _vm._v(" "), _c('input', {
+    staticClass: "col-sm-4"
+  }, [_vm._v("Top Up?")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -101165,13 +101188,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }
-  }), _vm._v(" "), (_vm.mileage.top_up) ? _c('div', {
+  })])]), _vm._v(" "), (_vm.mileage.top_up) ? _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
-    attrs: {
-      "for": "top_up_amount"
-    }
-  }, [_vm._v("Top Up Amount:")]), _vm._v(" "), _c('input', {
+    staticClass: "col-sm-4"
+  }, [_vm._v("Top Up Amount:")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -101195,11 +101218,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.$forceUpdate()
       }
     }
-  }), _vm._v(" "), _c('label', {
-    attrs: {
-      "for": "top_up_reason"
-    }
-  }, [_vm._v("Top up reason")]), _vm._v(" "), _c('textarea', {
+  })])]) : _vm._e(), _vm._v(" "), (_vm.mileage.top_up) ? _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-4"
+  }, [_vm._v("Top up reason")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('textarea', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -101220,23 +101245,51 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.mileage.top_up_reason = $event.target.value
       }
     }
-  })]) : _vm._e()]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
+  })])]) : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
   }, [_c('label', {
-    attrs: {
-      "for": "total_amount_given"
-    }
-  }, [_vm._v("Total Amount: " + _vm._s(parseInt(_vm.mileage.requested_amount) + parseInt(_vm.mileage.top_up_amount)))])])]), _vm._v(" "), _c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-sm-8"
-  }, [_c('div', {
+    staticClass: "col-sm-4"
+  }, [_vm._v("Total Request Amount")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_vm._v("\n                      " + _vm._s(parseInt(_vm.mileage.requested_amount) + parseInt(_vm.mileage.top_up_amount)) + "\n                    ")])]), _vm._v(" "), (_vm.$route.params.id) ? _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
-      "for": "narration"
+      "for": "approved_amount"
     }
-  }, [_vm._v("Narration")]), _vm._v(" "), _c('textarea', {
+  }, [_vm._v("Approved Amount")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.mileage.approved_amount),
+      expression: "mileage.approved_amount"
+    }],
+    staticClass: "form-control input-sm",
+    attrs: {
+      "min": "0",
+      "type": "number",
+      "id": "approved_amount",
+      "name": "approved_amount"
+    },
+    domProps: {
+      "value": (_vm.mileage.approved_amount)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.mileage.approved_amount = $event.target.value
+      },
+      "blur": function($event) {
+        _vm.$forceUpdate()
+      }
+    }
+  })]) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('div', {
+    staticClass: "col-sm-10"
+  }, [_c('label', [_vm._v("Narration")]), _vm._v(" "), _c('textarea', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -101258,7 +101311,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.mileage.narration = $event.target.value
       }
     }
-  })])])]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
+  })])])])]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('button', {
     staticClass: "btn btn-success"

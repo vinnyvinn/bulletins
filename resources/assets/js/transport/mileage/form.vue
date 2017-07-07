@@ -5,115 +5,143 @@
         </div>
 
         <div class="panel-body">
-            <form action="#" role="form" @submit.prevent="store">
+            <form class="form-horizontal" action="#" role="form" @submit.prevent="store">
                 <div class="row">
-                    <div class="col-sm-3">
+                    <div class="col-sm-4">
                         <div class="form-group">
-                            <label for="journey_id">Journey Number</label>
-                            <select v-model="mileage.journey_id" class="form-control input-sm" id="journey_id" name="journey_id" required>
-                                <option v-for="journey in journeys" :value="journey.id">JRNY-{{ journey.id }}</option>
-                            </select>
+                            <label for="journey_id" class="col-sm-4">Journey Number</label>
+                            <div class="col-sm-6">
+                              <select v-model="mileage.journey_id" class="form-control input-sm" id="journey_id" name="journey_id" required>
+                                  <option v-for="journey in journeys" :value="journey.id">JRNY-{{ journey.id }}</option>
+                              </select>
+                            </div>
                         </div>
 
                         <div class="form-group">
-                            <label>Trailer Make</label>
-                            <h5>{{ journey.truck.trailer.make }}</h5>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label>Vehicle Number</label>
-                            <h5>{{ journey.truck.plate_number }}</h5>
+                            <label class="col-sm-4">Document Date</label>
+                            <div class="col-sm-6">
+                                <h5>{{ new Date().toLocaleDateString('en-GB') }}</h5>
+                            </div>
                         </div>
 
                         <div class="form-group">
-                            <label>Trailer Type</label>
-                            <h5>{{ journey.truck.trailer.type }}</h5>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label>Trailer Attached</label>
-                            <h5>{{ journey.truck.trailer.trailer_number }}</h5>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Driver Name</label>
-                            <h5>{{ journey.driver.first_name }} {{ journey.driver.last_name }}</h5>
+                            <label for="mileage_type" class="col-sm-4">Mileage Type</label>
+                            <div class="col-sm-6">
+                              <select v-model="mileage.mileage_type" class="form-control input-sm" id="mileage_type" name="mileage_type" required>
+                                  <option value="Fixed Mileage">Fixed Mileage</option>
+                              </select>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="col-sm-3">
+                    <div class="col-sm-4">
+                      <strong>Vehicle Details</strong>
                         <div class="form-group">
-                            <label>Document Date</label>
-                            <h5>{{ new Date().toLocaleDateString('en-GB') }}</h5>
+                            <label class="col-sm-4">Vehicle Number</label>
+                            <div class="col-sm-6">
+                              <h5>{{ journey.truck.plate_number }}</h5>
+                            </div>
                         </div>
 
+                        <div class="form-group">
+                            <label class="col-sm-4">Trailer Attached</label>
+                            <div class="col-sm-6">
+                              <h5>{{ journey.truck.trailer.trailer_number }}</h5>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-4">Trailer Type</label>
+                            <div class="col-sm-6">
+                              <h5>{{ journey.truck.trailer.type }}</h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <strong>Driver Details</strong>
+                        <div class="form-group">
+                            <label class="col-sm-4">Full Name</label>
+                            <h5 class="col-sm-6">{{ journey.driver.first_name }} {{ journey.driver.last_name }}</h5>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4">License Number:</label>
+                            <h5 class="col-sm-6">{{ journey.driver.dl_number }}</h5>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4">National ID:</label>
+                            <h5 class="col-sm-6">{{ journey.driver.identification_number }}</h5>
+                        </div>
                         <div class="form-group">
                             <img :src="getSource()" class="img-responsive">
                         </div>
                     </div>
+
+
                 </div>
 
-                <div class="row">
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            <label for="mileage_type">Mileage Type</label>
-                            <select v-model="mileage.mileage_type" class="form-control input-sm" id="mileage_type" name="mileage_type" required>
-                                <option value="Fixed Mileage">Fixed Mileage</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
+
 
                 <div class="row">
+                  <div class="col-sm-6">
+                    <strong>Payment Details</strong>
+                      <div class="form-group">
+                          <label class="col-sm-4">Standard Mileage Amount</label>
+                          <h5 class="col-sm-6"><strong>{{ formatNumber(journey.route.allowance_amount) }}</strong></h5>
+                      </div>
 
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="mileage_type">Standard Mileage Amount</label>
-                            <h5><strong>{{ formatNumber(journey.route.allowance_amount) }}</strong></h5>
+                      <div class="form-group">
+                          <label class="col-sm-4">Amount Requested</label>
+                          <div class="col-sm-6">
+                            <input min="0" v-model="mileage.requested_amount"
+                            @change="validateRequestedAmount" type="number" class="form-control input-sm"
+                            id="requested_amount" name="requested_amount">
+                          </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="col-sm-4">Top Up?</label>
+                        <div class="col-sm-6">
+                          <input type="checkbox" name="top_up" id="top_up" v-model="mileage.top_up" @change="!mileage.top_up">
                         </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="requested_amount">Requested Amount</label>
-                            <input min="0" v-model="mileage.requested_amount" @change="validateRequestedAmount" type="number" class="form-control input-sm" id="requested_amount" name="requested_amount">
-                        </div>
-                    </div>
-                    <div class="col-sm-3" v-if="$route.params.id">
-                        <div class="form-group">
-                            <label for="approved_amount">Approved Amount</label>
-                            <input min="0" v-model="mileage.approved_amount" type="number" class="form-control input-sm" id="approved_amount" name="approved_amount">
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                      <label for="top_up">Top Up?</label>
-                      <input type="checkbox" name="top_up" id="top_up" v-model="mileage.top_up" @change="!mileage.top_up">
+                      </div>
+
                       <div class="form-group" v-if="mileage.top_up">
-                        <label for="top_up_amount">Top Up Amount:</label>
-                        <input type="number" name="top_up_amount" id="top_up_amount" v-model="mileage.top_up_amount">
-                        <label for="top_up_reason">Top up reason</label>
-                        <textarea name="narration" id="top_up_reason" class="form-control input-sm" v-model="mileage.top_up_reason"></textarea>
+                        <label class="col-sm-4">Top Up Amount:</label>
+                        <div class="col-sm-6">
+                          <input type="number" name="top_up_amount" id="top_up_amount" v-model="mileage.top_up_amount">
+                        </div>
+                      </div>
+
+                      <div class="form-group" v-if="mileage.top_up">
+                        <label class="col-sm-4">Top up reason</label>
+                        <div class="col-sm-6">
+                          <textarea name="narration" id="top_up_reason" class="form-control input-sm" v-model="mileage.top_up_reason"></textarea>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="col-sm-4">Total Request Amount</label>
+                        <div class="col-sm-6">
+                          {{ parseInt(mileage.requested_amount) + parseInt(mileage.top_up_amount) }}
+                        </div>
+                      </div>
+
+                      <div class="form-group" v-if="$route.params.id">
+                          <label for="approved_amount">Approved Amount</label>
+                          <input min="0" v-model="mileage.approved_amount" type="number" class="form-control input-sm" id="approved_amount" name="approved_amount">
                       </div>
                     </div>
 
-                    <div class="col-sm-3">
-                      <label for="total_amount_given">Total Amount: {{ parseInt(mileage.requested_amount) + parseInt(mileage.top_up_amount)}}</label>
-
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                          <div class="col-sm-10">
+                              <label>Narration</label>
+                              <textarea v-model="mileage.narration" name="narration" id="narration" rows="5" class="form-control input-sm"></textarea>
+                          </div>
+                      </div>
                     </div>
-
-                </div>
-
-                <div class="row">
-                    <div class="col-sm-8">
-                        <div class="form-group">
-                            <label for="narration">Narration</label>
-                            <textarea v-model="mileage.narration" name="narration" id="narration" rows="5" class="form-control input-sm"></textarea>
-                        </div>
-                    </div>
-                </div>
+                  </div>
 
                 <hr>
 
