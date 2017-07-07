@@ -30,11 +30,11 @@
                                     <td class="text-right">{{ formatNumber(mileage.requested_amount) }}</td>
                                     <td class="text-right">{{ formatNumber(mileage.approved_amount) }}</td>
                                     <td class="text-center">
-                                        <span @click="edit(mileage)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
+                                        <span @click="edit(mileage)" v-if="!mileage.approved_amount" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
                                         <button data-toggle="popover" :data-item="mileage.id" class="btn btn-xs btn-danger btn-destroy">
                                             <i class="fa fa-trash"></i>
                                         </button>
-                                    </td>                                  
+                                    </td>
                                 </tr>
                                 </tbody>
 

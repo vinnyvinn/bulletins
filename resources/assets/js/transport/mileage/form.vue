@@ -8,8 +8,8 @@
             <form class="form-horizontal" action="#" role="form" @submit.prevent="store">
                 <div class="row">
                     <div class="col-sm-4">
-                      <fieldset class="scheduler-border">
-                        <legend class="scheduler-border">Journey Details</legend>
+                      <fieldset class="wizag-fieldset-border">
+                        <legend class="wizag-fieldset-border">Journey Details</legend>
                         <div class="form-group">
                             <label for="journey_id" class="col-sm-6">Journey Number</label>
                             <div class="col-sm-6">
@@ -38,8 +38,8 @@
                     </div>
 
                     <div class="col-sm-4">
-                      <fieldset class="scheduler-border">
-                      <legend class="scheduler-border">Vehicle Details</legend>
+                      <fieldset class="wizag-fieldset-border">
+                      <legend class="wizag-fieldset-border">Vehicle Details</legend>
                         <div class="form-group">
                             <label class="col-sm-6">Vehicle Number</label>
                             <div class="col-sm-6">
@@ -64,8 +64,8 @@
                     </div>
 
                     <div class="col-sm-4">
-                      <fieldset class="scheduler-border">
-                        <legend class="scheduler-border">Driver Details</legend>
+                      <fieldset class="wizag-fieldset-border">
+                        <legend class="wizag-fieldset-border">Driver Details</legend>
                         <div class="col-sm-3">
                           <div class="form-group">
                               <img :src="getSource()" class="img-responsive">
@@ -95,8 +95,8 @@
 
                 <div class="row">
                   <div class="col-sm-6">
-                    <fieldset class="scheduler-border">
-                      <legend class="scheduler-border">Payment Details</legend>
+                    <fieldset class="wizag-fieldset-border">
+                      <legend class="wizag-fieldset-border">Payment Details</legend>
                         <div class="form-group">
                             <label class="col-sm-6">Standard Mileage Amount</label>
                             <h5 class="col-sm-6"><strong>{{ formatNumber(journey.route.allowance_amount) }}</strong></h5>
@@ -193,13 +193,17 @@
         },
 
         created() {
+          this.$root.isLoading = true;
             http.get('/api/mileage/create').then((response) => {
                 this.journeys = response.journeys;
-            });
+            }).then(() => {
+              this.checkState();
+        });
+
         },
 
         mounted() {
-            this.checkState();
+
             $('input[type="number"]').on('focus', function () {
                 this.select();
             });
@@ -248,6 +252,7 @@
                 if (this.$route.params.id) {
                     http.get('/api/mileage/' + this.$route.params.id).then((response) => {
                         this.mileage = response.mileage;
+                        this.$root.isLoading = false;
                     });
                 }
             },
@@ -287,7 +292,7 @@
 </script>
 
 <style media="screen" scoped>
-fieldset.scheduler-border {
+fieldset.wizag-fieldset-border {
   border: 1px groove #ddd !important;
   padding: 0 1.4em 1.4em 1.4em !important;
   margin: 0 0 1.5em 0 !important;
@@ -295,7 +300,7 @@ fieldset.scheduler-border {
           box-shadow:  0px 0px 0px 0px #000;
 }
 
-  legend.scheduler-border {
+  legend.wizag-fieldset-border {
       font-size: 1.2em !important;
       font-weight: bold !important;
       text-align: left !important;

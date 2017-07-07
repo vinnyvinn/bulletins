@@ -11,6 +11,7 @@ use SmoDav\Models\Mileage;
 use Carbon\Carbon;
 use Auth;
 use App\Truck;
+use SmoDav\Support\Constants;
 
 
 
@@ -54,7 +55,7 @@ class FuelController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $data['date'] = Carbon::parse(str_replace('/', '-', $data['date']))->format('Y-m-d');
+        $data['date'] = Carbon::parse(str_replace('/', '-', $data['date']))->format('Y-m-d');        
         $fuel = Fuel::create($data);
 
         $journey = Journey::findOrFail($data['journey_id']);
@@ -149,7 +150,7 @@ class FuelController extends Controller
     {
       $fuel = Fuel::findOrFail($id);
       if($fuel->status == 'Awaiting Approval'){
-        $fuel->status = 'Approved';
+        $fuel->status = Constants::STATUS_APPROVED;
         $fuel->user_id = Auth::id();
         $fuel->save();
 

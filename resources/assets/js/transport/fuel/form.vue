@@ -132,7 +132,7 @@
                       <input type="number" :min="minimumKm" name="current_km" class="form-control input-sm" v-model="fuel.current_km" @change="calculateKms">
                     </div>
                   </div>
-                  we
+                  
                   <div class="col-sm-3">
                     <div class="form-group">
                       <label for="previous_km">Previous KM</label>
@@ -174,14 +174,16 @@
           }
             http.get('/api/fuel/create').then((response) => {
                 this.journeys = response.journeys;
-                this.calculateKms();
-                this.$root.isLoading = false;
+            }).then(() => {
+              this.checkState();
+            }).then(() => {
+              this.calculateKms();
             });
 
         },
 
         mounted() {
-            this.checkState();
+
             $('input[type="number"]').on('focus', function () {
                 this.select();
             });
@@ -256,6 +258,7 @@
                       http.get('/api/fuel/' + this.$route.params.id).then((response) => {
                           this.fuel = response.fuel;
                           this.setupUI();
+                          this.$root.isLoading = false;
                       });
               }
               this.setupUI();
