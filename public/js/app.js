@@ -72306,13 +72306,17 @@ module.exports = Component.exports
 /* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
+
+/* styles */
+__webpack_require__(381)
+
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(221),
   /* template */
   __webpack_require__(317),
   /* scopeId */
-  null,
+  "data-v-38ba452b",
   /* cssModules */
   null
 )
@@ -80438,6 +80442,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function($) {//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -100974,10 +100994,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-4"
-  }, [_c('div', {
+  }, [_c('fieldset', {
+    staticClass: "scheduler-border"
+  }, [_c('legend', {
+    staticClass: "scheduler-border"
+  }, [_vm._v("Journey Details")]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
-    staticClass: "col-sm-4",
+    staticClass: "col-sm-6",
     attrs: {
       "for": "journey_id"
     }
@@ -101016,13 +101040,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }))])]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
-    staticClass: "col-sm-4"
+    staticClass: "col-sm-6"
   }, [_vm._v("Document Date")]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
   }, [_c('h5', [_vm._v(_vm._s(new Date().toLocaleDateString('en-GB')))])])]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
-    staticClass: "col-sm-4",
+    staticClass: "col-sm-6",
     attrs: {
       "for": "mileage_type"
     }
@@ -101056,67 +101080,83 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "value": "Fixed Mileage"
     }
-  }, [_vm._v("Fixed Mileage")])])])])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Fixed Mileage")])])])])])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-4"
-  }, [_c('strong', [_vm._v("Vehicle Details")]), _vm._v(" "), _c('div', {
+  }, [_c('fieldset', {
+    staticClass: "scheduler-border"
+  }, [_c('legend', {
+    staticClass: "scheduler-border"
+  }, [_vm._v("Vehicle Details")]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
-    staticClass: "col-sm-4"
+    staticClass: "col-sm-6"
   }, [_vm._v("Vehicle Number")]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
   }, [_c('h5', [_vm._v(_vm._s(_vm.journey.truck.plate_number))])])]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
-    staticClass: "col-sm-4"
+    staticClass: "col-sm-6"
   }, [_vm._v("Trailer Attached")]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
   }, [_c('h5', [_vm._v(_vm._s(_vm.journey.truck.trailer.trailer_number))])])]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
-    staticClass: "col-sm-4"
+    staticClass: "col-sm-6"
   }, [_vm._v("Trailer Type")]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
-  }, [_c('h5', [_vm._v(_vm._s(_vm.journey.truck.trailer.type))])])])]), _vm._v(" "), _c('div', {
+  }, [_c('h5', [_vm._v(_vm._s(_vm.journey.truck.trailer.type))])])])])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-4"
-  }, [_c('strong', [_vm._v("Driver Details")]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    staticClass: "col-sm-4"
-  }, [_vm._v("Full Name")]), _vm._v(" "), _c('h5', {
-    staticClass: "col-sm-6"
-  }, [_vm._v(_vm._s(_vm.journey.driver.first_name) + " " + _vm._s(_vm.journey.driver.last_name))])]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    staticClass: "col-sm-4"
-  }, [_vm._v("License Number:")]), _vm._v(" "), _c('h5', {
-    staticClass: "col-sm-6"
-  }, [_vm._v(_vm._s(_vm.journey.driver.dl_number))])]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    staticClass: "col-sm-4"
-  }, [_vm._v("National ID:")]), _vm._v(" "), _c('h5', {
-    staticClass: "col-sm-6"
-  }, [_vm._v(_vm._s(_vm.journey.driver.identification_number))])]), _vm._v(" "), _c('div', {
+  }, [_c('fieldset', {
+    staticClass: "scheduler-border"
+  }, [_c('legend', {
+    staticClass: "scheduler-border"
+  }, [_vm._v("Driver Details")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('div', {
     staticClass: "form-group"
   }, [_c('img', {
     staticClass: "img-responsive",
     attrs: {
       "src": _vm.getSource()
     }
-  })])])]), _vm._v(" "), _c('div', {
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-9"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-6"
+  }, [_vm._v("Full Name")]), _vm._v(" "), _c('h5', {
+    staticClass: "col-sm-6"
+  }, [_vm._v(_vm._s(_vm.journey.driver.first_name) + " " + _vm._s(_vm.journey.driver.last_name))])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-6"
+  }, [_vm._v("License #:")]), _vm._v(" "), _c('h5', {
+    staticClass: "col-sm-6"
+  }, [_vm._v(_vm._s(_vm.journey.driver.dl_number))])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-6"
+  }, [_vm._v("National ID:")]), _vm._v(" "), _c('h5', {
+    staticClass: "col-sm-6"
+  }, [_vm._v(_vm._s(_vm.journey.driver.identification_number))])])])])])]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-6"
-  }, [_c('strong', [_vm._v("Payment Details")]), _vm._v(" "), _c('div', {
+  }, [_c('fieldset', {
+    staticClass: "scheduler-border"
+  }, [_c('legend', {
+    staticClass: "scheduler-border"
+  }, [_vm._v("Payment Details")]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
-    staticClass: "col-sm-4"
+    staticClass: "col-sm-6"
   }, [_vm._v("Standard Mileage Amount")]), _vm._v(" "), _c('h5', {
     staticClass: "col-sm-6"
   }, [_c('strong', [_vm._v(_vm._s(_vm.formatNumber(_vm.journey.route.allowance_amount)))])])]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
-    staticClass: "col-sm-4"
+    staticClass: "col-sm-6"
   }, [_vm._v("Amount Requested")]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
   }, [_c('input', {
@@ -101149,7 +101189,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })])]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
-    staticClass: "col-sm-4"
+    staticClass: "col-sm-6"
   }, [_vm._v("Top Up?")]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
   }, [_c('input', {
@@ -101191,7 +101231,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })])]), _vm._v(" "), (_vm.mileage.top_up) ? _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
-    staticClass: "col-sm-4"
+    staticClass: "col-sm-6"
   }, [_vm._v("Top Up Amount:")]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
   }, [_c('input', {
@@ -101221,7 +101261,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })])]) : _vm._e(), _vm._v(" "), (_vm.mileage.top_up) ? _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
-    staticClass: "col-sm-4"
+    staticClass: "col-sm-6"
   }, [_vm._v("Top up reason")]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
   }, [_c('textarea', {
@@ -101248,16 +101288,16 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })])]) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
-    staticClass: "col-sm-4"
+    staticClass: "col-sm-6"
   }, [_vm._v("Total Request Amount")]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
-  }, [_vm._v("\n                      " + _vm._s(parseInt(_vm.mileage.requested_amount) + parseInt(_vm.mileage.top_up_amount)) + "\n                    ")])]), _vm._v(" "), (_vm.$route.params.id) ? _c('div', {
+  }, [_vm._v("\n                        " + _vm._s(parseInt(_vm.mileage.requested_amount) + parseInt(_vm.mileage.top_up_amount)) + "\n                      ")])]), _vm._v(" "), (_vm.$route.params.id) ? _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
-    attrs: {
-      "for": "approved_amount"
-    }
-  }, [_vm._v("Approved Amount")]), _vm._v(" "), _c('input', {
+    staticClass: "col-sm-6"
+  }, [_vm._v("Approved Amount")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -101283,7 +101323,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.$forceUpdate()
       }
     }
-  })]) : _vm._e()]), _vm._v(" "), _c('div', {
+  })])]) : _vm._e()])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
   }, [_c('div', {
     staticClass: "form-group"
@@ -111847,6 +111887,52 @@ if(false) {
 __webpack_require__(173);
 module.exports = __webpack_require__(175);
 
+
+/***/ }),
+/* 367 */,
+/* 368 */,
+/* 369 */,
+/* 370 */,
+/* 371 */,
+/* 372 */,
+/* 373 */,
+/* 374 */,
+/* 375 */,
+/* 376 */,
+/* 377 */,
+/* 378 */,
+/* 379 */,
+/* 380 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(4)();
+exports.push([module.i, "\nfieldset.scheduler-border[data-v-38ba452b] {\n  border: 1px groove #ddd !important;\n  padding: 0 1.4em 1.4em 1.4em !important;\n  margin: 0 0 1.5em 0 !important;\n  box-shadow:  0px 0px 0px 0px #000;\n}\nlegend.scheduler-border[data-v-38ba452b] {\n      font-size: 1.2em !important;\n      font-weight: bold !important;\n      text-align: left !important;\n      width:auto;\n      padding:0 10px;\n      border-bottom:none;\n}\n", ""]);
+
+/***/ }),
+/* 381 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(380);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(5)("890b06a0", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-38ba452b&scoped=true!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./form.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-38ba452b&scoped=true!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./form.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
 
 /***/ })
 /******/ ]);

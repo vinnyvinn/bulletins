@@ -8,8 +8,10 @@
             <form class="form-horizontal" action="#" role="form" @submit.prevent="store">
                 <div class="row">
                     <div class="col-sm-4">
+                      <fieldset class="scheduler-border">
+                        <legend class="scheduler-border">Journey Details</legend>
                         <div class="form-group">
-                            <label for="journey_id" class="col-sm-4">Journey Number</label>
+                            <label for="journey_id" class="col-sm-6">Journey Number</label>
                             <div class="col-sm-6">
                               <select v-model="mileage.journey_id" class="form-control input-sm" id="journey_id" name="journey_id" required>
                                   <option v-for="journey in journeys" :value="journey.id">JRNY-{{ journey.id }}</option>
@@ -18,63 +20,72 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-4">Document Date</label>
+                            <label class="col-sm-6">Document Date</label>
                             <div class="col-sm-6">
                                 <h5>{{ new Date().toLocaleDateString('en-GB') }}</h5>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="mileage_type" class="col-sm-4">Mileage Type</label>
+                            <label for="mileage_type" class="col-sm-6">Mileage Type</label>
                             <div class="col-sm-6">
                               <select v-model="mileage.mileage_type" class="form-control input-sm" id="mileage_type" name="mileage_type" required>
                                   <option value="Fixed Mileage">Fixed Mileage</option>
                               </select>
                             </div>
                         </div>
+                      </fieldset>
                     </div>
 
                     <div class="col-sm-4">
-                      <strong>Vehicle Details</strong>
+                      <fieldset class="scheduler-border">
+                      <legend class="scheduler-border">Vehicle Details</legend>
                         <div class="form-group">
-                            <label class="col-sm-4">Vehicle Number</label>
+                            <label class="col-sm-6">Vehicle Number</label>
                             <div class="col-sm-6">
                               <h5>{{ journey.truck.plate_number }}</h5>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-4">Trailer Attached</label>
+                            <label class="col-sm-6">Trailer Attached</label>
                             <div class="col-sm-6">
                               <h5>{{ journey.truck.trailer.trailer_number }}</h5>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-4">Trailer Type</label>
+                            <label class="col-sm-6">Trailer Type</label>
                             <div class="col-sm-6">
                               <h5>{{ journey.truck.trailer.type }}</h5>
                             </div>
                         </div>
+                      </fieldset>
                     </div>
 
                     <div class="col-sm-4">
-                        <strong>Driver Details</strong>
-                        <div class="form-group">
-                            <label class="col-sm-4">Full Name</label>
-                            <h5 class="col-sm-6">{{ journey.driver.first_name }} {{ journey.driver.last_name }}</h5>
+                      <fieldset class="scheduler-border">
+                        <legend class="scheduler-border">Driver Details</legend>
+                        <div class="col-sm-3">
+                          <div class="form-group">
+                              <img :src="getSource()" class="img-responsive">
+                          </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-4">License Number:</label>
-                            <h5 class="col-sm-6">{{ journey.driver.dl_number }}</h5>
+                        <div class="col-sm-9">
+                          <div class="form-group">
+                              <label class="col-sm-6">Full Name</label>
+                              <h5 class="col-sm-6">{{ journey.driver.first_name }} {{ journey.driver.last_name }}</h5>
+                          </div>
+                          <div class="form-group">
+                              <label class="col-sm-6">License #:</label>
+                              <h5 class="col-sm-6">{{ journey.driver.dl_number }}</h5>
+                          </div>
+                          <div class="form-group">
+                              <label class="col-sm-6">National ID:</label>
+                              <h5 class="col-sm-6">{{ journey.driver.identification_number }}</h5>
+                          </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-4">National ID:</label>
-                            <h5 class="col-sm-6">{{ journey.driver.identification_number }}</h5>
-                        </div>
-                        <div class="form-group">
-                            <img :src="getSource()" class="img-responsive">
-                        </div>
+                        </fieldset>
                     </div>
 
 
@@ -84,53 +95,58 @@
 
                 <div class="row">
                   <div class="col-sm-6">
-                    <strong>Payment Details</strong>
-                      <div class="form-group">
-                          <label class="col-sm-4">Standard Mileage Amount</label>
-                          <h5 class="col-sm-6"><strong>{{ formatNumber(journey.route.allowance_amount) }}</strong></h5>
-                      </div>
+                    <fieldset class="scheduler-border">
+                      <legend class="scheduler-border">Payment Details</legend>
+                        <div class="form-group">
+                            <label class="col-sm-6">Standard Mileage Amount</label>
+                            <h5 class="col-sm-6"><strong>{{ formatNumber(journey.route.allowance_amount) }}</strong></h5>
+                        </div>
 
-                      <div class="form-group">
-                          <label class="col-sm-4">Amount Requested</label>
+                        <div class="form-group">
+                            <label class="col-sm-6">Amount Requested</label>
+                            <div class="col-sm-6">
+                              <input min="0" v-model="mileage.requested_amount"
+                              @change="validateRequestedAmount" type="number" class="form-control input-sm"
+                              id="requested_amount" name="requested_amount">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="col-sm-6">Top Up?</label>
                           <div class="col-sm-6">
-                            <input min="0" v-model="mileage.requested_amount"
-                            @change="validateRequestedAmount" type="number" class="form-control input-sm"
-                            id="requested_amount" name="requested_amount">
+                            <input type="checkbox" name="top_up" id="top_up" v-model="mileage.top_up" @change="!mileage.top_up">
                           </div>
-                      </div>
-
-                      <div class="form-group">
-                        <label class="col-sm-4">Top Up?</label>
-                        <div class="col-sm-6">
-                          <input type="checkbox" name="top_up" id="top_up" v-model="mileage.top_up" @change="!mileage.top_up">
                         </div>
-                      </div>
 
-                      <div class="form-group" v-if="mileage.top_up">
-                        <label class="col-sm-4">Top Up Amount:</label>
-                        <div class="col-sm-6">
-                          <input type="number" name="top_up_amount" id="top_up_amount" v-model="mileage.top_up_amount">
+                        <div class="form-group" v-if="mileage.top_up">
+                          <label class="col-sm-6">Top Up Amount:</label>
+                          <div class="col-sm-6">
+                            <input type="number" name="top_up_amount" id="top_up_amount" v-model="mileage.top_up_amount">
+                          </div>
                         </div>
-                      </div>
 
-                      <div class="form-group" v-if="mileage.top_up">
-                        <label class="col-sm-4">Top up reason</label>
-                        <div class="col-sm-6">
-                          <textarea name="narration" id="top_up_reason" class="form-control input-sm" v-model="mileage.top_up_reason"></textarea>
+                        <div class="form-group" v-if="mileage.top_up">
+                          <label class="col-sm-6">Top up reason</label>
+                          <div class="col-sm-6">
+                            <textarea name="narration" id="top_up_reason" class="form-control input-sm" v-model="mileage.top_up_reason"></textarea>
+                          </div>
                         </div>
-                      </div>
 
-                      <div class="form-group">
-                        <label class="col-sm-4">Total Request Amount</label>
-                        <div class="col-sm-6">
-                          {{ parseInt(mileage.requested_amount) + parseInt(mileage.top_up_amount) }}
+                        <div class="form-group">
+                          <label class="col-sm-6">Total Request Amount</label>
+                          <div class="col-sm-6">
+                            {{ parseInt(mileage.requested_amount) + parseInt(mileage.top_up_amount) }}
+                          </div>
                         </div>
-                      </div>
 
-                      <div class="form-group" v-if="$route.params.id">
-                          <label for="approved_amount">Approved Amount</label>
-                          <input min="0" v-model="mileage.approved_amount" type="number" class="form-control input-sm" id="approved_amount" name="approved_amount">
-                      </div>
+                        <div class="form-group" v-if="$route.params.id">
+                            <label class="col-sm-6">Approved Amount</label>
+                            <div class="col-sm-6">
+                              <input min="0" v-model="mileage.approved_amount" type="number" class="form-control input-sm" id="approved_amount" name="approved_amount">
+                            </div>
+                        </div>
+                    </fieldset>
+
                     </div>
 
                     <div class="col-sm-6">
@@ -269,3 +285,22 @@
         }
     }
 </script>
+
+<style media="screen" scoped>
+fieldset.scheduler-border {
+  border: 1px groove #ddd !important;
+  padding: 0 1.4em 1.4em 1.4em !important;
+  margin: 0 0 1.5em 0 !important;
+  -webkit-box-shadow:  0px 0px 0px 0px #000;
+          box-shadow:  0px 0px 0px 0px #000;
+}
+
+  legend.scheduler-border {
+      font-size: 1.2em !important;
+      font-weight: bold !important;
+      text-align: left !important;
+      width:auto;
+      padding:0 10px;
+      border-bottom:none;
+  }
+</style>
