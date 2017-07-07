@@ -95681,7 +95681,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "for": "sub_delivery_address_1"
     }
-  }, [_vm._v("Delivery Address 1")]), _vm._v(" "), _c('input', {
+  }, [_vm._v("Address Line 1")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -95709,7 +95709,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "for": "sub_delivery_address_2"
     }
-  }, [_vm._v("Delivery Address 2")]), _vm._v(" "), _c('input', {
+  }, [_vm._v("Address Line 2")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -95737,7 +95737,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "for": "sub_delivery_addres_3"
     }
-  }, [_vm._v("Delivery Address 3")]), _vm._v(" "), _c('input', {
+  }, [_vm._v("Address Line 3")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -95765,7 +95765,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "for": "sub_delivery_address_4"
     }
-  }, [_vm._v("Delivery Address 4")]), _vm._v(" "), _c('input', {
+  }, [_vm._v("Address Line 4")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",

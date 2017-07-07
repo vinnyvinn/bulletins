@@ -402,19 +402,19 @@
                             <input v-model="contract.sub_delivery_to" type="text" class="form-control input-sm" id="sub_delivery_to" name="sub_delivery_to">
                         </div>
                         <div class="form-group">
-                            <label for="sub_delivery_address_1">Delivery Address 1</label>
+                            <label for="sub_delivery_address_1">Address Line 1</label>
                             <input v-model="contract.sub_delivery_address" type="text" class="form-control input-sm" id="sub_delivery_address" name="sub_delivery_address">
                         </div>
                         <div class="form-group">
-                            <label for="sub_delivery_address_2">Delivery Address 2</label>
+                            <label for="sub_delivery_address_2">Address Line 2</label>
                             <input v-model="contract.sub_delivery_address_2" type="text" class="form-control input-sm" id="sub_delivery_address_2" name="sub_delivery_address_2">
                         </div>
                         <div class="form-group">
-                            <label for="sub_delivery_addres_3">Delivery Address 3</label>
+                            <label for="sub_delivery_addres_3">Address Line 3</label>
                             <input v-model="contract.sub_delivery_address_3" type="text" class="form-control input-sm" id="sub_delivery_address_3" name="sub_delivery_address_3">
                         </div>
                         <div class="form-group">
-                            <label for="sub_delivery_address_4">Delivery Address 4</label>
+                            <label for="sub_delivery_address_4">Address Line 4</label>
                             <input v-model="contract.sub_delivery_address_4" type="text" class="form-control input-sm" id="sub_delivery_address_4" name="sub_delivery_address_4">
                         </div>
                     </div>
