@@ -203,6 +203,7 @@
                 this.deliveryNote.offloading_net_weight = parseFloat(this.deliveryNote.offloading_gross_weight) - parseFloat(this.deliveryNote.offloading_tare_weight);
               } else {
                 alert2(this.$root, ['Tare Weight cannot be more than the gross weight'], 'danger');
+                this.deliveryNote.loading_tare_weight = 0;
               }
 
             },

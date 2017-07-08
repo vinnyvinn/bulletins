@@ -77201,6 +77201,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.deliveryNote.offloading_net_weight = parseFloat(this.deliveryNote.offloading_gross_weight) - parseFloat(this.deliveryNote.offloading_tare_weight);
             } else {
                 alert2(this.$root, ['Tare Weight cannot be more than the gross weight'], 'danger');
+                this.deliveryNote.loading_tare_weight = 0;
             }
         },
         checkState: function checkState() {
@@ -77845,6 +77846,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       _this.checkState();
     }).then(function () {
       _this.calculateKms();
+      _this.$root.isLoading = false;
     });
   },
   mounted: function mounted() {
@@ -80645,6 +80647,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             _this.journeys = response.journeys;
         }).then(function () {
             _this.checkState();
+        }).then(function () {
+            _this.$root.isLoading = false;
         });
     },
     mounted: function mounted() {

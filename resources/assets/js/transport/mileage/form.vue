@@ -198,6 +198,8 @@
                 this.journeys = response.journeys;
             }).then(() => {
               this.checkState();
+        }).then(() => {
+          this.$root.isLoading = false;
         });
 
         },
