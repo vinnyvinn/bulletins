@@ -230,6 +230,9 @@
                   <p v-if="belowReserve"><i style="color: red;">Fuel in truck ({{journey_close.current_fuel}} ltrs) is below reserve by
                     {{ fuelDifference }} ltrs.
                     Driver to pay Ksh. {{ fuelDifference * parseInt(journey_close.fuel_price) }}</i></p>
+                    <hr>
+                    <p v-if="journey_close.current_km">Kms Covered: {{ parseInt(journey_close.current_km) - parseInt(journey_close.truck.current_km) }}</p><br>
+                    <p v-if="journey_close.current_fuel">Fuel Used (ltrs): {{ parseInt(journey_close.truck.current_fuel) - parseInt(journey_close.current_fuel) }}</p><br>
                 </div>
                 <div class="col-xs-6">
                   Journey Start Km readings: {{ journey_close.truck.current_km }}<br>

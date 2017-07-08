@@ -80112,6 +80112,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -86781,7 +86784,7 @@ exports.push([module.i, "\n#smo-alert {\n    position: fixed;\n    top: 60px;\n 
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 244 */
@@ -96333,6 +96336,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control input-sm",
     attrs: {
+      "disabled": _vm.journey.is_contract_related == '1',
       "id": "journey_type",
       "name": "journey_type",
       "required": ""
@@ -100891,7 +100895,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticStyle: {
       "color": "red"
     }
-  }, [_vm._v("Fuel in truck (" + _vm._s(_vm.journey_close.current_fuel) + " ltrs) is below reserve by\n                " + _vm._s(_vm.fuelDifference) + " ltrs.\n                Driver to pay Ksh. " + _vm._s(_vm.fuelDifference * parseInt(_vm.journey_close.fuel_price)))])]) : _vm._e()]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Fuel in truck (" + _vm._s(_vm.journey_close.current_fuel) + " ltrs) is below reserve by\n                " + _vm._s(_vm.fuelDifference) + " ltrs.\n                Driver to pay Ksh. " + _vm._s(_vm.fuelDifference * parseInt(_vm.journey_close.fuel_price)))])]) : _vm._e(), _vm._v(" "), _c('hr'), _vm._v(" "), (_vm.journey_close.current_km) ? _c('p', [_vm._v("Kms Covered: " + _vm._s(parseInt(_vm.journey_close.current_km) - parseInt(_vm.journey_close.truck.current_km)))]) : _vm._e(), _c('br'), _vm._v(" "), (_vm.journey_close.current_fuel) ? _c('p', [_vm._v("Fuel Used (ltrs): " + _vm._s(parseInt(_vm.journey_close.truck.current_fuel) - parseInt(_vm.journey_close.current_fuel)))]) : _vm._e(), _c('br')]), _vm._v(" "), _c('div', {
     staticClass: "col-xs-6"
   }, [_vm._v("\n              Journey Start Km readings: " + _vm._s(_vm.journey_close.truck.current_km)), _c('br'), _vm._v("\n              Mileage Allocated: " + _vm._s(_vm.journey_close.mileage.approved_amount)), _c('br'), _vm._v("\n              Top-up Mileage: " + _vm._s(_vm.journey_close.mileage.top_up_amount)), _c('br'), _vm._v("\n              Fuel Allocated: " + _vm._s(_vm.journey_close.truck.current_fuel)), _c('br'), _vm._v("\n              Top-up fuel: " + _vm._s(_vm.journey_close.fuel.top_up)), _c('br'), _vm._v(" "), _c('div', {
     staticClass: "col-xs-12"

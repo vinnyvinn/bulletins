@@ -42,7 +42,7 @@
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label for="journey_type">Job Type</label>
-                            <select v-model="journey.journey_type" class="form-control input-sm" id="journey_type" name="journey_type" required>
+                            <select :disabled="journey.is_contract_related == '1'" v-model="journey.journey_type" class="form-control input-sm" id="journey_type" name="journey_type" required>
                                 <option value="Local">Local</option>
                                 <option value="International">International</option>
                             </select>
