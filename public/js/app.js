@@ -45564,22 +45564,22 @@ function prepareTable() {
             buttons: ['colvis', {
                 extend: 'copy',
                 exportOptions: {
-                    columns: ':not(.noprint)'
+                    columns: ':visible'
                 }
             }, {
                 extend: 'excel',
                 exportOptions: {
-                    columns: ':not(.noprint)'
+                    columns: ':visible'
                 }
             }, {
                 extend: 'pdf',
                 exportOptions: {
-                    columns: ':not(.noprint)'
+                    columns: ':visible'
                 }
             }, {
                 extend: 'print',
                 exportOptions: {
-                    columns: ':not(.noprint)'
+                    columns: ':visible'
                 }
             }]
         });
@@ -77655,6 +77655,36 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
     created: function created() {
@@ -77665,10 +77695,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             _this.setupConfirm();
             prepareTable();
         });
+        $(document).ready(function () {
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                endDate: '0d',
+                clearBtn: true,
+                todayBtn: true,
+                todayHighlight: true
+            }).on('change', function (e) {
+                _this.endMonth = e.target.value;
+            });
+        });
     },
     data: function data() {
         return {
-            contracts: []
+            contracts: [],
+            endMonth: null,
+            period: null
         };
     },
 
@@ -77707,6 +77751,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             }).catch(function (error) {
                 _this3.$root.isLoading = false;
                 alert2(_this3.$root, Object.values(JSON.parse(error.message)), 'danger');
+            });
+        },
+        filterRows: function filterRows() {
+            var _this4 = this;
+
+            if (!this.period) return;
+            if (!this.endMonth) return;
+            this.$root.isLoading = true;
+            http.get('/api/contract?duration=' + this.period + '&date=' + this.endMonth).then(function (response) {
+                $('table').dataTable().fnDestroy();
+                _this4.contracts = response.contracts;
+                _this4.setupConfirm();
+                prepareTable();
+                _this4.$root.isLoading = false;
             });
         }
     }
@@ -108484,7 +108542,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "text-right"
     }, [_vm._v(_vm._s(_vm.formatNumber(delivery.offloading_net_weight)))]), _vm._v(" "), _c('td', {
       staticClass: "text-center"
-    }, [(!delivery.status == 'Loaded') ? _c('span', {
+    }, [(delivery.status == 'Loaded') ? _c('span', {
       staticClass: "btn btn-xs btn-info",
       on: {
         "click": function($event) {
@@ -108566,7 +108624,7 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "container"
+    staticClass: "container-fluid"
   }, [_c('div', {
     staticClass: "row"
   }, [_c('div', {
@@ -108575,20 +108633,95 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "panel panel-default"
   }, [_c('div', {
     staticClass: "panel-heading"
-  }, [_c('strong', [_vm._v("Contracts")]), _vm._v(" "), _c('router-link', {
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('select', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.period),
+      expression: "period"
+    }],
+    staticClass: "form-control input-sm",
+    attrs: {
+      "name": "month",
+      "id": "month"
+    },
+    on: {
+      "change": function($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+          return o.selected
+        }).map(function(o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val
+        });
+        _vm.period = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      }
+    }
+  }, [_c('option', {
+    attrs: {
+      "disabled": ""
+    },
+    domProps: {
+      "value": null
+    }
+  }, [_vm._v("Select Period")]), _vm._v(" "), _vm._l((12), function(index) {
+    return _c('option', {
+      domProps: {
+        "value": index
+      }
+    }, [_vm._v(_vm._s(index) + " Month" + _vm._s(index > 1 ? 's' : ''))])
+  })], 2)]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.endMonth),
+      expression: "endMonth"
+    }],
+    staticClass: "datepicker form-control input-sm",
+    attrs: {
+      "type": "text",
+      "placeholder": "To Date"
+    },
+    domProps: {
+      "value": (_vm.endMonth)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.endMonth = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-1"
+  }, [_c('button', {
+    staticClass: "btn btn-success btn-xs",
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.filterRows($event)
+      }
+    }
+  }, [_vm._v("Filter")])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-2"
+  }, [_c('router-link', {
     staticClass: "btn btn-primary btn-xs pull-right",
     attrs: {
       "to": "/contracts/create"
     }
   }, [_c('i', {
     staticClass: "fa fa-plus"
-  }), _vm._v(" Add New")])], 1), _vm._v(" "), _c('div', {
+  }), _vm._v(" Add New")])], 1)])]), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
   }, [_c('div', {
     staticClass: "table-responsive"
   }, [_c('table', {
     staticClass: "table nowrap"
-  }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.contracts), function(contract) {
+  }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.contracts), function(contract) {
     return _c('tr', [_c('td', [_c('router-link', {
       attrs: {
         "to": '/contracts/' + contract.id
@@ -108599,7 +108732,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "label label-success"
     }, [_vm._v("Approved")]) : _vm._e(), _vm._v(" "), (contract.status == 'Closed') ? _c('span', {
       staticClass: "label label-default"
-    }, [_vm._v("Closed")]) : _vm._e()]), _vm._v(" "), _c('td', [_vm._v(_vm._s(contract.client.Name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.date2(contract.created_at)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.date2(contract.start_date)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.date2(contract.end_date)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(Number(contract.quantity).toLocaleString()) + " Tonnes")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.$root.currency) + " " + _vm._s(Number(contract.amount).toLocaleString()) + " " + _vm._s(contract.rate))]), _vm._v(" "), _c('td', {
+    }, [_vm._v("Closed")]) : _vm._e()]), _vm._v(" "), _c('td', [_vm._v(_vm._s(contract.client.Name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.date2(contract.created_at)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.date2(contract.start_date)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.date2(contract.end_date)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(Number(contract.quantity).toLocaleString()) + " KGs")]), _vm._v(" "), _c('td', {
+      staticClass: "text-right"
+    }, [_vm._v(_vm._s(Number(contract.totalDeliveries).toLocaleString()) + " KGs")]), _vm._v(" "), _c('td', {
+      staticClass: "text-right"
+    }, [_vm._v(_vm._s((Number(contract.quantity) - Number(contract.totalDeliveries)).toLocaleString()) + " KGs")]), _vm._v(" "), _c('td', {
+      staticClass: "text-right"
+    }, [_vm._v(_vm._s(Number(contract.journeys_count).toLocaleString()))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.$root.currency) + " " + _vm._s(Number(contract.amount).toLocaleString()) + " " + _vm._s(contract.rate))]), _vm._v(" "), _c('td', {
       staticClass: "text-center"
     }, [(contract.status != 'Closed') ? _c('span', {
       staticClass: "btn btn-xs btn-info",
@@ -108619,9 +108758,25 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('i', {
       staticClass: "fa fa-trash"
     })])])])
-  })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("Contract #")]), _vm._v(" "), _c('th', [_vm._v("Status")]), _vm._v(" "), _c('th', [_vm._v("Client")]), _vm._v(" "), _c('th', [_vm._v("Date Created")]), _vm._v(" "), _c('th', [_vm._v("Start Date")]), _vm._v(" "), _c('th', [_vm._v("Expected End Date")]), _vm._v(" "), _c('th', [_vm._v("Quantity")]), _vm._v(" "), _c('th', [_vm._v("Rate")]), _vm._v(" "), _c('th')])])], 1)])])])])])])
+  })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("Contract #")]), _vm._v(" "), _c('th', [_vm._v("Status")]), _vm._v(" "), _c('th', [_vm._v("Client")]), _vm._v(" "), _c('th', [_vm._v("Date Created")]), _vm._v(" "), _c('th', [_vm._v("Start Date")]), _vm._v(" "), _c('th', [_vm._v("Expected End Date")]), _vm._v(" "), _c('th', [_vm._v("Quantity")]), _vm._v(" "), _c('th', {
+    staticClass: "text-right"
+  }, [_vm._v("Total Delivered")]), _vm._v(" "), _c('th', {
+    staticClass: "text-right"
+  }, [_vm._v("Remaining Qty")]), _vm._v(" "), _c('th', {
+    staticClass: "text-right"
+  }, [_vm._v("Journeys Made")]), _vm._v(" "), _c('th', [_vm._v("Rate")]), _vm._v(" "), _c('th')])])], 1)])])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('thead', [_c('tr', [_c('th', [_vm._v("Contract #")]), _vm._v(" "), _c('th', [_vm._v("Status")]), _vm._v(" "), _c('th', [_vm._v("Client")]), _vm._v(" "), _c('th', [_vm._v("Date Created")]), _vm._v(" "), _c('th', [_vm._v("Start Date")]), _vm._v(" "), _c('th', [_vm._v("Expected End Date")]), _vm._v(" "), _c('th', [_vm._v("Quantity")]), _vm._v(" "), _c('th', [_vm._v("Rate")]), _vm._v(" "), _c('th', {
+  return _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('strong', [_vm._v("Contracts")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('thead', [_c('tr', [_c('th', [_vm._v("Contract #")]), _vm._v(" "), _c('th', [_vm._v("Status")]), _vm._v(" "), _c('th', [_vm._v("Client")]), _vm._v(" "), _c('th', [_vm._v("Date Created")]), _vm._v(" "), _c('th', [_vm._v("Start Date")]), _vm._v(" "), _c('th', [_vm._v("Expected End Date")]), _vm._v(" "), _c('th', [_vm._v("Quantity")]), _vm._v(" "), _c('th', {
+    staticClass: "text-right"
+  }, [_vm._v("Total Delivered")]), _vm._v(" "), _c('th', {
+    staticClass: "text-right"
+  }, [_vm._v("Remaining Qty")]), _vm._v(" "), _c('th', {
+    staticClass: "text-right"
+  }, [_vm._v("Journeys Made")]), _vm._v(" "), _c('th', [_vm._v("Rate")]), _vm._v(" "), _c('th', {
     staticClass: "noprint"
   })])])
 }]}

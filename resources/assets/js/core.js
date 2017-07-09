@@ -170,25 +170,25 @@ export function prepareTable() {
                 {
                     extend: 'copy',
                     exportOptions: {
-                        columns: ':not(.noprint)'
+                        columns: ':visible'
                     }
                 },
                 {
                     extend: 'excel',
                     exportOptions: {
-                        columns: ':not(.noprint)'
+                        columns: ':visible'
                     }
                 },
                 {
                     extend: 'pdf',
                     exportOptions: {
-                        columns: ':not(.noprint)'
+                        columns: ':visible'
                     }
                 },
                 {
                     extend: 'print',
                     exportOptions: {
-                        columns: ':not(.noprint)'
+                        columns: ':visible'
                     }
                 }
             ]

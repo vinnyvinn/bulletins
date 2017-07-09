@@ -125,6 +125,7 @@ class DeliveryController extends Controller
         }
 
         $data['offloading_time'] = Carbon::now();
+        $data['status'] = Constants::OFFLOADED;
         $delivery->update($data);
 
         return Response::json([

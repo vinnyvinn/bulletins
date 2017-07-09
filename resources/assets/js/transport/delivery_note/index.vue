@@ -34,7 +34,7 @@
                                     <td class="text-right">{{ formatNumber(delivery.offloading_tare_weight) }}</td>
                                     <td class="text-right">{{ formatNumber(delivery.offloading_net_weight) }}</td>
                                     <td class="text-center">
-                                        <span @click="edit(delivery)" v-if="!delivery.status=='Loaded'" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
+                                        <span @click="edit(delivery)" v-if="delivery.status=='Loaded'" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
                                         <button data-toggle="popover" :data-item="delivery.id" class="btn btn-xs btn-danger btn-destroy">
                                             <i class="fa fa-trash"></i>
                                         </button>

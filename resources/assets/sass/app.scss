@@ -225,3 +225,7 @@ a.active:not(.btn) {
 .no-bottom {
   border-bottom: none;
 }
+
+div.dt-button-collection {
+  z-index: 99999999999999999;
+}
