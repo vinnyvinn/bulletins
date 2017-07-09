@@ -54,7 +54,7 @@
         </div>
         <hr>
         <div class="row table-responsive">
-          <table class="table datatable table-hover" v-if="activities.length">
+          <table class="table nowrap table-hover" v-if="activities.length">
             <thead>
               <tr>
                 <th>#</th>
@@ -105,6 +105,7 @@ export default {
       this.activities = response.activities;
       this.sortActivityAscending();
       this.$root.isLoading = false;
+      prepareTable();
     });
   },
   mounted () {

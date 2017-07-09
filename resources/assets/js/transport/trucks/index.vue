@@ -36,7 +36,7 @@
                         </div>
                     </div>
                     <div class="panel-body">
-                        <table class="table datatable">
+                        <table class="table nowrap">
                             <thead>
                             <tr>
                                 <th>Plate Number</th>
