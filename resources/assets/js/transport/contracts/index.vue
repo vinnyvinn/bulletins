@@ -1,11 +1,32 @@
 <template>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <strong>Contracts</strong>
-                        <router-link to="/contracts/create" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i> Add New</router-link>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <strong>Contracts</strong>
+                            </div>
+                            <div class="col-sm-3">
+                                <select class="form-control input-sm" name="month" id="month" v-model="period">
+                                    <option :value="null" disabled>Select Period</option>
+                                    <option v-for="index in 12" :value="index">{{ index }} Month{{ index > 1 ? 's' : '' }}</option>
+                                </select>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <input type="text" class="datepicker form-control input-sm" v-model="endMonth" placeholder="To Date">
+                            </div>
+
+                            <div class="col-sm-1">
+                                <button @click.prevent="filterRows" class="btn btn-success btn-xs">Filter</button>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <router-link to="/contracts/create" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i> Add New</router-link>
+                            </div>
+                        </div>
                     </div>
                     <div class="panel-body">
                         <div class="table-responsive">
@@ -19,8 +40,11 @@
                                     <th>Start Date</th>
                                     <th>Expected End Date</th>
                                     <th>Quantity</th>
+                                    <th class="text-right">Total Delivered</th>
+                                    <th class="text-right">Remaining Qty</th>
+                                    <th class="text-right">Journeys Made</th>
                                     <th>Rate</th>
-                                    <th></th>
+                                    <th class="noprint"></th>
                                 </tr>
                                 </thead>
 
@@ -39,7 +63,10 @@
                                     <td>{{ date2(contract.created_at) }}</td>
                                     <td>{{ date2(contract.start_date) }}</td>
                                     <td>{{ date2(contract.end_date) }}</td>
-                                    <td>{{ Number(contract.quantity).toLocaleString() }} Tonnes</td>
+                                    <td>{{ Number(contract.quantity).toLocaleString() }} KGs</td>
+                                    <td class="text-right">{{ Number(contract.totalDeliveries).toLocaleString() }} KGs</td>
+                                    <td class="text-right">{{ (Number(contract.quantity) - Number(contract.totalDeliveries)).toLocaleString() }} KGs</td>
+                                    <td class="text-right">{{ Number(contract.journeys_count).toLocaleString() }}</td>
                                     <td>{{ $root.currency }} {{ Number(contract.amount).toLocaleString() }} {{ contract.rate }}</td>
                                     <td class="text-center">
                                         <span v-if="contract.status != 'Closed'" @click="edit(contract)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
@@ -59,6 +86,9 @@
                                     <th>Start Date</th>
                                     <th>Expected End Date</th>
                                     <th>Quantity</th>
+                                    <th class="text-right">Total Delivered</th>
+                                    <th class="text-right">Remaining Qty</th>
+                                    <th class="text-right">Journeys Made</th>
                                     <th>Rate</th>
                                     <th></th>
                                 </tr>
@@ -80,11 +110,25 @@
                 this.setupConfirm();
                 prepareTable();
             });
+            $(document).ready(() => {
+                $('.datepicker').datepicker({
+                    format: 'yyyy-mm-dd',
+                    autoclose: true,
+                    endDate: '0d',
+                    clearBtn: true,
+                    todayBtn: true,
+                    todayHighlight: true,
+                }).on('change', (e) => {
+                    this.endMonth = e.target.value;
+                });
+            });
         },
 
         data() {
             return {
-                contracts: []
+                contracts: [],
+                endMonth: null,
+                period: null,
             };
         },
 
@@ -120,6 +164,19 @@
                 }).catch((error) => {
                     this.$root.isLoading = false;
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
+                });
+            },
+
+            filterRows() {
+                if (! this.period) return;
+                if (! this.endMonth) return;
+                this.$root.isLoading = true;
+                http.get('/api/contract?duration=' + this.period + '&date=' + this.endMonth).then(response => {
+                    $('table').dataTable().fnDestroy();
+                    this.contracts = response.contracts;
+                    this.setupConfirm();
+                    prepareTable();
+                    this.$root.isLoading = false;
                 });
             }
         }

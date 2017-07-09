@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use SmoDav\Models\CargoClassification;
 use SmoDav\Models\CargoType;
 use SmoDav\Models\CarriagePoint;
+use SmoDav\Models\Delivery;
 use SmoDav\Support\Constants;
 use SmoDav\Models\Journey;
 
@@ -77,6 +78,11 @@ class Contract extends Model
     public function journeys()
     {
         return $this->hasMany(Journey::class);
+    }
+
+    public function deliveries()
+    {
+        return $this->hasManyThrough(Delivery::class, Journey::class);
     }
 
     public function user()

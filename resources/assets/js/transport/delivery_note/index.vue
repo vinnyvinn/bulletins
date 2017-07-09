@@ -25,7 +25,7 @@
                                 </thead>
                                 <tbody>
                                 <tr v-for="delivery in deliveries">
-                                    <td><router-link :to="'/delivery/' + delivery.id">DLN-{{ delivery.id }}</router-link></td>
+                                    <td><router-link :to="'/delivery/' + delivery.id">RKS-{{ delivery.id }}</router-link></td>
                                     <td><router-link :to="'/journey/' + delivery.journey_id">JRNY-{{ delivery.journey_id }}</router-link></td>
                                     <td class="text-right">{{ formatNumber(delivery.loading_gross_weight) }}</td>
                                     <td class="text-right">{{ formatNumber(delivery.loading_tare_weight) }}</td>
@@ -34,7 +34,7 @@
                                     <td class="text-right">{{ formatNumber(delivery.offloading_tare_weight) }}</td>
                                     <td class="text-right">{{ formatNumber(delivery.offloading_net_weight) }}</td>
                                     <td class="text-center">
-                                        <span @click="edit(delivery)" v-if="!delivery.status=='Loaded'" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
+                                        <span @click="edit(delivery)" v-if="delivery.status=='Loaded'" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
                                         <button data-toggle="popover" :data-item="delivery.id" class="btn btn-xs btn-danger btn-destroy">
                                             <i class="fa fa-trash"></i>
                                         </button>

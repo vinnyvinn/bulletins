@@ -28,11 +28,30 @@ class ContractController extends Controller
      */
     public function index()
     {
-        $contracts = Contract::with(['client' => function ($builder) {
-            return $builder->select(['DCLink', 'Name']);
-        }])->get([
-            'id', 'client_id', 'created_at', 'start_date', 'end_date', 'quantity', 'amount', 'rate', 'status'
-        ]);
+        $contracts = Contract::withCount('journeys')
+            ->with([
+                'client' => function ($builder) {
+                    return $builder->select(['DCLink', 'Name']);
+                },
+                'deliveries' => function ($builder) {
+                    return $builder->select('journey_id', 'offloading_net_weight');
+                }
+            ])
+            ->when(request()->has('duration') && request()->has('date'), function ($builder) {
+                $endDate = Carbon::parse(request('date'));
+                $startDate = Carbon::parse(request('date'))->subMonths(\request('duration'));
+
+                return $builder->where('start_date', '>=', $startDate)->where('start_date', '<=', $endDate);
+            })
+            ->get([
+                'id', 'client_id', 'created_at', 'start_date', 'end_date', 'quantity', 'amount', 'rate', 'status'
+            ])
+            ->map(function ($contract) {
+                $contract->totalDeliveries = $contract->deliveries->sum('offloading_net_weight');
+                unset($contract->deliveries);
+
+                return $contract;
+            });
 
         return Response::json([
             'contracts' => $contracts
@@ -133,15 +152,34 @@ class ContractController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Contract  $contract
-     *
+     * @param $id
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
-    public function show(Contract $contract)
+    public function show($id)
     {
         $items = StockItem::where('ItemGroup', Helpers::get_option(Option::BILLABLE_GROUP))
             ->select(['StockLink', 'Description_1'])
             ->get();
+
+        $contract = Contract::with([
+            'journeys' => function ($builder) {
+                return $builder->select([
+                    'journeys.id', 'contract_id', 'journey_type', 'job_date', 'status', 'truck_id'
+                ]);
+            },
+            'journeys.truck' => function ($builder) {
+                return $builder->select([
+                    'trucks.id', 'plate_number'
+                ]);
+            },
+            'deliveries' => function ($builder) {
+                return $builder->select([
+                    'deliveries.id', 'journey_id', 'loading_net_weight', 'offloading_net_weight',
+                    'loading_time', 'offloading_time'
+                ]);
+            }
+        ])->findOrFail($id);
+
         $contract->raw = json_decode($contract->raw);
 
         return Response::json([
