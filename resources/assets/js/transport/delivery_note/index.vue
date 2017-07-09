@@ -25,7 +25,7 @@
                                 </thead>
                                 <tbody>
                                 <tr v-for="delivery in deliveries">
-                                    <td><router-link :to="'/delivery/' + delivery.id">DLN-{{ delivery.id }}</router-link></td>
+                                    <td><router-link :to="'/delivery/' + delivery.id">RKS-{{ delivery.id }}</router-link></td>
                                     <td><router-link :to="'/journey/' + delivery.journey_id">JRNY-{{ delivery.journey_id }}</router-link></td>
                                     <td class="text-right">{{ formatNumber(delivery.loading_gross_weight) }}</td>
                                     <td class="text-right">{{ formatNumber(delivery.loading_tare_weight) }}</td>

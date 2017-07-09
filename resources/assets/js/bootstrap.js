@@ -1,7 +1,5 @@
 import 'whatwg-fetch'
-
 import VueRouter from 'vue-router'
-
 import { http, showAlert, prepareTable, formatDate, confirmPopup, hasPermission, mapToFormData } from './core';
 window.http = http;
 window.alert2 = showAlert;
@@ -25,6 +23,14 @@ require('select2');
 require('bootstrap-sass');
 require('datatables.net');
 require('datatables.net-bs');
+require('datatables.net-buttons');
+require('datatables.net-buttons-bs');
+
+require('datatables.net-buttons/js/buttons.colVis.js');
+require('datatables.net-buttons/js/buttons.html5.js');
+require('datatables.net-buttons/js/buttons.flash.js');
+require('datatables.net-buttons/js/buttons.print.js');
+
 require('bootstrap-datepicker');
 require('moment');
 

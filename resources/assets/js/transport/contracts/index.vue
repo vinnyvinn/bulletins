@@ -20,7 +20,7 @@
                                     <th>Expected End Date</th>
                                     <th>Quantity</th>
                                     <th>Rate</th>
-                                    <th></th>
+                                    <th class="noprint"></th>
                                 </tr>
                                 </thead>
 

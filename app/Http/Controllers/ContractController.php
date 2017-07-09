@@ -133,15 +133,34 @@ class ContractController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Contract  $contract
-     *
+     * @param $id
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
-    public function show(Contract $contract)
+    public function show($id)
     {
         $items = StockItem::where('ItemGroup', Helpers::get_option(Option::BILLABLE_GROUP))
             ->select(['StockLink', 'Description_1'])
             ->get();
+
+        $contract = Contract::with([
+            'journeys' => function ($builder) {
+                return $builder->select([
+                    'journeys.id', 'contract_id', 'journey_type', 'job_date', 'status', 'truck_id'
+                ]);
+            },
+            'journeys.truck' => function ($builder) {
+                return $builder->select([
+                    'trucks.id', 'plate_number'
+                ]);
+            },
+            'deliveries' => function ($builder) {
+                return $builder->select([
+                    'deliveries.id', 'journey_id', 'loading_net_weight', 'offloading_net_weight',
+                    'loading_time', 'offloading_time'
+                ]);
+            }
+        ])->findOrFail($id);
+
         $contract->raw = json_decode($contract->raw);
 
         return Response::json([

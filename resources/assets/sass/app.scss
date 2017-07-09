@@ -11,8 +11,12 @@
 @import "node_modules/select2/src/scss/core";
 @import "node_modules/select2-bootstrap-theme/src/select2-bootstrap";
 
+
 @import "./animate";
 @import "./libs/dataTables.bootstrap";
+@import "./libs/dataTablesButtons";
+@import "./libs/dataTablesButtons.bootstrap";
+@import "./libs/dataTablesColReorder.bootstrap";
 @import "./libs/bootstrap-datepicker";
 
 body {
@@ -118,10 +122,6 @@ a.active:not(.btn) {
     page-break-after: always;
   }
 
-  body * {
-      visibility: hidden;
-    }
-
     #printable, #printable * {
       visibility: visible;
 
@@ -220,4 +220,8 @@ a.active:not(.btn) {
     background-color: rgba(224, 0, 0, 0.4);
     color: #fff;
   }
+}
+
+.no-bottom {
+  border-bottom: none;
 }
