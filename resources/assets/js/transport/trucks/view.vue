@@ -4,6 +4,7 @@
         <div class="panel panel-default">
           <div class="panel-heading">
             <router-link to="/trucks" class="btn btn-danger btn-xs">< Trucks</router-link>
+            <router-link to="/trucksreports" class="btn btn-danger btn-xs">Reports</router-link>
           </div>
         <div class="panel-body">
             <div class="row">

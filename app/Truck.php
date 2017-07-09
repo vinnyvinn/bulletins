@@ -68,7 +68,7 @@ class Truck extends Model
       return $this->belongsTo(Driver::class);
     }
 
-    public function journey()
+    public function journeys()
     {
       return $this->hasMany(Journey::class);
     }
