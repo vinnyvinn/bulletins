@@ -17,12 +17,12 @@
 
             <router-link to="/journey" class="nav-items">
                 <img src="/images/journey.png" alt="journey" class="img-responsive">
-                <div class="caption">Journey Creation</div>
+                <div class="caption">Journeys</div>
             </router-link>
 
             <router-link to="/inspection" class="nav-items">
                 <img src="/images/inspection.png" alt="inspection" class="img-responsive">
-                <div class="caption">Truck Inspection</div>
+                <div class="caption">Inspection</div>
             </router-link>
 
             <router-link to="/delivery" class="nav-items">
@@ -32,7 +32,7 @@
 
             <router-link to="/mileage" class="nav-items">
                 <img src="/images/millage.png" alt="millage" class="img-responsive">
-                <div class="caption">Mileage Allocation</div>
+                <div class="caption">Mileage</div>
             </router-link>
 
             <router-link to="/fuel" class="nav-items">
@@ -43,6 +43,11 @@
             <router-link to="/route-card/create" class="nav-items">
                 <img src="/images/card.png" alt="card" class="img-responsive">
                 <div class="caption">Route Card</div>
+            </router-link>
+
+            <router-link to="/reports" class="nav-items">
+                <img src="/images/report.png" alt="card" class="img-responsive">
+                <div class="caption">Reports</div>
             </router-link>
 
             <div @click.prevent="logout" class="nav-items">

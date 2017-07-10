@@ -91,6 +91,10 @@ module.exports = [
     { path: '/udfs/create', component: require('./components/udfs/form.vue'), beforeEnter: authMiddleware },
     { path: '/udfs/:id/edit', component: require('./components/udfs/form.vue'), beforeEnter: authMiddleware },
 
+    { path: '/reports', component: require('./transport/reports/index.vue'), beforeEnter: authMiddleware },
+    { path: '/reports/{details}', component: require('./transport/reports/view.vue'), beforeEnter: authMiddleware },
+
+
     { path: '/login',
         component: require('./components/auth/login.vue'),
         beforeEnter: (to, from, next) => {
