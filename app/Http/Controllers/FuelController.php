@@ -55,7 +55,8 @@ class FuelController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $data['date'] = Carbon::parse(str_replace('/', '-', $data['date']))->format('Y-m-d');        
+        $data['date'] = Carbon::parse(str_replace('/', '-', $data['date']))->format('Y-m-d');
+        $data['user_id'] = Auth::id();      
         $fuel = Fuel::create($data);
 
         $journey = Journey::findOrFail($data['journey_id']);

@@ -207,7 +207,7 @@ export function prepareTable(includeFilters = false, ignoreColumns = []) {
                         .on('change', function() {
                             let selected = $(this).val();
                             let query = $.fn.dataTable.util.escapeRegex(selected);
-                            
+
                             column.search(query, true, false)
                                 .draw();
                         });

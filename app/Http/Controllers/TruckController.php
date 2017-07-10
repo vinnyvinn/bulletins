@@ -19,6 +19,8 @@ use Response;
 use SmoDav\Factory\TruckFactory;
 use SmoDav\Support\Excel;
 use function str_replace;
+use SmoDav\Models\Journey;
+use App\Fuel;
 
 class TruckController extends Controller
 {
@@ -223,5 +225,80 @@ class TruckController extends Controller
             'message' => 'Successfully imported trucks.',
             'trucks' => TruckFactory::all()
         ]);
+    }
+
+    public function report($id)
+    {
+      $truck = Truck::where('id',$id)->with('trailer')->first();
+      $activities = [];
+      $journeys = Journey::where('truck_id', $id)->with('inspection','delivery','fuel','mileage')->get();
+
+
+      foreach($journeys as $journey) {
+        $activity = array(
+          'id' => $journey->id,
+          'activity' => 'Journey Creation',
+          'date' => $journey->created_at,
+          'time' => $journey->created_at,
+          'document_number' => 'JRNY-'.$journey->id,
+          'posted_by' => $journey->user->name
+        );
+        array_push($activities,$activity);
+
+        if($journey->inspection){
+          $activity = array(
+            'id' => $journey->inspection->id,
+            'activity' => 'Inspection Done',
+            'date' => $journey->inspection->created_at,
+            'time' => $journey->inspection->created_at,
+            'document_number' => 'INSP-'.$journey->inspection->id,
+            'posted_by' => $journey->inspection->inspector->name
+          );
+          array_push($activities,$activity);
+        }
+
+        if($journey->delivery){
+          $activity = array(
+            'id' => $journey->delivery->id,
+            'activity' => 'Delivery Note Issue',
+            'date' => $journey->delivery->created_at,
+            'time' => $journey->delivery->created_at,
+            'document_number' => 'RKS-'.$journey->delivery->id,
+            'posted_by' => $journey->delivery->user->name
+          );
+          array_push($activities,$activity);
+        }
+
+        if($journey->fuel){
+          $activity = array(
+            'id' => $journey->fuel->id,
+            'activity' => 'Fuel Issue',
+            'date' => $journey->fuel->created_at,
+            'time' => $journey->fuel->created_at,
+            'document_number' => 'FUEL-'.$journey->fuel->id,
+            'posted_by' => $journey->fuel->user->name
+          );
+          array_push($activities,$activity);
+        }
+
+        if($journey->mileage){
+          $activity = array(
+            'id' => $journey->mileage->id,
+            'activity' => 'Mileage Issue',
+            'date' => $journey->mileage->created_at,
+            'time' => $journey->mileage->created_at,
+            'document_number' => 'MLG-'.$journey->mileage->id,
+            'posted_by' => $journey->mileage->user->name
+          );
+          array_push($activities,$activity);
+        }
+
+
+      }
+
+      return Response::json([
+        'truck' => $truck,
+        'activities' => $activities
+      ]);
     }
 }

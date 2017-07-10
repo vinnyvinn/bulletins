@@ -36,7 +36,7 @@
                         </div>
                     </div>
                     <div class="panel-body">
-                        <table class="table datatable">
+                        <table class="table nowrap">
                             <thead>
                             <tr>
                                 <th>Plate Number</th>
@@ -53,7 +53,7 @@
 
                             <tbody>
                             <tr v-for="truck in trucks">
-                                <td>{{ truck.plate_number }}</td>
+                                <td><router-link :to="'/trucks/' + truck.id +'/reports'" class="btn btn-danger btn-xs">{{ truck.plate_number }}</router-link></td>
                                 <td>{{ truck.make }}</td>
                                 <td>{{ truck.model }}</td>
                                 <td class="text-right">{{ Number(truck.max_load).toLocaleString() }} KGs</td>
