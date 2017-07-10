@@ -82594,96 +82594,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = {
     created: function created() {
@@ -84614,7 +84524,7 @@ function authMiddleware(to, from, next) {
     return next();
 }
 
-module.exports = [{ path: '/', redirect: '/login', beforeEnter: authMiddleware }, { path: '/dashboard', component: __webpack_require__(292), beforeEnter: authMiddleware }, { path: '/routes', component: __webpack_require__(272), beforeEnter: authMiddleware }, { path: '/routes/create', component: __webpack_require__(165), beforeEnter: authMiddleware }, { path: '/routes/:id/edit', component: __webpack_require__(165), beforeEnter: authMiddleware }, { path: '/routes/:id', component: __webpack_require__(273), beforeEnter: authMiddleware }, { path: '/drivers', component: __webpack_require__(269), beforeEnter: authMiddleware }, { path: '/drivers/create', component: __webpack_require__(131), beforeEnter: authMiddleware }, { path: '/drivers/:id/edit', component: __webpack_require__(131), beforeEnter: authMiddleware }, { path: '/drivers/:id', component: __webpack_require__(270), beforeEnter: authMiddleware }, { path: '/trucks', component: __webpack_require__(307), beforeEnter: authMiddleware }, { path: '/trucks/create', component: __webpack_require__(173), beforeEnter: authMiddleware }, { path: '/trucks/:id', component: __webpack_require__(309), beforeEnter: authMiddleware }, { path: '/trucks/:id/edit', component: __webpack_require__(173), beforeEnter: authMiddleware }, { path: '/trucks/:id/reports', component: __webpack_require__(308), beforeEnter: authMiddleware }, { path: '/trailers', component: __webpack_require__(274), beforeEnter: authMiddleware }, { path: '/trailers/create', component: __webpack_require__(166), beforeEnter: authMiddleware }, { path: '/trailers/:id', component: __webpack_require__(275), beforeEnter: authMiddleware }, { path: '/trailers/:id/edit', component: __webpack_require__(166), beforeEnter: authMiddleware }, { path: '/progress', component: __webpack_require__(277), beforeEnter: authMiddleware }, { path: '/progress/pre-loading', component: __webpack_require__(284), beforeEnter: authMiddleware }, { path: '/progress/pre-loading/:id', component: __webpack_require__(279), beforeEnter: authMiddleware }, { path: '/progress/loading', component: __webpack_require__(282), beforeEnter: authMiddleware }, { path: '/progress/loading/:id', component: __webpack_require__(278), beforeEnter: authMiddleware }, { path: '/progress/enroute', component: __webpack_require__(280), beforeEnter: authMiddleware }, { path: '/progress/enroute/:id', component: __webpack_require__(276), beforeEnter: authMiddleware }, { path: '/progress/offloading', component: __webpack_require__(283), beforeEnter: authMiddleware }, { path: '/progress/in-yard', component: __webpack_require__(281), beforeEnter: authMiddleware }, { path: '/users', component: __webpack_require__(289), beforeEnter: authMiddleware }, { path: '/users/create', component: __webpack_require__(288), beforeEnter: authMiddleware }, { path: '/contracts', component: __webpack_require__(290), beforeEnter: authMiddleware }, { path: '/contracts/create', component: __webpack_require__(167), beforeEnter: authMiddleware }, { path: '/contracts/:id', component: __webpack_require__(291), beforeEnter: authMiddleware }, { path: '/contracts/:id/edit', component: __webpack_require__(167), beforeEnter: authMiddleware }, { path: '/journey', component: __webpack_require__(299), beforeEnter: authMiddleware }, { path: '/journey/create', component: __webpack_require__(171), beforeEnter: authMiddleware }, { path: '/journey/:id', component: __webpack_require__(300), beforeEnter: authMiddleware }, { path: '/journey/:id/edit', component: __webpack_require__(171), beforeEnter: authMiddleware }, { path: '/inspection', component: __webpack_require__(297), beforeEnter: authMiddleware }, { path: '/inspection/create', component: __webpack_require__(170), beforeEnter: authMiddleware }, { path: '/inspection/:id', component: __webpack_require__(298), beforeEnter: authMiddleware }, { path: '/inspection/:id/edit', component: __webpack_require__(170), beforeEnter: authMiddleware }, { path: '/fuel', component: __webpack_require__(295), beforeEnter: authMiddleware }, { path: '/fuel/create', component: __webpack_require__(169), beforeEnter: authMiddleware }, { path: '/fuel/:id', component: __webpack_require__(296), beforeEnter: authMiddleware }, { path: '/fuel/:id/edit', component: __webpack_require__(169), beforeEnter: authMiddleware }, { path: '/mileage', component: __webpack_require__(302), beforeEnter: authMiddleware }, { path: '/mileage/create', component: __webpack_require__(172), beforeEnter: authMiddleware }, { path: '/mileage/:id', component: __webpack_require__(303), beforeEnter: authMiddleware }, { path: '/mileage/:id/edit', component: __webpack_require__(172), beforeEnter: authMiddleware },
+module.exports = [{ path: '/', redirect: '/login', beforeEnter: authMiddleware }, { path: '/dashboard', component: __webpack_require__(292), beforeEnter: authMiddleware }, { path: '/routes', component: __webpack_require__(272), beforeEnter: authMiddleware }, { path: '/routes/create', component: __webpack_require__(165), beforeEnter: authMiddleware }, { path: '/routes/:id/edit', component: __webpack_require__(165), beforeEnter: authMiddleware }, { path: '/routes/:id', component: __webpack_require__(273), beforeEnter: authMiddleware }, { path: '/drivers', component: __webpack_require__(269), beforeEnter: authMiddleware }, { path: '/drivers/create', component: __webpack_require__(131), beforeEnter: authMiddleware }, { path: '/drivers/:id/edit', component: __webpack_require__(131), beforeEnter: authMiddleware }, { path: '/drivers/:id', component: __webpack_require__(270), beforeEnter: authMiddleware }, { path: '/trucks', component: __webpack_require__(307), beforeEnter: authMiddleware }, { path: '/trucks/create', component: __webpack_require__(173), beforeEnter: authMiddleware }, { path: '/trucks/:id', component: __webpack_require__(309), beforeEnter: authMiddleware }, { path: '/trucks/:id/edit', component: __webpack_require__(173), beforeEnter: authMiddleware }, { path: '/trucks/:id/reports', component: __webpack_require__(308), beforeEnter: authMiddleware }, { path: '/trailers', component: __webpack_require__(274), beforeEnter: authMiddleware }, { path: '/trailers/create', component: __webpack_require__(166), beforeEnter: authMiddleware }, { path: '/trailers/:id', component: __webpack_require__(275), beforeEnter: authMiddleware }, { path: '/trailers/:id/edit', component: __webpack_require__(166), beforeEnter: authMiddleware }, { path: '/progress', component: __webpack_require__(277), beforeEnter: authMiddleware }, { path: '/progress/pre-loading', component: __webpack_require__(284), beforeEnter: authMiddleware }, { path: '/progress/pre-loading/:id', component: __webpack_require__(279), beforeEnter: authMiddleware }, { path: '/progress/loading', component: __webpack_require__(282), beforeEnter: authMiddleware }, { path: '/progress/loading/:id', component: __webpack_require__(278), beforeEnter: authMiddleware }, { path: '/progress/enroute', component: __webpack_require__(280), beforeEnter: authMiddleware }, { path: '/progress/enroute/:id', component: __webpack_require__(276), beforeEnter: authMiddleware }, { path: '/progress/offloading', component: __webpack_require__(283), beforeEnter: authMiddleware }, { path: '/progress/in-yard', component: __webpack_require__(281), beforeEnter: authMiddleware }, { path: '/users', component: __webpack_require__(289), beforeEnter: authMiddleware }, { path: '/users/create', component: __webpack_require__(288), beforeEnter: authMiddleware }, { path: '/contracts', component: __webpack_require__(290), beforeEnter: authMiddleware }, { path: '/contracts/r/:print', component: __webpack_require__(290), beforeEnter: authMiddleware }, { path: '/contracts/create', component: __webpack_require__(167), beforeEnter: authMiddleware }, { path: '/contracts/:id', component: __webpack_require__(291), beforeEnter: authMiddleware }, { path: '/contracts/:id/edit', component: __webpack_require__(167), beforeEnter: authMiddleware }, { path: '/journey', component: __webpack_require__(299), beforeEnter: authMiddleware }, { path: '/journey/create', component: __webpack_require__(171), beforeEnter: authMiddleware }, { path: '/journey/:id', component: __webpack_require__(300), beforeEnter: authMiddleware }, { path: '/journey/:id/edit', component: __webpack_require__(171), beforeEnter: authMiddleware }, { path: '/inspection', component: __webpack_require__(297), beforeEnter: authMiddleware }, { path: '/inspection/create', component: __webpack_require__(170), beforeEnter: authMiddleware }, { path: '/inspection/:id', component: __webpack_require__(298), beforeEnter: authMiddleware }, { path: '/inspection/:id/edit', component: __webpack_require__(170), beforeEnter: authMiddleware }, { path: '/fuel', component: __webpack_require__(295), beforeEnter: authMiddleware }, { path: '/fuel/create', component: __webpack_require__(169), beforeEnter: authMiddleware }, { path: '/fuel/:id', component: __webpack_require__(296), beforeEnter: authMiddleware }, { path: '/fuel/:id/edit', component: __webpack_require__(169), beforeEnter: authMiddleware }, { path: '/mileage', component: __webpack_require__(302), beforeEnter: authMiddleware }, { path: '/mileage/create', component: __webpack_require__(172), beforeEnter: authMiddleware }, { path: '/mileage/:id', component: __webpack_require__(303), beforeEnter: authMiddleware }, { path: '/mileage/:id/edit', component: __webpack_require__(172), beforeEnter: authMiddleware },
 
 // { path: '/route-card', component: require('./transport/routecard/index.vue'), beforeEnter: authMiddleware },
 { path: '/route-card/create', component: __webpack_require__(306), beforeEnter: authMiddleware }, { path: '/delivery', component: __webpack_require__(293), beforeEnter: authMiddleware }, { path: '/delivery/create', component: __webpack_require__(168), beforeEnter: authMiddleware }, { path: '/delivery/:id', component: __webpack_require__(294), beforeEnter: authMiddleware }, { path: '/delivery/:id/edit', component: __webpack_require__(168), beforeEnter: authMiddleware }, { path: '/allocation', component: __webpack_require__(265), beforeEnter: authMiddleware }, { path: '/allocation/create', component: __webpack_require__(164), beforeEnter: authMiddleware }, { path: '/allocation/:id/edit', component: __webpack_require__(164), beforeEnter: authMiddleware }, { path: '/udfs', component: __webpack_require__(285), beforeEnter: authMiddleware }, { path: '/udfs/create', component: __webpack_require__(134), beforeEnter: authMiddleware }, { path: '/udfs/:id/edit', component: __webpack_require__(134), beforeEnter: authMiddleware }, { path: '/reports', component: __webpack_require__(304), beforeEnter: authMiddleware }, { path: '/reports/{details}', component: __webpack_require__(305), beforeEnter: authMiddleware }, { path: '/login',
@@ -108269,159 +108179,16 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "container-fluid"
   }, [_c('div', {
     staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-md-12"
-  }, [_c('div', {
-    staticClass: "panel panel-default"
-  }, [_c('div', {
-    staticClass: "panel-heading"
-  }, [_c('div', {
-    staticClass: "row"
-  }, [_vm._m(0), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.period),
-      expression: "period"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "name": "month",
-      "id": "month"
-    },
-    on: {
-      "change": function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.period = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
-    }
-  }, [_c('option', {
-    attrs: {
-      "disabled": ""
-    },
-    domProps: {
-      "value": null
-    }
-  }, [_vm._v("Select Period")]), _vm._v(" "), _vm._l((12), function(index) {
-    return _c('option', {
-      domProps: {
-        "value": index
-      }
-    }, [_vm._v(_vm._s(index) + " Month" + _vm._s(index > 1 ? 's' : ''))])
-  })], 2)]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.endMonth),
-      expression: "endMonth"
-    }],
-    staticClass: "datepicker form-control input-sm",
-    attrs: {
-      "type": "text",
-      "placeholder": "To Date"
-    },
-    domProps: {
-      "value": (_vm.endMonth)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.endMonth = $event.target.value
-      }
-    }
-  })]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-1"
-  }, [_c('button', {
-    staticClass: "btn btn-success btn-xs",
-    on: {
-      "click": function($event) {
-        $event.preventDefault();
-        _vm.filterRows($event)
-      }
-    }
-  }, [_vm._v("Filter")])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-2"
   }, [_c('router-link', {
-    staticClass: "btn btn-primary btn-xs pull-right",
     attrs: {
-      "to": "/contracts/create"
+      "to": "/contracts/r/print"
     }
-  }, [_c('i', {
-    staticClass: "fa fa-plus"
-  }), _vm._v(" Add New")])], 1)])]), _vm._v(" "), _c('div', {
-    staticClass: "panel-body"
   }, [_c('div', {
-    staticClass: "table-responsive"
-  }, [_c('table', {
-    staticClass: "table nowrap"
-  }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.contracts), function(contract) {
-    return _c('tr', [_c('td', [_c('router-link', {
-      attrs: {
-        "to": '/contracts/' + contract.id
-      }
-    }, [_vm._v("CNTR" + _vm._s(contract.id))])], 1), _vm._v(" "), _c('td', [(contract.status == 'Pending Approval') ? _c('span', {
-      staticClass: "label label-info"
-    }, [_vm._v("Pending Approval")]) : _vm._e(), _vm._v(" "), (contract.status == 'Approved') ? _c('span', {
-      staticClass: "label label-success"
-    }, [_vm._v("Approved")]) : _vm._e(), _vm._v(" "), (contract.status == 'Closed') ? _c('span', {
-      staticClass: "label label-default"
-    }, [_vm._v("Closed")]) : _vm._e()]), _vm._v(" "), _c('td', [_vm._v(_vm._s(contract.client.Name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.date2(contract.created_at)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.date2(contract.start_date)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.date2(contract.end_date)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(Number(contract.quantity).toLocaleString()) + " KGs")]), _vm._v(" "), _c('td', {
-      staticClass: "text-right"
-    }, [_vm._v(_vm._s(Number(contract.totalDeliveries).toLocaleString()) + " KGs")]), _vm._v(" "), _c('td', {
-      staticClass: "text-right"
-    }, [_vm._v(_vm._s((Number(contract.quantity) - Number(contract.totalDeliveries)).toLocaleString()) + " KGs")]), _vm._v(" "), _c('td', {
-      staticClass: "text-right"
-    }, [_vm._v(_vm._s(Number(contract.journeys_count).toLocaleString()))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.$root.currency) + " " + _vm._s(Number(contract.amount).toLocaleString()) + " " + _vm._s(contract.rate))]), _vm._v(" "), _c('td', {
-      staticClass: "text-center"
-    }, [(contract.status != 'Closed') ? _c('span', {
-      staticClass: "btn btn-xs btn-info",
-      on: {
-        "click": function($event) {
-          _vm.edit(contract)
-        }
-      }
-    }, [_c('i', {
-      staticClass: "fa fa-pencil"
-    })]) : _vm._e(), _vm._v(" "), _c('button', {
-      staticClass: "btn btn-xs btn-danger btn-destroy",
-      attrs: {
-        "data-toggle": "popover",
-        "data-item": contract.id
-      }
-    }, [_c('i', {
-      staticClass: "fa fa-trash"
-    })])])])
-  })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("Contract #")]), _vm._v(" "), _c('th', [_vm._v("Status")]), _vm._v(" "), _c('th', [_vm._v("Client")]), _vm._v(" "), _c('th', [_vm._v("Date Created")]), _vm._v(" "), _c('th', [_vm._v("Start Date")]), _vm._v(" "), _c('th', [_vm._v("Expected End Date")]), _vm._v(" "), _c('th', [_vm._v("Quantity")]), _vm._v(" "), _c('th', {
-    staticClass: "text-right"
-  }, [_vm._v("Total Delivered")]), _vm._v(" "), _c('th', {
-    staticClass: "text-right"
-  }, [_vm._v("Remaining Qty")]), _vm._v(" "), _c('th', {
-    staticClass: "text-right"
-  }, [_vm._v("Journeys Made")]), _vm._v(" "), _c('th', [_vm._v("Rate")]), _vm._v(" "), _c('th')])])], 1)])])])])])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('strong', [_vm._v("Contracts")])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('thead', [_c('tr', [_c('th', [_vm._v("Contract #")]), _vm._v(" "), _c('th', [_vm._v("Status")]), _vm._v(" "), _c('th', [_vm._v("Client")]), _vm._v(" "), _c('th', [_vm._v("Date Created")]), _vm._v(" "), _c('th', [_vm._v("Start Date")]), _vm._v(" "), _c('th', [_vm._v("Expected End Date")]), _vm._v(" "), _c('th', [_vm._v("Quantity")]), _vm._v(" "), _c('th', {
-    staticClass: "text-right"
-  }, [_vm._v("Total Delivered")]), _vm._v(" "), _c('th', {
-    staticClass: "text-right"
-  }, [_vm._v("Remaining Qty")]), _vm._v(" "), _c('th', {
-    staticClass: "text-right"
-  }, [_vm._v("Journeys Made")]), _vm._v(" "), _c('th', [_vm._v("Rate")]), _vm._v(" "), _c('th', {
-    staticClass: "noprint"
-  })])])
-}]}
+    staticClass: "col-sm-2 panel panel-default"
+  }, [_c('h4', {
+    staticClass: "text-center"
+  }, [_vm._v("Contracts")])])])], 1)])
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()

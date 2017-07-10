@@ -1,103 +1,13 @@
 <template>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <strong>Contracts</strong>
-                            </div>
-                            <div class="col-sm-3">
-                                <select class="form-control input-sm" name="month" id="month" v-model="period">
-                                    <option :value="null" disabled>Select Period</option>
-                                    <option v-for="index in 12" :value="index">{{ index }} Month{{ index > 1 ? 's' : '' }}</option>
-                                </select>
-                            </div>
-
-                            <div class="col-sm-3">
-                                <input type="text" class="datepicker form-control input-sm" v-model="endMonth" placeholder="To Date">
-                            </div>
-
-                            <div class="col-sm-1">
-                                <button @click.prevent="filterRows" class="btn btn-success btn-xs">Filter</button>
-                            </div>
-
-                            <div class="col-sm-2">
-                                <router-link to="/contracts/create" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i> Add New</router-link>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel-body">
-                        <div class="table-responsive">
-                            <table class="table nowrap">
-                                <thead>
-                                <tr>
-                                    <th>Contract #</th>
-                                    <th>Status</th>
-                                    <th>Client</th>
-                                    <th>Date Created</th>
-                                    <th>Start Date</th>
-                                    <th>Expected End Date</th>
-                                    <th>Quantity</th>
-                                    <th class="text-right">Total Delivered</th>
-                                    <th class="text-right">Remaining Qty</th>
-                                    <th class="text-right">Journeys Made</th>
-                                    <th>Rate</th>
-                                    <th class="noprint"></th>
-                                </tr>
-                                </thead>
-
-                                <tbody>
-                                <tr v-for="contract in contracts">
-                                    <td>
-                                        <router-link :to="'/contracts/' + contract.id">CNTR{{ contract.id }}</router-link>
-                                    </td>
-                                    <td>
-                                      <span class="label label-info" v-if="contract.status == 'Pending Approval'">Pending Approval</span>
-                                      <span class="label label-success" v-if="contract.status == 'Approved'">Approved</span>
-                                      <span class="label label-default" v-if="contract.status == 'Closed'">Closed</span>
-
-                                    </td>
-                                    <td>{{ contract.client.Name }}</td>
-                                    <td>{{ date2(contract.created_at) }}</td>
-                                    <td>{{ date2(contract.start_date) }}</td>
-                                    <td>{{ date2(contract.end_date) }}</td>
-                                    <td>{{ Number(contract.quantity).toLocaleString() }} KGs</td>
-                                    <td class="text-right">{{ Number(contract.totalDeliveries).toLocaleString() }} KGs</td>
-                                    <td class="text-right">{{ (Number(contract.quantity) - Number(contract.totalDeliveries)).toLocaleString() }} KGs</td>
-                                    <td class="text-right">{{ Number(contract.journeys_count).toLocaleString() }}</td>
-                                    <td>{{ $root.currency }} {{ Number(contract.amount).toLocaleString() }} {{ contract.rate }}</td>
-                                    <td class="text-center">
-                                        <span v-if="contract.status != 'Closed'" @click="edit(contract)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
-                                        <button data-toggle="popover" :data-item="contract.id" class="btn btn-xs btn-danger btn-destroy">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                </tbody>
-
-                                <tfoot>
-                                <tr>
-                                    <th>Contract #</th>
-                                    <th>Status</th>
-                                    <th>Client</th>
-                                    <th>Date Created</th>
-                                    <th>Start Date</th>
-                                    <th>Expected End Date</th>
-                                    <th>Quantity</th>
-                                    <th class="text-right">Total Delivered</th>
-                                    <th class="text-right">Remaining Qty</th>
-                                    <th class="text-right">Journeys Made</th>
-                                    <th>Rate</th>
-                                    <th></th>
-                                </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                    </div>
+            <router-link to="/contracts/r/print">
+                <div class="col-sm-2 panel panel-default">
+                    <h4 class="text-center">Contracts</h4>
                 </div>
-            </div>
+            </router-link>
+
+
         </div>
     </div>
 </template>
