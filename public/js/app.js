@@ -79920,6 +79920,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
   data: function data() {
     return {
+      fuel_reserve: 25,
       journeys: [],
       current_journey: {},
       current_driver: {},
@@ -79965,6 +79966,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.current_vehicle = JSON.parse(JSON.stringify(journey[0].truck));
         this.current_trailer = JSON.parse(JSON.stringify(journey[0].truck.trailer));
         this.current_route = JSON.parse(JSON.stringify(journey[0].route));
+        this.fuel.previous_fuel = this.current_vehicle.current_fuel;
+        this.fuel.previous_km = this.current_vehicle.current_km;
 
         return this.current_journey = JSON.parse(JSON.stringify(journey[0]));
       }
@@ -80001,14 +80004,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.setupUI();
     },
     calculateTotal: function calculateTotal() {
-      if (parseInt(this.fuel.current_fuel) < 25) {
-        this.deficit = 25 - parseInt(this.fuel.current_fuel);
+      var reserve = parseInt(this.fuel_reserve);
+      var current_fuel = parseInt(this.fuel.current_fuel);
+      var route_fuel_required = parseInt(this.current_route.fuel_required);
+
+      if (parseInt(this.fuel.current_fuel) < reserve) {
+        this.deficit = reserve - current_fuel;
         this.below_reserve = true;
       } else {
         this.below_reserve = false;
       }
 
-      this.fuel.fuel_requested = parseInt(this.current_route.fuel_required) - parseInt(this.fuel.current_fuel);
+      this.fuel.fuel_requested = route_fuel_required + reserve - current_fuel;
       return this.fuel.fuel_total = parseInt(this.fuel.fuel_issued) + parseInt(this.fuel.current_fuel);
     },
     calculateKms: function calculateKms() {
