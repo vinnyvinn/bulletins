@@ -184,6 +184,7 @@
                 let journey = this.journeys.filter(e => e.id == this.deliveryNote.journey_id);
                 if (journey.length) {
                     return journey[0];
+                    this.deliveryNote.loading_weighbridge_number = 'JRNY-'+journey[0].id;
                 }
 
                 return {

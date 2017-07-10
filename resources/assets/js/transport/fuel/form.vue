@@ -318,7 +318,7 @@
                     this.$root.isLoading = false;
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                 });
-            },
+            }          
         }
     }
 </script>

@@ -38,7 +38,10 @@
                     <td>{{ fuel.current_fuel }}</td>
                     <td>{{ fuel.fuel_requested }}</td>
                     <td>{{ fuel.fuel_issued }}</td>
-                    <td>{{ fuel.status }}</td>
+                    <td v-if="fuel.status == 'Approved'">{{ fuel.status }}</td>
+                    <td v-if="fuel.status == 'Awaiting Approval'">
+                      <button type="button" name="button" v-if="fuel.status == 'Awaiting Approval'" class="btn btn-xs btn-success" @click="approveFuel(fuel.id)">Approve</button>
+                    </td>
                     <td>
                       <span @click="edit(fuel)" v-if="fuel.status=='Awaiting Approval'" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
                       <button data-toggle="popover" :data-item="fuel.id" class="btn btn-xs btn-danger btn-destroy">
@@ -120,7 +123,27 @@ export default {
               this.$root.isLoading = false;
               alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
           });
-      }
+      },
+      approveFuel(id) {
+        http.get('/api/approve/' + id).then(response => {
+          if (response.status != 'success') {
+              this.$root.isLoading = false;
+              alert2(this.$root, [response.message], 'danger');
+              return;
+          }
+
+          http.get('/api/fuel').then(response => {
+              this.fuels = response.fuel;
+              this.setupConfirm();              
+          });
+
+          this.$root.isLoading = false;
+          alert2(this.$root, [response.message], 'success');
+          }).catch((error) => {
+          this.$root.isLoading = false;
+          alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
+        });
+      },
   }
 }
 </script>

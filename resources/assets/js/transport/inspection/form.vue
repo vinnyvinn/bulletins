@@ -18,7 +18,7 @@
                                     <div class="form-group">
                                         <label for="journey_id">Journey</label>
                                         <select required name="journey_id" id="journey_id" v-model="checklist.journey_id" class="form-control input-sm select2">
-                                            <option v-for="journey in journeys" :value="journey.id">JRNY-{{ journey.id }}</option>
+                                            <option v-for="journey in journeys" :value="journey.id">JRNY-{{ journey.id }} - {{ journey.truck.plate_number }}</option>
                                         </select>
                                     </div>
                                 </div>

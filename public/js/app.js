@@ -79244,6 +79244,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
             if (journey.length) {
                 return journey[0];
+                this.deliveryNote.loading_weighbridge_number = 'JRNY-' + journey[0].id;
             }
 
             return {
@@ -80138,6 +80139,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     created: function created() {
@@ -80190,6 +80194,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).catch(function (error) {
                 _this3.$root.isLoading = false;
                 alert2(_this3.$root, Object.values(JSON.parse(error.message)), 'danger');
+            });
+        },
+        approveFuel: function approveFuel(id) {
+            var _this4 = this;
+
+            http.get('/api/approve/' + id).then(function (response) {
+                if (response.status != 'success') {
+                    _this4.$root.isLoading = false;
+                    alert2(_this4.$root, [response.message], 'danger');
+                    return;
+                }
+
+                http.get('/api/fuel').then(function (response) {
+                    _this4.fuels = response.fuel;
+                    _this4.setupConfirm();
+                });
+
+                _this4.$root.isLoading = false;
+                alert2(_this4.$root, [response.message], 'success');
+            }).catch(function (error) {
+                _this4.$root.isLoading = false;
+                alert2(_this4.$root, Object.values(JSON.parse(error.message)), 'danger');
             });
         }
     }
@@ -81533,6 +81559,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.checkState();
     },
     mounted: function mounted() {
+        this.setupUI();
+
         $('input[type="number"]').on('focus', function () {
             this.select();
         });
@@ -89008,7 +89036,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 241 */
@@ -101559,7 +101587,18 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "to": '/fuel/' + fuel.id
       }
-    }, [_vm._v("FUEL-" + _vm._s(fuel.id))])], 1), _vm._v(" "), _c('td', [_vm._v("JRNY-" + _vm._s(fuel.journey_id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.date))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.journey.driver.first_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.journey.truck.plate_number))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.journey.route.source) + " - " + _vm._s(fuel.journey.route.destination))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.journey.route.distance))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.current_fuel))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.fuel_requested))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.fuel_issued))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.status))]), _vm._v(" "), _c('td', [(fuel.status == 'Awaiting Approval') ? _c('span', {
+    }, [_vm._v("FUEL-" + _vm._s(fuel.id))])], 1), _vm._v(" "), _c('td', [_vm._v("JRNY-" + _vm._s(fuel.journey_id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.date))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.journey.driver.first_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.journey.truck.plate_number))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.journey.route.source) + " - " + _vm._s(fuel.journey.route.destination))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.journey.route.distance))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.current_fuel))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.fuel_requested))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.fuel_issued))]), _vm._v(" "), (fuel.status == 'Approved') ? _c('td', [_vm._v(_vm._s(fuel.status))]) : _vm._e(), _vm._v(" "), (fuel.status == 'Awaiting Approval') ? _c('td', [(fuel.status == 'Awaiting Approval') ? _c('button', {
+      staticClass: "btn btn-xs btn-success",
+      attrs: {
+        "type": "button",
+        "name": "button"
+      },
+      on: {
+        "click": function($event) {
+          _vm.approveFuel(fuel.id)
+        }
+      }
+    }, [_vm._v("Approve")]) : _vm._e()]) : _vm._e(), _vm._v(" "), _c('td', [(fuel.status == 'Awaiting Approval') ? _c('span', {
       staticClass: "btn btn-xs btn-info",
       on: {
         "click": function($event) {
@@ -101688,7 +101727,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       domProps: {
         "value": item.id
       }
-    }, [_vm._v("CNTR" + _vm._s(item.id))])
+    }, [_vm._v("CNTR" + _vm._s(item.id) + " - (" + _vm._s(item.name) + ") - " + _vm._s(item.client.Name))])
   }))]) : _vm._e(), _vm._v(" "), (_vm.journey.is_contract_related == '0') ? _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
@@ -103553,7 +103592,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "label label-success"
     }, [_vm._v("Approved")]) : _vm._e(), _vm._v(" "), (journey.status == 'Closed') ? _c('span', {
       staticClass: "label label-default"
-    }, [_vm._v("Closed")]) : _vm._e()]), _vm._v(" "), _c('td', [_vm._v(_vm._s(journey.truck.plate_number))]), _vm._v(" "), _c('td', [_vm._v("CTR-" + _vm._s(journey.contract_id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.date2(journey.job_date)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(journey.truck.driver.first_name) + " " + _vm._s(journey.truck.driver.last_name))]), _vm._v(" "), _c('td', {
+    }, [_vm._v("Closed")]) : _vm._e()]), _vm._v(" "), _c('td', [_vm._v(_vm._s(journey.truck.plate_number))]), _vm._v(" "), _c('td', [_vm._v("CTR-" + _vm._s(journey.contract.name) + " " + _vm._s(journey.contract.client.Name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.date2(journey.job_date)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(journey.truck.driver.first_name) + " " + _vm._s(journey.truck.driver.last_name))]), _vm._v(" "), _c('td', {
       staticClass: "text-center"
     }, [(journey.status != 'Closed') ? _c('span', {
       staticClass: "btn btn-xs btn-info",
@@ -112821,7 +112860,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       domProps: {
         "value": journey.id
       }
-    }, [_vm._v("JRNY-" + _vm._s(journey.id))])
+    }, [_vm._v("JRNY-" + _vm._s(journey.id) + " - " + _vm._s(journey.truck.plate_number))])
   }))])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-3"
   }, [_c('div', {
