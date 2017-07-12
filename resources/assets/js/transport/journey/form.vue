@@ -19,7 +19,7 @@
                         <div class="form-group" v-if="journey.is_contract_related == '1'">
                             <label for="contract_id">Contract</label>
                             <select @change="updateFields" v-model="journey.contract_id" class="form-control input-sm" id="contract_id" name="contract_id" required>
-                                <option v-for="item in contracts" :value="item.id">CNTR{{ item.id }}</option>
+                                <option v-for="item in contracts" :value="item.id">CNTR{{ item.id }} - ({{ item.name }}) - {{ item.client.Name }}</option>
                             </select>
                         </div>
 
@@ -258,6 +258,8 @@
         },
 
         mounted() {
+          this.setupUI();
+          
             $('input[type="number"]').on('focus', function () {
                 this.select();
             });

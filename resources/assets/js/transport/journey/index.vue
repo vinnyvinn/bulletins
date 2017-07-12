@@ -31,8 +31,8 @@
 
                                     </td>
                                     <td>{{ journey.truck.plate_number }}</td>
-                                    <td>CTR-{{ journey.contract_id }}</td>
-                                    <td>{{ date2(journey.job_date) }}</td>                                    
+                                    <td>CTR-{{ journey.contract.name }} {{ journey.contract.client.Name }}</td>
+                                    <td>{{ date2(journey.job_date) }}</td>
                                     <td>{{ journey.truck.driver.first_name}} {{ journey.truck.driver.last_name}}</td>
                                     <td class="text-center">
                                         <span v-if="journey.status != 'Closed'" @click="edit(journey)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>

@@ -27,11 +27,13 @@ class JourneyController extends Controller
      */
     public function index()
     {
+
         $journeys = Journey::with([
             'truck' => function ($builder) {
                 return $builder->select(['id', 'plate_number', 'driver_id']);
             },
             'truck.driver',
+            'contract.client',
         ])->get([
             'id',
             'is_contract_related',
@@ -58,7 +60,8 @@ class JourneyController extends Controller
         if (request('contracts')) {
             $contracts = Contract::open()
                 ->whereRaw("(select count(*) from journeys where contracts.id = journeys.contract_id and status = 'Approved') < contracts.trucks_allocated")
-                ->get(['id', 'raw']);
+                ->with('client')
+                ->get(['id', 'raw', 'name', 'client_id']);
 
 
             return Response::json([
