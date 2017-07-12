@@ -1,7 +1,7 @@
 <template>
     <div class="panel panel-default">
         <div class="panel-heading">
-            <strong>Contract Details   (Contract Id: {{ parseInt(last_contract_id.id) +1 }}*)</strong>
+            <strong>Contract Template Details</strong>
         </div>
 
         <div class="panel-body">
@@ -9,7 +9,7 @@
                 <div class="row">
                     <div class="col-sm-3">
                         <div class="form-group">
-                            <label for="name">Contract Name</label>
+                            <label for="name">Contract Template Name</label>
                             <input v-model="contract.name" type="text" class="form-control input-sm" id="name" name="name" required>
                         </div>
 
@@ -63,13 +63,13 @@
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label for="start_date">Contract Start</label>
-                            <input v-model="contract.start_date" type="text" class="datepicker form-control input-sm" id="start_date" name="start_date">
+                            <input disabled v-model="contract.start_date" type="text" class="datepicker form-control input-sm" id="start_date" name="start_date">
                         </div>
 
                         <div class="form-group">
                             <label for="quantity">Quantity</label>
                             <div class="input-group">
-                                <input v-model="contract.quantity" min="0" type="number" class="form-control input-sm" id="quantity" name="quantity" describedby="quantity-addon">
+                                <input disabled v-model="contract.quantity" min="0" type="number" class="form-control input-sm" id="quantity" name="quantity" describedby="quantity-addon">
                                 <span class="input-group-addon" id="quantity-addon">KGs</span>
                             </div>
                         </div>
@@ -116,7 +116,7 @@
 
                         <div class="form-group">
                             <label for="trucks_allocated">Trucks Allocated</label>
-                            <input v-model="contract.trucks_allocated" min="0" type="number" class="form-control input-sm" id="trucks_allocated" name="trucks_allocated">
+                            <input disabled v-model="contract.trucks_allocated" min="0" type="number" class="form-control input-sm" id="trucks_allocated" name="trucks_allocated">
                         </div>
 
                         <div class="form-group">
@@ -226,7 +226,7 @@
 
                       <div class="form-group">
                           <label for="berthing_date">Berthing Date</label>
-                          <input v-model="contract.berthing_date" type="text" class="datepicker form-control input-sm" id="berthing_date" name="berthing_date">
+                          <input disabled v-model="contract.berthing_date" type="text" class="datepicker form-control input-sm" id="berthing_date" name="berthing_date">
                       </div>
 
                     </div>
@@ -234,12 +234,12 @@
                     <div class="col-sm-4">
                       <div class="form-group">
                           <label for="no_of_shifts">No of Shifts</label>
-                          <input number v-model="contract.no_of_shifts" type="number" min="1" class="form-control input-sm" id="no_of_shifts" name="no_of_shifts">
+                          <input disabled number v-model="contract.no_of_shifts" type="number" min="1" class="form-control input-sm" id="no_of_shifts" name="no_of_shifts">
                       </div>
 
                       <div class="form-group">
                           <label for="vessel_arrival_date">Vessel Arrival Date</label>
-                          <input v-model="contract.vessel_arrival_date" type="text" class="datepicker form-control input-sm" id="vessel_arrival_date" name="vessel_arrival_date">
+                          <input disabled v-model="contract.vessel_arrival_date" type="text" class="datepicker form-control input-sm" id="vessel_arrival_date" name="vessel_arrival_date">
                       </div>
 
                     </div>
@@ -441,7 +441,7 @@
 <script>
     export default {
         created() {
-            http.get('/api/contract/create').then((response) => {
+            http.get('/api/contract-template/create').then((response) => {
                 this.clients = response.clients;
                 this.stockItems = response.stockItems;
                 this.routes = response.routes;
@@ -603,24 +603,8 @@
             checkState() {
                 if (this.$route.params.id) {
                     this.$root.isLoading = true;
-                    http.get('/api/contract/' + this.$route.params.id).then((response) => {
+                    http.get('/api/contract-template/' + this.$route.params.id).then((response) => {
                         this.contract = response.contract.raw;
-                        this.updateBooleans();
-                        this.contract.start_date = this.formatDate(this.contract.start_date);
-                        this.contract.vessel_arrival_date = this.contract.vessel_arrival_date ? this.formatDate(this.contract.vessel_arrival_date) : null;
-                        this.contract.berthing_date = this.contract.berthing_date ? this.formatDate(this.contract.berthing_date) : null;
-                        this.setupUI();
-                        this.$root.isLoading = false;
-                    });
-
-                    return;
-                }
-
-                if (this.$route.params.templateId) {
-                    this.$root.isLoading = true;
-                    http.get('/api/contract-template/' + this.$route.params.templateId).then((response) => {
-                        this.contract = response.contract.raw;
-                        this.contract.name = '';
                         this.updateBooleans();
                         this.setupUI();
                         this.$root.isLoading = false;
@@ -681,15 +665,15 @@
                 let data = mapToFormData(contract, this.uploads, typeof this.$route.params.id === 'string');
 
                 if (this.$route.params.id) {
-                    request = http.put('/api/contract/' + this.$route.params.id, data, true);
+                    request = http.put('/api/contract-template/' + this.$route.params.id, data, true);
                 } else {
-                    request = http.post('/api/contract', data, true);
+                    request = http.post('/api/contract-template', data, true);
                 }
 
                 request.then((response) => {
                     this.$root.isLoading = false;
                     alert2(this.$root, [response.message], 'success');
-                    window._router.push({ path: '/contracts' });
+                    window._router.push({ path: '/contract-templates' });
                 }).catch((error) => {
                     this.$root.isLoading = false;
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');

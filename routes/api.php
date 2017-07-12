@@ -54,6 +54,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('contract/{id}/close', 'ContractController@close');
     Route::post('contract/{id}/reopen', 'ContractController@reopen');
     Route::resource('contract', 'ContractController');
+    Route::resource('contract-template', 'ContractTemplateController');
     Route::post('journey/{id}/approve', '\SmoDav\Controllers\API\JourneyController@approve');
     Route::post('journey/{id}/close', '\SmoDav\Controllers\API\JourneyController@close');
     Route::post('journey/{id}/reopen', '\SmoDav\Controllers\API\JourneyController@reopen');

@@ -265,6 +265,7 @@
 
         data() {
             return {
+                isContractsLoaded: false,
                 contracts: [],
                 drivers: [],
                 trucks: [],
@@ -371,11 +372,22 @@
             },
 
             fetchContracts() {
-                this.$root.isLoading = true;
-                return http.get('/api/journey/create?contracts=true').then((response) => {
-                    this.contracts = response.contracts;
-                    this.$root.isLoading = false;
-                });
+                if (this.journey.is_contract_related == 1) {
+                    $('#route_id').select2('destroy');
+                    if (! this.isContractsLoaded) {
+                        this.$root.isLoading = true;
+
+                        return http.get('/api/journey/create?contracts=true').then((response) => {
+                            this.contracts = response.contracts;
+                            this.isContractsLoaded = true;
+                            this.$root.isLoading = false;
+                        });
+                    }
+
+                    return;
+                }
+
+                $(document).ready(() => $('#route_id').select2());
             },
 
             updateFields() {
@@ -426,24 +438,26 @@
             },
 
             setupUI() {
-                $('.datepicker').datepicker({
-                    autoclose: true,
-                    format: 'dd/mm/yyyy',
-                    todayHighlight: true,
-                });
-
-                $('#job_date').datepicker().on('changeDate', (e) => {
-                    this.journey.job_date = e.date.toLocaleDateString('en-GB');
-                });
-
-                setTimeout(() => {
-                    $('#truck_id').select2().on('change', e => {
-                      this.journey.truck_id = e.target.value;
-                      this.addTruck();
+                $(document).ready(() => {
+                    $('.datepicker').datepicker({
+                        autoclose: true,
+                        format: 'dd/mm/yyyy',
+                        todayHighlight: true,
                     });
-                    $('#driver_id').select2().on('change', e => this.journey.driver_id = e.target.value);
-                    $('#route_id').select2().on('change', e => this.journey.route_id = e.target.value);
-                }, 1000);
+
+                    $('#job_date').datepicker().on('changeDate', (e) => {
+                        this.journey.job_date = e.date.toLocaleDateString('en-GB');
+                    });
+
+                    setTimeout(() => {
+                        $('#truck_id').select2().on('change', e => {
+                            this.journey.truck_id = e.target.value;
+                            this.addTruck();
+                        });
+                        $('#driver_id').select2().on('change', e => this.journey.driver_id = e.target.value);
+                        $('#route_id').select2().on('change', e => this.journey.route_id = e.target.value);
+                    }, 1000);
+                });
             },
 
             store() {

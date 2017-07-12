@@ -54,8 +54,14 @@ module.exports = [
     { path: '/contracts', component: require('./transport/contracts/index.vue'), beforeEnter: authMiddleware },
     { path: '/contracts/r/:print', component: require('./transport/contracts/index.vue'), beforeEnter: authMiddleware },
     { path: '/contracts/create', component: require('./transport/contracts/form.vue'), beforeEnter: authMiddleware },
+    { path: '/contracts/create/:templateId', component: require('./transport/contracts/form.vue'), beforeEnter: authMiddleware },
     { path: '/contracts/:id', component: require('./transport/contracts/view.vue'), beforeEnter: authMiddleware },
     { path: '/contracts/:id/edit', component: require('./transport/contracts/form.vue'), beforeEnter: authMiddleware },
+
+    { path: '/contract-templates', component: require('./transport/contracts-templates/index.vue'), beforeEnter: authMiddleware },
+    { path: '/contract-templates/create', component: require('./transport/contracts-templates/form.vue'), beforeEnter: authMiddleware },
+    { path: '/contract-templates/:id', component: require('./transport/contracts-templates/view.vue'), beforeEnter: authMiddleware },
+    { path: '/contract-templates/:id/edit', component: require('./transport/contracts-templates/form.vue'), beforeEnter: authMiddleware },
 
     { path: '/journey', component: require('./transport/journey/index.vue'), beforeEnter: authMiddleware },
     { path: '/journey/create', component: require('./transport/journey/form.vue'), beforeEnter: authMiddleware },
