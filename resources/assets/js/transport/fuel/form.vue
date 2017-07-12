@@ -319,7 +319,7 @@
 
                 request.then((response) => {
                     this.$root.isLoading = false;
-                    alert2(this.$root, [response.message], 'success');
+                    alert2(this.$root, [response.data.message], 'success');
                     window._router.push({ path: '/fuel' });
                 }).catch((error) => {
                     this.$root.isLoading = false;

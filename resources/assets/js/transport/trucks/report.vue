@@ -174,7 +174,6 @@ export default {
 
       let end_date = moment(this.end_date, 'DD-MM-YYYY').format('L');
 
-      console.log(activity_date, start_date, end_date);
 
       if(activity_date >= start_date && activity_date <= end_date ) {
         return true;
