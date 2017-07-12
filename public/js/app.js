@@ -81696,6 +81696,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 method = 'put';
             }
 
+            var checkValue = Object.values(this.checklist.items);
+            this.checklist.suitable_for_loading = checkValue.indexOf(false) === -1;
+
             http[method](endpoint, this.checklist).then(function (response) {
                 _this3.printout = response.printout;
                 _this3.$root.isLoading = false;
@@ -104635,43 +104638,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   })]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "suitable_for_loading"
-    }
-  }, [_vm._v("Suitable for loading?")]), _vm._v(" "), _c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.checklist.suitable_for_loading),
-      expression: "checklist.suitable_for_loading"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "name": "suitable_for_loading",
-      "id": "suitable_for_loading"
-    },
-    on: {
-      "change": function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.checklist.suitable_for_loading = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
-    }
-  }, [_c('option', {
-    attrs: {
-      "value": "0"
-    }
-  }, [_vm._v("No")]), _vm._v(" "), _c('option', {
-    attrs: {
-      "value": "1"
-    }
-  }, [_vm._v("Yes")])])]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('input', {
     staticClass: "btn btn-success",
