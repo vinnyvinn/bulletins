@@ -1,4 +1,8 @@
 function authMiddleware(to, from, next) {
+    let allowedPaths = [
+        '/station-selection', '/404', '/403', '/trucks', '/drivers', '/routes', '/trailers'
+    ];
+
     if (! localStorage.getItem('foeiwafwfuwe')) {
         return next({path: '/login'});
     }
@@ -7,11 +11,10 @@ function authMiddleware(to, from, next) {
         return next({path: '/login'});
     }
 
-    let allowedPaths = [
-        '/station-selection', '/404', '/403'
-    ];
+    let isAllowed = (allowedPaths.indexOf(to.path) === -1) && (to.path.indexOf('/administrator') === -1) &&
+        (to.path.indexOf('/trucks') === -1);
 
-    if (! window.Laravel.station_id && allowedPaths.indexOf(to.path) === -1) {
+    if (! window.Laravel.station_id && isAllowed) {
         return next({path: '/station-selection'});
     }
 
