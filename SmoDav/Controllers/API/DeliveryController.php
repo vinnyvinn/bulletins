@@ -30,7 +30,9 @@ class DeliveryController extends Controller
     public function index()
     {
         return Response::json([
-            'deliveries' => Delivery::all()
+            'deliveries' => Delivery::when(request('s'), function ($builder) {
+                return $builder->where('station_id', request('s'));
+            })->get()
         ]);
     }
 
@@ -42,7 +44,10 @@ class DeliveryController extends Controller
     public function create()
     {
         return Response::json([
-            'journeys' => Journey::open()
+            'journeys' => Journey::when(request('s'), function ($builder) {
+                return $builder->where('station_id', request('s'));
+            })
+                ->open()
                 ->whereHas('inspection', function ($query) {
                     $query->where('suitable_for_loading', true);
                 })
@@ -146,7 +151,9 @@ class DeliveryController extends Controller
         return Response::json([
             'status' => 'success',
             'message' => 'Successfully deleted delivery note.',
-            'deliveries' => Delivery::all()
+            'deliveries' => Delivery::when(request('s'), function ($builder) {
+                return $builder->where('station_id', request('s'));
+            })->get()
         ]);
     }
 

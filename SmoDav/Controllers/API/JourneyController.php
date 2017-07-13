@@ -27,23 +27,19 @@ class JourneyController extends Controller
      */
     public function index()
     {
-
-        $journeys = Journey::with([
-            'truck' => function ($builder) {
-                return $builder->select(['id', 'plate_number', 'driver_id']);
-            },
-            'truck.driver',
-            'contract.client',
-        ])->get([
-            'id',
-            'is_contract_related',
-            'truck_id',
-            'contract_id',
-            'journey_type',
-            'job_date',
-            'ref_no',
-            'status',
-        ]);
+        $journeys = Journey::when(request('s'), function ($builder) {
+            return $builder->where('station_id', request('s'));
+        })
+            ->with([
+                'truck' => function ($builder) {
+                    return $builder->select(['id', 'plate_number', 'driver_id']);
+                },
+                'truck.driver',
+                'contract.client',
+            ])
+            ->get([
+                'id', 'is_contract_related', 'truck_id', 'contract_id', 'journey_type', 'job_date', 'ref_no', 'status',
+            ]);
 
         return Response::json([
             'journeys' => $journeys,
@@ -231,18 +227,16 @@ class JourneyController extends Controller
     {
         $journey->delete();
 
-        $journeys = Journey::with([
-            'truck' => function ($builder) {
-                return $builder->select(['id', 'plate_number']);
-            },
-        ])->get([
-            'id',
-            'is_contract_related',
-            'journey_type',
-            'job_date',
-            'ref_no',
-            'status',
-        ]);
+        $journeys = Journey::when(request('s'), function ($builder) {
+            return $builder->where('station_id', request('s'));
+        })
+            ->with([
+                'truck' => function ($builder) {
+                    return $builder->select(['id', 'plate_number']);
+                },
+            ])->get([
+                'id', 'is_contract_related', 'journey_type', 'job_date', 'ref_no', 'status',
+            ]);
 
         return Response::json([
             'status'   => 'success',

@@ -5,7 +5,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>Journey Creation</strong>
-                        <router-link to="/journey/create" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i> Add New</router-link>
+                        <router-link v-if="$root.can('create-journey')" to="/journey/create" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i> Add New</router-link>
                     </div>
                     <div class="panel-body">
                         <div class="table-responsive">
@@ -23,7 +23,10 @@
                                 </thead>
                                 <tbody>
                                 <tr v-for="journey in journeys">
-                                    <td><router-link :to="'/journey/' + journey.id">JRNY-{{ journey.id }}</router-link></td>
+                                    <td>
+                                        <router-link v-if="$root.can('view-journey')" :to="'/journey/' + journey.id">JRNY-{{ journey.id }}</router-link>
+                                        <span v-else>JRNY-{{ journey.id }}</span>
+                                    </td>
                                     <td>
                                       <span class="label label-info" v-if="journey.status == 'Pending Approval'">Pending Approval</span>
                                       <span class="label label-success" v-if="journey.status == 'Approved'">Approved</span>
@@ -35,8 +38,8 @@
                                     <td>{{ date2(journey.job_date) }}</td>
                                     <td>{{ journey.truck.driver.first_name}} {{ journey.truck.driver.last_name}}</td>
                                     <td class="text-center">
-                                        <span v-if="journey.status != 'Closed'" @click="edit(journey)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
-                                        <button data-toggle="popover" :data-item="journey.id" class="btn btn-xs btn-danger btn-destroy">
+                                        <span v-if="(journey.status != 'Closed') && $root.can('edit-journey')" @click="edit(journey)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
+                                        <button data-toggle="popover" v-if="$root.can('delete-journey')" :data-item="journey.id" class="btn btn-xs btn-danger btn-destroy">
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </td>
@@ -66,7 +69,7 @@
 <script>
     export default {
         created() {
-            http.get('/api/journey').then(response => {
+            http.get('/api/journey?s=' + window.Laravel.station_id).then(response => {
                 this.journeys = response.journeys;
                 this.setupConfirm();
                 prepareTable();
@@ -97,7 +100,7 @@
             destroy(id) {
                 this.$root.isLoading = true;
 
-                http.destroy('api/journey/' + id).then(response => {
+                http.destroy('api/journey/' + id + '/?s=' + window.Laravel.station_id).then(response => {
                     if (response.status != 'success') {
                         this.$root.isLoading = false;
                         alert2(this.$root, [response.message], 'danger');

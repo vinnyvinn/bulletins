@@ -17,8 +17,8 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
-            $table->string('user_name')->nullable();
-            $table->string('email')->unique();
+            $table->string('username')->unique();
+            $table->string('email')->unique()->nullable();
             $table->string('password');
             $table->text('permissions');
 
@@ -37,6 +37,8 @@ class CreateUsersTable extends Migration
             $table->string('referral_id', 20)->nullable();
             $table->integer('referred_by')->nullable();
             $table->timestamp('last_login')->nullable();
+
+            $table->softDeletes();
 
             $table->rememberToken();
             $table->timestamps();

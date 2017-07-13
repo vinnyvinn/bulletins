@@ -39,4 +39,11 @@ class HomeController extends Controller
             'user' => $request->user()
         ]);
     }
+
+    public function selectStation(Request $request)
+    {
+        session()->put('station_id', $request->get('station'));
+
+        return redirect('/');
+    }
 }

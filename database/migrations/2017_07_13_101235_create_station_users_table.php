@@ -13,9 +13,12 @@ class CreateStationUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('station_users', function (Blueprint $table) {
+        Schema::create('station_user', function (Blueprint $table) {
             $table->integer('station_id');
             $table->integer('user_id');
+
+            $table->foreign('station_id')->references('id')->on('stations')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -26,6 +29,6 @@ class CreateStationUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('station_users');
+        Schema::dropIfExists('station_user');
     }
 }

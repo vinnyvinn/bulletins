@@ -74024,7 +74024,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             user: {
-                email: '',
+                username: '',
                 password: '',
                 grant_type: 'password',
                 client_id: 2,
@@ -78996,6 +78996,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
     created: function created() {
@@ -80067,6 +80068,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             journeys: [],
             uploads: [],
             deliveryNote: {
+                station_id: window.Laravel.station_id,
                 journey_id: '',
                 narration: '',
                 bags_loaded: 0,
@@ -80084,7 +80086,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     created: function created() {
         var _this = this;
 
-        if (this.$route.params.id) {
+        if (!this.$route.params.id && !this.$route.params.unload && !this.$root.can('create-delivery')) {
+            this.$router.push('/403');
+            return false;
+        }
+
+        if (this.$route.params.id && !this.$root.can('edit-delivery')) {
+            this.$router.push('/403');
+            return false;
+        }
+
+        if (this.$route.params.id || this.$route.params.unload) {
             this.checkState();
             return;
         }
@@ -80135,9 +80147,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         checkState: function checkState() {
             var _this3 = this;
 
-            return http.get('/api/delivery/' + this.$route.params.id).then(function (response) {
+            this.$root.isLoading = true;
+            var id = this.$route.params.unload ? this.$route.params.unload : this.$route.params.id;
+
+            return http.get('/api/delivery/' + id).then(function (response) {
                 _this3.deliveryNote = response.delivery;
                 _this3.journeys = response.journeys;
+                _this3.$root.isLoading = false;
             });
         },
         store: function store() {
@@ -80146,10 +80162,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.$root.isLoading = true;
             var request = null;
 
-            var data = mapToFormData(this.deliveryNote, this.uploads, typeof this.$route.params.id === 'string');
+            var data = mapToFormData(this.deliveryNote, this.uploads, typeof this.$route.params.id === 'string' || typeof this.$route.params.unload === 'string');
 
             if (this.$route.params.id) {
                 request = http.put('/api/delivery/' + this.$route.params.id, data, true);
+            } else if (this.$route.params.unload) {
+                request = http.put('/api/delivery/' + this.$route.params.unload, data, true);
             } else {
                 request = http.post('/api/delivery', data, true);
             }
@@ -80239,12 +80257,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
     created: function created() {
         var _this = this;
 
-        http.get('/api/delivery').then(function (response) {
+        http.get('/api/delivery/?s=' + window.Laravel.station_id).then(function (response) {
             _this.deliveries = response.deliveries;
             _this.setupConfirm();
             prepareTable();
@@ -80276,15 +80301,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         date2: function date2(value) {
             return window._date2(value);
         },
-        edit: function edit(journey) {
-            window._router.push({ path: '/delivery/' + journey.id + '/edit' });
+        edit: function edit(delivery) {
+            window._router.push({ path: '/delivery/' + delivery.id + '/edit' });
+        },
+        unload: function unload(delivery) {
+            window._router.push({ path: '/delivery/' + delivery.id + '/unload' });
         },
         destroy: function destroy(id) {
             var _this3 = this;
 
             this.$root.isLoading = true;
 
-            http.destroy('api/delivery/' + id).then(function (response) {
+            http.destroy('api/delivery/' + id + '/?s=' + window.Laravel.station_id).then(function (response) {
                 if (response.status != 'success') {
                     _this3.$root.isLoading = false;
                     alert2(_this3.$root, [response.message], 'danger');
@@ -80761,173 +80789,184 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = {
-  created: function created() {
-    var _this = this;
+    created: function created() {
+        var _this = this;
 
-    this.$root.isLoading = true;
-    if (this.$route.params.id) {
-      this.can_save = true;
-    }
-    http.get('/api/fuel/create').then(function (response) {
-      _this.journeys = response.journeys;
-    }).then(function () {
-      _this.checkState();
-    }).then(function () {
-      _this.calculateKms();
-      _this.$root.isLoading = false;
-    });
-  },
-  mounted: function mounted() {
+        if (!this.$route.params.id && !this.$route.params.unload && !this.$root.can('create-fuel')) {
+            this.$router.push('/403');
+            return false;
+        }
 
-    $('input[type="number"]').on('focus', function () {
-      this.select();
-    });
-  },
-  data: function data() {
-    return {
-      fuel_reserve: 25,
-      journeys: [],
-      current_journey: {},
-      current_driver: {},
-      current_vehicle: {},
-      current_trailer: {},
-      current_route: {},
-      km_covered: 0,
-      fuel_used: 0,
-      km_per_litre: 0,
-      fuel: {
-        journey_id: '',
-        date: '',
-        current_fuel: 0,
-        fuel_requested: 0,
-        fuel_issued: 0,
-        fuel_total: 0,
-        narration: '',
-        previous_km: 0,
-        previous_fuel: 0,
-        current_km: 0,
-        status: 'Awaiting Approval',
-        tank: '',
-        pump: '',
-        top_up: false,
-        top_up_reason: '',
-        top_up_quantity: 0
-      },
-      can_save: false,
-      below_reserve: false,
-      deficit: ''
-    };
-  },
+        if (this.$route.params.id && !this.$root.can('edit-fuel')) {
+            this.$router.push('/403');
+            return false;
+        }
 
-  computed: {
-    selectJourney: function selectJourney() {
-      var _this2 = this;
-
-      var journey = this.journeys.filter(function (e) {
-        return e.id == _this2.fuel.journey_id;
-      });
-      if (journey.length) {
-        this.current_driver = JSON.parse(JSON.stringify(journey[0].driver));
-        this.current_vehicle = JSON.parse(JSON.stringify(journey[0].truck));
-        this.current_trailer = JSON.parse(JSON.stringify(journey[0].truck.trailer));
-        this.current_route = JSON.parse(JSON.stringify(journey[0].route));
-        this.fuel.previous_fuel = this.current_vehicle.current_fuel;
-        this.fuel.previous_km = this.current_vehicle.current_km;
-
-        return this.current_journey = JSON.parse(JSON.stringify(journey[0]));
-      }
-    },
-    minimumKm: function minimumKm() {
-      return this.fuel.previous_km;
-    }
-  },
-
-  methods: {
-    setupUI: function setupUI() {
-      var _this3 = this;
-
-      $('.datepicker').datepicker({
-        autoclose: true,
-        format: 'dd/mm/yyyy',
-        todayHighlight: true
-      });
-
-      $('#date').datepicker().on('changeDate', function (e) {
-        _this3.fuel.date = e.date.toLocaleDateString('en-GB');
-      });
-    },
-    checkState: function checkState() {
-      var _this4 = this;
-
-      if (this.$route.params.id) {
-        http.get('/api/fuel/' + this.$route.params.id).then(function (response) {
-          _this4.fuel = response.fuel;
-          _this4.setupUI();
-          _this4.$root.isLoading = false;
+        this.$root.isLoading = true;
+        if (this.$route.params.id) {
+            this.can_save = true;
+        }
+        http.get('/api/fuel/create/?s=' + window.Laravel.station_id).then(function (response) {
+            _this.journeys = response.journeys;
+        }).then(function () {
+            _this.checkState();
+        }).then(function () {
+            _this.calculateKms();
+            _this.$root.isLoading = false;
         });
-      }
-      this.setupUI();
     },
-    calculateTotal: function calculateTotal() {
-      var reserve = parseInt(this.fuel_reserve);
-      var current_fuel = parseInt(this.fuel.current_fuel);
-      var route_fuel_required = parseInt(this.current_route.fuel_required);
+    mounted: function mounted() {
 
-      if (parseInt(this.fuel.current_fuel) < reserve) {
-        this.deficit = reserve - current_fuel;
-        this.below_reserve = true;
-      } else {
-        this.below_reserve = false;
-      }
-
-      this.fuel.fuel_requested = route_fuel_required + reserve - current_fuel;
-      return this.fuel.fuel_total = parseInt(this.fuel.fuel_issued) + parseInt(this.fuel.current_fuel);
+        $('input[type="number"]').on('focus', function () {
+            this.select();
+        });
     },
-    calculateKms: function calculateKms() {
-      if (parseInt(this.fuel.current_km) < parseInt(this.current_vehicle.current_km)) {
-        this.can_save = false;
-        this.fuel.current_km = 0;
-        return alert2(this.$root, ['Current Km readings should be greater than previous Km reading'], 'danger');
-      }
-      this.fuel_used = parseInt(this.current_vehicle.current_fuel) - parseInt(this.fuel.current_fuel);
-      this.km_covered = parseInt(this.fuel.current_km) - parseInt(this.current_vehicle.current_km);
-
-      if (parseInt(this.fuel.current_km) > 0 && parseInt(this.fuel.current_km) > parseInt(this.current_vehicle.current_km)) {
-        this.can_save = true;
-      }
-
-      return this.km_per_litre = parseInt(this.km_covered) / parseInt(this.fuel_used);
+    data: function data() {
+        return {
+            fuel_reserve: 25,
+            journeys: [],
+            current_journey: {},
+            current_driver: {},
+            current_vehicle: {},
+            current_trailer: {},
+            current_route: {},
+            km_covered: 0,
+            fuel_used: 0,
+            km_per_litre: 0,
+            fuel: {
+                station_id: window.Laravel.station_id,
+                journey_id: '',
+                date: '',
+                current_fuel: 0,
+                fuel_requested: 0,
+                fuel_issued: 0,
+                fuel_total: 0,
+                narration: '',
+                previous_km: 0,
+                previous_fuel: 0,
+                current_km: 0,
+                status: 'Awaiting Approval',
+                tank: '',
+                pump: '',
+                top_up: false,
+                top_up_reason: '',
+                top_up_quantity: 0
+            },
+            can_save: false,
+            below_reserve: false,
+            deficit: ''
+        };
     },
-    getSource: function getSource() {
-      if (this.current_driver.avatar) {
-        return '/images/' + this.current_driver.avatar;
-      }
-      return '/images/default_avatar.png';
+
+    computed: {
+        selectJourney: function selectJourney() {
+            var _this2 = this;
+
+            var journey = this.journeys.filter(function (e) {
+                return e.id == _this2.fuel.journey_id;
+            });
+            if (journey.length) {
+                this.current_driver = JSON.parse(JSON.stringify(journey[0].driver));
+                this.current_vehicle = JSON.parse(JSON.stringify(journey[0].truck));
+                this.current_trailer = JSON.parse(JSON.stringify(journey[0].truck.trailer));
+                this.current_route = JSON.parse(JSON.stringify(journey[0].route));
+                this.fuel.previous_fuel = this.current_vehicle.current_fuel;
+                this.fuel.previous_km = this.current_vehicle.current_km;
+
+                return this.current_journey = JSON.parse(JSON.stringify(journey[0]));
+            }
+        },
+        minimumKm: function minimumKm() {
+            return this.fuel.previous_km;
+        }
     },
-    store: function store() {
-      var _this5 = this;
 
-      this.$root.isLoading = true;
-      var request = null;
+    methods: {
+        setupUI: function setupUI() {
+            var _this3 = this;
 
-      var body = Object.assign({}, this.fuel);
+            $('.datepicker').datepicker({
+                autoclose: true,
+                format: 'dd/mm/yyyy',
+                todayHighlight: true
+            });
 
-      if (this.$route.params.id) {
-        request = axios.put('/api/fuel/' + this.$route.params.id, body);
-      } else {
-        request = axios.post('/api/fuel', body);
-      }
+            $('#date').datepicker().on('changeDate', function (e) {
+                _this3.fuel.date = e.date.toLocaleDateString('en-GB');
+            });
+        },
+        checkState: function checkState() {
+            var _this4 = this;
 
-      request.then(function (response) {
-        _this5.$root.isLoading = false;
-        alert2(_this5.$root, [response.data.message], 'success');
-        window._router.push({ path: '/fuel' });
-      }).catch(function (error) {
-        _this5.$root.isLoading = false;
-        alert2(_this5.$root, Object.values(JSON.parse(error.message)), 'danger');
-      });
+            if (this.$route.params.id) {
+                http.get('/api/fuel/' + this.$route.params.id).then(function (response) {
+                    _this4.fuel = response.fuel;
+                    _this4.setupUI();
+                    _this4.$root.isLoading = false;
+                });
+            }
+            this.setupUI();
+        },
+        calculateTotal: function calculateTotal() {
+            var reserve = parseInt(this.fuel_reserve);
+            var current_fuel = parseInt(this.fuel.current_fuel);
+            var route_fuel_required = parseInt(this.current_route.fuel_required);
+
+            if (parseInt(this.fuel.current_fuel) < reserve) {
+                this.deficit = reserve - current_fuel;
+                this.below_reserve = true;
+            } else {
+                this.below_reserve = false;
+            }
+
+            this.fuel.fuel_requested = route_fuel_required + reserve - current_fuel;
+            return this.fuel.fuel_total = parseInt(this.fuel.fuel_issued) + parseInt(this.fuel.current_fuel);
+        },
+        calculateKms: function calculateKms() {
+            if (parseInt(this.fuel.current_km) < parseInt(this.current_vehicle.current_km)) {
+                this.can_save = false;
+                this.fuel.current_km = 0;
+                return alert2(this.$root, ['Current Km readings should be greater than previous Km reading'], 'danger');
+            }
+            this.fuel_used = parseInt(this.current_vehicle.current_fuel) - parseInt(this.fuel.current_fuel);
+            this.km_covered = parseInt(this.fuel.current_km) - parseInt(this.current_vehicle.current_km);
+
+            if (parseInt(this.fuel.current_km) > 0 && parseInt(this.fuel.current_km) > parseInt(this.current_vehicle.current_km)) {
+                this.can_save = true;
+            }
+
+            return this.km_per_litre = parseInt(this.km_covered) / parseInt(this.fuel_used);
+        },
+        getSource: function getSource() {
+            if (this.current_driver.avatar) {
+                return '/images/' + this.current_driver.avatar;
+            }
+            return '/images/default_avatar.png';
+        },
+        store: function store() {
+            var _this5 = this;
+
+            this.$root.isLoading = true;
+            var request = null;
+
+            var body = Object.assign({}, this.fuel);
+
+            if (this.$route.params.id) {
+                request = axios.put('/api/fuel/' + this.$route.params.id, body);
+            } else {
+                request = axios.post('/api/fuel', body);
+            }
+
+            request.then(function (response) {
+                _this5.$root.isLoading = false;
+                alert2(_this5.$root, [response.data.message], 'success');
+                window._router.push({ path: '/fuel' });
+            }).catch(function (error) {
+                _this5.$root.isLoading = false;
+                alert2(_this5.$root, Object.values(JSON.parse(error.message)), 'danger');
+            });
+        }
     }
-  }
 };
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
 
@@ -81014,12 +81053,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
     created: function created() {
         var _this = this;
 
-        http.get('/api/fuel').then(function (response) {
+        http.get('/api/fuel/?s=' + window.Laravel.station_id).then(function (response) {
             _this.fuels = response.fuel;
             _this.setupConfirm();
             prepareTable();
@@ -81052,7 +81094,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.$root.isLoading = true;
 
-            http.destroy('api/fuel/' + id).then(function (response) {
+            http.destroy('api/fuel/' + id + '/?s=' + window.Laravel.station_id).then(function (response) {
                 if (response.status != 'success') {
                     _this3.$root.isLoading = false;
                     alert2(_this3.$root, [response.message], 'danger');
@@ -81078,7 +81120,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     return;
                 }
 
-                http.get('/api/fuel').then(function (response) {
+                http.get('/api/fuel/?s=' + window.Laravel.station_id).then(function (response) {
                     _this4.fuels = response.fuel;
                     _this4.setupConfirm();
                 });
@@ -81277,6 +81319,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   created: function created() {
     var _this = this;
 
+    if (!this.$root.can('view-fuel')) {
+      this.$router.push('/403');
+      return false;
+    }
     this.$root.isLoading = true;
     http.get('/api/fuel/' + this.$route.params.id).then(function (response) {
       _this.fuel = response.fuel;
@@ -81568,6 +81614,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = {
+    created: function created() {
+        if (!this.$route.params.id && !this.$root.can('create-inspection')) {
+            this.$router.push('/403');
+            return false;
+        }
+
+        if (this.$route.params.id && !this.$root.can('edit-inspection')) {
+            this.$router.push('/403');
+            return false;
+        }
+    },
     mounted: function mounted() {
         var _this = this;
 
@@ -81576,7 +81633,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             endpoint = '/api/inspection/' + this.$route.params.id;
         }
 
-        http.get(endpoint).then(function (response) {
+        http.get(endpoint + '?s=' + window.Laravel.station_id).then(function (response) {
             if (response.status !== 'success') return;
             _this.journeys = response.journeys;
             _this.isInspector = response.inspector;
@@ -81601,6 +81658,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             isInspector: true,
             application_name: window.Laravel.appname,
             checklist: {
+                station_id: window.Laravel.station_id,
                 journey_id: null,
                 user_id: window.Laravel.user,
                 inspectors_comments: '',
@@ -81796,12 +81854,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
     created: function created() {
         var _this = this;
 
-        http.get('/api/inspection').then(function (response) {
+        http.get('/api/inspection/?s=' + window.Laravel.station_id).then(function (response) {
             _this.inspections = response.inspections;
             _this.setupConfirm();
             prepareTable();
@@ -82418,6 +82479,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     created: function created() {
         var _this = this;
 
+        if (!this.$route.params.id && !this.$root.can('create-journey')) {
+            this.$router.push('/403');
+            return false;
+        }
+
+        if (this.$route.params.id && !this.$root.can('edit-journey')) {
+            this.$router.push('/403');
+            return false;
+        }
+
+        this.$root.isLoading = true;
+
         http.get('/api/journey/create').then(function (response) {
             _this.clients = response.clients;
             _this.routes = response.routes;
@@ -82429,6 +82502,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (response.last_journey_id) {
                 _this.last_journey_id = response.last_journey_id;
             }
+
+            return response;
+        }).then(function () {
+            return http.get('/api/journey/create?contracts=true').then(function (response) {
+                _this.contracts = response.contracts;
+                _this.isContractsLoaded = true;
+                _this.$root.isLoading = false;
+
+                return response;
+            });
+        }).catch(function () {
+            return _this.$root.isLoading = false;
         });
 
         this.checkState();
@@ -82455,7 +82540,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             uploads: [],
             stockItems: [],
             journey: {
-                is_contract_related: 0,
+                station_id: window.Laravel.station_id,
+                is_contract_related: 1,
                 contract_id: '',
                 journey_type: 'Local',
                 job_date: '',
@@ -82570,6 +82656,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         _this6.contracts = response.contracts;
                         _this6.isContractsLoaded = true;
                         _this6.$root.isLoading = false;
+
+                        return response;
                     });
                 }
 
@@ -82600,25 +82688,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this8 = this;
 
             if (this.$route.params.id) {
-                this.fetchContracts().then(function () {
-                    http.get('/api/journey/' + _this8.$route.params.id).then(function (response) {
-                        _this8.clients = response.clients;
-                        _this8.routes = response.routes;
-                        _this8.classifications = response.cargo_classifications;
-                        _this8.cargo_types = response.cargo_types;
-                        _this8.carriage_points = response.carriage_points;
-                        _this8.trucks = response.trucks;
-                        _this8.drivers = response.drivers;
-                        //                            this.contract = response.contract;
-                        _this8.journey = response.journey.raw;
-                        _this8.journey.enquiry_from = _this8.journey.enquiry_from == 'null' ? '' : _this8.journey.enquiry_from;
-                        _this8.journey.ref_no = _this8.journey.ref_no == 'null' ? '' : _this8.journey.ref_no;
-                        _this8.journey.ref_no = _this8.journey.contract_id == 'null' ? '' : _this8.journey.contract_id;
-                        _this8.trucks_already_allocated = response.allocated;
-                        _this8.updateBooleans();
-                        _this8.status = response.journey.status;
-                        _this8.setupUI();
-                    });
+                http.get('/api/journey/' + this.$route.params.id).then(function (response) {
+                    _this8.clients = response.clients;
+                    _this8.routes = response.routes;
+                    _this8.classifications = response.cargo_classifications;
+                    _this8.cargo_types = response.cargo_types;
+                    _this8.carriage_points = response.carriage_points;
+                    _this8.trucks = response.trucks;
+                    _this8.drivers = response.drivers;
+                    //                            this.contract = response.contract;
+                    _this8.journey = response.journey.raw;
+                    _this8.journey.enquiry_from = _this8.journey.enquiry_from == 'null' ? '' : _this8.journey.enquiry_from;
+                    _this8.journey.ref_no = _this8.journey.ref_no == 'null' ? '' : _this8.journey.ref_no;
+                    _this8.journey.ref_no = _this8.journey.contract_id == 'null' ? '' : _this8.journey.contract_id;
+                    _this8.trucks_already_allocated = response.allocated;
+                    _this8.updateBooleans();
+                    _this8.status = response.journey.status;
+                    _this8.setupUI();
                 });
             }
             this.setupUI();
@@ -82765,12 +82851,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
     created: function created() {
         var _this = this;
 
-        http.get('/api/journey').then(function (response) {
+        http.get('/api/journey?s=' + window.Laravel.station_id).then(function (response) {
             _this.journeys = response.journeys;
             _this.setupConfirm();
             prepareTable();
@@ -82803,7 +82892,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.$root.isLoading = true;
 
-            http.destroy('api/journey/' + id).then(function (response) {
+            http.destroy('api/journey/' + id + '/?s=' + window.Laravel.station_id).then(function (response) {
                 if (response.status != 'success') {
                     _this3.$root.isLoading = false;
                     alert2(_this3.$root, [response.message], 'danger');
@@ -83398,6 +83487,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
     created: function created() {
@@ -83615,6 +83705,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             journeys: [],
             uploads: [],
             mileage: {
+                station_id: window.Laravel.station_id,
                 journey_id: '',
                 mileage_type: 'Fixed Mileage',
                 standard_amount: 0,
@@ -83631,8 +83722,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     created: function created() {
         var _this = this;
 
+        if (!this.$route.params.id && !this.$route.params.unload && !this.$root.can('create-mileage')) {
+            this.$router.push('/403');
+            return false;
+        }
+
+        if (this.$route.params.id && !this.$root.can('edit-mileage')) {
+            this.$router.push('/403');
+            return false;
+        }
+
+        if (this.$route.params.approve && !this.$root.can('approve-mileage')) {
+            this.$router.push('/403');
+            return false;
+        }
+
         this.$root.isLoading = true;
-        http.get('/api/mileage/create').then(function (response) {
+        http.get('/api/mileage/create?s=' + window.Laravel.station_id).then(function (response) {
             _this.journeys = response.journeys;
         }).then(function () {
             _this.checkState();
@@ -83691,8 +83797,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         checkState: function checkState() {
             var _this3 = this;
 
-            if (this.$route.params.id) {
-                http.get('/api/mileage/' + this.$route.params.id).then(function (response) {
+            if (this.$route.params.id || this.$route.params.approve) {
+                var id = this.$route.params.approve ? this.$route.params.approve : this.$route.params.id;
+                http.get('/api/mileage/' + id + '/?s=' + window.Laravel.station_id).then(function (response) {
                     _this3.mileage = response.mileage;
                     _this3.$root.isLoading = false;
                 });
@@ -83712,10 +83819,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var request = null;
             this.mileage.standard_amount = parseInt(this.journey.route.allowance_amount);
 
-            var data = mapToFormData(this.mileage, this.uploads, typeof this.$route.params.id === 'string');
+            var data = mapToFormData(this.mileage, this.uploads, typeof this.$route.params.id === 'string' || typeof this.$route.params.approve === 'string');
 
             if (this.$route.params.id) {
                 request = http.put('/api/mileage/' + this.$route.params.id, data, true);
+            } else if (this.$route.params.approve) {
+                request = http.put('/api/mileage/' + this.$route.params.approve, data, true);
             } else {
                 request = http.post('/api/mileage', data, true);
             }
@@ -83799,12 +83908,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
     created: function created() {
         var _this = this;
 
-        http.get('/api/mileage').then(function (response) {
+        http.get('/api/mileage/?s=' + window.Laravel.station_id).then(function (response) {
             _this.mileages = response.mileages;
             _this.setupConfirm();
             prepareTable();
@@ -83839,12 +83954,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         edit: function edit(journey) {
             window._router.push({ path: '/mileage/' + journey.id + '/edit' });
         },
+        approve: function approve(journey) {
+            window._router.push({ path: '/mileage/' + journey.id + '/approve' });
+        },
         destroy: function destroy(id) {
             var _this3 = this;
 
             this.$root.isLoading = true;
 
-            http.destroy('api/mileage/' + id).then(function (response) {
+            http.destroy('api/mileage/' + id + '/?s=' + window.Laravel.station_id).then(function (response) {
                 if (response.status != 'success') {
                     _this3.$root.isLoading = false;
                     alert2(_this3.$root, [response.message], 'danger');
@@ -86054,13 +86172,17 @@ function authMiddleware(to, from, next) {
         return next({ path: '/login' });
     }
 
+    if (!window.Laravel.station_id && to.path !== '/station-selection') {
+        return next({ path: '/station-selection' });
+    }
+
     return next();
 }
 
-module.exports = [{ path: '/', redirect: '/login', beforeEnter: authMiddleware }, { path: '/dashboard', component: __webpack_require__(298), beforeEnter: authMiddleware }, { path: '/routes', component: __webpack_require__(277), beforeEnter: authMiddleware }, { path: '/routes/create', component: __webpack_require__(166), beforeEnter: authMiddleware }, { path: '/routes/:id/edit', component: __webpack_require__(166), beforeEnter: authMiddleware }, { path: '/routes/:id', component: __webpack_require__(278), beforeEnter: authMiddleware }, { path: '/drivers', component: __webpack_require__(274), beforeEnter: authMiddleware }, { path: '/drivers/create', component: __webpack_require__(131), beforeEnter: authMiddleware }, { path: '/drivers/:id/edit', component: __webpack_require__(131), beforeEnter: authMiddleware }, { path: '/drivers/:id', component: __webpack_require__(275), beforeEnter: authMiddleware }, { path: '/trucks', component: __webpack_require__(313), beforeEnter: authMiddleware }, { path: '/trucks/create', component: __webpack_require__(175), beforeEnter: authMiddleware }, { path: '/trucks/:id', component: __webpack_require__(315), beforeEnter: authMiddleware }, { path: '/trucks/:id/edit', component: __webpack_require__(175), beforeEnter: authMiddleware }, { path: '/trucks/:id/reports', component: __webpack_require__(314), beforeEnter: authMiddleware }, { path: '/trailers', component: __webpack_require__(279), beforeEnter: authMiddleware }, { path: '/trailers/create', component: __webpack_require__(167), beforeEnter: authMiddleware }, { path: '/trailers/:id', component: __webpack_require__(280), beforeEnter: authMiddleware }, { path: '/trailers/:id/edit', component: __webpack_require__(167), beforeEnter: authMiddleware }, { path: '/progress', component: __webpack_require__(282), beforeEnter: authMiddleware }, { path: '/progress/pre-loading', component: __webpack_require__(289), beforeEnter: authMiddleware }, { path: '/progress/pre-loading/:id', component: __webpack_require__(284), beforeEnter: authMiddleware }, { path: '/progress/loading', component: __webpack_require__(287), beforeEnter: authMiddleware }, { path: '/progress/loading/:id', component: __webpack_require__(283), beforeEnter: authMiddleware }, { path: '/progress/enroute', component: __webpack_require__(285), beforeEnter: authMiddleware }, { path: '/progress/enroute/:id', component: __webpack_require__(281), beforeEnter: authMiddleware }, { path: '/progress/offloading', component: __webpack_require__(288), beforeEnter: authMiddleware }, { path: '/progress/in-yard', component: __webpack_require__(286), beforeEnter: authMiddleware }, { path: '/users', component: __webpack_require__(294), beforeEnter: authMiddleware }, { path: '/users/create', component: __webpack_require__(293), beforeEnter: authMiddleware }, { path: '/contracts', component: __webpack_require__(169), beforeEnter: authMiddleware }, { path: '/contracts/r/:print', component: __webpack_require__(169), beforeEnter: authMiddleware }, { path: '/contracts/create', component: __webpack_require__(158), beforeEnter: authMiddleware }, { path: '/contracts/create/:templateId', component: __webpack_require__(158), beforeEnter: authMiddleware }, { path: '/contracts/:id', component: __webpack_require__(297), beforeEnter: authMiddleware }, { path: '/contracts/:id/edit', component: __webpack_require__(158), beforeEnter: authMiddleware }, { path: '/contract-templates', component: __webpack_require__(295), beforeEnter: authMiddleware }, { path: '/contract-templates/create', component: __webpack_require__(168), beforeEnter: authMiddleware }, { path: '/contract-templates/:id', component: __webpack_require__(296), beforeEnter: authMiddleware }, { path: '/contract-templates/:id/edit', component: __webpack_require__(168), beforeEnter: authMiddleware }, { path: '/journey', component: __webpack_require__(305), beforeEnter: authMiddleware }, { path: '/journey/create', component: __webpack_require__(173), beforeEnter: authMiddleware }, { path: '/journey/:id', component: __webpack_require__(306), beforeEnter: authMiddleware }, { path: '/journey/:id/edit', component: __webpack_require__(173), beforeEnter: authMiddleware }, { path: '/inspection', component: __webpack_require__(303), beforeEnter: authMiddleware }, { path: '/inspection/create', component: __webpack_require__(172), beforeEnter: authMiddleware }, { path: '/inspection/:id', component: __webpack_require__(304), beforeEnter: authMiddleware }, { path: '/inspection/:id/edit', component: __webpack_require__(172), beforeEnter: authMiddleware }, { path: '/fuel', component: __webpack_require__(301), beforeEnter: authMiddleware }, { path: '/fuel/create', component: __webpack_require__(171), beforeEnter: authMiddleware }, { path: '/fuel/:id', component: __webpack_require__(302), beforeEnter: authMiddleware }, { path: '/fuel/:id/edit', component: __webpack_require__(171), beforeEnter: authMiddleware }, { path: '/mileage', component: __webpack_require__(308), beforeEnter: authMiddleware }, { path: '/mileage/create', component: __webpack_require__(174), beforeEnter: authMiddleware }, { path: '/mileage/:id', component: __webpack_require__(309), beforeEnter: authMiddleware }, { path: '/mileage/:id/edit', component: __webpack_require__(174), beforeEnter: authMiddleware },
+module.exports = [{ path: '/', redirect: '/login', beforeEnter: authMiddleware }, { path: '/dashboard', component: __webpack_require__(298), beforeEnter: authMiddleware }, { path: '/routes', component: __webpack_require__(277), beforeEnter: authMiddleware }, { path: '/routes/create', component: __webpack_require__(166), beforeEnter: authMiddleware }, { path: '/routes/:id/edit', component: __webpack_require__(166), beforeEnter: authMiddleware }, { path: '/routes/:id', component: __webpack_require__(278), beforeEnter: authMiddleware }, { path: '/drivers', component: __webpack_require__(274), beforeEnter: authMiddleware }, { path: '/drivers/create', component: __webpack_require__(131), beforeEnter: authMiddleware }, { path: '/drivers/:id/edit', component: __webpack_require__(131), beforeEnter: authMiddleware }, { path: '/drivers/:id', component: __webpack_require__(275), beforeEnter: authMiddleware }, { path: '/trucks', component: __webpack_require__(313), beforeEnter: authMiddleware }, { path: '/trucks/create', component: __webpack_require__(175), beforeEnter: authMiddleware }, { path: '/trucks/:id', component: __webpack_require__(315), beforeEnter: authMiddleware }, { path: '/trucks/:id/edit', component: __webpack_require__(175), beforeEnter: authMiddleware }, { path: '/trucks/:id/reports', component: __webpack_require__(314), beforeEnter: authMiddleware }, { path: '/trailers', component: __webpack_require__(279), beforeEnter: authMiddleware }, { path: '/trailers/create', component: __webpack_require__(167), beforeEnter: authMiddleware }, { path: '/trailers/:id', component: __webpack_require__(280), beforeEnter: authMiddleware }, { path: '/trailers/:id/edit', component: __webpack_require__(167), beforeEnter: authMiddleware }, { path: '/progress', component: __webpack_require__(282), beforeEnter: authMiddleware }, { path: '/progress/pre-loading', component: __webpack_require__(289), beforeEnter: authMiddleware }, { path: '/progress/pre-loading/:id', component: __webpack_require__(284), beforeEnter: authMiddleware }, { path: '/progress/loading', component: __webpack_require__(287), beforeEnter: authMiddleware }, { path: '/progress/loading/:id', component: __webpack_require__(283), beforeEnter: authMiddleware }, { path: '/progress/enroute', component: __webpack_require__(285), beforeEnter: authMiddleware }, { path: '/progress/enroute/:id', component: __webpack_require__(281), beforeEnter: authMiddleware }, { path: '/progress/offloading', component: __webpack_require__(288), beforeEnter: authMiddleware }, { path: '/progress/in-yard', component: __webpack_require__(286), beforeEnter: authMiddleware }, { path: '/users', component: __webpack_require__(294), beforeEnter: authMiddleware }, { path: '/users/create', component: __webpack_require__(293), beforeEnter: authMiddleware }, { path: '/contracts', component: __webpack_require__(169), beforeEnter: authMiddleware }, { path: '/contracts/r/:print', component: __webpack_require__(169), beforeEnter: authMiddleware }, { path: '/contracts/create', component: __webpack_require__(158), beforeEnter: authMiddleware }, { path: '/contracts/create/:templateId', component: __webpack_require__(158), beforeEnter: authMiddleware }, { path: '/contracts/:id', component: __webpack_require__(297), beforeEnter: authMiddleware }, { path: '/contracts/:id/edit', component: __webpack_require__(158), beforeEnter: authMiddleware }, { path: '/contract-templates', component: __webpack_require__(295), beforeEnter: authMiddleware }, { path: '/contract-templates/create', component: __webpack_require__(168), beforeEnter: authMiddleware }, { path: '/contract-templates/:id', component: __webpack_require__(296), beforeEnter: authMiddleware }, { path: '/contract-templates/:id/edit', component: __webpack_require__(168), beforeEnter: authMiddleware }, { path: '/journey', component: __webpack_require__(305), beforeEnter: authMiddleware }, { path: '/journey/create', component: __webpack_require__(173), beforeEnter: authMiddleware }, { path: '/journey/:id', component: __webpack_require__(306), beforeEnter: authMiddleware }, { path: '/journey/:id/edit', component: __webpack_require__(173), beforeEnter: authMiddleware }, { path: '/inspection', component: __webpack_require__(303), beforeEnter: authMiddleware }, { path: '/inspection/create', component: __webpack_require__(172), beforeEnter: authMiddleware }, { path: '/inspection/:id', component: __webpack_require__(304), beforeEnter: authMiddleware }, { path: '/inspection/:id/edit', component: __webpack_require__(172), beforeEnter: authMiddleware }, { path: '/fuel', component: __webpack_require__(301), beforeEnter: authMiddleware }, { path: '/fuel/create', component: __webpack_require__(171), beforeEnter: authMiddleware }, { path: '/fuel/:id', component: __webpack_require__(302), beforeEnter: authMiddleware }, { path: '/fuel/:id/edit', component: __webpack_require__(171), beforeEnter: authMiddleware }, { path: '/mileage', component: __webpack_require__(308), beforeEnter: authMiddleware }, { path: '/mileage/create', component: __webpack_require__(174), beforeEnter: authMiddleware }, { path: '/mileage/:id', component: __webpack_require__(309), beforeEnter: authMiddleware }, { path: '/mileage/:approve/approve', component: __webpack_require__(174), beforeEnter: authMiddleware }, { path: '/mileage/:id/edit', component: __webpack_require__(174), beforeEnter: authMiddleware },
 
 // { path: '/route-card', component: require('./transport/routecard/index.vue'), beforeEnter: authMiddleware },
-{ path: '/route-card/create', component: __webpack_require__(312), beforeEnter: authMiddleware }, { path: '/delivery', component: __webpack_require__(299), beforeEnter: authMiddleware }, { path: '/delivery/create', component: __webpack_require__(170), beforeEnter: authMiddleware }, { path: '/delivery/:id', component: __webpack_require__(300), beforeEnter: authMiddleware }, { path: '/delivery/:id/edit', component: __webpack_require__(170), beforeEnter: authMiddleware }, { path: '/allocation', component: __webpack_require__(270), beforeEnter: authMiddleware }, { path: '/allocation/create', component: __webpack_require__(165), beforeEnter: authMiddleware }, { path: '/allocation/:id/edit', component: __webpack_require__(165), beforeEnter: authMiddleware }, { path: '/udfs', component: __webpack_require__(290), beforeEnter: authMiddleware }, { path: '/udfs/create', component: __webpack_require__(134), beforeEnter: authMiddleware }, { path: '/udfs/:id/edit', component: __webpack_require__(134), beforeEnter: authMiddleware }, { path: '/reports', component: __webpack_require__(310), beforeEnter: authMiddleware }, { path: '/reports/{details}', component: __webpack_require__(311), beforeEnter: authMiddleware }, { path: '/login',
+{ path: '/route-card/create', component: __webpack_require__(312), beforeEnter: authMiddleware }, { path: '/delivery', component: __webpack_require__(299), beforeEnter: authMiddleware }, { path: '/delivery/create', component: __webpack_require__(170), beforeEnter: authMiddleware }, { path: '/delivery/:id', component: __webpack_require__(300), beforeEnter: authMiddleware }, { path: '/delivery/:unload/unload', component: __webpack_require__(170), beforeEnter: authMiddleware }, { path: '/delivery/:id/edit', component: __webpack_require__(170), beforeEnter: authMiddleware }, { path: '/allocation', component: __webpack_require__(270), beforeEnter: authMiddleware }, { path: '/allocation/create', component: __webpack_require__(165), beforeEnter: authMiddleware }, { path: '/allocation/:id/edit', component: __webpack_require__(165), beforeEnter: authMiddleware }, { path: '/udfs', component: __webpack_require__(290), beforeEnter: authMiddleware }, { path: '/udfs/create', component: __webpack_require__(134), beforeEnter: authMiddleware }, { path: '/udfs/:id/edit', component: __webpack_require__(134), beforeEnter: authMiddleware }, { path: '/reports', component: __webpack_require__(310), beforeEnter: authMiddleware }, { path: '/reports/{details}', component: __webpack_require__(311), beforeEnter: authMiddleware }, { path: '/station-selection', component: __webpack_require__(418), beforeEnter: authMiddleware }, { path: '/403', component: __webpack_require__(414), beforeEnter: authMiddleware }, { path: '*', component: __webpack_require__(411), beforeEnter: authMiddleware }, { path: '/login',
     component: __webpack_require__(271),
     beforeEnter: function beforeEnter(to, from, next) {
         if (localStorage.getItem('foeiwafwfuwe')) {
@@ -86171,6 +86293,11 @@ var MainRouter = function () {
                     level: 'info',
                     user: JSON.parse(localStorage.getItem('fewuia32rfwe')),
                     isLoggedIn: !!localStorage.getItem('foeiwafwfuwe')
+                },
+                methods: {
+                    can: function can(permission) {
+                        return window.can(permission);
+                    }
                 }
             }).$mount('#app');
         }
@@ -90759,7 +90886,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 260 */
@@ -104686,7 +104813,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "col-sm-6"
   }, [_c('h4', [_c('strong', [_vm._v("Contract Details: " + _vm._s(_vm.status))])])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
-  }, [_c('div', {
+  }, [(_vm.$root.can('approve-contract')) ? _c('div', {
     staticClass: "form-group pull-right"
   }, [(_vm.status == 'Pending Approval') ? _c('button', {
     staticClass: "btn btn-success",
@@ -104712,7 +104839,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.reopenContract($event)
       }
     }
-  }, [_vm._v("Reopen Contract")]) : _vm._e()])])]), _vm._v(" "), _vm._m(0)]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Reopen Contract")]) : _vm._e()]) : _vm._e()])]), _vm._v(" "), _vm._m(0)]), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
   }, [_c('div', {
     staticClass: "tab-content"
@@ -108898,7 +109025,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control input-sm",
     attrs: {
-      "disabled": typeof _vm.$route.params.id === 'string',
+      "disabled": typeof _vm.$route.params.unload === 'string',
       "id": "journey_id",
       "name": "journey_id",
       "required": ""
@@ -108969,7 +109096,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control input-sm",
     attrs: {
-      "disabled": typeof _vm.$route.params.id === 'string',
+      "disabled": typeof _vm.$route.params.unload === 'string',
       "id": "bags_loaded",
       "min": "0",
       "type": "number"
@@ -109001,7 +109128,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control input-sm",
     attrs: {
-      "disabled": typeof _vm.$route.params.id === 'string',
+      "disabled": typeof _vm.$route.params.unload === 'string',
       "id": "loading_gross_weight",
       "min": "0",
       "type": "number"
@@ -109034,7 +109161,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control input-sm",
     attrs: {
-      "disabled": typeof _vm.$route.params.id === 'string',
+      "disabled": typeof _vm.$route.params.unload === 'string',
       "id": "loading_tare_weight",
       "min": "0",
       "type": "number"
@@ -109099,7 +109226,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control input-sm",
     attrs: {
-      "disabled": typeof _vm.$route.params.id === 'string',
+      "disabled": typeof _vm.$route.params.unload === 'string',
       "id": "loading_weighbridge_number",
       "type": "text"
     },
@@ -109129,7 +109256,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control input-sm",
     attrs: {
-      "disabled": typeof _vm.$route.params.id !== 'string',
+      "disabled": (typeof _vm.$route.params.unload !== 'string') && (typeof _vm.$route.params.id !== 'string'),
       "id": "offloading_gross_weight",
       "min": "0",
       "type": "number"
@@ -109162,7 +109289,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control input-sm",
     attrs: {
-      "disabled": typeof _vm.$route.params.id !== 'string',
+      "disabled": (typeof _vm.$route.params.unload !== 'string') && (typeof _vm.$route.params.id !== 'string'),
       "id": "offloading_tare_weight",
       "min": "0",
       "type": "number"
@@ -109227,7 +109354,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control input-sm",
     attrs: {
-      "disabled": typeof _vm.$route.params.id !== 'string',
+      "disabled": (typeof _vm.$route.params.unload !== 'string') && (typeof _vm.$route.params.id !== 'string'),
       "id": "offloading_weighbridge_number",
       "type": "text"
     },
@@ -111148,25 +111275,25 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "panel panel-default"
   }, [_c('div', {
     staticClass: "panel-heading"
-  }, [_c('strong', [_vm._v("Journey Creation")]), _vm._v(" "), _c('router-link', {
+  }, [_c('strong', [_vm._v("Journey Creation")]), _vm._v(" "), (_vm.$root.can('create-journey')) ? _c('router-link', {
     staticClass: "btn btn-primary btn-xs pull-right",
     attrs: {
       "to": "/journey/create"
     }
   }, [_c('i', {
     staticClass: "fa fa-plus"
-  }), _vm._v(" Add New")])], 1), _vm._v(" "), _c('div', {
+  }), _vm._v(" Add New")]) : _vm._e()], 1), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
   }, [_c('div', {
     staticClass: "table-responsive"
   }, [_c('table', {
     staticClass: "table no-wrap"
   }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.journeys), function(journey) {
-    return _c('tr', [_c('td', [_c('router-link', {
+    return _c('tr', [_c('td', [(_vm.$root.can('view-journey')) ? _c('router-link', {
       attrs: {
         "to": '/journey/' + journey.id
       }
-    }, [_vm._v("JRNY-" + _vm._s(journey.id))])], 1), _vm._v(" "), _c('td', [(journey.status == 'Pending Approval') ? _c('span', {
+    }, [_vm._v("JRNY-" + _vm._s(journey.id))]) : _c('span', [_vm._v("JRNY-" + _vm._s(journey.id))])], 1), _vm._v(" "), _c('td', [(journey.status == 'Pending Approval') ? _c('span', {
       staticClass: "label label-info"
     }, [_vm._v("Pending Approval")]) : _vm._e(), _vm._v(" "), (journey.status == 'Approved') ? _c('span', {
       staticClass: "label label-success"
@@ -111174,7 +111301,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "label label-default"
     }, [_vm._v("Closed")]) : _vm._e()]), _vm._v(" "), _c('td', [_vm._v(_vm._s(journey.truck.plate_number))]), _vm._v(" "), _c('td', [_vm._v("CTR-" + _vm._s(journey.contract.name) + " " + _vm._s(journey.contract.client.Name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.date2(journey.job_date)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(journey.truck.driver.first_name) + " " + _vm._s(journey.truck.driver.last_name))]), _vm._v(" "), _c('td', {
       staticClass: "text-center"
-    }, [(journey.status != 'Closed') ? _c('span', {
+    }, [((journey.status != 'Closed') && _vm.$root.can('edit-journey')) ? _c('span', {
       staticClass: "btn btn-xs btn-info",
       on: {
         "click": function($event) {
@@ -111183,7 +111310,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_c('i', {
       staticClass: "fa fa-pencil"
-    })]) : _vm._e(), _vm._v(" "), _c('button', {
+    })]) : _vm._e(), _vm._v(" "), (_vm.$root.can('delete-journey')) ? _c('button', {
       staticClass: "btn btn-xs btn-danger btn-destroy",
       attrs: {
         "data-toggle": "popover",
@@ -111191,7 +111318,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_c('i', {
       staticClass: "fa fa-trash"
-    })])])])
+    })]) : _vm._e()])])
   })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("Journey #")]), _vm._v(" "), _c('th', [_vm._v("Status")]), _vm._v(" "), _c('th', [_vm._v("Truck")]), _vm._v(" "), _c('th', [_vm._v("Contract")]), _vm._v(" "), _c('th', [_vm._v("Job Date")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th')])])], 1)])])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('thead', [_c('tr', [_c('th', [_vm._v("Journey #")]), _vm._v(" "), _c('th', [_vm._v("Status")]), _vm._v(" "), _c('th', [_vm._v("Truck")]), _vm._v(" "), _c('th', [_vm._v("Contract")]), _vm._v(" "), _c('th', [_vm._v("Job Date")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th')])])
@@ -112867,31 +112994,31 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "panel panel-default"
   }, [_c('div', {
     staticClass: "panel-heading"
-  }, [_c('strong', [_vm._v("Truck Inspection")]), _vm._v(" "), _c('router-link', {
+  }, [_c('strong', [_vm._v("Truck Inspection")]), _vm._v(" "), (_vm.$root.can('create-inspection')) ? _c('router-link', {
     staticClass: "btn btn-primary btn-xs pull-right",
     attrs: {
       "to": "/inspection/create"
     }
   }, [_c('i', {
     staticClass: "fa fa-plus"
-  }), _vm._v(" Add New")])], 1), _vm._v(" "), _c('div', {
+  }), _vm._v(" Add New")]) : _vm._e()], 1), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
   }, [_c('div', {
     staticClass: "table-responsive"
   }, [_c('table', {
     staticClass: "table nowrap"
   }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.inspections), function(inspection) {
-    return _c('tr', [_c('td', [_c('router-link', {
+    return _c('tr', [_c('td', [(_vm.$root.can('view-inspection')) ? _c('router-link', {
       attrs: {
         "to": '/inspection/' + inspection.id
       }
-    }, [_vm._v("INSP-" + _vm._s(inspection.id))])], 1), _vm._v(" "), _c('td', [_vm._v("JRNY-" + _vm._s(inspection.journey_id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(inspection.journey.truck.plate_number))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(inspection.journey.truck.trailer.trailer_number))]), _vm._v(" "), (parseInt(inspection.suitable_for_loading)) ? _c('td', [_c('span', {
+    }, [_vm._v("INSP-" + _vm._s(inspection.id))]) : _c('span', [_vm._v("INSP-" + _vm._s(inspection.id))])], 1), _vm._v(" "), _c('td', [_vm._v("JRNY-" + _vm._s(inspection.journey_id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(inspection.journey.truck.plate_number))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(inspection.journey.truck.trailer.trailer_number))]), _vm._v(" "), (parseInt(inspection.suitable_for_loading)) ? _c('td', [_c('span', {
       staticClass: "label label-success"
     }, [_vm._v("Yes")])]) : _vm._e(), _vm._v(" "), (!parseInt(inspection.suitable_for_loading)) ? _c('td', [_c('span', {
       staticClass: "label label-danger"
     }, [_vm._v("No")])]) : _vm._e(), _vm._v(" "), _c('td', [_vm._v(_vm._s(inspection.journey.driver.first_name) + " " + _vm._s(inspection.journey.driver.last_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(inspection.journey.driver.mobile_phone))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.date2(inspection.created_at)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(inspection.from_station))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(inspection.to_station))]), _vm._v(" "), _c('td', {
       staticClass: "text-center"
-    }, [_c('span', {
+    }, [(_vm.$root.can('edit-inspection')) ? _c('span', {
       staticClass: "btn btn-xs btn-info",
       on: {
         "click": function($event) {
@@ -112900,7 +113027,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_c('i', {
       staticClass: "fa fa-pencil"
-    })]), _vm._v(" "), _c('button', {
+    })]) : _vm._e(), _vm._v(" "), (_vm.$root.can('delete-inspection')) ? _c('button', {
       staticClass: "btn btn-xs btn-danger btn-destroy",
       attrs: {
         "data-toggle": "popover",
@@ -112908,7 +113035,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_c('i', {
       staticClass: "fa fa-trash"
-    })])])])
+    })]) : _vm._e()])])
   })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("Inspection #")]), _vm._v(" "), _c('th', [_vm._v("Journey #")]), _vm._v(" "), _c('th', [_vm._v("Truck")]), _vm._v(" "), _c('th', [_vm._v("Trailer")]), _vm._v(" "), _c('th', [_vm._v("Suitable")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th', [_vm._v("Phone Number")]), _vm._v(" "), _c('th', [_vm._v("Inspected On")]), _vm._v(" "), _c('th', [_vm._v("From")]), _vm._v(" "), _c('th', [_vm._v("To")]), _vm._v(" "), _c('th')])])], 1)])])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('thead', [_c('tr', [_c('th', [_vm._v("Inspection #")]), _vm._v(" "), _c('th', [_vm._v("Journey #")]), _vm._v(" "), _c('th', [_vm._v("Truck")]), _vm._v(" "), _c('th', [_vm._v("Trailer")]), _vm._v(" "), _c('th', [_vm._v("Suitable")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th', [_vm._v("Phone Number")]), _vm._v(" "), _c('th', [_vm._v("Inspected On")]), _vm._v(" "), _c('th', [_vm._v("From")]), _vm._v(" "), _c('th', [_vm._v("To")]), _vm._v(" "), _c('th')])])
@@ -115747,7 +115874,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _vm._v(" "), _c('div', {
     staticClass: "caption"
-  }, [_vm._v("Home")])]), _vm._v(" "), _c('router-link', {
+  }, [_vm._v("Home")])]), _vm._v(" "), (_vm.$root.can('create-contract') || _vm.$root.can('view-contract') || _vm.$root.can('edit-contract') || _vm.$root.can('approve-contract') || _vm.$root.can('delete-contract') ||
+    _vm.$root.can('create-contract-template') || _vm.$root.can('view-contract-template') || _vm.$root.can('edit-contract-template') || _vm.$root.can('delete-contract-template')) ? _c('router-link', {
     staticClass: "nav-items",
     attrs: {
       "to": "/contracts"
@@ -115760,7 +115888,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _vm._v(" "), _c('div', {
     staticClass: "caption"
-  }, [_vm._v("Contracts")])]), _vm._v(" "), _c('router-link', {
+  }, [_vm._v("Contracts")])]) : _vm._e(), _vm._v(" "), (_vm.$root.can('create-journey') || _vm.$root.can('view-journey') || _vm.$root.can('edit-journey') || _vm.$root.can('approve-journey') || _vm.$root.can('delete-journey')) ? _c('router-link', {
     staticClass: "nav-items",
     attrs: {
       "to": "/journey"
@@ -115773,7 +115901,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _vm._v(" "), _c('div', {
     staticClass: "caption"
-  }, [_vm._v("Journeys")])]), _vm._v(" "), _c('router-link', {
+  }, [_vm._v("Journeys")])]) : _vm._e(), _vm._v(" "), (_vm.$root.can('create-inspection') || _vm.$root.can('view-inspection') || _vm.$root.can('edit-inspection') || _vm.$root.can('approve-inspection') || _vm.$root.can('delete-inspection')) ? _c('router-link', {
     staticClass: "nav-items",
     attrs: {
       "to": "/inspection"
@@ -115786,7 +115914,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _vm._v(" "), _c('div', {
     staticClass: "caption"
-  }, [_vm._v("Inspection")])]), _vm._v(" "), _c('router-link', {
+  }, [_vm._v("Inspection")])]) : _vm._e(), _vm._v(" "), (_vm.$root.can('create-delivery') || _vm.$root.can('view-delivery') || _vm.$root.can('edit-delivery') || _vm.$root.can('approve-delivery') || _vm.$root.can('delete-delivery')) ? _c('router-link', {
     staticClass: "nav-items",
     attrs: {
       "to": "/delivery"
@@ -115799,7 +115927,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _vm._v(" "), _c('div', {
     staticClass: "caption"
-  }, [_vm._v("Delivery Note")])]), _vm._v(" "), _c('router-link', {
+  }, [_vm._v("Delivery Note")])]) : _vm._e(), _vm._v(" "), (_vm.$root.can('create-mileage') || _vm.$root.can('view-mileage') || _vm.$root.can('edit-mileage') || _vm.$root.can('approve-mileage') || _vm.$root.can('delete-mileage')) ? _c('router-link', {
     staticClass: "nav-items",
     attrs: {
       "to": "/mileage"
@@ -115812,7 +115940,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _vm._v(" "), _c('div', {
     staticClass: "caption"
-  }, [_vm._v("Mileage")])]), _vm._v(" "), _c('router-link', {
+  }, [_vm._v("Mileage")])]) : _vm._e(), _vm._v(" "), (_vm.$root.can('create-fuel') || _vm.$root.can('view-fuel') || _vm.$root.can('edit-fuel') || _vm.$root.can('approve-fuel') || _vm.$root.can('delete-fuel')) ? _c('router-link', {
     staticClass: "nav-items",
     attrs: {
       "to": "/fuel"
@@ -115825,7 +115953,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _vm._v(" "), _c('div', {
     staticClass: "caption"
-  }, [_vm._v("Fuel Allocation")])]), _vm._v(" "), _c('router-link', {
+  }, [_vm._v("Fuel Allocation")])]) : _vm._e(), _vm._v(" "), (_vm.$root.can('create-route-card') || _vm.$root.can('view-route-card') || _vm.$root.can('edit-route-card') || _vm.$root.can('approve-route-card') || _vm.$root.can('delete-route-card')) ? _c('router-link', {
     staticClass: "nav-items",
     attrs: {
       "to": "/route-card/create"
@@ -115838,7 +115966,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _vm._v(" "), _c('div', {
     staticClass: "caption"
-  }, [_vm._v("Route Card")])]), _vm._v(" "), _c('router-link', {
+  }, [_vm._v("Route Card")])]) : _vm._e(), _vm._v(" "), _c('router-link', {
     staticClass: "nav-items",
     attrs: {
       "to": "/reports"
@@ -115894,29 +116022,29 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "panel panel-default"
   }, [_c('div', {
     staticClass: "panel-heading"
-  }, [_c('strong', [_vm._v("Delivery Notes")]), _vm._v(" "), _c('router-link', {
+  }, [_c('strong', [_vm._v("Delivery Notes")]), _vm._v(" "), (_vm.$root.can('create-delivery')) ? _c('router-link', {
     staticClass: "btn btn-primary btn-xs pull-right",
     attrs: {
       "to": "/delivery/create"
     }
   }, [_c('i', {
     staticClass: "fa fa-plus"
-  }), _vm._v(" Add New")])], 1), _vm._v(" "), _c('div', {
+  }), _vm._v(" Add New")]) : _vm._e()], 1), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
   }, [_c('div', {
     staticClass: "table-responsive"
   }, [_c('table', {
     staticClass: "table no-wrap"
   }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.deliveries), function(delivery) {
-    return _c('tr', [_c('td', [_c('router-link', {
+    return _c('tr', [_c('td', [(_vm.$root.can('view-delivery')) ? _c('router-link', {
       attrs: {
         "to": '/delivery/' + delivery.id
       }
-    }, [_vm._v("RKS-" + _vm._s(delivery.id))])], 1), _vm._v(" "), _c('td', [_c('router-link', {
+    }, [_vm._v("RKS-" + _vm._s(delivery.id))]) : _c('span', [_vm._v("RKS-" + _vm._s(delivery.id))])], 1), _vm._v(" "), _c('td', [(_vm.$root.can('view-journey')) ? _c('router-link', {
       attrs: {
         "to": '/journey/' + delivery.journey_id
       }
-    }, [_vm._v("JRNY-" + _vm._s(delivery.journey_id))])], 1), _vm._v(" "), _c('td', {
+    }, [_vm._v("JRNY-" + _vm._s(delivery.journey_id))]) : _c('span', [_vm._v("JRNY-" + _vm._s(delivery.journey_id))])], 1), _vm._v(" "), _c('td', {
       staticClass: "text-right"
     }, [_vm._v(_vm._s(_vm.formatNumber(delivery.loading_gross_weight)))]), _vm._v(" "), _c('td', {
       staticClass: "text-right"
@@ -115930,7 +116058,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "text-right"
     }, [_vm._v(_vm._s(_vm.formatNumber(delivery.offloading_net_weight)))]), _vm._v(" "), _c('td', {
       staticClass: "text-center"
-    }, [(delivery.status == 'Loaded') ? _c('span', {
+    }, [((delivery.status == 'Loaded') && _vm.$root.can('create-delivery')) ? _c('span', {
+      staticClass: "btn btn-xs btn-success",
+      on: {
+        "click": function($event) {
+          _vm.unload(delivery)
+        }
+      }
+    }, [_vm._v("Offload")]) : _vm._e(), _vm._v(" "), (_vm.$root.can('edit-delivery')) ? _c('span', {
       staticClass: "btn btn-xs btn-info",
       on: {
         "click": function($event) {
@@ -115939,7 +116074,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_c('i', {
       staticClass: "fa fa-pencil"
-    })]) : _vm._e(), _vm._v(" "), _c('button', {
+    })]) : _vm._e(), _vm._v(" "), (_vm.$root.can('delete-delivery')) ? _c('button', {
       staticClass: "btn btn-xs btn-danger btn-destroy",
       attrs: {
         "data-toggle": "popover",
@@ -115947,7 +116082,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_c('i', {
       staticClass: "fa fa-trash"
-    })])])])
+    })]) : _vm._e()])])
   })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("Del. Note #")]), _vm._v(" "), _c('th', [_vm._v("Journey #")]), _vm._v(" "), _c('th', [_vm._v("Loading GW")]), _vm._v(" "), _c('th', [_vm._v("Loading TW")]), _vm._v(" "), _c('th', [_vm._v("Loading NW")]), _vm._v(" "), _c('th', [_vm._v("Offloading GW")]), _vm._v(" "), _c('th', [_vm._v("Offloading TW")]), _vm._v(" "), _c('th', [_vm._v("Offloading NW")]), _vm._v(" "), _c('th')])])], 1)])])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('thead', [_c('tr', [_c('th', [_vm._v("Del. Note #")]), _vm._v(" "), _c('th', [_vm._v("Journey #")]), _vm._v(" "), _c('th', [_vm._v("Loading GW")]), _vm._v(" "), _c('th', [_vm._v("Loading TW")]), _vm._v(" "), _c('th', [_vm._v("Loading NW")]), _vm._v(" "), _c('th', [_vm._v("Offloading GW")]), _vm._v(" "), _c('th', [_vm._v("Offloading TW")]), _vm._v(" "), _c('th', [_vm._v("Offloading NW")]), _vm._v(" "), _c('th')])])
@@ -116102,32 +116237,32 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v("Filter")])])])])])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-4"
-  }, [_c('router-link', {
+  }, [(_vm.$root.can('create-contract')) ? _c('router-link', {
     staticClass: "btn btn-primary btn-xs pull-right",
     attrs: {
       "to": "/contracts/create"
     }
   }, [_c('i', {
     staticClass: "fa fa-plus"
-  }), _vm._v(" New Contract")]), _vm._v(" "), _c('router-link', {
+  }), _vm._v(" New Contract")]) : _vm._e(), _vm._v(" "), (_vm.$root.can('create-contract-template')) ? _c('router-link', {
     staticClass: "btn btn-warning btn-xs pull-right",
     attrs: {
       "to": "/contract-templates"
     }
   }, [_c('i', {
     staticClass: "fa fa-eye"
-  }), _vm._v(" Templates")])], 1)])]), _vm._v(" "), _c('div', {
+  }), _vm._v(" Templates")]) : _vm._e()], 1)])]), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
   }, [_c('div', {
     staticClass: "table-responsive"
   }, [_c('table', {
     staticClass: "table nowrap"
   }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.contracts), function(contract) {
-    return _c('tr', [_c('td', [_c('router-link', {
+    return _c('tr', [_c('td', [(_vm.$root.can('view-contract') || _vm.$root.can('approve-contract')) ? _c('router-link', {
       attrs: {
         "to": '/contracts/' + contract.id
       }
-    }, [_vm._v("CNTR" + _vm._s(contract.id))])], 1), _vm._v(" "), _c('td', [(contract.status == 'Pending Approval') ? _c('span', {
+    }, [_vm._v("CNTR" + _vm._s(contract.id))]) : _c('span', [_vm._v("CNTR" + _vm._s(contract.id))])], 1), _vm._v(" "), _c('td', [(contract.status == 'Pending Approval') ? _c('span', {
       staticClass: "label label-info"
     }, [_vm._v("Pending Approval")]) : _vm._e(), _vm._v(" "), (contract.status == 'Approved') ? _c('span', {
       staticClass: "label label-success"
@@ -116141,7 +116276,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "text-right"
     }, [_vm._v(_vm._s(Number(contract.journeys_count).toLocaleString()))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.$root.currency) + " " + _vm._s(Number(contract.amount).toLocaleString()) + " " + _vm._s(contract.rate))]), _vm._v(" "), _c('td', {
       staticClass: "text-center"
-    }, [(contract.status != 'Closed') ? _c('span', {
+    }, [((contract.status != 'Closed') && (_vm.$root.can('edit-contract'))) ? _c('span', {
       staticClass: "btn btn-xs btn-info",
       on: {
         "click": function($event) {
@@ -116150,7 +116285,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_c('i', {
       staticClass: "fa fa-pencil"
-    })]) : _vm._e(), _vm._v(" "), _c('button', {
+    })]) : _vm._e(), _vm._v(" "), (_vm.$root.can('delete-contract')) ? _c('button', {
       staticClass: "btn btn-xs btn-danger btn-destroy",
       attrs: {
         "data-toggle": "popover",
@@ -116158,7 +116293,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_c('i', {
       staticClass: "fa fa-trash"
-    })])])])
+    })]) : _vm._e()])])
   })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("Contract #")]), _vm._v(" "), _c('th', [_vm._v("Status")]), _vm._v(" "), _c('th', [_vm._v("Client")]), _vm._v(" "), _c('th', [_vm._v("Date Created")]), _vm._v(" "), _c('th', [_vm._v("Start Date")]), _vm._v(" "), _c('th', [_vm._v("Expected End Date")]), _vm._v(" "), _c('th', [_vm._v("Quantity")]), _vm._v(" "), _c('th', {
     staticClass: "text-right"
   }, [_vm._v("Total Delivered")]), _vm._v(" "), _c('th', {
@@ -117240,32 +117375,32 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('label', {
     staticClass: "col-md-4 control-label",
     attrs: {
-      "for": "email"
+      "for": "username"
     }
-  }, [_vm._v("E-Mail Address")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Username")]), _vm._v(" "), _c('div', {
     staticClass: "col-md-6"
   }, [_c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.user.email),
-      expression: "user.email"
+      value: (_vm.user.username),
+      expression: "user.username"
     }],
     staticClass: "form-control",
     attrs: {
-      "id": "email",
+      "id": "username",
       "type": "text",
-      "name": "email",
+      "name": "username",
       "required": "",
       "autofocus": ""
     },
     domProps: {
-      "value": (_vm.user.email)
+      "value": (_vm.user.username)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.user.email = $event.target.value
+        _vm.user.username = $event.target.value
       }
     }
   })])]), _vm._v(" "), _c('div', {
@@ -117311,12 +117446,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "type": "submit"
     }
-  }, [_vm._v("\n                                    Login\n                                ")]), _vm._v(" "), _c('a', {
-    staticClass: "btn btn-link",
-    attrs: {
-      "href": "/forgot"
-    }
-  }, [_vm._v("\n                                    Forgot Your Password?\n                                ")])])])
+  }, [_vm._v("\n                                    Login\n                                ")])])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
@@ -121163,7 +121293,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "col-sm-6"
   }, [_c('h4', [_c('strong', [_vm._v("Journey Details: JRNY-" + _vm._s(_vm.$route.params.id) + " (" + _vm._s(_vm.status) + ")")])])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
-  }, [_c('div', {
+  }, [(_vm.$root.can('approve-journey')) ? _c('div', {
     staticClass: "form-group pull-right"
   }, [(_vm.status == 'Pending Approval') ? _c('button', {
     staticClass: "btn btn-success",
@@ -121181,7 +121311,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.showModal = true
       }
     }
-  }, [_vm._v("Close Journey")]) : _vm._e()])])])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Close Journey")]) : _vm._e()]) : _vm._e()])])]), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
   }, [_c('form', {
     attrs: {
@@ -123206,25 +123336,25 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "panel panel-default"
   }, [_c('div', {
     staticClass: "panel-heading"
-  }, [_c('strong', [_vm._v("Fuel Allocation")]), _vm._v(" "), _c('router-link', {
+  }, [_c('strong', [_vm._v("Fuel Allocation")]), _vm._v(" "), (_vm.$root.can('create-fuel')) ? _c('router-link', {
     staticClass: "btn btn-primary btn-xs pull-right",
     attrs: {
       "to": "/fuel/create"
     }
   }, [_c('i', {
     staticClass: "fa fa-plus"
-  }), _vm._v(" Add New")])], 1), _vm._v(" "), _c('div', {
+  }), _vm._v(" Add New")]) : _vm._e()], 1), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
   }, [_c('div', {
     staticClass: "table-responsive"
   }, [_c('table', {
-    staticClass: "table no-wrap"
+    staticClass: "table nowrap"
   }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.fuels), function(fuel) {
-    return _c('tr', [_c('td', [_c('router-link', {
+    return _c('tr', [_c('td', [(_vm.$root.can('view-fuel')) ? _c('router-link', {
       attrs: {
         "to": '/fuel/' + fuel.id
       }
-    }, [_vm._v("FUEL-" + _vm._s(fuel.id))])], 1), _vm._v(" "), _c('td', [_vm._v("JRNY-" + _vm._s(fuel.journey_id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.date))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.journey.driver.first_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.journey.truck.plate_number))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.journey.route.source) + " - " + _vm._s(fuel.journey.route.destination))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.journey.route.distance))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.current_fuel))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.fuel_requested))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.fuel_issued))]), _vm._v(" "), (fuel.status == 'Approved') ? _c('td', [_vm._v(_vm._s(fuel.status))]) : _vm._e(), _vm._v(" "), (fuel.status == 'Awaiting Approval') ? _c('td', [(fuel.status == 'Awaiting Approval') ? _c('button', {
+    }, [_vm._v("FUEL-" + _vm._s(fuel.id))]) : _c('span', [_vm._v("FUEL-" + _vm._s(fuel.id))])], 1), _vm._v(" "), _c('td', [_vm._v("JRNY-" + _vm._s(fuel.journey_id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.date))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.journey.driver.first_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.journey.truck.plate_number))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.journey.route.source) + " - " + _vm._s(fuel.journey.route.destination))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.journey.route.distance))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.current_fuel))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.fuel_requested))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.fuel_issued))]), _vm._v(" "), (fuel.status == 'Awaiting Approval' && _vm.$root.can('approve-fuel')) ? _c('td', [(fuel.status == 'Awaiting Approval') ? _c('button', {
       staticClass: "btn btn-xs btn-success",
       attrs: {
         "type": "button",
@@ -123235,7 +123365,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.approveFuel(fuel.id)
         }
       }
-    }, [_vm._v("Approve")]) : _vm._e()]) : _vm._e(), _vm._v(" "), _c('td', [(fuel.status == 'Awaiting Approval') ? _c('span', {
+    }, [_vm._v("Approve")]) : _vm._e()]) : _c('td', [_vm._v(_vm._s(fuel.status))]), _vm._v(" "), _c('td', [(_vm.$root.can('edit-fuel')) ? _c('span', {
       staticClass: "btn btn-xs btn-info",
       on: {
         "click": function($event) {
@@ -123244,7 +123374,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_c('i', {
       staticClass: "fa fa-pencil"
-    })]) : _vm._e(), _vm._v(" "), _c('button', {
+    })]) : _vm._e(), _vm._v(" "), (_vm.$root.can('delete-fuel')) ? _c('button', {
       staticClass: "btn btn-xs btn-danger btn-destroy",
       attrs: {
         "data-toggle": "popover",
@@ -123252,7 +123382,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_c('i', {
       staticClass: "fa fa-trash"
-    })])])])
+    })]) : _vm._e()])])
   })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("Journey")]), _vm._v(" "), _c('th', [_vm._v("Date")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th', [_vm._v("Vehicle")]), _vm._v(" "), _c('th', [_vm._v("Source")]), _vm._v(" "), _c('th', [_vm._v("Destination")]), _vm._v(" "), _c('th', [_vm._v("Journey Distance")]), _vm._v(" "), _c('th', [_vm._v("Current Fuel")]), _vm._v(" "), _c('th', [_vm._v("Fuel Requested")]), _vm._v(" "), _c('th', [_vm._v("Fuel Issued")]), _vm._v(" "), _c('th', [_vm._v("Status")]), _vm._v(" "), _c('th', [_vm._v("Action")])])])], 1)])])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('thead', [_c('tr', [_c('th', [_vm._v("Fuel No.")]), _vm._v(" "), _c('th', [_vm._v("Journey")]), _vm._v(" "), _c('th', [_vm._v("Date")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th', [_vm._v("Vehicle")]), _vm._v(" "), _c('th', [_vm._v("Source - Destination")]), _vm._v(" "), _c('th', [_vm._v("Journey Distance")]), _vm._v(" "), _c('th', [_vm._v("Current Fuel")]), _vm._v(" "), _c('th', [_vm._v("Fuel Requested")]), _vm._v(" "), _c('th', [_vm._v("Fuel Issued")]), _vm._v(" "), _c('th', [_vm._v("Status")]), _vm._v(" "), _c('th', [_vm._v("Action")])])])
@@ -123362,29 +123492,29 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "panel panel-default"
   }, [_c('div', {
     staticClass: "panel-heading"
-  }, [_c('strong', [_vm._v("Mileage Allocation")]), _vm._v(" "), _c('router-link', {
+  }, [_c('strong', [_vm._v("Mileage Allocation")]), _vm._v(" "), (_vm.$root.can('create-mileage')) ? _c('router-link', {
     staticClass: "btn btn-primary btn-xs pull-right",
     attrs: {
       "to": "/mileage/create"
     }
   }, [_c('i', {
     staticClass: "fa fa-plus"
-  }), _vm._v(" Add New")])], 1), _vm._v(" "), _c('div', {
+  }), _vm._v(" Add New")]) : _vm._e()], 1), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
   }, [_c('div', {
     staticClass: "table-responsive"
   }, [_c('table', {
     staticClass: "table no-wrap"
   }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.mileages), function(mileage) {
-    return _c('tr', [_c('td', [_c('router-link', {
+    return _c('tr', [_c('td', [(_vm.$root.can('view-mileage')) ? _c('router-link', {
       attrs: {
         "to": '/mileage/' + mileage.id
       }
-    }, [_vm._v("MLG-" + _vm._s(mileage.id))])], 1), _vm._v(" "), _c('td', [_c('router-link', {
+    }, [_vm._v("MLG-" + _vm._s(mileage.id))]) : _c('span', [_vm._v("MLG-" + _vm._s(mileage.id))])], 1), _vm._v(" "), _c('td', [(_vm.$root.can('create-journey')) ? _c('router-link', {
       attrs: {
         "to": '/journey/' + mileage.journey_id
       }
-    }, [_vm._v("JRNY-" + _vm._s(mileage.journey_id))])], 1), _vm._v(" "), _c('td', [_vm._v(_vm._s(mileage.mileage_type))]), _vm._v(" "), _c('td', {
+    }, [_vm._v("JRNY-" + _vm._s(mileage.journey_id))]) : _c('span', [_vm._v("JRNY-" + _vm._s(mileage.journey_id))])], 1), _vm._v(" "), _c('td', [_vm._v(_vm._s(mileage.mileage_type))]), _vm._v(" "), _c('td', {
       staticClass: "text-right"
     }, [_vm._v(_vm._s(_vm.formatNumber(mileage.standard_amount)))]), _vm._v(" "), _c('td', {
       staticClass: "text-right"
@@ -123392,7 +123522,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "text-right"
     }, [_vm._v(_vm._s(_vm.formatNumber(mileage.approved_amount)))]), _vm._v(" "), _c('td', {
       staticClass: "text-center"
-    }, [(!mileage.approved_amount) ? _c('span', {
+    }, [(_vm.$root.can('edit-mileage')) ? _c('span', {
       staticClass: "btn btn-xs btn-info",
       on: {
         "click": function($event) {
@@ -123401,7 +123531,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_c('i', {
       staticClass: "fa fa-pencil"
-    })]) : _vm._e(), _vm._v(" "), _c('button', {
+    })]) : _vm._e(), _vm._v(" "), (_vm.$root.can('delete-mileage')) ? _c('button', {
       staticClass: "btn btn-xs btn-danger btn-destroy",
       attrs: {
         "data-toggle": "popover",
@@ -123409,7 +123539,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_c('i', {
       staticClass: "fa fa-trash"
-    })])])])
+    })]) : _vm._e()])])
   })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("Mileage #")]), _vm._v(" "), _c('th', [_vm._v("Journey #")]), _vm._v(" "), _c('th', [_vm._v("Mileage Type")]), _vm._v(" "), _c('th', {
     staticClass: "text-right"
   }, [_vm._v("Std Amount")]), _vm._v(" "), _c('th', {
@@ -126299,6 +126429,316 @@ if(false) {
 __webpack_require__(176);
 module.exports = __webpack_require__(178);
 
+
+/***/ }),
+/* 397 */,
+/* 398 */,
+/* 399 */,
+/* 400 */,
+/* 401 */,
+/* 402 */,
+/* 403 */,
+/* 404 */,
+/* 405 */,
+/* 406 */,
+/* 407 */,
+/* 408 */,
+/* 409 */,
+/* 410 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = {};
+
+/***/ }),
+/* 411 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(410),
+  /* template */
+  __webpack_require__(412),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/smodav/code/office/rkkb/resources/assets/js/transport/404.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] 404.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-2c1d4e86", Component.options)
+  } else {
+    hotAPI.reload("data-v-2c1d4e86", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 412 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _vm._m(0)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "container"
+  }, [_c('h2', {
+    staticClass: "text-center"
+  }, [_vm._v("Page not found")])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-2c1d4e86", module.exports)
+  }
+}
+
+/***/ }),
+/* 413 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = {};
+
+/***/ }),
+/* 414 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(413),
+  /* template */
+  __webpack_require__(415),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/smodav/code/office/rkkb/resources/assets/js/transport/403.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] 403.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-2c397d88", Component.options)
+  } else {
+    hotAPI.reload("data-v-2c397d88", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 415 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _vm._m(0)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "container"
+  }, [_c('h2', {
+    staticClass: "text-center"
+  }, [_vm._v("Unauthorized")]), _vm._v(" "), _c('h4', {
+    staticClass: "text-center"
+  }, [_vm._v("You do not have permission to perform this action")])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-2c397d88", module.exports)
+  }
+}
+
+/***/ }),
+/* 416 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = {};
+
+/***/ }),
+/* 417 */,
+/* 418 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(416),
+  /* template */
+  __webpack_require__(419),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/smodav/code/office/rkkb/resources/assets/js/transport/station.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] station.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-9c10178e", Component.options)
+  } else {
+    hotAPI.reload("data-v-9c10178e", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 419 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-sm-4 col-sm-offset-4"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('h4', {
+    staticClass: "text-center"
+  }, [_vm._v("Please select a station")]), _vm._v(" "), _c('form', {
+    attrs: {
+      "action": "/station-selection",
+      "method": "post",
+      "role": "form"
+    }
+  }, [_c('input', {
+    attrs: {
+      "type": "hidden",
+      "name": "_token"
+    },
+    domProps: {
+      "value": _vm.$root.csrf
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-12"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "station"
+    }
+  }, [_vm._v("Station")]), _vm._v(" "), _c('select', {
+    staticClass: "form-control",
+    attrs: {
+      "name": "station",
+      "id": "station"
+    }
+  }, _vm._l((_vm.$root.user.stations), function(station) {
+    return _c('option', {
+      domProps: {
+        "value": station.id
+      }
+    }, [_vm._v(_vm._s(station.name))])
+  }))])]), _vm._v(" "), _c('br'), _vm._v(" "), _vm._m(1)])])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "panel-heading text-center"
+  }, [_c('strong', [_vm._v("Station Selection")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "col-sm-12"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('button', {
+    staticClass: "btn btn-success btn-block",
+    attrs: {
+      "type": "submit"
+    }
+  }, [_vm._v("Login")])])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-9c10178e", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

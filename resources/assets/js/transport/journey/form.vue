@@ -241,6 +241,18 @@
     export default {
         created() {
 
+            if (! this.$route.params.id && ! this.$root.can('create-journey')) {
+                this.$router.push('/403');
+                return false;
+            }
+
+            if (this.$route.params.id && ! this.$root.can('edit-journey')) {
+                this.$router.push('/403');
+                return false;
+            }
+
+            this.$root.isLoading = true;
+
             http.get('/api/journey/create').then((response) => {
                 this.clients = response.clients;
                 this.routes = response.routes;
@@ -252,7 +264,17 @@
                 if(response.last_journey_id){
                   this.last_journey_id = response.last_journey_id;
                 }
-            });
+
+                return response;
+            }).then(() => {
+                return http.get('/api/journey/create?contracts=true').then((response) => {
+                    this.contracts = response.contracts;
+                    this.isContractsLoaded = true;
+                    this.$root.isLoading = false;
+
+                    return response;
+                })
+            }).catch(() => this.$root.isLoading = false);
 
             this.checkState();
         },
@@ -280,7 +302,8 @@
                 uploads: [],
                 stockItems: [],
                 journey: {
-                    is_contract_related: 0,
+                    station_id: window.Laravel.station_id,
+                    is_contract_related: 1,
                     contract_id: '',
                     journey_type: 'Local',
                     job_date: '',
@@ -383,6 +406,8 @@
                             this.contracts = response.contracts;
                             this.isContractsLoaded = true;
                             this.$root.isLoading = false;
+
+                            return response;
                         });
                     }
 
@@ -409,25 +434,23 @@
 
             checkState() {
                 if (this.$route.params.id) {
-                    this.fetchContracts().then(() => {
-                        http.get('/api/journey/' + this.$route.params.id).then((response) => {
-                            this.clients = response.clients;
-                            this.routes = response.routes;
-                            this.classifications = response.cargo_classifications;
-                            this.cargo_types = response.cargo_types;
-                            this.carriage_points = response.carriage_points;
-                            this.trucks = response.trucks;
-                            this.drivers = response.drivers;
+                    http.get('/api/journey/' + this.$route.params.id).then((response) => {
+                        this.clients = response.clients;
+                        this.routes = response.routes;
+                        this.classifications = response.cargo_classifications;
+                        this.cargo_types = response.cargo_types;
+                        this.carriage_points = response.carriage_points;
+                        this.trucks = response.trucks;
+                        this.drivers = response.drivers;
 //                            this.contract = response.contract;
-                            this.journey = response.journey.raw;
-                            this.journey.enquiry_from = this.journey.enquiry_from == 'null' ? '' : this.journey.enquiry_from;
-                            this.journey.ref_no = this.journey.ref_no == 'null' ? '' : this.journey.ref_no;
-                            this.journey.ref_no = this.journey.contract_id == 'null' ? '' : this.journey.contract_id;
-                            this.trucks_already_allocated = response.allocated;
-                            this.updateBooleans();
-                            this.status = response.journey.status;
-                            this.setupUI();
-                        });
+                        this.journey = response.journey.raw;
+                        this.journey.enquiry_from = this.journey.enquiry_from == 'null' ? '' : this.journey.enquiry_from;
+                        this.journey.ref_no = this.journey.ref_no == 'null' ? '' : this.journey.ref_no;
+                        this.journey.ref_no = this.journey.contract_id == 'null' ? '' : this.journey.contract_id;
+                        this.trucks_already_allocated = response.allocated;
+                        this.updateBooleans();
+                        this.status = response.journey.status;
+                        this.setupUI();
                     });
                 }
                 this.setupUI();

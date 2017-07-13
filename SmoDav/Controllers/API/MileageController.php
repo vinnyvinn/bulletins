@@ -29,7 +29,9 @@ class MileageController extends Controller
     public function index()
     {
         return Response::json([
-            'mileages' => Mileage::all()
+            'mileages' => Mileage::when(request('s'), function ($builder) {
+                return $builder->where('station_id', request('s'));
+            })->get()
         ]);
     }
 
@@ -41,7 +43,10 @@ class MileageController extends Controller
     public function create()
     {
         return Response::json([
-            'journeys' => Journey::open()
+            'journeys' => Journey::when(request('s'), function ($builder) {
+                return $builder->where('station_id', request('s'));
+            })
+                ->open()
                 ->has('delivery')
                 ->with(['driver', 'truck.trailer', 'route'])
                 ->get(),
@@ -133,7 +138,10 @@ class MileageController extends Controller
         return Response::json([
             'status' => 'success',
             'message' => 'Successfully deleted mileage voucher.',
-            'mileages' => Mileage::all()
+            'mileages' => Mileage::when(request('s'), function ($builder) {
+                return $builder->where('station_id', request('s'));
+            })
+                ->get()
         ]);
     }
 

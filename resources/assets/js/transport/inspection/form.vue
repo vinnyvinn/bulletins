@@ -217,13 +217,24 @@
 
 <script>
     export default {
+        created() {
+            if (! this.$route.params.id && ! this.$root.can('create-inspection')) {
+                this.$router.push('/403');
+                return false;
+            }
+
+            if (this.$route.params.id && ! this.$root.can('edit-inspection')) {
+                this.$router.push('/403');
+                return false;
+            }
+        },
         mounted() {
             let endpoint = '/api/inspection/create';
             if (this.$route.params.id) {
                 endpoint = '/api/inspection/' + this.$route.params.id;
             }
 
-            http.get(endpoint).then((response) => {
+            http.get(endpoint + '?s=' + window.Laravel.station_id).then((response) => {
                 if (response.status !== 'success') return;
                 this.journeys = response.journeys;
                 this.isInspector = response.inspector;
@@ -248,6 +259,7 @@
                 isInspector: true,
                 application_name: window.Laravel.appname,
                 checklist: {
+                    station_id: window.Laravel.station_id,
                     journey_id: null,
                     user_id: window.Laravel.user,
                     inspectors_comments: '',

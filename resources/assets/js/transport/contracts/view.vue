@@ -6,7 +6,7 @@
                     <h4><strong>Contract Details: {{ status }}</strong></h4>
                 </div>
                 <div class="col-sm-6">
-                    <div class="form-group pull-right">
+                    <div class="form-group pull-right" v-if="$root.can('approve-contract')">
                         <button @click.prevent="approveContract" class="btn btn-success" v-if="status == 'Pending Approval'">Approve Contract</button>
                         <button @click.prevent="closeContract" class="btn btn-danger" v-if="(status == 'Pending Approval') || (status == 'Approved')">Close Contract</button>
                         <button @click.prevent="reopenContract" class="btn btn-primary" v-if="status == 'Closed'">Reopen Contract</button>
