@@ -168,11 +168,21 @@
 <script>
     export default {
         created() {
+            if (! this.$route.params.id && ! this.$route.params.unload &&  ! this.$root.can('create-fuel')) {
+                this.$router.push('/403');
+                return false;
+            }
+
+            if (this.$route.params.id && ! this.$root.can('edit-fuel')) {
+                this.$router.push('/403');
+                return false;
+            }
+
           this.$root.isLoading = true;
           if(this.$route.params.id){
             this.can_save = true;
           }
-            http.get('/api/fuel/create').then((response) => {
+            http.get('/api/fuel/create/?s=' + window.Laravel.station_id).then((response) => {
                 this.journeys = response.journeys;
             }).then(() => {
               this.checkState();
@@ -203,6 +213,7 @@
                 fuel_used: 0,
                 km_per_litre: 0,
                 fuel: {
+                    station_id: window.Laravel.station_id,
                     journey_id: '',
                     date: '',
                     current_fuel: 0,

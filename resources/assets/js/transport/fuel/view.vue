@@ -171,6 +171,10 @@ import axios from 'axios';
             };
         },
         created() {
+            if (! this.$root.can('view-fuel')) {
+                this.$router.push('/403');
+                return false;
+            }
           this.$root.isLoading = true;
             http.get('/api/fuel/' + this.$route.params.id).then((response) => {
                 this.fuel = response.fuel;

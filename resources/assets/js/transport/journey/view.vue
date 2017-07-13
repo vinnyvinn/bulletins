@@ -6,7 +6,7 @@
                     <h4><strong>Journey Details: JRNY-{{ $route.params.id }} ({{ status }})</strong></h4>
                 </div>
                 <div class="col-sm-6">
-                    <div class="form-group pull-right">
+                    <div class="form-group pull-right" v-if="$root.can('approve-journey')">
                         <button @click.prevent="approveJourney" class="btn btn-success" v-if="status == 'Pending Approval'">Approve Journey</button>
                         <!-- <button @click.prevent="closeJourney" class="btn btn-danger" v-if="(status == 'Pending Approval') || (status == 'Approved')">Close Journey</button> -->
                         <button @click.prevent="showModal = true" class="btn btn-danger" v-if="(status == 'Pending Approval') || (status == 'Approved')">Close Journey</button>

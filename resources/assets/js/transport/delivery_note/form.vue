@@ -10,7 +10,7 @@
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label for="journey_id">Journey Number</label>
-                            <select :disabled="typeof $route.params.id === 'string'" v-model="deliveryNote.journey_id" @change="journey" class="form-control input-sm" id="journey_id" name="journey_id" required>
+                            <select :disabled="typeof $route.params.unload === 'string'" v-model="deliveryNote.journey_id" @change="journey" class="form-control input-sm" id="journey_id" name="journey_id" required>
                                 <option v-for="journey in journeys" :value="journey.id">JRNY-{{ journey.id }}</option>
                             </select>
                         </div>
@@ -77,16 +77,16 @@
                         <hr>
                         <div class="form-group">
                             <label for="bags_loaded">Bags Loaded</label>
-                            <input :disabled="typeof $route.params.id === 'string'" id="bags_loaded" min="0" v-model="deliveryNote.bags_loaded" type="number" class="form-control input-sm">
+                            <input :disabled="typeof $route.params.unload === 'string'" id="bags_loaded" min="0" v-model="deliveryNote.bags_loaded" type="number" class="form-control input-sm">
                         </div>
 
                         <div class="form-group">
                             <label for="loading_gross_weight">Gross Weight (Kgs)</label>
-                            <input :disabled="typeof $route.params.id === 'string'" @keyup="updateNote" id="loading_gross_weight" min="0" v-model="deliveryNote.loading_gross_weight" type="number" class="form-control input-sm">
+                            <input :disabled="typeof $route.params.unload === 'string'" @keyup="updateNote" id="loading_gross_weight" min="0" v-model="deliveryNote.loading_gross_weight" type="number" class="form-control input-sm">
                         </div>
                         <div class="form-group">
                             <label for="loading_tare_weight">Tare Weight (Kgs)</label>
-                            <input :disabled="typeof $route.params.id === 'string'" @keyup="updateNote" id="loading_tare_weight" min="0" v-model="deliveryNote.loading_tare_weight" type="number" class="form-control input-sm">
+                            <input :disabled="typeof $route.params.unload === 'string'" @keyup="updateNote" id="loading_tare_weight" min="0" v-model="deliveryNote.loading_tare_weight" type="number" class="form-control input-sm">
                         </div>
                         <div class="form-group">
                             <label for="loading_net_weight">Net Weight (Kgs)</label>
@@ -94,7 +94,7 @@
                         </div>
                         <div class="form-group">
                             <label for="loading_weighbridge_number">Weighbridge Ticket Number</label>
-                            <input :disabled="typeof $route.params.id === 'string'" id="loading_weighbridge_number" v-model="deliveryNote.loading_weighbridge_number" type="text" class="form-control input-sm">
+                            <input :disabled="typeof $route.params.unload === 'string'" id="loading_weighbridge_number" v-model="deliveryNote.loading_weighbridge_number" type="text" class="form-control input-sm">
                         </div>
                     </div>
 
@@ -104,11 +104,11 @@
 
                         <div class="form-group">
                             <label for="offloading_gross_weight">Gross Weight</label>
-                            <input :disabled="typeof $route.params.id !== 'string'" @keyup="updateNote" id="offloading_gross_weight" min="0" v-model="deliveryNote.offloading_gross_weight" type="number" class="form-control input-sm">
+                            <input :disabled="(typeof $route.params.unload !== 'string') && (typeof $route.params.id !== 'string')" @keyup="updateNote" id="offloading_gross_weight" min="0" v-model="deliveryNote.offloading_gross_weight" type="number" class="form-control input-sm">
                         </div>
                         <div class="form-group">
                             <label for="offloading_tare_weight">Tare Weight</label>
-                            <input :disabled="typeof $route.params.id !== 'string'" @keyup="updateNote" id="offloading_tare_weight" min="0" v-model="deliveryNote.offloading_tare_weight" type="number" class="form-control input-sm">
+                            <input :disabled="(typeof $route.params.unload !== 'string') && (typeof $route.params.id !== 'string')" @keyup="updateNote" id="offloading_tare_weight" min="0" v-model="deliveryNote.offloading_tare_weight" type="number" class="form-control input-sm">
                         </div>
                         <div class="form-group">
                             <label for="offloading_net_weight">Net Weight</label>
@@ -116,7 +116,7 @@
                         </div>
                         <div class="form-group">
                             <label for="offloading_weighbridge_number">Weighbridge Ticket Number</label>
-                            <input :disabled="typeof $route.params.id !== 'string'" id="offloading_weighbridge_number" v-model="deliveryNote.offloading_weighbridge_number" type="text" class="form-control input-sm">
+                            <input :disabled="(typeof $route.params.unload !== 'string') && (typeof $route.params.id !== 'string')" id="offloading_weighbridge_number" v-model="deliveryNote.offloading_weighbridge_number" type="text" class="form-control input-sm">
                         </div>
                     </div>
 
@@ -146,6 +146,7 @@
                 journeys: [],
                 uploads: [],
                 deliveryNote: {
+                    station_id: window.Laravel.station_id,
                     journey_id: '',
                     narration: '',
                     bags_loaded: 0,
@@ -162,7 +163,17 @@
         },
 
         created() {
-            if (this.$route.params.id) {
+            if (! this.$route.params.id && ! this.$route.params.unload &&  ! this.$root.can('create-delivery')) {
+                this.$router.push('/403');
+                return false;
+            }
+
+            if (this.$route.params.id && ! this.$root.can('edit-delivery')) {
+                this.$router.push('/403');
+                return false;
+            }
+
+            if (this.$route.params.id || this.$route.params.unload) {
                 this.checkState();
                 return;
             }
@@ -210,19 +221,25 @@
             },
 
             checkState() {
-                return http.get('/api/delivery/' + this.$route.params.id).then((response) => {
+                this.$root.isLoading = true;
+                let id = this.$route.params.unload ? this.$route.params.unload : this.$route.params.id;
+
+                return http.get('/api/delivery/' + id).then((response) => {
                     this.deliveryNote = response.delivery;
                     this.journeys = response.journeys;
+                    this.$root.isLoading = false;
                 });
             },
             store() {
                 this.$root.isLoading = true;
                 let request = null;
 
-                let data = mapToFormData(this.deliveryNote, this.uploads, typeof this.$route.params.id === 'string');
+                let data = mapToFormData(this.deliveryNote, this.uploads, typeof this.$route.params.id === 'string' || typeof this.$route.params.unload === 'string');
 
                 if (this.$route.params.id) {
                     request = http.put('/api/delivery/' + this.$route.params.id, data, true);
+                } else if (this.$route.params.unload) {
+                    request = http.put('/api/delivery/' + this.$route.params.unload, data, true);
                 } else {
                     request = http.post('/api/delivery', data, true);
                 }

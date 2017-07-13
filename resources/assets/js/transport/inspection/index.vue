@@ -5,7 +5,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>Truck Inspection</strong>
-                        <router-link to="/inspection/create" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i> Add New</router-link>
+                        <router-link v-if="$root.can('create-inspection')" to="/inspection/create" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i> Add New</router-link>
                     </div>
                     <div class="panel-body">
                         <div class="table-responsive">
@@ -27,7 +27,10 @@
                                 </thead>
                                 <tbody>
                                 <tr v-for="inspection in inspections">
-                                    <td><router-link :to="'/inspection/' + inspection.id">INSP-{{ inspection.id }}</router-link></td>
+                                    <td>
+                                        <router-link v-if="$root.can('view-inspection')" :to="'/inspection/' + inspection.id">INSP-{{ inspection.id }}</router-link>
+                                        <span v-else>INSP-{{ inspection.id }}</span>
+                                    </td>
                                     <td>JRNY-{{ inspection.journey_id }}</td>
                                     <td>{{ inspection.journey.truck.plate_number }}</td>
                                     <td>{{ inspection.journey.truck.trailer.trailer_number }}</td>
@@ -39,8 +42,8 @@
                                     <td>{{ inspection.from_station }}</td>
                                     <td>{{ inspection.to_station }}</td>
                                     <td class="text-center">
-                                        <span @click="edit(inspection)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
-                                        <button data-toggle="popover" :data-item="inspection.id" class="btn btn-xs btn-danger btn-destroy">
+                                        <span v-if="$root.can('edit-inspection')" @click="edit(inspection)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
+                                        <button v-if="$root.can('delete-inspection')" data-toggle="popover" :data-item="inspection.id" class="btn btn-xs btn-danger btn-destroy">
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </td>
@@ -74,7 +77,7 @@
 <script>
     export default {
         created() {
-            http.get('/api/inspection').then(response => {
+            http.get('/api/inspection/?s=' + window.Laravel.station_id).then(response => {
                 this.inspections = response.inspections;
                 this.setupConfirm();
                 prepareTable();

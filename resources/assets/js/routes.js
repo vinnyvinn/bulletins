@@ -7,6 +7,10 @@ function authMiddleware(to, from, next) {
         return next({path: '/login'});
     }
 
+    if (! window.Laravel.station_id && to.path !== '/station-selection') {
+        return next({path: '/station-selection'});
+    }
+
     return next();
 }
 
@@ -82,6 +86,7 @@ module.exports = [
     { path: '/mileage', component: require('./transport/mileage/index.vue'), beforeEnter: authMiddleware },
     { path: '/mileage/create', component: require('./transport/mileage/form.vue'), beforeEnter: authMiddleware },
     { path: '/mileage/:id', component: require('./transport/mileage/view.vue'), beforeEnter: authMiddleware },
+    { path: '/mileage/:approve/approve', component: require('./transport/mileage/form.vue'), beforeEnter: authMiddleware },
     { path: '/mileage/:id/edit', component: require('./transport/mileage/form.vue'), beforeEnter: authMiddleware },
 
     // { path: '/route-card', component: require('./transport/routecard/index.vue'), beforeEnter: authMiddleware },
@@ -90,6 +95,7 @@ module.exports = [
     { path: '/delivery', component: require('./transport/delivery_note/index.vue'), beforeEnter: authMiddleware },
     { path: '/delivery/create', component: require('./transport/delivery_note/form.vue'), beforeEnter: authMiddleware },
     { path: '/delivery/:id', component: require('./transport/delivery_note/view.vue'), beforeEnter: authMiddleware },
+    { path: '/delivery/:unload/unload', component: require('./transport/delivery_note/form.vue'), beforeEnter: authMiddleware },
     { path: '/delivery/:id/edit', component: require('./transport/delivery_note/form.vue'), beforeEnter: authMiddleware },
 
     { path: '/allocation', component: require('./components/allocation/index.vue'), beforeEnter: authMiddleware },
@@ -102,6 +108,11 @@ module.exports = [
 
     { path: '/reports', component: require('./transport/reports/index.vue'), beforeEnter: authMiddleware },
     { path: '/reports/{details}', component: require('./transport/reports/view.vue'), beforeEnter: authMiddleware },
+
+    { path: '/station-selection', component: require('./transport/station.vue'), beforeEnter: authMiddleware },
+
+    { path: '/403', component: require('./transport/403.vue'), beforeEnter: authMiddleware },
+    { path: '*', component: require('./transport/404.vue'), beforeEnter: authMiddleware },
 
 
     { path: '/login',

@@ -55,7 +55,7 @@
     export default {
         created() {
           this.$root.isLoading = true;
-            http.get('/api/inspection/create').then(response => {
+            http.get('/api/inspection/create?s=' + window.Laravel.station_id).then(response => {
                 this.journeys = response.journeys;
                 this.setupConfirm();
                 prepareTable();

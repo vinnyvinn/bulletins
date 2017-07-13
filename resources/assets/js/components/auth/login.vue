@@ -8,10 +8,10 @@
                         <form class="form-horizontal" action="/login" @submit.prevent="login" role="form" method="POST">
                             <input type="hidden" name="_token" :value="$root.csrf">
                             <div class="form-group">
-                                <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+                                <label for="username" class="col-md-4 control-label">Username</label>
 
                                 <div class="col-md-6">
-                                    <input id="email" type="text" class="form-control" name="email" v-model="user.email" required autofocus>
+                                    <input id="username" type="text" class="form-control" name="username" v-model="user.username" required autofocus>
                                 </div>
                             </div>
 
@@ -29,9 +29,9 @@
                                         Login
                                     </button>
 
-                                    <a class="btn btn-link" href="/forgot">
-                                        Forgot Your Password?
-                                    </a>
+                                    <!--<a class="btn btn-link" href="/forgot">-->
+                                        <!--Forgot Your Password?-->
+                                    <!--</a>-->
                                 </div>
                             </div>
                         </form>
@@ -50,7 +50,7 @@
         data() {
             return {
                 user: {
-                    email: '',
+                    username: '',
                     password: '',
                     grant_type: 'password',
                     client_id: 2,

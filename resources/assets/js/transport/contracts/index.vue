@@ -30,8 +30,8 @@
                             </div>
 
                             <div class="col-sm-4">
-                                <router-link to="/contracts/create" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i> New Contract</router-link>
-                                <router-link to="/contract-templates" class="btn btn-warning btn-xs pull-right"><i class="fa fa-eye"></i> Templates</router-link>
+                                <router-link v-if="$root.can('create-contract')" to="/contracts/create" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i> New Contract</router-link>
+                                <router-link v-if="$root.can('create-contract-template')" to="/contract-templates" class="btn btn-warning btn-xs pull-right"><i class="fa fa-eye"></i> Templates</router-link>
                             </div>
                         </div>
                     </div>
@@ -58,7 +58,8 @@
                                 <tbody>
                                 <tr v-for="contract in contracts">
                                     <td>
-                                        <router-link :to="'/contracts/' + contract.id">CNTR{{ contract.id }}</router-link>
+                                        <router-link v-if="$root.can('view-contract') || $root.can('approve-contract')" :to="'/contracts/' + contract.id">CNTR{{ contract.id }}</router-link>
+                                        <span v-else>CNTR{{ contract.id }}</span>
                                     </td>
                                     <td>
                                       <span class="label label-info" v-if="contract.status == 'Pending Approval'">Pending Approval</span>
@@ -76,8 +77,8 @@
                                     <td class="text-right">{{ Number(contract.journeys_count).toLocaleString() }}</td>
                                     <td>{{ $root.currency }} {{ Number(contract.amount).toLocaleString() }} {{ contract.rate }}</td>
                                     <td class="text-center">
-                                        <span v-if="contract.status != 'Closed'" @click="edit(contract)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
-                                        <button data-toggle="popover" :data-item="contract.id" class="btn btn-xs btn-danger btn-destroy">
+                                        <span v-if="(contract.status != 'Closed') && ($root.can('edit-contract'))" @click="edit(contract)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
+                                        <button data-toggle="popover" v-if="$root.can('delete-contract')" :data-item="contract.id" class="btn btn-xs btn-danger btn-destroy">
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </td>

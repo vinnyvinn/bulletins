@@ -18,7 +18,8 @@
         window.Laravel = {!! json_encode([
             'csrfToken' => csrf_token(),
             'appname' => config('app.name'),
-            'user' => Auth::id()
+            'user' => Auth::id(),
+            'station_id' => session('station_id', 0)
         ]) !!};
     </script>
 </head>

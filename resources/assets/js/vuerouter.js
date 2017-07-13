@@ -81,6 +81,11 @@ class MainRouter {
                 user: JSON.parse(localStorage.getItem('fewuia32rfwe')),
                 isLoggedIn: !! localStorage.getItem('foeiwafwfuwe')
             },
+            methods: {
+                can(permission) {
+                    return window.can(permission);
+                },
+            }
         }).$mount('#app');
     }
 }

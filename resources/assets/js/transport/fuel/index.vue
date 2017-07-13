@@ -5,11 +5,11 @@
         <div class="panel panel-default">
           <div class="panel-heading">
             <strong>Fuel Allocation</strong>
-            <router-link to="/fuel/create" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i> Add New</router-link>
+            <router-link v-if="$root.can('create-fuel')" to="/fuel/create" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i> Add New</router-link>
           </div>
           <div class="panel-body">
             <div class="table-responsive">
-              <table class="table no-wrap">
+              <table class="table nowrap">
                 <thead>
                   <tr>
                     <th>Fuel No.</th>
@@ -28,7 +28,10 @@
                 </thead>
                 <tbody>
                   <tr v-for="fuel in fuels">
-                    <td><router-link :to="'/fuel/' + fuel.id">FUEL-{{ fuel.id }}</router-link></td>
+                    <td>
+                        <router-link v-if="$root.can('view-fuel')" :to="'/fuel/' + fuel.id">FUEL-{{ fuel.id }}</router-link>
+                        <span v-else>FUEL-{{ fuel.id }}</span>
+                    </td>
                     <td>JRNY-{{ fuel.journey_id }}</td>
                     <td>{{ fuel.date }}</td>
                     <td>{{ fuel.journey.driver.first_name }}</td>
@@ -38,13 +41,13 @@
                     <td>{{ fuel.current_fuel }}</td>
                     <td>{{ fuel.fuel_requested }}</td>
                     <td>{{ fuel.fuel_issued }}</td>
-                    <td v-if="fuel.status == 'Approved'">{{ fuel.status }}</td>
-                    <td v-if="fuel.status == 'Awaiting Approval'">
+                    <td v-if="fuel.status == 'Awaiting Approval' && $root.can('approve-fuel')">
                       <button type="button" name="button" v-if="fuel.status == 'Awaiting Approval'" class="btn btn-xs btn-success" @click="approveFuel(fuel.id)">Approve</button>
                     </td>
+                    <td v-else>{{ fuel.status }}</td>
                     <td>
-                      <span @click="edit(fuel)" v-if="fuel.status=='Awaiting Approval'" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
-                      <button data-toggle="popover" :data-item="fuel.id" class="btn btn-xs btn-danger btn-destroy">
+                      <span @click="edit(fuel)" v-if="$root.can('edit-fuel')" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
+                      <button v-if="$root.can('delete-fuel')" data-toggle="popover" :data-item="fuel.id" class="btn btn-xs btn-danger btn-destroy">
                           <i class="fa fa-trash"></i>
                       </button>
                     </td>
@@ -78,7 +81,7 @@
 <script>
 export default {
   created() {
-    http.get('/api/fuel').then(response => {
+    http.get('/api/fuel/?s=' + window.Laravel.station_id).then(response => {
         this.fuels = response.fuel;
         this.setupConfirm();
         prepareTable();
@@ -108,7 +111,7 @@ export default {
       destroy(id) {
           this.$root.isLoading = true;
 
-          http.destroy('api/fuel/' + id).then(response => {
+          http.destroy('api/fuel/' + id + '/?s=' + window.Laravel.station_id).then(response => {
               if (response.status != 'success') {
                   this.$root.isLoading = false;
                   alert2(this.$root, [response.message], 'danger');
@@ -132,7 +135,7 @@ export default {
               return;
           }
 
-          http.get('/api/fuel').then(response => {
+          http.get('/api/fuel/?s=' + window.Laravel.station_id).then(response => {
               this.fuels = response.fuel;
               this.setupConfirm();              
           });

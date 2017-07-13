@@ -24,8 +24,14 @@ class FuelController extends Controller
      */
     public function index()
     {
+        $fuel = Fuel::when(request('s'), function ($builder) {
+            return $builder->where('station_id', request('s'));
+        })
+            ->with(['journey', 'journey.driver', 'journey.route', 'journey.truck'])
+            ->get();
+
         return Response::json([
-            'fuel' => Fuel::with(['journey', 'journey.driver', 'journey.route', 'journey.truck'])->get()
+            'fuel' => $fuel
         ]);
     }
 
@@ -36,7 +42,10 @@ class FuelController extends Controller
      */
     public function create()
     {
-        $journeys = Journey::open()
+        $journeys = Journey::when(request('s'), function ($builder) {
+            return $builder->where('station_id', request('s'));
+        })
+            ->open()
             ->has('delivery')
             ->with(['driver', 'route', 'truck', 'truck.trailer'])
             ->get();
@@ -50,14 +59,14 @@ class FuelController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         $data = $request->all();
         $data['date'] = Carbon::parse(str_replace('/', '-', $data['date']))->format('Y-m-d');
-        $data['user_id'] = Auth::id();      
-        $fuel = Fuel::create($data);
+        $data['user_id'] = Auth::id();
+        Fuel::create($data);
 
         $journey = Journey::findOrFail($data['journey_id']);
 
@@ -75,17 +84,18 @@ class FuelController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
-        $fuel = Fuel::with('journey','journey.driver','journey.truck','journey.route')->findOrFail($id);
-        $delivery_note = Delivery::where('journey_id',$fuel->journey_id)->first();
-        $mileage = Mileage::where('journey_id',$fuel->journey_id)->first();
+        $fuel = Fuel::with('journey', 'journey.driver', 'journey.truck', 'journey.route')->findOrFail($id);
+        $delivery_note = Delivery::where('journey_id', $fuel->journey_id)->first();
+        $mileage = Mileage::where('journey_id', $fuel->journey_id)->first();
+
         return Response::json([
-          'fuel' => $fuel,
-          'delivery_note' => $delivery_note,
-          'mileage' => $mileage
+            'fuel' => $fuel,
+            'delivery_note' => $delivery_note,
+            'mileage' => $mileage
         ]);
     }
 
@@ -133,12 +143,15 @@ class FuelController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
-        $fuel = Fuel::findOrFail($id)->delete();
-        $fuels = Fuel::with(['journey','journey.driver', 'journey.route', 'journey.truck'])->get();
+        Fuel::where('id', $id)->delete();
+        $fuels = Fuel::when(request('s'), function ($builder) {
+            return $builder->where('station_id', request('s'));
+        })
+            ->with(['journey','journey.driver', 'journey.route', 'journey.truck'])->get();
 
         return Response::json([
             'status' => 'success',

@@ -27,9 +27,13 @@ class InspectionController extends Controller
      */
     public function index()
     {
-        $inspections = Inspection::with(['journey','journey.truck','journey.truck.trailer','journey.driver'])->get([
-            'id', 'journey_id', 'status', 'from_station', 'to_station', 'created_at','suitable_for_loading'
-        ]);
+        $inspections = Inspection::when(request('s'), function ($builder) {
+            return $builder->where('station_id', request('s'));
+        })
+            ->with(['journey','journey.truck','journey.truck.trailer','journey.driver'])
+            ->get([
+                'id', 'journey_id', 'status', 'from_station', 'to_station', 'created_at','suitable_for_loading'
+            ]);
 
         return Response::json([
             'inspections' => $inspections
@@ -43,9 +47,17 @@ class InspectionController extends Controller
      */
     public function create(Request $request)
     {
+        $journeys = Journey::when(request('s'), function ($builder) {
+            return $builder->where('station_id', request('s'));
+        })
+            ->open()
+            ->doesntHave('inspection')
+            ->with(['truck', 'truck.driver', 'truck.trailer'])
+            ->get(['id', 'raw', 'truck_id']);
+
         return Response::json([
             'status' => 'success',
-            'journeys' => Journey::open()->doesntHave('inspection')->with('truck','truck.driver','truck.trailer')->get(['id', 'raw', 'truck_id']),
+            'journeys' => $journeys,
             'supervisor' => false,
             'inspector' => true,
         ]);
@@ -131,9 +143,12 @@ class InspectionController extends Controller
     public function destroy(Inspection $inspection)
     {
         $inspection->delete();
-        $inspections = Inspection::with(['journey'])->get([
-            'id', 'journey_id', 'status', 'from_station', 'to_station', 'created_at'
-        ]);
+        $inspections = Inspection::when(request('s'), function ($builder) {
+            return $builder->where('station_id', request('s'));
+        })
+            ->with(['journey'])->get([
+                'id', 'journey_id', 'status', 'from_station', 'to_station', 'created_at'
+            ]);
 
         return Response::json([
             'status' => 'success',

@@ -214,24 +214,36 @@
 
 <script>
     export default {
+        created() {
+            if (! this.$route.params.id && ! this.$root.can('create-inspection')) {
+                this.$router.push('/403');
+                return false;
+            }
+
+            if (this.$route.params.id && ! this.$root.can('edit-inspection')) {
+                this.$router.push('/403');
+                return false;
+            }
+        },
+
         mounted () {
             if (this.$route.params.journey) {
               this.$root.isLoading = true;
-              http.get('/api/new_inspection/' + this.$route.params.journey).then( (response) => {
-                this.journey = response.journey;
-                this.checklist.journey_id = this.journey.id;
-                this.checklist.from_station = this.journey.route.source;
-                this.checklist.to_station = this.journey.route.destination;
-                this.$root.isLoading = false;
+              http.get('/api/new_inspection/' + this.$route.params.journey + '?s=' + window.Laravel.station_id)
+                  .then( (response) => {
+                    this.journey = response.journey;
+                    this.checklist.journey_id = this.journey.id;
+                    this.checklist.from_station = this.journey.route.source;
+                    this.checklist.to_station = this.journey.route.destination;
+                    this.$root.isLoading = false;
 
-                return;
-              });
-
+                    return;
+                  });
             }
 
             if (this.$route.params.id) {
               this.$root.isLoading = true;
-                http.get('/api/inspection/' + this.$route.params.id).then((response) => {
+                http.get('/api/inspection/' + this.$route.params.id + '?s=' + window.Laravel.station_id).then((response) => {
                     if (response.status !== 'success') return;
                     this.journey = response.inspection.journey;
                     this.isInspector = response.inspector;
@@ -262,6 +274,7 @@
                 isInspector: true,
                 application_name: window.Laravel.appname,
                 checklist: {
+                    station_id: window.Laravel.station_id,
                     journey_id: null,
                     user_id: window.Laravel.user,
                     inspectors_comments: '',

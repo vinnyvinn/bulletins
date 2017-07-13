@@ -13,7 +13,7 @@ class UserRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +23,16 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
+        if ($this->method() == 'PUT') {
+            return [
+                'username' => 'required|unique:users,username,' . $this->user,
+                'password' => 'nullable|confirmed'
+            ];
+        }
+
         return [
-            //
+            'username' => 'required|unique:users',
+            'password' => 'required|confirmed'
         ];
     }
 }

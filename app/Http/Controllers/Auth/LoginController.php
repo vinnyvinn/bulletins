@@ -46,11 +46,20 @@ class LoginController extends Controller
     protected function authenticated(Request $request, $user)
     {
         session()->put('userLevel', 'user_admin.');
+        $stations = $user->stations;
+        if (! count($stations)) {
+            session()->put('station_id', 0);
+        }
+
+        if (count($stations) == 1) {
+            session()->put('station_id', $stations->first()->id);
+        }
 
         return response()->json([
             'success' => 'true',
             'access_token' => 'test',
-            'user' => $user
+            'user' => $user,
+            'current_station' => session('station_id', 0)
         ]);
     }
 
@@ -73,5 +82,15 @@ class LoginController extends Controller
         }
 
         return redirect('/');
+    }
+
+    /**
+     * Get the login username to be used by the controller.
+     *
+     * @return string
+     */
+    public function username()
+    {
+        return 'username';
     }
 }

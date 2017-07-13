@@ -57,5 +57,7 @@ Route::group(['middleware' => 'auth'], function () {
     include(__DIR__ . '/workshop.php');
     Route::get('integration/payroll/{id}', '\SmoDav\Controllers\APIIntegrationController@finalize');
 
+    Route::post('station-selection',  'HomeController@selectStation');
+
     Route::any('{a}/{b?}/{c?}', 'HomeController@home');
 });

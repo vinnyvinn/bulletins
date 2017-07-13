@@ -178,6 +178,7 @@
                 journeys: [],
                 uploads: [],
                 mileage: {
+                    station_id: window.Laravel.station_id,
                     journey_id: '',
                     mileage_type: 'Fixed Mileage',
                     standard_amount: 0,
@@ -193,15 +194,29 @@
         },
 
         created() {
+            if (! this.$route.params.id && ! this.$route.params.unload &&  ! this.$root.can('create-mileage')) {
+                this.$router.push('/403');
+                return false;
+            }
+
+            if (this.$route.params.id && ! this.$root.can('edit-mileage')) {
+                this.$router.push('/403');
+                return false;
+            }
+
+            if (this.$route.params.approve && ! this.$root.can('approve-mileage')) {
+                this.$router.push('/403');
+                return false;
+            }
+
           this.$root.isLoading = true;
-            http.get('/api/mileage/create').then((response) => {
+            http.get('/api/mileage/create?s=' + window.Laravel.station_id).then((response) => {
                 this.journeys = response.journeys;
             }).then(() => {
               this.checkState();
-        }).then(() => {
-          this.$root.isLoading = false;
-        });
-
+            }).then(() => {
+              this.$root.isLoading = false;
+            });
         },
 
         mounted() {
@@ -251,8 +266,9 @@
             },
 
             checkState() {
-                if (this.$route.params.id) {
-                    http.get('/api/mileage/' + this.$route.params.id).then((response) => {
+                if (this.$route.params.id || this.$route.params.approve) {
+                    let id = this.$route.params.approve ? this.$route.params.approve : this.$route.params.id;
+                    http.get('/api/mileage/' + id + '/?s=' + window.Laravel.station_id).then((response) => {
                         this.mileage = response.mileage;
                         this.$root.isLoading = false;
                     });
@@ -272,10 +288,12 @@
                 let request = null;
                 this.mileage.standard_amount = parseInt(this.journey.route.allowance_amount);
 
-                let data = mapToFormData(this.mileage, this.uploads, typeof this.$route.params.id === 'string');
+                let data = mapToFormData(this.mileage, this.uploads, typeof this.$route.params.id === 'string' || typeof this.$route.params.approve === 'string');
 
                 if (this.$route.params.id) {
                     request = http.put('/api/mileage/' + this.$route.params.id, data, true);
+                } else if (this.$route.params.approve) {
+                    request = http.put('/api/mileage/' + this.$route.params.approve, data, true);
                 } else {
                     request = http.post('/api/mileage', data, true);
                 }

@@ -8,7 +8,7 @@ class Inspection extends SmoDavModel
 {
     protected $fillable = [
         'journey_id', 'status', 'from_station', 'to_station', 'fields', 'inspector_id', 'supervisor_id',
-        'inspectors_comments', 'supervisors_comments', 'suitable_for_loading',
+        'inspectors_comments', 'supervisors_comments', 'suitable_for_loading', 'station_id'
     ];
 
     public function journey()

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
@@ -14,7 +15,7 @@ use SmoDav\Models\Station;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, Notifiable;
+    use HasApiTokens, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -22,11 +23,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'fist_name',
-        'last_name',
-        'email',
-        'password',
-        'permissions',
+        'first_name', 'last_name', 'email', 'password', 'permissions', 'username'
     ];
 
     /**
@@ -38,6 +35,11 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function findForPassport($username)
+    {
+        return $this->where('username', $username)->first();
+    }
 
     public function getNameAttribute($name)
     {
@@ -153,6 +155,4 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Station::class);
     }
-
-
 }
