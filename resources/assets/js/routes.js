@@ -7,7 +7,11 @@ function authMiddleware(to, from, next) {
         return next({path: '/login'});
     }
 
-    if (! window.Laravel.station_id && to.path !== '/station-selection') {
+    let allowedPaths = [
+        '/station-selection', '/404', '/403'
+    ];
+
+    if (! window.Laravel.station_id && allowedPaths.indexOf(to.path) === -1) {
         return next({path: '/station-selection'});
     }
 

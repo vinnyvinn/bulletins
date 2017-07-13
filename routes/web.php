@@ -38,8 +38,6 @@ Route::get('/test', function () {
     $writer->save('output.xlsx');
 });
 
-use App\Trip;
-use Carbon\Carbon;
 Auth::routes();
 
 Route::group(['prefix' => 'super', 'as' => 'super.', 'middleware' => 'auth'], function () {
