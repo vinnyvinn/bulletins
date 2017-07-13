@@ -5,7 +5,7 @@
         </div>
 
         <div class="panel-body">
-            <form class="form-horizontal" action="#" role="form" @submit.prevent="store">
+            <form action="#" role="form" @submit.prevent="store">
                 <div class="row">
                     <div class="col-sm-4">
                       <fieldset class="wizag-fieldset-border">
@@ -128,7 +128,7 @@
                         <div class="form-group" v-if="mileage.top_up">
                           <label class="col-sm-6">Top up reason</label>
                           <div class="col-sm-6">
-                            <textarea name="narration" id="top_up_reason" class="form-control input-sm" v-model="mileage.top_up_reason"></textarea>
+                            <textarea name="top_up_reason" id="top_up_reason" class="form-control input-sm" v-model="mileage.top_up_reason"></textarea>
                           </div>
                         </div>
 
