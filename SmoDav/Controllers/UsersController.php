@@ -82,8 +82,11 @@ class UsersController extends Controller
     public function store(UserRequest $request)
     {
         $data = $request->all();
-        $data['permissions'] = json_encode(array_keys($request->get('permission')));
-        unset($data['permission']);
+        $data['permissions'] = "[]";
+        if( isset($data['permission'])) {
+          $data['permissions'] = json_encode(array_keys($request->get('permission')));
+          unset($data['permission']);
+        }
         $data['password'] = bcrypt($data['password']);
         $user = User::create($data);
         $user->stations()->sync($data['stations']);
