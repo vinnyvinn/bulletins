@@ -82334,7 +82334,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
@@ -82344,17 +82343,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.$root.isLoading = true;
             http.get('/api/new_inspection/' + this.$route.params.journey).then(function (response) {
                 _this.journey = response.journey;
+                _this.checklist.journey_id = _this.journey.id;
+                _this.checklist.from_station = _this.journey.route.source;
+                _this.checklist.to_station = _this.journey.route.destination;
                 _this.$root.isLoading = false;
-            });
 
-            return;
+                return;
+            });
         }
 
         if (this.$route.params.id) {
             this.$root.isLoading = true;
             http.get('/api/inspection/' + this.$route.params.id).then(function (response) {
                 if (response.status !== 'success') return;
-                _this.journeys = response.journeys;
+                _this.journey = response.inspection.journey;
                 _this.isInspector = response.inspector;
                 _this.isSupervisor = response.supervisor;
 
@@ -82603,8 +82605,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         date2: function date2(value) {
             return window._date2(value);
         },
-        edit: function edit(journey) {
-            window._router.push({ path: '/inspection/' + journey.id + '/edit' });
+        edit: function edit(inspection) {
+            window._router.push({ path: '/inspection/' + inspection.id + '/edit' });
         },
         destroy: function destroy(id) {
             var _this3 = this;
@@ -82825,124 +82827,47 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    mounted: function mounted() {
-        var _this = this;
+  mounted: function mounted() {
+    var _this = this;
 
-        var endpoint = '/api/inspection/create';
-        if (this.$route.params.id) {
-            endpoint = '/api/inspection/' + this.$route.params.id;
-        }
-
-        http.get(endpoint).then(function (response) {
-            if (response.status === 'success') {
-                if (response.inspection) {
-                    _this.checklist = response.inspection.fields;
-                    _this.checklist.created_at = response.inspection.created_at;
-                    _this.checklist.status = response.inspection.status;
-                }
-                _this.journeys = response.journeys;
-                _this.isInspector = response.inspector;
-                _this.isSupervisor = response.supervisor;
-            }
-        });
-    },
-    data: function data() {
-        return {
-            journeys: [],
-            printout: '',
-            isSupervisor: false,
-            isInspector: true,
-            application_name: window.Laravel.appname,
-            checklist: {
-                journey_id: null,
-                user_id: window.Laravel.user,
-                inspectors_comments: '',
-                supervisors_comments: '',
-                suitable_for_loading: 0,
-                status: 'Pending Approval',
-                items: {
-                    item_1: false,
-                    item_2: false,
-                    item_3: false,
-                    item_4: false,
-                    item_5: false,
-                    item_6: false,
-                    item_7: false,
-                    item_8: false,
-                    item_9: false,
-                    item_10: false,
-                    item_11: false,
-                    item_12: false,
-                    item_13: false,
-                    item_14: false,
-                    item_15: false,
-                    item_16: false,
-                    item_17: false,
-                    item_18: false,
-                    item_19: false,
-                    item_20: false,
-                    item_21: false,
-                    item_22: false,
-                    item_23: false
-                }
-            }
-        };
-    },
-
-
-    computed: {
-        journey: function journey() {
-            var _this2 = this;
-
-            var journey = this.journeys.filter(function (e) {
-                return e.id == _this2.checklist.journey_id;
-            });
-            if (journey.length < 1) {
-                return {};
-            }
-            var id = journey[0].id;
-            journey = JSON.parse(journey[0].raw);
-            journey.id = id;
-            this.checklist.from_station = journey.route_source;
-            this.checklist.to_station = journey.route_destination;
-
-            return journey;
-        }
-    },
-
-    methods: {
-        date2: function date2(value) {
-            return window._date2(value);
+    http.get('/api/inspection/' + this.$route.params.id).then(function (response) {
+      _this.inspection = response.inspection;
+    });
+  },
+  data: function data() {
+    return {
+      inspection: {
+        fields: {
+          items: {}
         },
-        store: function store() {
-            var _this3 = this;
-
-            this.$root.isLoading = true;
-            var endpoint = '/api/inspection';
-            var method = 'post';
-            if (this.$route.params.id) {
-                endpoint = '/api/inspection/' + this.$route.params.id;
-                method = 'put';
-            }
-
-            http[method](endpoint, this.checklist).then(function (response) {
-                _this3.printout = response.printout;
-                _this3.$root.isLoading = false;
-                setTimeout(function () {
-                    if (response.shouldPrint) {
-                        window.print();
-                    }
-                    window._router.push({ path: '/inspection' });
-                    alert2(_this3.$root, [response.message], 'success');
-                }, 500);
-            }).catch(function () {
-                _this3.$root.isLoading = false;
-                alert2(_this3.$root, Object.values(JSON.parse(error.message)), 'danger');
-            });
+        journey: {
+          truck: {
+            driver: {}
+          },
+          route: {}
         }
+      },
+      printout: '',
+      isSupervisor: false,
+      isInspector: true,
+      application_name: window.Laravel.appname
+
+    };
+  },
+
+  methods: {
+    date2: function date2(value) {
+      return window._date2(value);
     }
+  }
 });
 
 /***/ }),
@@ -116572,9 +116497,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "text-center"
   }, [_vm._v(_vm._s(_vm.application_name))]), _vm._v(" "), _c('h4', {
     staticClass: "text-center text-uppercase"
-  }, [_vm._v("Mandatory Checklist")]), _vm._v(" "), (_vm.checklist.created_at) ? _c('h4', {
+  }, [_vm._v("Mandatory Checklist")]), _vm._v(" "), (_vm.inspection.created_at) ? _c('h4', {
     staticClass: "text-center text-uppercase"
-  }, [_c('strong', [_vm._v(_vm._s(_vm.date2(_vm.checklist.created_at)))])]) : _vm._e(), _vm._v(" "), _c('hr'), _vm._v(" "), _c('form', {
+  }, [_c('strong', [_vm._v(_vm._s(_vm.date2(_vm.inspection.created_at)))])]) : _vm._e(), _vm._v(" "), _c('hr'), _vm._v(" "), _c('form', {
     attrs: {
       "action": "#"
     },
@@ -116587,53 +116512,26 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "row"
   }, [_c('div', {
-    staticClass: "col-sm-4"
+    staticClass: "col-sm-3"
   }, [_c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
       "for": "journey_id"
     }
-  }, [_vm._v("Journey")]), _vm._v(" "), _c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.checklist.journey_id),
-      expression: "checklist.journey_id"
-    }],
-    staticClass: "form-control input-sm select2",
-    attrs: {
-      "disabled": "",
-      "required": "",
-      "name": "journey_id",
-      "id": "journey_id"
-    },
-    on: {
-      "change": function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.checklist.journey_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
-    }
-  }, _vm._l((_vm.journeys), function(journey) {
-    return _c('option', {
-      domProps: {
-        "value": journey.id
-      }
-    }, [_vm._v("JRNY-" + _vm._s(journey.id))])
-  }))])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-4"
+  }, [_vm._v("Journey")]), _vm._v(" "), _c('h5', [_c('strong', [_vm._v(" " + _vm._s(_vm.inspection.journey_id))])])])]), _vm._v(" "), (_vm.inspection.journey.truck) ? _c('div', {
+    staticClass: "col-sm-3"
   }, [_c('div', {
     staticClass: "form-group"
-  }, [_c('label', [_vm._v("Vehicle")]), _vm._v(" "), _c('h5', [_c('strong', [_vm._v(_vm._s(_vm.journey.truck_plate_number))])])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-4"
+  }, [_c('label', [_vm._v("Driver")]), _vm._v(" "), _c('h5', [_c('strong', [_vm._v(_vm._s(_vm.inspection.journey.truck.driver.first_name) + " " + _vm._s(_vm.inspection.journey.truck.driver.last_name))])])])]) : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
   }, [_c('div', {
     staticClass: "form-group"
-  }, [_c('label', [_vm._v("Route")]), _vm._v(" "), (_vm.journey.route_source) ? _c('h5', [_c('strong', [_vm._v(_vm._s(_vm.journey.route_source) + " to " + _vm._s(_vm.journey.route_destination))])]) : _vm._e()])])]), _vm._v(" "), _c('table', {
+  }, [_c('label', [_vm._v("Vehicle")]), _vm._v(" "), _c('h5', [_c('strong', [_vm._v(_vm._s(_vm.inspection.journey.truck.plate_number))])])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', [_vm._v("Route")]), _vm._v(" "), (_vm.inspection.journey.route.source) ? _c('h5', [_c('strong', [_vm._v(_vm._s(_vm.inspection.journey.route.source) + " to " + _vm._s(_vm.inspection.journey.route.destination))])]) : _vm._e()])])]), _vm._v(" "), _c('table', {
     staticClass: "table"
   }, [_vm._m(1), _vm._v(" "), _c('tbody', [_c('tr', [_c('td', [_vm._v("1")]), _vm._v(" "), _c('td', [_vm._v("The driver has a valid Road Safety Pass and Driving License")]), _vm._v(" "), _c('td', [_c('label', {
     attrs: {
@@ -116643,8 +116541,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.checklist.items.item_1),
-      expression: "checklist.items.item_1"
+      value: (_vm.inspection.fields.items.item_1),
+      expression: "inspection.fields.items.item_1"
     }],
     attrs: {
       "disabled": "",
@@ -116653,23 +116551,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "item_1"
     },
     domProps: {
-      "checked": Array.isArray(_vm.checklist.items.item_1) ? _vm._i(_vm.checklist.items.item_1, null) > -1 : (_vm.checklist.items.item_1)
+      "checked": Array.isArray(_vm.inspection.fields.items.item_1) ? _vm._i(_vm.inspection.fields.items.item_1, null) > -1 : (_vm.inspection.fields.items.item_1)
     },
     on: {
       "__c": function($event) {
-        var $$a = _vm.checklist.items.item_1,
+        var $$a = _vm.inspection.fields.items.item_1,
           $$el = $event.target,
           $$c = $$el.checked ? (true) : (false);
         if (Array.isArray($$a)) {
           var $$v = null,
             $$i = _vm._i($$a, $$v);
           if ($$c) {
-            $$i < 0 && (_vm.checklist.items.item_1 = $$a.concat($$v))
+            $$i < 0 && (_vm.inspection.fields.items.item_1 = $$a.concat($$v))
           } else {
-            $$i > -1 && (_vm.checklist.items.item_1 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+            $$i > -1 && (_vm.inspection.fields.items.item_1 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
           }
         } else {
-          _vm.checklist.items.item_1 = $$c
+          _vm.inspection.fields.items.item_1 = $$c
         }
       }
     }
@@ -116681,8 +116579,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.checklist.items.item_2),
-      expression: "checklist.items.item_2"
+      value: (_vm.inspection.fields.items.item_2),
+      expression: "inspection.fields.items.item_2"
     }],
     attrs: {
       "disabled": "",
@@ -116691,23 +116589,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "item_2"
     },
     domProps: {
-      "checked": Array.isArray(_vm.checklist.items.item_2) ? _vm._i(_vm.checklist.items.item_2, null) > -1 : (_vm.checklist.items.item_2)
+      "checked": Array.isArray(_vm.inspection.fields.items.item_2) ? _vm._i(_vm.inspection.fields.items.item_2, null) > -1 : (_vm.inspection.fields.items.item_2)
     },
     on: {
       "__c": function($event) {
-        var $$a = _vm.checklist.items.item_2,
+        var $$a = _vm.inspection.fields.items.item_2,
           $$el = $event.target,
           $$c = $$el.checked ? (true) : (false);
         if (Array.isArray($$a)) {
           var $$v = null,
             $$i = _vm._i($$a, $$v);
           if ($$c) {
-            $$i < 0 && (_vm.checklist.items.item_2 = $$a.concat($$v))
+            $$i < 0 && (_vm.inspection.fields.items.item_2 = $$a.concat($$v))
           } else {
-            $$i > -1 && (_vm.checklist.items.item_2 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+            $$i > -1 && (_vm.inspection.fields.items.item_2 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
           }
         } else {
-          _vm.checklist.items.item_2 = $$c
+          _vm.inspection.fields.items.item_2 = $$c
         }
       }
     }
@@ -116719,8 +116617,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.checklist.items.item_3),
-      expression: "checklist.items.item_3"
+      value: (_vm.inspection.fields.items.item_3),
+      expression: "inspection.fields.items.item_3"
     }],
     attrs: {
       "disabled": "",
@@ -116729,23 +116627,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "item_3"
     },
     domProps: {
-      "checked": Array.isArray(_vm.checklist.items.item_3) ? _vm._i(_vm.checklist.items.item_3, null) > -1 : (_vm.checklist.items.item_3)
+      "checked": Array.isArray(_vm.inspection.fields.items.item_3) ? _vm._i(_vm.inspection.fields.items.item_3, null) > -1 : (_vm.inspection.fields.items.item_3)
     },
     on: {
       "__c": function($event) {
-        var $$a = _vm.checklist.items.item_3,
+        var $$a = _vm.inspection.fields.items.item_3,
           $$el = $event.target,
           $$c = $$el.checked ? (true) : (false);
         if (Array.isArray($$a)) {
           var $$v = null,
             $$i = _vm._i($$a, $$v);
           if ($$c) {
-            $$i < 0 && (_vm.checklist.items.item_3 = $$a.concat($$v))
+            $$i < 0 && (_vm.inspection.fields.items.item_3 = $$a.concat($$v))
           } else {
-            $$i > -1 && (_vm.checklist.items.item_3 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+            $$i > -1 && (_vm.inspection.fields.items.item_3 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
           }
         } else {
-          _vm.checklist.items.item_3 = $$c
+          _vm.inspection.fields.items.item_3 = $$c
         }
       }
     }
@@ -116757,8 +116655,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.checklist.items.item_4),
-      expression: "checklist.items.item_4"
+      value: (_vm.inspection.fields.items.item_4),
+      expression: "inspection.fields.items.item_4"
     }],
     attrs: {
       "disabled": "",
@@ -116767,23 +116665,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "item_4"
     },
     domProps: {
-      "checked": Array.isArray(_vm.checklist.items.item_4) ? _vm._i(_vm.checklist.items.item_4, null) > -1 : (_vm.checklist.items.item_4)
+      "checked": Array.isArray(_vm.inspection.fields.items.item_4) ? _vm._i(_vm.inspection.fields.items.item_4, null) > -1 : (_vm.inspection.fields.items.item_4)
     },
     on: {
       "__c": function($event) {
-        var $$a = _vm.checklist.items.item_4,
+        var $$a = _vm.inspection.fields.items.item_4,
           $$el = $event.target,
           $$c = $$el.checked ? (true) : (false);
         if (Array.isArray($$a)) {
           var $$v = null,
             $$i = _vm._i($$a, $$v);
           if ($$c) {
-            $$i < 0 && (_vm.checklist.items.item_4 = $$a.concat($$v))
+            $$i < 0 && (_vm.inspection.fields.items.item_4 = $$a.concat($$v))
           } else {
-            $$i > -1 && (_vm.checklist.items.item_4 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+            $$i > -1 && (_vm.inspection.fields.items.item_4 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
           }
         } else {
-          _vm.checklist.items.item_4 = $$c
+          _vm.inspection.fields.items.item_4 = $$c
         }
       }
     }
@@ -116795,8 +116693,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.checklist.items.item_5),
-      expression: "checklist.items.item_5"
+      value: (_vm.inspection.fields.items.item_5),
+      expression: "inspection.fields.items.item_5"
     }],
     attrs: {
       "disabled": "",
@@ -116805,23 +116703,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "item_5"
     },
     domProps: {
-      "checked": Array.isArray(_vm.checklist.items.item_5) ? _vm._i(_vm.checklist.items.item_5, null) > -1 : (_vm.checklist.items.item_5)
+      "checked": Array.isArray(_vm.inspection.fields.items.item_5) ? _vm._i(_vm.inspection.fields.items.item_5, null) > -1 : (_vm.inspection.fields.items.item_5)
     },
     on: {
       "__c": function($event) {
-        var $$a = _vm.checklist.items.item_5,
+        var $$a = _vm.inspection.fields.items.item_5,
           $$el = $event.target,
           $$c = $$el.checked ? (true) : (false);
         if (Array.isArray($$a)) {
           var $$v = null,
             $$i = _vm._i($$a, $$v);
           if ($$c) {
-            $$i < 0 && (_vm.checklist.items.item_5 = $$a.concat($$v))
+            $$i < 0 && (_vm.inspection.fields.items.item_5 = $$a.concat($$v))
           } else {
-            $$i > -1 && (_vm.checklist.items.item_5 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+            $$i > -1 && (_vm.inspection.fields.items.item_5 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
           }
         } else {
-          _vm.checklist.items.item_5 = $$c
+          _vm.inspection.fields.items.item_5 = $$c
         }
       }
     }
@@ -116833,8 +116731,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.checklist.items.item_6),
-      expression: "checklist.items.item_6"
+      value: (_vm.inspection.fields.items.item_6),
+      expression: "inspection.fields.items.item_6"
     }],
     attrs: {
       "disabled": "",
@@ -116843,23 +116741,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "item_6"
     },
     domProps: {
-      "checked": Array.isArray(_vm.checklist.items.item_6) ? _vm._i(_vm.checklist.items.item_6, null) > -1 : (_vm.checklist.items.item_6)
+      "checked": Array.isArray(_vm.inspection.fields.items.item_6) ? _vm._i(_vm.inspection.fields.items.item_6, null) > -1 : (_vm.inspection.fields.items.item_6)
     },
     on: {
       "__c": function($event) {
-        var $$a = _vm.checklist.items.item_6,
+        var $$a = _vm.inspection.fields.items.item_6,
           $$el = $event.target,
           $$c = $$el.checked ? (true) : (false);
         if (Array.isArray($$a)) {
           var $$v = null,
             $$i = _vm._i($$a, $$v);
           if ($$c) {
-            $$i < 0 && (_vm.checklist.items.item_6 = $$a.concat($$v))
+            $$i < 0 && (_vm.inspection.fields.items.item_6 = $$a.concat($$v))
           } else {
-            $$i > -1 && (_vm.checklist.items.item_6 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+            $$i > -1 && (_vm.inspection.fields.items.item_6 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
           }
         } else {
-          _vm.checklist.items.item_6 = $$c
+          _vm.inspection.fields.items.item_6 = $$c
         }
       }
     }
@@ -116871,8 +116769,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.checklist.items.item_7),
-      expression: "checklist.items.item_7"
+      value: (_vm.inspection.fields.items.item_7),
+      expression: "inspection.fields.items.item_7"
     }],
     attrs: {
       "disabled": "",
@@ -116881,23 +116779,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "item_7"
     },
     domProps: {
-      "checked": Array.isArray(_vm.checklist.items.item_7) ? _vm._i(_vm.checklist.items.item_7, null) > -1 : (_vm.checklist.items.item_7)
+      "checked": Array.isArray(_vm.inspection.fields.items.item_7) ? _vm._i(_vm.inspection.fields.items.item_7, null) > -1 : (_vm.inspection.fields.items.item_7)
     },
     on: {
       "__c": function($event) {
-        var $$a = _vm.checklist.items.item_7,
+        var $$a = _vm.inspection.fields.items.item_7,
           $$el = $event.target,
           $$c = $$el.checked ? (true) : (false);
         if (Array.isArray($$a)) {
           var $$v = null,
             $$i = _vm._i($$a, $$v);
           if ($$c) {
-            $$i < 0 && (_vm.checklist.items.item_7 = $$a.concat($$v))
+            $$i < 0 && (_vm.inspection.fields.items.item_7 = $$a.concat($$v))
           } else {
-            $$i > -1 && (_vm.checklist.items.item_7 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+            $$i > -1 && (_vm.inspection.fields.items.item_7 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
           }
         } else {
-          _vm.checklist.items.item_7 = $$c
+          _vm.inspection.fields.items.item_7 = $$c
         }
       }
     }
@@ -116909,8 +116807,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.checklist.items.item_8),
-      expression: "checklist.items.item_8"
+      value: (_vm.inspection.fields.items.item_8),
+      expression: "inspection.fields.items.item_8"
     }],
     attrs: {
       "disabled": "",
@@ -116919,23 +116817,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "item_8"
     },
     domProps: {
-      "checked": Array.isArray(_vm.checklist.items.item_8) ? _vm._i(_vm.checklist.items.item_8, null) > -1 : (_vm.checklist.items.item_8)
+      "checked": Array.isArray(_vm.inspection.fields.items.item_8) ? _vm._i(_vm.inspection.fields.items.item_8, null) > -1 : (_vm.inspection.fields.items.item_8)
     },
     on: {
       "__c": function($event) {
-        var $$a = _vm.checklist.items.item_8,
+        var $$a = _vm.inspection.fields.items.item_8,
           $$el = $event.target,
           $$c = $$el.checked ? (true) : (false);
         if (Array.isArray($$a)) {
           var $$v = null,
             $$i = _vm._i($$a, $$v);
           if ($$c) {
-            $$i < 0 && (_vm.checklist.items.item_8 = $$a.concat($$v))
+            $$i < 0 && (_vm.inspection.fields.items.item_8 = $$a.concat($$v))
           } else {
-            $$i > -1 && (_vm.checklist.items.item_8 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+            $$i > -1 && (_vm.inspection.fields.items.item_8 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
           }
         } else {
-          _vm.checklist.items.item_8 = $$c
+          _vm.inspection.fields.items.item_8 = $$c
         }
       }
     }
@@ -116947,8 +116845,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.checklist.items.item_9),
-      expression: "checklist.items.item_9"
+      value: (_vm.inspection.fields.items.item_9),
+      expression: "inspection.fields.items.item_9"
     }],
     attrs: {
       "disabled": "",
@@ -116957,23 +116855,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "item_9"
     },
     domProps: {
-      "checked": Array.isArray(_vm.checklist.items.item_9) ? _vm._i(_vm.checklist.items.item_9, null) > -1 : (_vm.checklist.items.item_9)
+      "checked": Array.isArray(_vm.inspection.fields.items.item_9) ? _vm._i(_vm.inspection.fields.items.item_9, null) > -1 : (_vm.inspection.fields.items.item_9)
     },
     on: {
       "__c": function($event) {
-        var $$a = _vm.checklist.items.item_9,
+        var $$a = _vm.inspection.fields.items.item_9,
           $$el = $event.target,
           $$c = $$el.checked ? (true) : (false);
         if (Array.isArray($$a)) {
           var $$v = null,
             $$i = _vm._i($$a, $$v);
           if ($$c) {
-            $$i < 0 && (_vm.checklist.items.item_9 = $$a.concat($$v))
+            $$i < 0 && (_vm.inspection.fields.items.item_9 = $$a.concat($$v))
           } else {
-            $$i > -1 && (_vm.checklist.items.item_9 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+            $$i > -1 && (_vm.inspection.fields.items.item_9 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
           }
         } else {
-          _vm.checklist.items.item_9 = $$c
+          _vm.inspection.fields.items.item_9 = $$c
         }
       }
     }
@@ -116985,8 +116883,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.checklist.items.item_10),
-      expression: "checklist.items.item_10"
+      value: (_vm.inspection.fields.items.item_10),
+      expression: "inspection.fields.items.item_10"
     }],
     attrs: {
       "disabled": "",
@@ -116995,23 +116893,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "item_10"
     },
     domProps: {
-      "checked": Array.isArray(_vm.checklist.items.item_10) ? _vm._i(_vm.checklist.items.item_10, null) > -1 : (_vm.checklist.items.item_10)
+      "checked": Array.isArray(_vm.inspection.fields.items.item_10) ? _vm._i(_vm.inspection.fields.items.item_10, null) > -1 : (_vm.inspection.fields.items.item_10)
     },
     on: {
       "__c": function($event) {
-        var $$a = _vm.checklist.items.item_10,
+        var $$a = _vm.inspection.fields.items.item_10,
           $$el = $event.target,
           $$c = $$el.checked ? (true) : (false);
         if (Array.isArray($$a)) {
           var $$v = null,
             $$i = _vm._i($$a, $$v);
           if ($$c) {
-            $$i < 0 && (_vm.checklist.items.item_10 = $$a.concat($$v))
+            $$i < 0 && (_vm.inspection.fields.items.item_10 = $$a.concat($$v))
           } else {
-            $$i > -1 && (_vm.checklist.items.item_10 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+            $$i > -1 && (_vm.inspection.fields.items.item_10 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
           }
         } else {
-          _vm.checklist.items.item_10 = $$c
+          _vm.inspection.fields.items.item_10 = $$c
         }
       }
     }
@@ -117023,8 +116921,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.checklist.items.item_11),
-      expression: "checklist.items.item_11"
+      value: (_vm.inspection.fields.items.item_11),
+      expression: "inspection.fields.items.item_11"
     }],
     attrs: {
       "disabled": "",
@@ -117033,23 +116931,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "item_11"
     },
     domProps: {
-      "checked": Array.isArray(_vm.checklist.items.item_11) ? _vm._i(_vm.checklist.items.item_11, null) > -1 : (_vm.checklist.items.item_11)
+      "checked": Array.isArray(_vm.inspection.fields.items.item_11) ? _vm._i(_vm.inspection.fields.items.item_11, null) > -1 : (_vm.inspection.fields.items.item_11)
     },
     on: {
       "__c": function($event) {
-        var $$a = _vm.checklist.items.item_11,
+        var $$a = _vm.inspection.fields.items.item_11,
           $$el = $event.target,
           $$c = $$el.checked ? (true) : (false);
         if (Array.isArray($$a)) {
           var $$v = null,
             $$i = _vm._i($$a, $$v);
           if ($$c) {
-            $$i < 0 && (_vm.checklist.items.item_11 = $$a.concat($$v))
+            $$i < 0 && (_vm.inspection.fields.items.item_11 = $$a.concat($$v))
           } else {
-            $$i > -1 && (_vm.checklist.items.item_11 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+            $$i > -1 && (_vm.inspection.fields.items.item_11 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
           }
         } else {
-          _vm.checklist.items.item_11 = $$c
+          _vm.inspection.fields.items.item_11 = $$c
         }
       }
     }
@@ -117061,8 +116959,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.checklist.items.item_12),
-      expression: "checklist.items.item_12"
+      value: (_vm.inspection.fields.items.item_12),
+      expression: "inspection.fields.items.item_12"
     }],
     attrs: {
       "disabled": "",
@@ -117071,23 +116969,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "item_12"
     },
     domProps: {
-      "checked": Array.isArray(_vm.checklist.items.item_12) ? _vm._i(_vm.checklist.items.item_12, null) > -1 : (_vm.checklist.items.item_12)
+      "checked": Array.isArray(_vm.inspection.fields.items.item_12) ? _vm._i(_vm.inspection.fields.items.item_12, null) > -1 : (_vm.inspection.fields.items.item_12)
     },
     on: {
       "__c": function($event) {
-        var $$a = _vm.checklist.items.item_12,
+        var $$a = _vm.inspection.fields.items.item_12,
           $$el = $event.target,
           $$c = $$el.checked ? (true) : (false);
         if (Array.isArray($$a)) {
           var $$v = null,
             $$i = _vm._i($$a, $$v);
           if ($$c) {
-            $$i < 0 && (_vm.checklist.items.item_12 = $$a.concat($$v))
+            $$i < 0 && (_vm.inspection.fields.items.item_12 = $$a.concat($$v))
           } else {
-            $$i > -1 && (_vm.checklist.items.item_12 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+            $$i > -1 && (_vm.inspection.fields.items.item_12 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
           }
         } else {
-          _vm.checklist.items.item_12 = $$c
+          _vm.inspection.fields.items.item_12 = $$c
         }
       }
     }
@@ -117099,8 +116997,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.checklist.items.item_13),
-      expression: "checklist.items.item_13"
+      value: (_vm.inspection.fields.items.item_13),
+      expression: "inspection.fields.items.item_13"
     }],
     attrs: {
       "disabled": "",
@@ -117109,23 +117007,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "item_13"
     },
     domProps: {
-      "checked": Array.isArray(_vm.checklist.items.item_13) ? _vm._i(_vm.checklist.items.item_13, null) > -1 : (_vm.checklist.items.item_13)
+      "checked": Array.isArray(_vm.inspection.fields.items.item_13) ? _vm._i(_vm.inspection.fields.items.item_13, null) > -1 : (_vm.inspection.fields.items.item_13)
     },
     on: {
       "__c": function($event) {
-        var $$a = _vm.checklist.items.item_13,
+        var $$a = _vm.inspection.fields.items.item_13,
           $$el = $event.target,
           $$c = $$el.checked ? (true) : (false);
         if (Array.isArray($$a)) {
           var $$v = null,
             $$i = _vm._i($$a, $$v);
           if ($$c) {
-            $$i < 0 && (_vm.checklist.items.item_13 = $$a.concat($$v))
+            $$i < 0 && (_vm.inspection.fields.items.item_13 = $$a.concat($$v))
           } else {
-            $$i > -1 && (_vm.checklist.items.item_13 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+            $$i > -1 && (_vm.inspection.fields.items.item_13 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
           }
         } else {
-          _vm.checklist.items.item_13 = $$c
+          _vm.inspection.fields.items.item_13 = $$c
         }
       }
     }
@@ -117137,8 +117035,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.checklist.items.item_14),
-      expression: "checklist.items.item_14"
+      value: (_vm.inspection.fields.items.item_14),
+      expression: "inspection.fields.items.item_14"
     }],
     attrs: {
       "disabled": "",
@@ -117147,23 +117045,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "item_14"
     },
     domProps: {
-      "checked": Array.isArray(_vm.checklist.items.item_14) ? _vm._i(_vm.checklist.items.item_14, null) > -1 : (_vm.checklist.items.item_14)
+      "checked": Array.isArray(_vm.inspection.fields.items.item_14) ? _vm._i(_vm.inspection.fields.items.item_14, null) > -1 : (_vm.inspection.fields.items.item_14)
     },
     on: {
       "__c": function($event) {
-        var $$a = _vm.checklist.items.item_14,
+        var $$a = _vm.inspection.fields.items.item_14,
           $$el = $event.target,
           $$c = $$el.checked ? (true) : (false);
         if (Array.isArray($$a)) {
           var $$v = null,
             $$i = _vm._i($$a, $$v);
           if ($$c) {
-            $$i < 0 && (_vm.checklist.items.item_14 = $$a.concat($$v))
+            $$i < 0 && (_vm.inspection.fields.items.item_14 = $$a.concat($$v))
           } else {
-            $$i > -1 && (_vm.checklist.items.item_14 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+            $$i > -1 && (_vm.inspection.fields.items.item_14 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
           }
         } else {
-          _vm.checklist.items.item_14 = $$c
+          _vm.inspection.fields.items.item_14 = $$c
         }
       }
     }
@@ -117175,8 +117073,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.checklist.items.item_15),
-      expression: "checklist.items.item_15"
+      value: (_vm.inspection.fields.items.item_15),
+      expression: "inspection.fields.items.item_15"
     }],
     attrs: {
       "disabled": "",
@@ -117185,23 +117083,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "item_15"
     },
     domProps: {
-      "checked": Array.isArray(_vm.checklist.items.item_15) ? _vm._i(_vm.checklist.items.item_15, null) > -1 : (_vm.checklist.items.item_15)
+      "checked": Array.isArray(_vm.inspection.fields.items.item_15) ? _vm._i(_vm.inspection.fields.items.item_15, null) > -1 : (_vm.inspection.fields.items.item_15)
     },
     on: {
       "__c": function($event) {
-        var $$a = _vm.checklist.items.item_15,
+        var $$a = _vm.inspection.fields.items.item_15,
           $$el = $event.target,
           $$c = $$el.checked ? (true) : (false);
         if (Array.isArray($$a)) {
           var $$v = null,
             $$i = _vm._i($$a, $$v);
           if ($$c) {
-            $$i < 0 && (_vm.checklist.items.item_15 = $$a.concat($$v))
+            $$i < 0 && (_vm.inspection.fields.items.item_15 = $$a.concat($$v))
           } else {
-            $$i > -1 && (_vm.checklist.items.item_15 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+            $$i > -1 && (_vm.inspection.fields.items.item_15 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
           }
         } else {
-          _vm.checklist.items.item_15 = $$c
+          _vm.inspection.fields.items.item_15 = $$c
         }
       }
     }
@@ -117213,8 +117111,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.checklist.items.item_16),
-      expression: "checklist.items.item_16"
+      value: (_vm.inspection.fields.items.item_16),
+      expression: "inspection.fields.items.item_16"
     }],
     attrs: {
       "disabled": "",
@@ -117223,23 +117121,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "item_16"
     },
     domProps: {
-      "checked": Array.isArray(_vm.checklist.items.item_16) ? _vm._i(_vm.checklist.items.item_16, null) > -1 : (_vm.checklist.items.item_16)
+      "checked": Array.isArray(_vm.inspection.fields.items.item_16) ? _vm._i(_vm.inspection.fields.items.item_16, null) > -1 : (_vm.inspection.fields.items.item_16)
     },
     on: {
       "__c": function($event) {
-        var $$a = _vm.checklist.items.item_16,
+        var $$a = _vm.inspection.fields.items.item_16,
           $$el = $event.target,
           $$c = $$el.checked ? (true) : (false);
         if (Array.isArray($$a)) {
           var $$v = null,
             $$i = _vm._i($$a, $$v);
           if ($$c) {
-            $$i < 0 && (_vm.checklist.items.item_16 = $$a.concat($$v))
+            $$i < 0 && (_vm.inspection.fields.items.item_16 = $$a.concat($$v))
           } else {
-            $$i > -1 && (_vm.checklist.items.item_16 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+            $$i > -1 && (_vm.inspection.fields.items.item_16 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
           }
         } else {
-          _vm.checklist.items.item_16 = $$c
+          _vm.inspection.fields.items.item_16 = $$c
         }
       }
     }
@@ -117251,8 +117149,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.checklist.items.item_17),
-      expression: "checklist.items.item_17"
+      value: (_vm.inspection.fields.items.item_17),
+      expression: "inspection.fields.items.item_17"
     }],
     attrs: {
       "disabled": "",
@@ -117261,23 +117159,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "item_17"
     },
     domProps: {
-      "checked": Array.isArray(_vm.checklist.items.item_17) ? _vm._i(_vm.checklist.items.item_17, null) > -1 : (_vm.checklist.items.item_17)
+      "checked": Array.isArray(_vm.inspection.fields.items.item_17) ? _vm._i(_vm.inspection.fields.items.item_17, null) > -1 : (_vm.inspection.fields.items.item_17)
     },
     on: {
       "__c": function($event) {
-        var $$a = _vm.checklist.items.item_17,
+        var $$a = _vm.inspection.fields.items.item_17,
           $$el = $event.target,
           $$c = $$el.checked ? (true) : (false);
         if (Array.isArray($$a)) {
           var $$v = null,
             $$i = _vm._i($$a, $$v);
           if ($$c) {
-            $$i < 0 && (_vm.checklist.items.item_17 = $$a.concat($$v))
+            $$i < 0 && (_vm.inspection.fields.items.item_17 = $$a.concat($$v))
           } else {
-            $$i > -1 && (_vm.checklist.items.item_17 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+            $$i > -1 && (_vm.inspection.fields.items.item_17 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
           }
         } else {
-          _vm.checklist.items.item_17 = $$c
+          _vm.inspection.fields.items.item_17 = $$c
         }
       }
     }
@@ -117289,8 +117187,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.checklist.items.item_18),
-      expression: "checklist.items.item_18"
+      value: (_vm.inspection.fields.items.item_18),
+      expression: "inspection.fields.items.item_18"
     }],
     attrs: {
       "disabled": "",
@@ -117299,23 +117197,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "item_18"
     },
     domProps: {
-      "checked": Array.isArray(_vm.checklist.items.item_18) ? _vm._i(_vm.checklist.items.item_18, null) > -1 : (_vm.checklist.items.item_18)
+      "checked": Array.isArray(_vm.inspection.fields.items.item_18) ? _vm._i(_vm.inspection.fields.items.item_18, null) > -1 : (_vm.inspection.fields.items.item_18)
     },
     on: {
       "__c": function($event) {
-        var $$a = _vm.checklist.items.item_18,
+        var $$a = _vm.inspection.fields.items.item_18,
           $$el = $event.target,
           $$c = $$el.checked ? (true) : (false);
         if (Array.isArray($$a)) {
           var $$v = null,
             $$i = _vm._i($$a, $$v);
           if ($$c) {
-            $$i < 0 && (_vm.checklist.items.item_18 = $$a.concat($$v))
+            $$i < 0 && (_vm.inspection.fields.items.item_18 = $$a.concat($$v))
           } else {
-            $$i > -1 && (_vm.checklist.items.item_18 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+            $$i > -1 && (_vm.inspection.fields.items.item_18 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
           }
         } else {
-          _vm.checklist.items.item_18 = $$c
+          _vm.inspection.fields.items.item_18 = $$c
         }
       }
     }
@@ -117327,8 +117225,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.checklist.items.item_19),
-      expression: "checklist.items.item_19"
+      value: (_vm.inspection.fields.items.item_19),
+      expression: "inspection.fields.items.item_19"
     }],
     attrs: {
       "disabled": "",
@@ -117337,23 +117235,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "item_19"
     },
     domProps: {
-      "checked": Array.isArray(_vm.checklist.items.item_19) ? _vm._i(_vm.checklist.items.item_19, null) > -1 : (_vm.checklist.items.item_19)
+      "checked": Array.isArray(_vm.inspection.fields.items.item_19) ? _vm._i(_vm.inspection.fields.items.item_19, null) > -1 : (_vm.inspection.fields.items.item_19)
     },
     on: {
       "__c": function($event) {
-        var $$a = _vm.checklist.items.item_19,
+        var $$a = _vm.inspection.fields.items.item_19,
           $$el = $event.target,
           $$c = $$el.checked ? (true) : (false);
         if (Array.isArray($$a)) {
           var $$v = null,
             $$i = _vm._i($$a, $$v);
           if ($$c) {
-            $$i < 0 && (_vm.checklist.items.item_19 = $$a.concat($$v))
+            $$i < 0 && (_vm.inspection.fields.items.item_19 = $$a.concat($$v))
           } else {
-            $$i > -1 && (_vm.checklist.items.item_19 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+            $$i > -1 && (_vm.inspection.fields.items.item_19 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
           }
         } else {
-          _vm.checklist.items.item_19 = $$c
+          _vm.inspection.fields.items.item_19 = $$c
         }
       }
     }
@@ -117365,8 +117263,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.checklist.items.item_20),
-      expression: "checklist.items.item_20"
+      value: (_vm.inspection.fields.items.item_20),
+      expression: "inspection.fields.items.item_20"
     }],
     attrs: {
       "disabled": "",
@@ -117375,23 +117273,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "item_20"
     },
     domProps: {
-      "checked": Array.isArray(_vm.checklist.items.item_20) ? _vm._i(_vm.checklist.items.item_20, null) > -1 : (_vm.checklist.items.item_20)
+      "checked": Array.isArray(_vm.inspection.fields.items.item_20) ? _vm._i(_vm.inspection.fields.items.item_20, null) > -1 : (_vm.inspection.fields.items.item_20)
     },
     on: {
       "__c": function($event) {
-        var $$a = _vm.checklist.items.item_20,
+        var $$a = _vm.inspection.fields.items.item_20,
           $$el = $event.target,
           $$c = $$el.checked ? (true) : (false);
         if (Array.isArray($$a)) {
           var $$v = null,
             $$i = _vm._i($$a, $$v);
           if ($$c) {
-            $$i < 0 && (_vm.checklist.items.item_20 = $$a.concat($$v))
+            $$i < 0 && (_vm.inspection.fields.items.item_20 = $$a.concat($$v))
           } else {
-            $$i > -1 && (_vm.checklist.items.item_20 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+            $$i > -1 && (_vm.inspection.fields.items.item_20 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
           }
         } else {
-          _vm.checklist.items.item_20 = $$c
+          _vm.inspection.fields.items.item_20 = $$c
         }
       }
     }
@@ -117403,8 +117301,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.checklist.items.item_21),
-      expression: "checklist.items.item_21"
+      value: (_vm.inspection.fields.items.item_21),
+      expression: "inspection.fields.items.item_21"
     }],
     attrs: {
       "disabled": "",
@@ -117413,23 +117311,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "item_21"
     },
     domProps: {
-      "checked": Array.isArray(_vm.checklist.items.item_21) ? _vm._i(_vm.checklist.items.item_21, null) > -1 : (_vm.checklist.items.item_21)
+      "checked": Array.isArray(_vm.inspection.fields.items.item_21) ? _vm._i(_vm.inspection.fields.items.item_21, null) > -1 : (_vm.inspection.fields.items.item_21)
     },
     on: {
       "__c": function($event) {
-        var $$a = _vm.checklist.items.item_21,
+        var $$a = _vm.inspection.fields.items.item_21,
           $$el = $event.target,
           $$c = $$el.checked ? (true) : (false);
         if (Array.isArray($$a)) {
           var $$v = null,
             $$i = _vm._i($$a, $$v);
           if ($$c) {
-            $$i < 0 && (_vm.checklist.items.item_21 = $$a.concat($$v))
+            $$i < 0 && (_vm.inspection.fields.items.item_21 = $$a.concat($$v))
           } else {
-            $$i > -1 && (_vm.checklist.items.item_21 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+            $$i > -1 && (_vm.inspection.fields.items.item_21 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
           }
         } else {
-          _vm.checklist.items.item_21 = $$c
+          _vm.inspection.fields.items.item_21 = $$c
         }
       }
     }
@@ -117441,8 +117339,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.checklist.items.item_22),
-      expression: "checklist.items.item_22"
+      value: (_vm.inspection.fields.items.item_22),
+      expression: "inspection.fields.items.item_22"
     }],
     attrs: {
       "disabled": "",
@@ -117451,23 +117349,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "item_22"
     },
     domProps: {
-      "checked": Array.isArray(_vm.checklist.items.item_22) ? _vm._i(_vm.checklist.items.item_22, null) > -1 : (_vm.checklist.items.item_22)
+      "checked": Array.isArray(_vm.inspection.fields.items.item_22) ? _vm._i(_vm.inspection.fields.items.item_22, null) > -1 : (_vm.inspection.fields.items.item_22)
     },
     on: {
       "__c": function($event) {
-        var $$a = _vm.checklist.items.item_22,
+        var $$a = _vm.inspection.fields.items.item_22,
           $$el = $event.target,
           $$c = $$el.checked ? (true) : (false);
         if (Array.isArray($$a)) {
           var $$v = null,
             $$i = _vm._i($$a, $$v);
           if ($$c) {
-            $$i < 0 && (_vm.checklist.items.item_22 = $$a.concat($$v))
+            $$i < 0 && (_vm.inspection.fields.items.item_22 = $$a.concat($$v))
           } else {
-            $$i > -1 && (_vm.checklist.items.item_22 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+            $$i > -1 && (_vm.inspection.fields.items.item_22 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
           }
         } else {
-          _vm.checklist.items.item_22 = $$c
+          _vm.inspection.fields.items.item_22 = $$c
         }
       }
     }
@@ -117479,8 +117377,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.checklist.items.item_23),
-      expression: "checklist.items.item_23"
+      value: (_vm.inspection.fields.items.item_23),
+      expression: "inspection.fields.items.item_23"
     }],
     attrs: {
       "disabled": "",
@@ -117489,27 +117387,27 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "item_23"
     },
     domProps: {
-      "checked": Array.isArray(_vm.checklist.items.item_23) ? _vm._i(_vm.checklist.items.item_23, null) > -1 : (_vm.checklist.items.item_23)
+      "checked": Array.isArray(_vm.inspection.fields.items.item_23) ? _vm._i(_vm.inspection.fields.items.item_23, null) > -1 : (_vm.inspection.fields.items.item_23)
     },
     on: {
       "__c": function($event) {
-        var $$a = _vm.checklist.items.item_23,
+        var $$a = _vm.inspection.fields.items.item_23,
           $$el = $event.target,
           $$c = $$el.checked ? (true) : (false);
         if (Array.isArray($$a)) {
           var $$v = null,
             $$i = _vm._i($$a, $$v);
           if ($$c) {
-            $$i < 0 && (_vm.checklist.items.item_23 = $$a.concat($$v))
+            $$i < 0 && (_vm.inspection.fields.items.item_23 = $$a.concat($$v))
           } else {
-            $$i > -1 && (_vm.checklist.items.item_23 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+            $$i > -1 && (_vm.inspection.fields.items.item_23 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
           }
         } else {
-          _vm.checklist.items.item_23 = $$c
+          _vm.inspection.fields.items.item_23 = $$c
         }
       }
     }
-  }), _vm._v(" Yes")])])])])]), _vm._v(" "), _c('h4', [_vm._v("Inspector's Comments")]), _vm._v(" "), _c('p', [_vm._v(_vm._s(_vm.checklist.inspectors_comments))]), _vm._v(" "), _c('h4', [_vm._v("Suitable for loading?")]), _vm._v(" "), _c('p', [_vm._v(_vm._s(_vm.checklist.suitable_for_loading ? 'Yes' : 'No'))]), _vm._v(" "), _c('div', {
+  }), _vm._v(" Yes")])])])])]), _vm._v(" "), _c('h4', [_vm._v("Inspector's Comments")]), _vm._v(" "), _c('p', [_vm._v(_vm._s(_vm.inspection.inspectors_comments))]), _vm._v(" "), _c('h4', [_vm._v("Suitable for loading?")]), _vm._v(" "), _c('p', [_vm._v(_vm._s(_vm.inspection.suitable_for_loading ? 'Yes' : 'No'))]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('router-link', {
     staticClass: "btn btn-danger",

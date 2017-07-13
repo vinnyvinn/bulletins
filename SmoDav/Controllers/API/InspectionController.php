@@ -83,12 +83,13 @@ class InspectionController extends Controller
      */
     public function show($id)
     {
-        $inspection = Inspection::findOrFail($id);
+        $inspection = Inspection::with(['journey','journey.truck','journey.truck.driver','journey.truck.trailer','journey.route'])
+        ->where('id', $id)
+        ->first();
         $inspection->fields = json_decode($inspection->fields);
 
         return Response::json([
             'status' => 'success',
-            'journeys' => Journey::open()->with(['truck.driver', 'truck.trailer'])->get(['id', 'raw', 'truck_id']),
             'supervisor' => true,
             'inspector' => false,
             'inspection' => $inspection

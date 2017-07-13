@@ -175,7 +175,6 @@
                                 <label for="inspectors_comments">Inspector's Comments</label>
                                 <textarea v-model="checklist.inspectors_comments" name="inspectors_comments" id="inspectors_comments" cols="30" rows="5" class="form-control"></textarea>
                             </div>
-
                             <!--<div class="form-group">-->
                                 <!--<label for="suitable_for_loading">Suitable for loading?</label>-->
                                 <!--<select v-model="checklist.suitable_for_loading" name="suitable_for_loading" id="suitable_for_loading" class="form-control">-->
@@ -215,22 +214,25 @@
 <script>
     export default {
         mounted () {
-
             if (this.$route.params.journey) {
               this.$root.isLoading = true;
               http.get('/api/new_inspection/' + this.$route.params.journey).then( (response) => {
                 this.journey = response.journey;
+                this.checklist.journey_id = this.journey.id;
+                this.checklist.from_station = this.journey.route.source;
+                this.checklist.to_station = this.journey.route.destination;
                 this.$root.isLoading = false;
+
+                return;
               });
 
-              return;
             }
 
             if (this.$route.params.id) {
               this.$root.isLoading = true;
                 http.get('/api/inspection/' + this.$route.params.id).then((response) => {
                     if (response.status !== 'success') return;
-                    this.journeys = response.journeys;
+                    this.journey = response.inspection.journey;
                     this.isInspector = response.inspector;
                     this.isSupervisor = response.supervisor;
 
