@@ -274,9 +274,8 @@
 
                     return response;
                 })
-            }).catch(() => this.$root.isLoading = false);
-
-            this.checkState();
+            }).then(() => this.checkState())
+                .catch(() => this.$root.isLoading = false);
         },
 
         mounted() {
@@ -428,7 +427,7 @@
                     this.journey.job_description = this.contract.job_description;
                     this.journey.enquiry_from = this.contract.enquiry_from == 'null' ? '' : this.contract.enquiry_from;
                     $('#route_id').select2().on('change', e => this.journey.route_id = e.target.value);
-                }, 1000);
+                }, 5000);
 
             },
 
@@ -443,10 +442,11 @@
                         this.trucks = response.trucks;
                         this.drivers = response.drivers;
 //                            this.contract = response.contract;
-                        this.journey = response.journey.raw;
-                        this.journey.enquiry_from = this.journey.enquiry_from == 'null' ? '' : this.journey.enquiry_from;
-                        this.journey.ref_no = this.journey.ref_no == 'null' ? '' : this.journey.ref_no;
-                        this.journey.ref_no = this.journey.contract_id == 'null' ? '' : this.journey.contract_id;
+                        let journey = response.journey.raw;
+                        journey.enquiry_from = journey.enquiry_from == 'null' ? '' : this.journey.enquiry_from;
+                        journey.ref_no = journey.ref_no == 'null' ? '' : this.journey.ref_no;
+                        journey.ref_no = journey.contract_id == 'null' ? '' : this.journey.contract_id;
+                        this.journey = Object.assign({}, journey);
                         this.trucks_already_allocated = response.allocated;
                         this.updateBooleans();
                         this.status = response.journey.status;

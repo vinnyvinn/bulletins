@@ -82621,11 +82621,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                 return response;
             });
+        }).then(function () {
+            return _this.checkState();
         }).catch(function () {
             return _this.$root.isLoading = false;
         });
-
-        this.checkState();
     },
     mounted: function mounted() {
         this.setupUI();
@@ -82791,7 +82791,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 $('#route_id').select2().on('change', function (e) {
                     return _this7.journey.route_id = e.target.value;
                 });
-            }, 1000);
+            }, 5000);
         },
         checkState: function checkState() {
             var _this8 = this;
@@ -82806,10 +82806,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this8.trucks = response.trucks;
                     _this8.drivers = response.drivers;
                     //                            this.contract = response.contract;
-                    _this8.journey = response.journey.raw;
-                    _this8.journey.enquiry_from = _this8.journey.enquiry_from == 'null' ? '' : _this8.journey.enquiry_from;
-                    _this8.journey.ref_no = _this8.journey.ref_no == 'null' ? '' : _this8.journey.ref_no;
-                    _this8.journey.ref_no = _this8.journey.contract_id == 'null' ? '' : _this8.journey.contract_id;
+                    var journey = response.journey.raw;
+                    journey.enquiry_from = journey.enquiry_from == 'null' ? '' : _this8.journey.enquiry_from;
+                    journey.ref_no = journey.ref_no == 'null' ? '' : _this8.journey.ref_no;
+                    journey.ref_no = journey.contract_id == 'null' ? '' : _this8.journey.contract_id;
+                    _this8.journey = Object.assign({}, journey);
                     _this8.trucks_already_allocated = response.allocated;
                     _this8.updateBooleans();
                     _this8.status = response.journey.status;
