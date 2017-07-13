@@ -1,6 +1,6 @@
 function authMiddleware(to, from, next) {
     let allowedPaths = [
-        '/station-selection', '/404', '/403', '/trucks', '/drivers', '/routes', '/trailers'
+        '/station-selection', '/404', '/403', '/trucks', '/drivers', '/routes', '/trailers', '/login'
     ];
 
     if (! localStorage.getItem('foeiwafwfuwe')) {
