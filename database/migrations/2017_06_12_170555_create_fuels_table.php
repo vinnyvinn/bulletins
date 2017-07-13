@@ -15,6 +15,7 @@ class CreateFuelsTable extends Migration
     {
         Schema::create('fuels', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('station_id')->index()->unsigned()->nullable();
             $table->integer('journey_id')->unsigned();
             $table->date('date');
             $table->float('current_fuel');
@@ -33,6 +34,8 @@ class CreateFuelsTable extends Migration
             $table->integer('top_up_quantity')->nullable();
             $table->integer('user_id')->nullable();
             $table->timestamps();
+
+            $table->foreign('station_id')->references('id')->on('stations')->onDelete('set null');
         });
     }
 

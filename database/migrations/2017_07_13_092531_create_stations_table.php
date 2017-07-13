@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRouteCardsTable extends Migration
+class CreateStationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateRouteCardsTable extends Migration
      */
     public function up()
     {
-        Schema::create('route_cards', function (Blueprint $table) {
+        Schema::create('stations', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('station_id')->index()->unsigned()->nullable();
+            $table->string('name');
+            $table->string('location');
+            $table->softDeletes();
             $table->timestamps();
-
-            $table->foreign('station_id')->references('id')->on('stations')->onDelete('set null');
         });
     }
 
@@ -29,6 +29,6 @@ class CreateRouteCardsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('route_cards');
+        Schema::dropIfExists('stations');
     }
 }

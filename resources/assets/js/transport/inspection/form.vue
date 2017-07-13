@@ -176,13 +176,13 @@
                                 <textarea v-model="checklist.inspectors_comments" name="inspectors_comments" id="inspectors_comments" cols="30" rows="5" class="form-control"></textarea>
                             </div>
 
-                            <div class="form-group">
-                                <label for="suitable_for_loading">Suitable for loading?</label>
-                                <select v-model="checklist.suitable_for_loading" name="suitable_for_loading" id="suitable_for_loading" class="form-control">
-                                    <option value="0">No</option>
-                                    <option value="1">Yes</option>
-                                </select>
-                            </div>
+                            <!--<div class="form-group">-->
+                                <!--<label for="suitable_for_loading">Suitable for loading?</label>-->
+                                <!--<select v-model="checklist.suitable_for_loading" name="suitable_for_loading" id="suitable_for_loading" class="form-control">-->
+                                    <!--<option value="0">No</option>-->
+                                    <!--<option value="1">Yes</option>-->
+                                <!--</select>-->
+                            <!--</div>-->
 
                             <!--<div v-if="isSupervisor">-->
                                 <!--<h4>Inspector's Comments</h4>-->
@@ -347,6 +347,9 @@
                     endpoint = '/api/inspection/' + this.$route.params.id;
                     method = 'put';
                 }
+
+                let checkValue = Object.values(this.checklist.items);
+                this.checklist.suitable_for_loading = checkValue.indexOf(false) === -1;
 
                 http[method](endpoint, this.checklist).then(response => {
                     this.printout = response.printout;

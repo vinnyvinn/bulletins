@@ -11,6 +11,33 @@
 |
 */
 
+Route::get('/test', function () {
+    $items = unserialize(file_get_contents('results.txt'));
+    $excel = new PHPExcel();
+    $sheet = $excel->getSheet(0);
+    $sheet->setTitle('Comparisons');
+    $sheet->setCellValue('a1', 'Invoice ID');
+    $sheet->setCellValue('b1', 'Invoice Line ID');
+    $sheet->setCellValue('c1', 'SAGE Amount');
+    $sheet->setCellValue('d1', 'POS Amount');
+    $sheet->setCellValue('e1', 'Difference');
+    $header = 'a1:e1';
+    $sheet->getStyle($header)->getFill()
+        ->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('00ffff00');
+    $style = array(
+        'font' => array('bold' => true,),
+        'alignment' => array('horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,),
+    );
+    $sheet->getStyle($header)->applyFromArray($style);
+
+    $sheet->fromArray($items, '', 'A2');
+
+    $writer = \PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+
+    $writer->setIncludeCharts(false);
+    $writer->save('output.xlsx');
+});
+
 use App\Trip;
 use Carbon\Carbon;
 Auth::routes();

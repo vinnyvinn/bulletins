@@ -55,7 +55,7 @@ class UserController extends Controller
 
         $label = '[';
         $amount = '';
-        foreach($sales_data as $data) {
+        foreach ($sales_data as $data) {
             $label .= '"'.$data->month.'", ';
             $amount .= $data->amount.', ';
         }

@@ -16,6 +16,7 @@ class CreateMilagesTable extends Migration
     {
         Schema::create('mileages', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('station_id')->index()->unsigned()->nullable();
             $table->bigInteger('journey_id')->index()->unsigned();
             $table->string('mileage_type');
             $table->integer('standard_amount');
@@ -32,6 +33,7 @@ class CreateMilagesTable extends Migration
             $table->timestamps();
 
             $table->foreign('journey_id')->references('id')->on('journeys')->onDelete('cascade');
+            $table->foreign('station_id')->references('id')->on('stations')->onDelete('set null');
         });
     }
 

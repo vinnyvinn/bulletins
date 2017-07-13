@@ -5,26 +5,33 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <div class="row">
-                            <div class="col-sm-3">
+                            <div class="col-sm-4">
                                 <strong>Contracts</strong>
                             </div>
-                            <div class="col-sm-3">
-                                <select class="form-control input-sm" name="month" id="month" v-model="period">
-                                    <option :value="null" disabled>Select Period</option>
-                                    <option v-for="index in 12" :value="index">{{ index }} Month{{ index > 1 ? 's' : '' }}</option>
-                                </select>
+
+                            <div class="col-sm-4">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <select class="form-control input-sm" name="month" id="month" v-model="period">
+                                            <option :value="null" disabled>Select Period</option>
+                                            <option v-for="index in 12" :value="index">{{ index }} Month{{ index > 1 ? 's' : '' }}</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="input-group">
+                                            <input type="text" class="datepicker form-control input-sm" v-model="endMonth" placeholder="To Date">
+                                            <span class="input-group-btn">
+                                                <button @click.prevent="filterRows" class="btn btn-success btn-sm">Filter</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="col-sm-3">
-                                <input type="text" class="datepicker form-control input-sm" v-model="endMonth" placeholder="To Date">
-                            </div>
-
-                            <div class="col-sm-1">
-                                <button @click.prevent="filterRows" class="btn btn-success btn-xs">Filter</button>
-                            </div>
-
-                            <div class="col-sm-2">
-                                <router-link to="/contracts/create" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i> Add New</router-link>
+                            <div class="col-sm-4">
+                                <router-link to="/contracts/create" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i> New Contract</router-link>
+                                <router-link to="/contract-templates" class="btn btn-warning btn-xs pull-right"><i class="fa fa-eye"></i> Templates</router-link>
                             </div>
                         </div>
                     </div>

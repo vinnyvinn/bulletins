@@ -160,9 +160,9 @@ function flatten(arr) {
     return arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? flatten(val) : val), []);
 }
 
-export function prepareTable() {
+export function prepareTable(includeFilters = false, ignoreColumns = []) {
     setTimeout(() => {
-        $('table').dataTable({
+        let config = {
             "lengthMenu": [ [-1, 10, 25, 50, 100, 200], ["All", 10, 25, 50, 100, 200] ],
             dom: '<".pull-right"f>l<".pull-right"B>rtip',
             buttons: [
@@ -191,9 +191,41 @@ export function prepareTable() {
                         columns: ':visible'
                     }
                 }
-            ]
-        });
+            ],
+        };
+
+        if (includeFilters) {
+            config.initComplete = function() {
+                let cols = this.api().columns();
+                cols.every(function($index) {
+                    if (ignoreColumns.indexOf($index) !== -1) return;
+                    // if ($index == cols[0].length - 3 || $index == cols[0].length - 1) return;
+                    let column = this;
+                    let selectControl = $('<br/><select class="form-control input-sm select2"></select>')
+
+                        .appendTo($(column.header()))
+                        .on('change', function() {
+                            let selected = $(this).val();
+                            let query = $.fn.dataTable.util.escapeRegex(selected);
+
+                            column.search(query, true, false)
+                                .draw();
+                        });
+
+                    selectControl.append('<option value="">All</option>');
+
+                    column.data().unique().sort().each(function(d, j) {
+                        selectControl.append('<option value="' + d + '">' + d + '</option>')
+                    });
+                });
+            }
+        }
+
+        $('table').dataTable(config);
     }, 100);
+    setTimeout(() => {
+        $('.select2').select2();
+    }, 200);
 }
 
 export function formatDate(value) {

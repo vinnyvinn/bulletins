@@ -15,6 +15,7 @@ class CreateInspectionsTable extends Migration
     {
         Schema::create('inspections', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('station_id')->index()->unsigned()->nullable();
             $table->bigInteger('journey_id')->unsigned()->index();
             $table->string('status')->default('Pending');
             $table->string('from_station');
@@ -28,6 +29,7 @@ class CreateInspectionsTable extends Migration
             $table->timestamps();
 
             $table->foreign('journey_id')->references('id')->on('journeys')->onDelete('cascade');
+            $table->foreign('station_id')->references('id')->on('stations')->onDelete('set null');
         });
     }
 
