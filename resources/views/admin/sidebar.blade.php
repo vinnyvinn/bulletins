@@ -30,6 +30,8 @@
                     {{--<li class="dropdown-header">MAKES &amp; MODElS</li>--}}
                     {{--<li><a href="{{ route('workshop.make.index') }}"><i class="fa fa-list"></i> Makes</a></li>--}}
                     {{--<li><a href="{{ route('workshop.model.index') }}"><i class="fa fa-list"></i> Models</a></li>--}}
+                    <li class="dropdown-header">GENERAL</li>
+                    <li><a href="{{ route('workshop.stations.index') }}"><i class="fa fa-list"></i> Stations</a></li>
 
                     <li class="dropdown-header">CONTRACTS</li>
                     <li><a href="{{ route('workshop.cargo-classification.index') }}"><i class="fa fa-list"></i> Cargo Classifications</a></li>

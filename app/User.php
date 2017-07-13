@@ -10,6 +10,7 @@ use App\Contract;
 use SmoDav\Models\Mileage;
 use SmoDav\Models\Journey;
 use SmoDav\Models\Delivery;
+use SmoDav\Models\Station;
 
 class User extends Authenticatable
 {
@@ -21,7 +22,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'fist_name', 'last_name', 'email', 'password', 'permissions'
+        'fist_name',
+        'last_name',
+        'email',
+        'password',
+        'permissions',
     ];
 
     /**
@@ -30,7 +35,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
 
     public function getNameAttribute($name)
@@ -42,12 +48,12 @@ class User extends Authenticatable
     {
         $email = $this->email;
         $url = 'http://www.gravatar.com/avatar/';
-        $url .= md5( strtolower( trim( $email ) ) );
+        $url .= md5(strtolower(trim($email)));
         $url .= "?s=$s&d=$d&r=$r";
 
 
-        if (! empty($this->photo)) {
-            $url = asset('uploads/photo/'.$this->photo);
+        if (!empty($this->photo)) {
+            $url = asset('uploads/photo/' . $this->photo);
         }
 
         if ($img) {
@@ -64,7 +70,7 @@ class User extends Authenticatable
 
     public function get_fullname()
     {
-        return $this->first_name .' '.$this->last_name;
+        return $this->first_name . ' ' . $this->last_name;
     }
 
     public function joinedShops()
@@ -86,10 +92,12 @@ class User extends Authenticatable
     {
         return $this->user_type == 'sub_admin';
     }
+
     public function isShopAdmin()
     {
         return $this->user_type == 'shop_admin';
     }
+
     public function isUser()
     {
         return $this->user_type == 'user';
@@ -112,32 +120,38 @@ class User extends Authenticatable
         } else {
             $unread = $this->hasMany('App\Message')->where('parent_id', 0)->where('is_read', 0)->count();
         }
+
         return $unread;
     }
 
     public function fuels_approved()
     {
-      return $this->hasMany(Fuel::class);
+        return $this->hasMany(Fuel::class);
     }
 
     public function mileages()
     {
-      return $this->hasMany(Mileage::class);
+        return $this->hasMany(Mileage::class);
     }
 
     public function contracts()
     {
-      return $this->hasMany(Contract::class);
+        return $this->hasMany(Contract::class);
     }
 
     public function journeys()
     {
-      return $this->hasMany(Journey::class);
+        return $this->hasMany(Journey::class);
     }
 
     public function deliveries()
     {
-      return $this->hasMany(Delivery::class);
+        return $this->hasMany(Delivery::class);
+    }
+
+    public function stations()
+    {
+        return $this->belongsToMany(Station::class);
     }
 
 

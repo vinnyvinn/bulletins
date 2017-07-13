@@ -15,7 +15,10 @@ class CreateRouteCardsTable extends Migration
     {
         Schema::create('route_cards', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('station_id')->index()->unsigned()->nullable();
             $table->timestamps();
+
+            $table->foreign('station_id')->references('id')->on('stations')->onDelete('set null');
         });
     }
 

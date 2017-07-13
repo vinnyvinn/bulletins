@@ -12,6 +12,7 @@ Route::group(['prefix' => 'workshop', 'as' => 'workshop.'], function () {
     Route::resource('cargo-classification', '\SmoDav\Controllers\CargoClassificationController');
     Route::resource('cargo-type', '\SmoDav\Controllers\CargoTypeController');
     Route::resource('carriage-point', '\SmoDav\Controllers\CarriagePointController');
+    Route::resource('stations', '\SmoDav\Controllers\StationController');
     Route::resource('users', 'UsersController');
 });
 

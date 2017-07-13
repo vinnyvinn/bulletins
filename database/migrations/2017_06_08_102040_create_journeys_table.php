@@ -16,6 +16,7 @@ class CreateJourneysTable extends Migration
     {
         Schema::create('journeys', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('station_id')->index()->unsigned()->nullable();
             $table->text('raw');
             $table->string('status')->default(Constants::STATUS_PENDING);
             $table->boolean('is_contract_related')->default('false');
@@ -45,6 +46,7 @@ class CreateJourneysTable extends Migration
             $table->foreign('truck_id')->references('id')->on('trucks')->onDelete('cascade');
             $table->foreign('driver_id')->references('id')->on('drivers')->onDelete('cascade');
             $table->foreign('route_id')->references('id')->on('routes')->onDelete('set null');
+            $table->foreign('station_id')->references('id')->on('stations')->onDelete('set null');
         });
     }
 

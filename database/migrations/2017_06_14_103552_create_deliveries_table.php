@@ -16,6 +16,7 @@ class CreateDeliveriesTable extends Migration
     {
         Schema::create('deliveries', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('station_id')->index()->unsigned()->nullable();
             $table->bigInteger('journey_id')->index()->unsigned();
             $table->text('narration')->nullable();
             $table->integer('bags_loaded')->nullable();
@@ -35,6 +36,7 @@ class CreateDeliveriesTable extends Migration
             $table->timestamps();
 
             $table->foreign('journey_id')->references('id')->on('journeys')->onDelete('cascade');
+            $table->foreign('station_id')->references('id')->on('stations')->onDelete('set null');
         });
     }
 
