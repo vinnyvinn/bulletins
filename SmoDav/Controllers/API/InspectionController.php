@@ -45,7 +45,7 @@ class InspectionController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         $journeys = Journey::when(request('s'), function ($builder) {
             return $builder->where('station_id', request('s'));
@@ -95,12 +95,13 @@ class InspectionController extends Controller
      */
     public function show($id)
     {
-        $inspection = Inspection::findOrFail($id);
+        $inspection = Inspection::with(['journey','journey.truck','journey.truck.driver','journey.truck.trailer','journey.route'])
+        ->where('id', $id)
+        ->first();
         $inspection->fields = json_decode($inspection->fields);
 
         return Response::json([
             'status' => 'success',
-            'journeys' => Journey::open()->with(['truck.driver', 'truck.trailer'])->get(['id', 'raw', 'truck_id']),
             'supervisor' => true,
             'inspector' => false,
             'inspection' => $inspection
@@ -191,4 +192,15 @@ class InspectionController extends Controller
             'message' => 'Successfully reopened journey.',
         ]);
     }
+
+    public function newInspection ($id)
+    {
+        return Response::json([
+            'status' => 'success',
+            'journey' => Journey::with('truck','truck.driver','truck.trailer','route')->where('id',$id)->first(['id', 'raw', 'truck_id','route_id']),
+            'supervisor' => false,
+            'inspector' => true,
+        ]);
+    }
+
 }

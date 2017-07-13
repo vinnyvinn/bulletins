@@ -2,7 +2,11 @@
     <div>
         <div class="top-nav">
             <h4 class="pull-left brand"><strong>{{ app }}</strong></h4>
+            <router-link style="margin-right: 30px;margin-top: 3px" to="/station-selection" class="pull-right btn btn-success" v-if="showSwitch">
+                Change Station
+            </router-link>
         </div>
+
         <div class="bottom-nav">
 
             <router-link to="/dashboard" class="nav-items">
@@ -84,6 +88,10 @@ $root.can('create-contract-template') || $root.can('view-contract-template') || 
 
             can(permission) {
                 return window.can(permission)
+            },
+
+            showSwitch() {
+                return this.$root.user.stations.length > 1;
             }
         }
     }

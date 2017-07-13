@@ -16,10 +16,7 @@
                             <div class="row">
                                 <div class="col-sm-3">
                                     <div class="form-group">
-                                        <label for="journey_id">Journey</label>
-                                        <select required name="journey_id" id="journey_id" v-model="checklist.journey_id" class="form-control input-sm select2">
-                                            <option v-for="journey in journeys" :value="journey.id">JRNY-{{ journey.id }} - {{ journey.truck.plate_number }}</option>
-                                        </select>
+                                        <label for="journey_id">Journey: {{ journey.id }}</label>
                                     </div>
                                 </div>
 
@@ -41,7 +38,7 @@
                                 <div class="col-sm-3">
                                     <div class="form-group">
                                         <label>Route</label>
-                                        <h5 v-if="journey.route_source"><strong>{{ journey.route_source }} to {{ journey.route_destination }}</strong></h5>
+                                        <h5 v-if="journey.route"><strong>{{ journey.route.source }} to {{ journey.route.destination }}</strong></h5>
                                     </div>
                                 </div>
 
@@ -178,7 +175,6 @@
                                 <label for="inspectors_comments">Inspector's Comments</label>
                                 <textarea v-model="checklist.inspectors_comments" name="inspectors_comments" id="inspectors_comments" cols="30" rows="5" class="form-control"></textarea>
                             </div>
-
                             <!--<div class="form-group">-->
                                 <!--<label for="suitable_for_loading">Suitable for loading?</label>-->
                                 <!--<select v-model="checklist.suitable_for_loading" name="suitable_for_loading" id="suitable_for_loading" class="form-control">-->
@@ -228,31 +224,49 @@
                 return false;
             }
         },
-        mounted() {
-            let endpoint = '/api/inspection/create';
-            if (this.$route.params.id) {
-                endpoint = '/api/inspection/' + this.$route.params.id;
+
+        mounted () {
+            if (this.$route.params.journey) {
+              this.$root.isLoading = true;
+              http.get('/api/new_inspection/' + this.$route.params.journey + '?s=' + window.Laravel.station_id)
+                  .then( (response) => {
+                    this.journey = response.journey;
+                    this.checklist.journey_id = this.journey.id;
+                    this.checklist.from_station = this.journey.route.source;
+                    this.checklist.to_station = this.journey.route.destination;
+                    this.$root.isLoading = false;
+
+                    return;
+                  });
             }
 
-            http.get(endpoint + '?s=' + window.Laravel.station_id).then((response) => {
-                if (response.status !== 'success') return;
-                this.journeys = response.journeys;
-                this.isInspector = response.inspector;
-                this.isSupervisor = response.supervisor;
+            if (this.$route.params.id) {
+              this.$root.isLoading = true;
+                http.get('/api/inspection/' + this.$route.params.id + '?s=' + window.Laravel.station_id).then((response) => {
+                    if (response.status !== 'success') return;
+                    this.journey = response.inspection.journey;
+                    this.isInspector = response.inspector;
+                    this.isSupervisor = response.supervisor;
 
-                if (response.inspection) {
-                    this.checklist = response.inspection.fields;
-                    this.checklist.created_at = response.inspection.created_at;
-                    this.checklist.status = response.inspection.status;
-                }
-            });
+                    if (response.inspection) {
+                        this.checklist = response.inspection.fields;
+                        this.checklist.created_at = response.inspection.created_at;
+                        this.checklist.status = response.inspection.status;
+                    }
+
+                    this.$root.isLoading = false;
+                });
+            }
         },
+
         data() {
             return {
-                journeys: [],
-                truck_details: {
-                  driver: {},
-                  trailer: {}
+                journey: {
+                  truck: {
+                    driver: {},
+                    trailer: {}
+                  },
+                  route: {}
                 },
                 printout: '',
                 isSupervisor: false,
@@ -294,45 +308,45 @@
                 }
             }
         },
-
+        // props: ['journey','truck','driver','trailer'],
         computed: {
-//            journey() {
-//                let journey = this.journeys.filter(e => e.id == this.checklist.journey_id);
-//                if (journey.length < 1) {
-//                    return {};
-//                }
-//                let id = journey[0].id;
-//                this.truck_details = journey[0].truck;
-//                journey = JSON.parse(journey[0].raw);
-//
-//                journey.id = id;
-//                this.checklist.from_station = journey.route_source;
-//                this.checklist.to_station = journey.route_destination;
-//
-//                return journey;
-//            },
-            journey() {
-                let journey = this.journeys.filter(e => e.id == this.checklist.journey_id);
-
-                if (journey.length < 1) {
-                    return {
-                        truck: {
-                            driver: {},
-                            trailer: {}
-                        }
-                    };
-                }
-
-                let id = journey[0].id;
-                let truck = journey[0].truck;
-                journey = JSON.parse(journey[0].raw);
-                journey.id = id;
-                journey.truck = truck;
-                this.checklist.from_station = journey.route_source;
-                this.checklist.to_station = journey.route_destination;
-
-                return journey;
-            },
+          //  journey() {
+          //      let journey = this.journeys.filter(e => e.id == this.checklist.journey_id);
+          //      if (journey.length < 1) {
+          //          return {};
+          //      }
+          //      let id = journey[0].id;
+          //      this.truck_details = journey[0].truck;
+          //      journey = JSON.parse(journey[0].raw);
+           //
+          //      journey.id = id;
+          //      this.checklist.from_station = journey.route_source;
+          //      this.checklist.to_station = journey.route_destination;
+           //
+          //      return journey;
+          //  },
+          //   journey() {
+          //       let journey = this.journeys.filter(e => e.id == this.checklist.journey_id);
+           //
+          //       if (journey.length < 1) {
+          //           return {
+          //               truck: {
+          //                   driver: {},
+          //                   trailer: {}
+          //               }
+          //           };
+          //       }
+           //
+          //       let id = journey[0].id;
+          //       let truck = journey[0].truck;
+          //       journey = JSON.parse(journey[0].raw);
+          //       journey.id = id;
+          //       journey.truck = truck;
+          //       this.checklist.from_station = journey.route_source;
+          //       this.checklist.to_station = journey.route_destination;
+           //
+          //       return journey;
+          //   },
         },
 
         methods: {

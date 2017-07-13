@@ -21,7 +21,7 @@
                                     <th>Phone Number</th>
                                     <th>Inspected On</th>
                                     <th>From</th>
-                                    <th>To</th>
+                                    <th>To</th>ro
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -101,8 +101,8 @@
                 return window._date2(value);
             },
 
-            edit(journey) {
-                window._router.push({path: '/inspection/' + journey.id + '/edit'})
+            edit(inspection) {
+                window._router.push({path: '/inspection/' + inspection.id + '/edit'})
             },
 
             destroy(id) {

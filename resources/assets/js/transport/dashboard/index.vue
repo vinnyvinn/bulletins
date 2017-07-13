@@ -47,7 +47,7 @@
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <strong>Pending Fuel &amp; Mileage for journeys created.</strong>
+                        <strong>Pending Fuel for journeys created.</strong>
                     </div>
                     <div class="panel-body">
                         <div class="table-responsive">
@@ -62,7 +62,13 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-
+                                <tr v-for="journey in not_fueled">
+                                    <td><router-link :to="'/journey/' + journey.id">JRNY-{{ journey.id }}</router-link></td>
+                                    <td>{{ journey.is_contract_related ? 'Yes' : 'No' }}</td>
+                                    <td>{{ journey.journey_type }}</td>
+                                    <td>{{ date2(journey.job_date) }}</td>
+                                    <td>{{ journey.ref_no }}</td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -89,7 +95,13 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-
+                                <tr v-for="journey in not_loaded">
+                                    <td><router-link :to="'/journey/' + journey.id">JRNY-{{ journey.id }}</router-link></td>
+                                    <td>{{ journey.is_contract_related ? 'Yes' : 'No' }}</td>
+                                    <td>{{ journey.journey_type }}</td>
+                                    <td>{{ date2(journey.job_date) }}</td>
+                                    <td>{{ journey.ref_no }}</td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -98,7 +110,7 @@
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <strong>Pending offloading.</strong>
+                        <strong>Pending Mileage for journeys created.</strong>
                     </div>
                     <div class="panel-body">
                         <div class="table-responsive">
@@ -113,7 +125,13 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-
+                                <tr v-for="journey in not_paid">
+                                    <td><router-link :to="'/journey/' + journey.id">JRNY-{{ journey.id }}</router-link></td>
+                                    <td>{{ journey.is_contract_related ? 'Yes' : 'No' }}</td>
+                                    <td>{{ journey.journey_type }}</td>
+                                    <td>{{ date2(journey.job_date) }}</td>
+                                    <td>{{ journey.ref_no }}</td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -129,7 +147,7 @@
     export default {
         created() {
             this.$root.isLoading = true;
-            http.get('/api/dashboard').then(response => {
+            http.get('/api/dashboard?s=' + window.Laravel.station_id).then(response => {
                 this.mapFetchedData(response);
             });
         },
@@ -137,6 +155,9 @@
         data() {
             return {
                 open_journeys: [],
+                not_loaded: [],
+                not_fueled: [],
+                not_paid: [],
                 loading: [],
                 offloading: [],
                 delivery_notes: [],
@@ -163,11 +184,14 @@
             },
 
             mapFetchedData(response) {
-                $('.datatable').dataTable().fnDestroy();
+//                $('.datatable').dataTable().fnDestroy();
                 this.open_journeys = response.open_journeys;
+                this.not_fueled = response.not_fueled;
+                this.not_loaded = response.not_loaded;
+                this.not_paid = response.not_paid;
                 this.months = response.months;
                 setTimeout(() => {
-                    $('.datatable').dataTable();
+//                    $('.datatable').dataTable();
                     this.$root.isLoading = false;
                 }, 1000);
             }
