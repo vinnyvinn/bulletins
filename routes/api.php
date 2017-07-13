@@ -74,4 +74,5 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('approve_mileage/{id}', '\SmoDav\Controllers\API\MileageController@approve');
     Route::get('trucks_already_allocated/{contract_id}', '\SmoDav\Controllers\API\JourneyController@trucks_already_allocated');
     Route::get('truck-report/{id}', 'TruckController@report');
+    Route::get('new_inspection/{id}', '\SmoDav\Controllers\API\InspectionController@newInspection');
 });

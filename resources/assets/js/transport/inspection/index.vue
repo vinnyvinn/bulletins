@@ -21,7 +21,7 @@
                                     <th>Phone Number</th>
                                     <th>Inspected On</th>
                                     <th>From</th>
-                                    <th>To</th>
+                                    <th>To</th>ro
                                     <th></th>
                                 </tr>
                                 </thead>

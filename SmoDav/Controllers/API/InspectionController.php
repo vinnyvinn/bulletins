@@ -41,7 +41,7 @@ class InspectionController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         return Response::json([
             'status' => 'success',
@@ -176,4 +176,15 @@ class InspectionController extends Controller
             'message' => 'Successfully reopened journey.',
         ]);
     }
+
+    public function newInspection ($id)
+    {
+        return Response::json([
+            'status' => 'success',
+            'journey' => Journey::with('truck','truck.driver','truck.trailer','route')->where('id',$id)->first(['id', 'raw', 'truck_id','route_id']),
+            'supervisor' => false,
+            'inspector' => true,
+        ]);
+    }
+
 }
