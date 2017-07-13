@@ -26,7 +26,7 @@
                                     <td><router-link :to="'/truck/' + journey.truck.id">{{ journey.truck.plate_number }}</router-link></td>
                                     <td>{{ journey.truck.driver.first_name }}</td>
                                     <td>JRNY-{{ journey.id }}</td>
-                                    <td class="text-center">
+                                    <td>
                                         <router-link :to="'inspection/create/'+ journey.id">
                                           <button type="button" name="button" class="btn btn-success btn-sm">INSPECT</button>
                                         </router-link>

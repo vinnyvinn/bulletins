@@ -16,7 +16,8 @@
                             <div class="row">
                                 <div class="col-sm-3">
                                     <div class="form-group">
-                                        <label for="journey_id">Journey: {{ journey.id }}</label>
+                                        <label for="journey_id">Journey:
+                                        <h5><strong>{{ journey.id }}</strong></h5></label>
                                     </div>
                                 </div>
 

@@ -31,7 +31,7 @@
 
                                     </td>
                                     <td>{{ journey.truck.plate_number }}</td>
-                                    <td>CTR-{{ journey.contract.name }} {{ journey.contract.client.Name }}</td>
+                                    <td>{{ journey.contract.name }} {{ journey.contract.client.Name }}</td>
                                     <td>{{ date2(journey.job_date) }}</td>
                                     <td>{{ journey.truck.driver.first_name}} {{ journey.truck.driver.last_name}}</td>
                                     <td class="text-center">

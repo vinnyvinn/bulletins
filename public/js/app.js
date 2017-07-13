@@ -82334,6 +82334,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
@@ -107804,7 +107805,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "label label-success"
     }, [_vm._v("Approved")]) : _vm._e(), _vm._v(" "), (journey.status == 'Closed') ? _c('span', {
       staticClass: "label label-default"
-    }, [_vm._v("Closed")]) : _vm._e()]), _vm._v(" "), _c('td', [_vm._v(_vm._s(journey.truck.plate_number))]), _vm._v(" "), _c('td', [_vm._v("CTR-" + _vm._s(journey.contract.name) + " " + _vm._s(journey.contract.client.Name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.date2(journey.job_date)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(journey.truck.driver.first_name) + " " + _vm._s(journey.truck.driver.last_name))]), _vm._v(" "), _c('td', {
+    }, [_vm._v("Closed")]) : _vm._e()]), _vm._v(" "), _c('td', [_vm._v(_vm._s(journey.truck.plate_number))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(journey.contract.name) + " " + _vm._s(journey.contract.client.Name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.date2(journey.job_date)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(journey.truck.driver.first_name) + " " + _vm._s(journey.truck.driver.last_name))]), _vm._v(" "), _c('td', {
       staticClass: "text-center"
     }, [(journey.status != 'Closed') ? _c('span', {
       staticClass: "btn btn-xs btn-info",
@@ -110818,7 +110819,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._m(0), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
   }, [_c('form', {
-    staticClass: "form-horizontal",
     attrs: {
       "action": "#",
       "role": "form"
@@ -111112,7 +111112,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control input-sm",
     attrs: {
-      "name": "narration",
+      "name": "top_up_reason",
       "id": "top_up_reason"
     },
     domProps: {
@@ -111854,9 +111854,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "to": '/truck/' + journey.truck.id
       }
-    }, [_vm._v(_vm._s(journey.truck.plate_number))])], 1), _vm._v(" "), _c('td', [_vm._v(_vm._s(journey.truck.driver.first_name))]), _vm._v(" "), _c('td', [_vm._v("JRNY-" + _vm._s(journey.id))]), _vm._v(" "), _c('td', {
-      staticClass: "text-center"
-    }, [_c('router-link', {
+    }, [_vm._v(_vm._s(journey.truck.plate_number))])], 1), _vm._v(" "), _c('td', [_vm._v(_vm._s(journey.truck.driver.first_name))]), _vm._v(" "), _c('td', [_vm._v("JRNY-" + _vm._s(journey.id))]), _vm._v(" "), _c('td', [_c('router-link', {
       attrs: {
         "to": 'inspection/create/' + journey.id
       }
@@ -120072,7 +120070,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "for": "journey_id"
     }
-  }, [_vm._v("Journey: " + _vm._s(_vm.journey.id))])])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Journey:\n                                    "), _c('h5', [_c('strong', [_vm._v(_vm._s(_vm.journey.id))])])])])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-3"
   }, [_c('div', {
     staticClass: "form-group"
