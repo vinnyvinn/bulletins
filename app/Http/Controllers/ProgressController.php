@@ -5,13 +5,12 @@ namespace App\Http\Controllers;
 use App\Checklist;
 use App\Support\Core;
 use App\Trip;
-use App\Truck;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use function json_decode;
 use Response;
-use SmoDav\Factory\TruckFactory;
+use SmoDav\Factory\VehicleFactory;
 use function view;
 
 class ProgressController extends Controller
@@ -19,7 +18,7 @@ class ProgressController extends Controller
 
     public function loading(Request $request, $id)
     {
-        $truck = TruckFactory::findOrFail($id);
+        $truck = VehicleFactory::findOrFail($id);
 
         $data = $request->all();
         $data['driver_id'] = $truck->driver_id;
@@ -64,7 +63,7 @@ class ProgressController extends Controller
 
     public function enroute(Request $request, $id)
     {
-        $truck = TruckFactory::findOrFail($id);
+        $truck = VehicleFactory::findOrFail($id);
 
         $data = $request->all();
         $data['driver_id'] = $truck->driver_id;
@@ -111,7 +110,7 @@ class ProgressController extends Controller
 
     public function offloading(Request $request, $id)
     {
-        $truck = TruckFactory::findOrFail($id);
+        $truck = VehicleFactory::findOrFail($id);
 
         $trip = Trip::where('truck_id', $truck->id)
             ->where('stage', Core::OFFLOADING)
@@ -119,7 +118,7 @@ class ProgressController extends Controller
             ->orderBy('id', 'desc')
             ->first();
 
-        TruckFactory::createBilling($trip);
+        VehicleFactory::createBilling($trip);
 
         $trip->update([
             'stage' => Core::IN_YARD,
@@ -130,25 +129,25 @@ class ProgressController extends Controller
 
         return Response::json([
             'message' => 'Successfully completed offloading.',
-            'trucks' => TruckFactory::atLocation('offloading'),
+            'trucks' => VehicleFactory::atLocation('offloading'),
         ]);
     }
 
     public function inYard(Request $request, $id)
     {
-        $truck = TruckFactory::findOrFail($id);
+        $truck = VehicleFactory::findOrFail($id);
 
         $truck->update(['location' => Core::nextStep($truck->location)]);
 
         return Response::json([
             'message' => 'Successfully completed trip.',
-            'trucks' => TruckFactory::atLocation('offloading'),
+            'trucks' => VehicleFactory::atLocation('offloading'),
         ]);
     }
 
     public function progress(Request $request, $id)
     {
-        $truck = TruckFactory::findOrFail($id);
+        $truck = VehicleFactory::findOrFail($id);
         $shouldPrint = false;
         $printout = '';
         switch ($truck->location) {
@@ -167,7 +166,7 @@ class ProgressController extends Controller
 //        $nextStep = Core::nextStep($truck->location);
 //
 //        if ($nextStep == Core::IN_YARD) {
-//            TruckFactory::createBilling($truck);
+//            VehicleFactory::createBilling($truck);
 //        }
 
 //        $truck->update(['location' => $nextStep]);
@@ -179,7 +178,7 @@ class ProgressController extends Controller
         ]);
     }
 
-    private function inPreLoading(Request $request, Truck $truck)
+    private function inPreLoading(Request $request, Vehicle $truck)
     {
         $data = $request->all();
         $data['driver_id'] = $truck->driver_id;
@@ -229,7 +228,7 @@ class ProgressController extends Controller
 
     public function getTrip($id)
     {
-        $truck = TruckFactory::findOrFail($id);
+        $truck = VehicleFactory::findOrFail($id);
 
         $trip = Trip::with([
             'preLoadingChecklist', 'deliveryNote', 'truck.trailer', 'driver', 'contract.client', 'route'

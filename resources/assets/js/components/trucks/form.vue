@@ -11,6 +11,16 @@
                         <form action="#" role="form" @submit.prevent="store" enctype="multipart/form-data">
 
                             <div class="form-group">
+                                <label for="type">Type</label>
+                                <select v-model="truck.type" class="form-control text-uppercase" id="type" name="type" required>
+                                    <option value="Truck">Truck</option>
+                                    <option value="Trailer">Trailer</option>
+                                    <option value="Van">Van</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
                                 <label for="plate_number">Plate Number</label>
                                 <input v-model="truck.plate_number" type="text" class="form-control text-uppercase" id="plate_number" name="plate_number" required>
                             </div>
@@ -54,7 +64,7 @@
                                 <label for="trailer_id">Attached Trailer</label>
                                 <select v-model="truck.trailer_id" name="trailer_id" id="trailer_id" class="form-control">
                                     <option value="">No Trailer</option>
-                                    <option v-for="trailer in trailers" :value="trailer.id">{{ trailer.trailer_number }}</option>
+                                    <option v-for="trailer in trailers" :value="trailer.id">{{ trailer.plate_number }}</option>
                                 </select>
                             </div>
                             <udf module="Trucks" v-on:udfAdded="addUdfToObject" :state="truck"></udf>
@@ -88,6 +98,7 @@
                 trailers: [],
                 drivers: [],
                 truck: {
+                    type: 'Truck',
                     driver_id: '',
                     trailer_id: '',
                     plate_number: '',

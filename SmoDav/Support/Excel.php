@@ -131,6 +131,7 @@ class Excel
             ->toArray($this->getNullValue());
 
         $headers = $this->cleanHeader($sheet[$this->headerRow]);
+
         for ($i = 0; $i <= $this->headerRow; $i++) {
             unset($sheet[$i]);
         }
@@ -168,6 +169,7 @@ class Excel
     {
         $cleaned = $this->manageNulls($rows);
 
+
         $mapped = array_map(function ($row) use ($header) {
             $mapped = [];
             foreach ($row as $index => $item) {
@@ -191,6 +193,7 @@ class Excel
         if ($this->onNull != self::EXCLUDE_ROW) {
             return $rows;
         }
+
 
         return array_filter($rows, function ($entry) {
             return ! in_array(null, array_values($entry));

@@ -43,7 +43,6 @@ class CreateJourneysTable extends Migration
             $table->timestamps();
 
             $table->foreign('contract_id')->references('id')->on('contracts')->onDelete('cascade');
-            $table->foreign('truck_id')->references('id')->on('trucks')->onDelete('cascade');
             $table->foreign('driver_id')->references('id')->on('drivers')->onDelete('cascade');
             $table->foreign('route_id')->references('id')->on('routes')->onDelete('set null');
             $table->foreign('station_id')->references('id')->on('stations')->onDelete('set null');

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use SmoDav\Factory\TruckFactory;
 use SmoDav\Models\journey;
+use SmoDav\Models\Vehicle;
 
 
 class Driver extends Model
@@ -17,7 +18,6 @@ class Driver extends Model
         'last_name', 'email', 'mobile_phone', 'dl_number',
     ];
 
-
     public function scopeUnassigned($query)
     {
         $assigned = TruckFactory::allAssignedDrivers()->toArray();
@@ -28,6 +28,11 @@ class Driver extends Model
     public function truck()
     {
         return $this->hasOne(Truck::class);
+    }
+
+    public function vehicle()
+    {
+        return $this->hasOne(Vehicle::class);
     }
 
     public function journey()

@@ -20,8 +20,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('driver/import', 'DriverController@importDrivers')->name('driver.import');
     Route::resource('route', 'RouteController');
     Route::post('route/import', 'RouteController@importDrivers')->name('route.import');
-    Route::resource('truck', 'TruckController');
-    Route::post('truck/import', 'TruckController@import')->name('truck.import');
+    Route::resource('truck', '\SmoDav\Controllers\API\VehicleController');
+    Route::post('truck/import', '\SmoDav\Controllers\API\VehicleController@import')->name('truck.import');
     Route::resource('trailer', 'TrailerController');
     Route::post('trailer/import', 'TrailerController@import')->name('trailer.import');
     Route::resource('allocation', 'AllocationController');

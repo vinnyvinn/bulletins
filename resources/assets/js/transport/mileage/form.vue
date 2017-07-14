@@ -50,7 +50,7 @@
                         <div class="form-group">
                             <label class="col-sm-6">Trailer Attached</label>
                             <div class="col-sm-6">
-                              <h5>{{ journey.truck.trailer.trailer_number }}</h5>
+                              <h5>{{ journey.truck.trailer.plate_number }}</h5>
                             </div>
                         </div>
 

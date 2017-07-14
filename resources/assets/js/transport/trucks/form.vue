@@ -4,11 +4,21 @@
             <div class="col-md-6 col-md-offset-3">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <strong>Truck Details</strong>
+                        <strong>Vehicle Details</strong>
                     </div>
 
                     <div class="panel-body">
                         <form action="#" role="form" @submit.prevent="store" enctype="multipart/form-data">
+
+                            <div class="form-group">
+                                <label for="type">Type</label>
+                                <select v-model="truck.type" class="form-control" id="type" name="type" required>
+                                    <option value="Truck">Truck</option>
+                                    <option value="Trailer">Trailer</option>
+                                    <option value="Van">Van</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
 
                             <div class="form-group">
                                 <label for="plate_number">Plate Number</label>
@@ -42,11 +52,11 @@
                                 </select>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group" v-if="truck.type == 'Truck'">
                                 <label for="trailer_id">Attached Trailer</label>
                                 <select v-model="truck.trailer_id" name="trailer_id" id="trailer_id" class="form-control">
                                     <option value="">No Trailer</option>
-                                    <option v-for="trailer in trailers" :value="trailer.id">{{ trailer.trailer_number }}</option>
+                                    <option v-for="trailer in trailers" :value="trailer.id">{{ trailer.plate_number }}</option>
                                 </select>
                             </div>
 
@@ -102,6 +112,7 @@
                 trailers: [],
                 drivers: [],
                 truck: {
+                    type: 'Truck',
                     trailer_id: '',
                     plate_number: '',
                     max_load: '',

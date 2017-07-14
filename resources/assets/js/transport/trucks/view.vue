@@ -76,7 +76,11 @@ export default {
   methods: {
     getTruck() {
       http.get('/api/truck/' + this.$route.params.id).then(response => {
-        this.truck = response.truck;
+        let truck = response.truck;
+        truck.driver = truck.driver ? truck.driver : {};
+        truck.trailer = truck.trailer ? truck.trailer : {};
+
+        this.truck = truck;
       });
     }
   }
