@@ -40,24 +40,11 @@ module.exports = [
     { path: '/trucks/:id', component: require('./transport/trucks/view.vue'), beforeEnter: authMiddleware },
     { path: '/trucks/:id/edit', component: require('./transport/trucks/form.vue'), beforeEnter: authMiddleware },
     { path: '/trucks/:id/reports', component: require('./transport/trucks/report.vue'), beforeEnter: authMiddleware },
-
-    { path: '/trailers', component: require('./components/trailers/index.vue'), beforeEnter: authMiddleware },
-    { path: '/trailers/create', component: require('./components/trailers/form.vue'), beforeEnter: authMiddleware },
-    { path: '/trailers/:id', component: require('./components/trailers/view.vue'), beforeEnter: authMiddleware },
-    { path: '/trailers/:id/edit', component: require('./components/trailers/form.vue'), beforeEnter: authMiddleware },
-
-    { path: '/progress', component: require('./components/truck-progress/index.vue'), beforeEnter: authMiddleware },
-    { path: '/progress/pre-loading', component: require('./components/truck-progress/stage-preloading.vue'), beforeEnter: authMiddleware },
-    { path: '/progress/pre-loading/:id', component: require('./components/truck-progress/preloading.vue'), beforeEnter: authMiddleware },
-
-    { path: '/progress/loading', component: require('./components/truck-progress/stage-loading.vue'), beforeEnter: authMiddleware },
-    { path: '/progress/loading/:id', component: require('./components/truck-progress/loading.vue'), beforeEnter: authMiddleware },
-
-    { path: '/progress/enroute', component: require('./components/truck-progress/stage-enroute.vue'), beforeEnter: authMiddleware },
-    { path: '/progress/enroute/:id', component: require('./components/truck-progress/enroute.vue'), beforeEnter: authMiddleware },
-
-    { path: '/progress/offloading', component: require('./components/truck-progress/stage-offloading.vue'), beforeEnter: authMiddleware },
-    { path: '/progress/in-yard', component: require('./components/truck-progress/stage-inyard.vue'), beforeEnter: authMiddleware },
+    //
+    // { path: '/trailers', component: require('./components/trailers/index.vue'), beforeEnter: authMiddleware },
+    // { path: '/trailers/create', component: require('./components/trailers/form.vue'), beforeEnter: authMiddleware },
+    // { path: '/trailers/:id', component: require('./components/trailers/view.vue'), beforeEnter: authMiddleware },
+    // { path: '/trailers/:id/edit', component: require('./components/trailers/form.vue'), beforeEnter: authMiddleware },
 
     { path: '/users', component: require('./components/users/index.vue'), beforeEnter: authMiddleware },
     { path: '/users/create', component: require('./components/users/form.vue'), beforeEnter: authMiddleware },

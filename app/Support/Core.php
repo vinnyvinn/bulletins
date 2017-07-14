@@ -38,7 +38,6 @@ class Core
     const STATION_WAGON = 'Station Wagon';
     const WHEEL_LOADER = 'Wheel-Loader';
 
-
     public static function nextStep($currentStep)
     {
         switch ($currentStep) {
