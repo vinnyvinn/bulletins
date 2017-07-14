@@ -50,10 +50,10 @@ $root.can('create-contract-template') || $root.can('view-contract-template') || 
                 <div class="caption">Route Card</div>
             </router-link>
 
-            <router-link to="/reports" class="nav-items">
-                <img src="/images/report.png" alt="card" class="img-responsive">
-                <div class="caption">Reports</div>
-            </router-link>
+            <!--<router-link to="/reports" class="nav-items">-->
+                <!--<img src="/images/report.png" alt="card" class="img-responsive">-->
+                <!--<div class="caption">Reports</div>-->
+            <!--</router-link>-->
 
             <div @click.prevent="logout" class="nav-items">
                 <img src="/images/logout.png" alt="logout" class="img-responsive">
