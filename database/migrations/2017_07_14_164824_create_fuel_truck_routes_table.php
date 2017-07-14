@@ -15,10 +15,13 @@ class CreateFuelTruckRoutesTable extends Migration
     {
         Schema::create('fuel_truck_routes', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('vehicle_id')->index()->unsigned();
+            $table->integer('model_id')->index()->unsigned();
             $table->integer('route_id')->index()->unsigned();
             $table->integer('amount');
             $table->timestamps();
+
+            $table->foreign('model_id')->references('id')->on('models')->onDelete('cascade');
+            $table->foreign('route_id')->references('id')->on('routes')->onDelete('cascade');
         });
     }
 

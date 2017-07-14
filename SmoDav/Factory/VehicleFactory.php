@@ -57,12 +57,12 @@ class VehicleFactory
 
     public static function all($columns = ['*'])
     {
-        return Vehicle::with(['trailer', 'driver'])->get($columns);
+        return Vehicle::with(['trailer', 'driver', 'make', 'model'])->get($columns);
     }
 
     public static function findOrFail($id)
     {
-        return Vehicle::with(['trailer', 'driver'])->findOrFail($id);
+        return Vehicle::with(['trailer', 'driver', 'make', 'model'])->findOrFail($id);
     }
 
     public static function create($attributes)

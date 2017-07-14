@@ -15,7 +15,7 @@
 </div><!-- ./wrapper -->
 
     <!-- main app js -->
-    <script src="{{ asset('js/app.js') }}"></script>
+    {{--<script src="{{ asset('js/app.js') }}"></script>--}}
 
     <!-- jQuery 2.1.4 -->
     <script src="{{ asset('assets/admin/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>

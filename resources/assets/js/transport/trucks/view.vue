@@ -9,16 +9,16 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col-sm-6">
-                    <h5><strong>Driver</strong></h5>
-                    {{ truck.driver.first_name }} {{ truck.driver.last_name }}
-                    <hr>
-
-                    <h5><strong>Trailer</strong></h5>
+                    <h5><strong>Type</strong></h5>
                     {{ truck.type }}
                     <hr>
 
-                    <h5><strong>Plate Number</strong></h5>
-                    {{ truck.make }}
+                    <h5><strong>Trailer</strong></h5>
+                    {{ truck.trailer ? truck.trailer.plate_number : '' }}
+                    <hr>
+
+                    <h5><strong>Vehicle Number</strong></h5>
+                    {{ truck.plate_number }}
                     <hr>
                 </div>
 
@@ -28,21 +28,17 @@
                     <hr>
 
                     <h5><strong>Make</strong></h5>
-                    {{ truck.make }}
+                    {{ truck.make ? truck.make.name : '' }}
                     <hr>
 
                     <h5><strong>Model</strong></h5>
-                    {{ truck.model }}
+                    {{ truck.model ? truck.model.name : '' }}
                     <hr>
                 </div>
 
                 <div class="col-sm-6">
                     <h5><strong>Status</strong></h5>
                     {{ truck.status }}
-                    <hr>
-
-                    <h5><strong>Location</strong></h5>
-                    {{ truck.location }}
                     <hr>
                 </div>
                 <show-udfs module="Trucks" :state="truck"></show-udfs>

@@ -15,10 +15,13 @@ class CreateMileageRoutesTable extends Migration
     {
         Schema::create('mileage_routes', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('mileage_id')->unsigned()->index();
+            $table->integer('mileage_type_id')->unsigned()->index();
             $table->integer('route_id')->unsigned()->index();
             $table->integer('amount');
             $table->timestamps();
+
+            $table->foreign('mileage_type_id')->references('id')->on('mileage_types')->onDelete('cascade');
+            $table->foreign('route_id')->references('id')->on('routes')->onDelete('cascade');
         });
     }
 

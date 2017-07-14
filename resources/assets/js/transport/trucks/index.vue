@@ -56,8 +56,8 @@
                             <tr v-for="truck in trucks">
                                 <td><router-link :to="'/trucks/' + truck.id +'/reports'" class="btn btn-danger btn-xs">{{ truck.plate_number }}</router-link></td>
                                 <td>{{ truck.type }}</td>
-                                <td>{{ truck.make }}</td>
-                                <td>{{ truck.model }}</td>
+                                <td>{{ truck.make ? truck.make.name : '' }}</td>
+                                <td>{{ truck.model ? truck.model.name : '' }}</td>
                                 <td class="text-right">{{ Number(truck.max_load).toLocaleString() }} KGs</td>
                                 <td>{{ truck.driver ? truck.driver.first_name + ' ' + truck.driver.last_name : 'No Driver' }}</td>
                                 <td>{{ truck.trailer ? truck.trailer.plate_number : 'No Trailer' }}</td>

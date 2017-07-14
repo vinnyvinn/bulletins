@@ -192,7 +192,7 @@ class VehicleController extends Controller
 
         $rows = Excel::prepare($file)
             ->usingHeaders([
-                'type', 'plate_number', 'make', 'model', 'max_load'
+                'type', 'plate_number', 'make_id', 'model_id', 'max_load'
             ])
             ->whenNull(Excel::EXCLUDE_ROW)
             ->includeColumns([

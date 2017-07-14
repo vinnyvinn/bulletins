@@ -13,6 +13,11 @@ class Make extends SmoDavModel
 
     const UDF = 'make_udf';
 
+    public function models()
+    {
+        return $this->hasMany(Model::class);
+    }
+
     public static function updateFromSAGE()
     {
         $makeColumn = collect(DB::select('SELECT cFieldName FROM _rtblUserDict WHERE idUserDict = ' .

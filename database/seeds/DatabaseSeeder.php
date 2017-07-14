@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
          $this->call(IntegrationsSeeder::class);
          $this->call(CarriagePointsSeeder::class);
          $this->call(CargoSeeder::class);
-//         $this->call(MakesAndModelsSeeder::class);
+         $this->call(MakesAndModelsSeeder::class);
 
 //         $this->call(DevelopmentSeeder::class);
     }

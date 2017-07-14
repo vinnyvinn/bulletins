@@ -18,8 +18,8 @@ class CreateVehiclesTable extends Migration
             $table->increments('id');
             $table->boolean('sub_contracted')->default('false');
             $table->string('plate_number')->unique();
-            $table->string('make')->nullable();
-            $table->string('model')->nullable();
+            $table->string('make_id')->index()->unsigned()->nullable();
+            $table->string('model_id')->index()->unsigned()->nullable();
             $table->integer('max_load')->nullable();
             $table->string('type')->default(Core::TRUCK);
             $table->string('status')->default(Core::ACTIVE);

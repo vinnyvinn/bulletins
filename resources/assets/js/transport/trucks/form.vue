@@ -52,12 +52,12 @@
 
                             <div class="form-group">
                                 <label for="make">Make</label>
-                                <input v-model="truck.make" type="text" class="form-control text-uppercase" id="make" name="make" required>
+                                <input v-model="truck.make_id" type="text" class="form-control text-uppercase" id="make" name="make" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="model">Model</label>
-                                <input v-model="truck.model" type="text" class="form-control text-uppercase" id="model" name="model" required>
+                                <input v-model="truck.model_id" type="text" class="form-control text-uppercase" id="model" name="model" required>
                             </div>
 
                             <div class="form-group">
@@ -110,25 +110,25 @@
     export default {
         created() {
             this.$root.isLoading = true;
-            if (this.$route.params.id) {
-                http.get('/api/truck/create?truck_id=' + this.$route.params.id)
-                    .then((response) => {
-                        this.trailers = response.trailers;
-                        this.drivers = response.drivers;
-                    })
-                    .then(() => this.checkState())
-                    .then(() => this.$root.isLoading = false)
-                    .catch(() => this.$root.isLoading = false);
-
-                return;
-            }
 
             http.get('/api/truck/create').then((response) => {
                 this.trailers = response.trailers;
                 this.drivers = response.drivers;
             })
-            .then(() => this.$root.isLoading = false)
-            .catch(() => this.$root.isLoading = false);
+                .then(() => this.checkState())
+                .then(() => this.$root.isLoading = false)
+                .catch(() => this.$root.isLoading = false);
+        },
+
+        computed: {
+            models() {
+                if (! this.truck.make_id) return [];
+
+                let filtered = this.makes.filter(e => e.id == this.truck.make_id);
+                if (! filtered.length) return [];
+
+                return filtered[0];
+            }
         },
 
 
@@ -136,14 +136,15 @@
             return {
                 trailers: [],
                 drivers: [],
+                makes: [],
                 truck: {
                     sub_contracted: 0,
                     type: 'Truck',
                     trailer_id: '',
                     plate_number: '',
                     max_load: '',
-                    make: '',
-                    model: '',
+                    make_id: null,
+                    model_id: null,
                     status: 'Active',
                     location: 'Awaiting Allocation',
                     driver_id: ''
@@ -154,11 +155,14 @@
         methods: {
             checkState() {
                 if (this.$route.params.id) {
-                    return http.get('/api/truck/' + this.$route.params.id)
+                    return http.get('/api/truck/create?truck_id=' + this.$route.params.id)
                         .then((response) => {
-                            this.truck = response.truck;
-                        });
+                            this.trailers = response.trailers;
+                            this.drivers = response.drivers;
+                        })
                 }
+
+                return true;
             },
 
             store() {
@@ -177,6 +181,7 @@
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                 });
             },
+
             addUdfToObject (slug) {
               Vue.set(this.truck,slug,'');
             }

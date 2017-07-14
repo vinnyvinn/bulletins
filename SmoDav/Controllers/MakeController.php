@@ -47,21 +47,22 @@ class MakeController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, ['name' => 'required']);
+
         $data = [
-            'name' => $request->get('name'),
+            'name' => $request->get('name')
         ];
 
         return DB::transaction(function () use ($data, $request) {
             $create = Make::create($data);
-            SAGEUDF::addMakeUDF($request->get('name'));
+//            SAGEUDF::addMakeUDF($request->get('name'));
 
             if ($create) {
                 Activity::create([
                     'user_id' => Auth::id(),
-                    'activity' => 'You have added ' . $request->get('name') . '  brand'
+                    'activity' => 'You have added ' . $request->get('name') . '  make'
                 ]);
 
-                return redirect()->route('workshop.make.index')->with('success', 'Model created successfully');
+                return redirect()->route('workshop.make.index')->with('success', 'Make created successfully');
             }
 
             return redirect()->back()->with('error', 'Something went wrong, please try again');

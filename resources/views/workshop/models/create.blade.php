@@ -27,21 +27,8 @@
                 </div><!-- /.box-header -->
                 <div class="box-body">
 
-                    <form class="form-horizontal" action="{{ route('workshop.model.store') }}" method="post">
+                    <form action="{{ route('workshop.make.store') }}" method="post">
                         {{ csrf_field() }}
-
-                        <div class="form-group {{ $errors->has('make_id')? 'has-error' : '' }}">
-                            <label class="control-label col-sm-3" for="make_id">Make *</label>
-
-                            <div class="col-sm-7">
-                                <select name="make_id" class="form-control" id="make_id" required>
-                                    @foreach($makes as $make)
-                                        <option value="{{ $make->id }}">{{ $make->name }}</option>
-                                    @endforeach
-                                </select>
-                                {!! $errors->has('name')? '<p class="help-block"> '.$errors->first('make_id').' </p>':'' !!}
-                            </div>
-                        </div>
 
                         <div class="form-group {{ $errors->has('name')? 'has-error' : '' }}">
                             <label class="control-label col-sm-3">Name *</label>
@@ -56,7 +43,7 @@
                         <div class="form-group">
                             <div class="col-sm-7 col-sm-offset-3">
                                 <button type="submit" name="submit" class="btn btn-primary">
-                                    <i class="fa fa-plus-square-o"></i> Add New Model
+                                    <i class="fa fa-plus-square-o"></i> Add New Make
                                 </button>
                             </div>
                         </div>

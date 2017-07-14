@@ -34,9 +34,9 @@
 {{--                    <li><a href="{{ route('super.employee.index', ['t' => 'drivers']) }}"><i class="fa fa-list"></i> Drivers</a></li>--}}
                     {{--<li><a href="{{ route('super.employee.index', ['t' => 'workshop']) }}"><i class="fa fa-list"></i> Workshop Employee</a></li>--}}
                     <li><a href="{{ route('workshop.users.index') }}"><i class="fa fa-list"></i> System Users</a></li>
-                    {{--<li class="dropdown-header">MAKES &amp; MODElS</li>--}}
-                    {{--<li><a href="{{ route('workshop.make.index') }}"><i class="fa fa-list"></i> Makes</a></li>--}}
-                    {{--<li><a href="{{ route('workshop.model.index') }}"><i class="fa fa-list"></i> Models</a></li>--}}
+                    <li class="dropdown-header">MAKES &amp; MODElS</li>
+                    <li><a href="{{ route('workshop.make.index') }}"><i class="fa fa-list"></i> Makes</a></li>
+                    <li><a href="{{ route('workshop.model.index') }}"><i class="fa fa-list"></i> Models</a></li>
 
                     <li class="dropdown-header">CONTRACTS</li>
                     <li><a href="{{ route('workshop.cargo-classification.index') }}"><i class="fa fa-list"></i> Cargo Classifications</a></li>

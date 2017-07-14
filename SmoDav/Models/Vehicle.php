@@ -6,11 +6,12 @@ use App\Driver;
 use App\Support\Core;
 use App\Truck;
 use Illuminate\Database\Eloquent\Model;
+use SmoDav\Models\Model as VehicleModel;
 
 class Vehicle extends Model
 {
     protected $fillable = [
-        'plate_number', 'make', 'model', 'max_load', 'type', 'status', 'location', 'project_id', 'trailer_id',
+        'plate_number', 'make_id', 'model_id', 'max_load', 'type', 'status', 'location', 'project_id', 'trailer_id',
         'driver_id', 'current_fuel', 'current_km', 'sub_contracted'
     ];
 
@@ -47,5 +48,15 @@ class Vehicle extends Model
     public function driver()
     {
         return $this->belongsTo(Driver::class, 'driver_id');
+    }
+
+    public function make()
+    {
+        return $this->belongsTo(Make::class);
+    }
+
+    public function model()
+    {
+        return $this->belongsTo(VehicleModel::class);
     }
 }
