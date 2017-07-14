@@ -15,8 +15,33 @@
                                 <select v-model="truck.type" class="form-control" id="type" name="type" required>
                                     <option value="Truck">Truck</option>
                                     <option value="Trailer">Trailer</option>
-                                    <option value="Van">Van</option>
+                                    <option value="Bus">Bus</option>
+                                    <option value="Bulldozer">Bulldozer</option>
+                                    <option value="Compact">Compact</option>
+                                    <option value="Crane">Crane</option>
+                                    <option value="DoubleCab Pick-up">DoubleCab Pick-up</option>
+                                    <option value="Excavator">Excavator</option>
+                                    <option value="Fuel Tanker">Fuel Tanker</option>
+                                    <option value="Lorry">Lorry</option>
+                                    <option value="Mini-Bus">Mini-Bus</option>
+                                    <option value="Motor Cycle">Motor Cycle</option>
+                                    <option value="Motor Grader">Motor Grader</option>
+                                    <option value="Motor Grader">Motor Grader</option>
                                     <option value="Other">Other</option>
+                                    <option value="Pickup">Pickup</option>
+                                    <option value="Roller">Roller</option>
+                                    <option value="Saloon">Saloon</option>
+                                    <option value="Station Wagon">Station Wagon</option>
+                                    <option value="Van">Van</option>
+                                    <option value="Wheel-Loader">Wheel-Loader</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sub_contracted">Sub-Contract Vehicle</label>
+                                <select v-model="truck.sub_contracted" class="form-control" id="sub_contracted" name="sub_contracted" required>
+                                    <option value="0">No</option>
+                                    <option value="1">Yes</option>
                                 </select>
                             </div>
 
@@ -112,6 +137,7 @@
                 trailers: [],
                 drivers: [],
                 truck: {
+                    sub_contracted: 0,
                     type: 'Truck',
                     trailer_id: '',
                     plate_number: '',

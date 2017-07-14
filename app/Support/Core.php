@@ -24,7 +24,7 @@ class Core
     const BULLDOZER = 'Bulldozer';
     const CRANE = 'Crane';
 
-    const DOUBLE_CAB = 'DoubeCab Pick-up';
+    const DOUBLE_CAB = 'DoubleCab Pick-up';
     const PICKUP = 'Pickup';
     const EXCAVATOR = 'Excavator';
     const FUEL_TANKER = 'Fuel Tanker';

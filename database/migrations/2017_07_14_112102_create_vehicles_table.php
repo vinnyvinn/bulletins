@@ -16,6 +16,7 @@ class CreateVehiclesTable extends Migration
     {
         Schema::create('vehicles', function (Blueprint $table) {
             $table->increments('id');
+            $table->boolean('sub_contracted')->default('false');
             $table->string('plate_number')->unique();
             $table->string('make')->nullable();
             $table->string('model')->nullable();

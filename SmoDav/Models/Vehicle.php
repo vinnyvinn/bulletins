@@ -11,7 +11,7 @@ class Vehicle extends Model
 {
     protected $fillable = [
         'plate_number', 'make', 'model', 'max_load', 'type', 'status', 'location', 'project_id', 'trailer_id',
-        'driver_id', 'current_fuel', 'current_km',
+        'driver_id', 'current_fuel', 'current_km', 'sub_contracted'
     ];
 
     public function scopeTypeTruck($builder)
