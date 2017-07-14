@@ -52,12 +52,16 @@
 
                             <div class="form-group">
                                 <label for="make">Make</label>
-                                <input v-model="truck.make_id" type="text" class="form-control text-uppercase" id="make" name="make" required>
+                                <select v-model="truck.make_id" class="form-control" id="make" name="make" required>
+                                    <option v-for="make in makes" :value="make.id">{{ make.name }}</option>
+                                </select>
                             </div>
 
                             <div class="form-group">
                                 <label for="model">Model</label>
-                                <input v-model="truck.model_id" type="text" class="form-control text-uppercase" id="model" name="model" required>
+                                <select v-model="truck.model_id" class="form-control" id="model" name="model" required>
+                                    <option v-for="model in models" :value="model.id">{{ model.name }}</option>
+                                </select>
                             </div>
 
                             <div class="form-group">
@@ -111,11 +115,25 @@
         created() {
             this.$root.isLoading = true;
 
+            if (this.$route.params.id) {
+                return http.get('/api/truck/create?truck_id=' + this.$route.params.id)
+                    .then((response) => {
+                        this.makes = response.makes;
+                        this.trailers = response.trailers;
+                        this.drivers = response.drivers;
+                        setTimeout(() => {
+                            this.truck = response.truck;
+                        }, 500);
+                    })
+                    .then(() => this.$root.isLoading = false)
+                    .catch(() => this.$root.isLoading = false);
+            }
+
             http.get('/api/truck/create').then((response) => {
+                this.makes = response.makes;
                 this.trailers = response.trailers;
                 this.drivers = response.drivers;
             })
-                .then(() => this.checkState())
                 .then(() => this.$root.isLoading = false)
                 .catch(() => this.$root.isLoading = false);
         },
@@ -127,10 +145,9 @@
                 let filtered = this.makes.filter(e => e.id == this.truck.make_id);
                 if (! filtered.length) return [];
 
-                return filtered[0];
+                return filtered[0].models;
             }
         },
-
 
         data() {
             return {
@@ -153,18 +170,6 @@
         },
 
         methods: {
-            checkState() {
-                if (this.$route.params.id) {
-                    return http.get('/api/truck/create?truck_id=' + this.$route.params.id)
-                        .then((response) => {
-                            this.trailers = response.trailers;
-                            this.drivers = response.drivers;
-                        })
-                }
-
-                return true;
-            },
-
             store() {
                 let request = null;
 

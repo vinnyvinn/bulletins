@@ -89,8 +89,19 @@ class MileageController extends Controller
      */
     public function show($id)
     {
+        $mileage = Mileage::findOrFail($id);
+
+        $journeys = Journey::when(request('s'), function ($builder) {
+            return $builder->where('station_id', request('s'));
+        })
+            ->where('id', $mileage->journey_id)
+            ->has('delivery')
+            ->with(['driver', 'truck.trailer', 'route'])
+            ->get();
+
         return Response::json([
-            'mileage' => Mileage::findOrFail($id),
+            'mileage' => $mileage,
+            'journeys' => $journeys
         ]);
     }
 

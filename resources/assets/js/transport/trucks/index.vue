@@ -36,56 +36,58 @@
                         </div>
                     </div>
                     <div class="panel-body">
-                        <table class="table nowrap">
-                            <thead>
-                            <tr>
-                                <th>Plate Number</th>
-                                <th>Type</th>
-                                <th>Make</th>
-                                <th>Model</th>
-                                <th>T/Weight</th>
-                                <th>Driver</th>
-                                <th>Trailer</th>
-                                <th>Status</th>
-                                <th>Current Stage</th>
-                                <th></th>
-                            </tr>
-                            </thead>
+                        <div class="table-responsive">
+                            <table class="table nowrap">
+                                <thead>
+                                <tr>
+                                    <th>Plate Number</th>
+                                    <th>Type</th>
+                                    <th>Make</th>
+                                    <th>Model</th>
+                                    <th>T/Weight</th>
+                                    <th>Driver</th>
+                                    <th>Trailer</th>
+                                    <th>Status</th>
+                                    <th>Current Stage</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
 
-                            <tbody>
-                            <tr v-for="truck in trucks">
-                                <td><router-link :to="'/trucks/' + truck.id +'/reports'" class="btn btn-danger btn-xs">{{ truck.plate_number }}</router-link></td>
-                                <td>{{ truck.type }}</td>
-                                <td>{{ truck.make ? truck.make.name : '' }}</td>
-                                <td>{{ truck.model ? truck.model.name : '' }}</td>
-                                <td class="text-right">{{ Number(truck.max_load).toLocaleString() }} KGs</td>
-                                <td>{{ truck.driver ? truck.driver.first_name + ' ' + truck.driver.last_name : 'No Driver' }}</td>
-                                <td>{{ truck.trailer ? truck.trailer.plate_number : 'No Trailer' }}</td>
-                                <td>{{ truck.status }}</td>
-                                <td>{{ truck.location }}</td>
-                                <td class="text-center">
-                                    <span @click="view(truck)" class="btn btn-xs btn-success"><i class="fa fa-eye"></i></span>
-                                    <span @click="edit(truck)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
-                                    <button data-toggle="popover" :data-item="truck.id" class="btn btn-xs btn-danger btn-destroy"><i class="fa fa-trash"></i></button>
-                                </td>
-                            </tr>
-                            </tbody>
+                                <tbody>
+                                <tr v-for="truck in trucks">
+                                    <td><router-link :to="'/trucks/' + truck.id +'/reports'" class="btn btn-danger btn-xs">{{ truck.plate_number }}</router-link></td>
+                                    <td>{{ truck.type }}</td>
+                                    <td>{{ truck.make ? truck.make.name : '' }}</td>
+                                    <td>{{ truck.model ? truck.model.name : '' }}</td>
+                                    <td class="text-right">{{ Number(truck.max_load).toLocaleString() }} KGs</td>
+                                    <td>{{ truck.driver ? truck.driver.first_name + ' ' + truck.driver.last_name : 'No Driver' }}</td>
+                                    <td>{{ truck.trailer ? truck.trailer.plate_number : 'No Trailer' }}</td>
+                                    <td>{{ truck.status }}</td>
+                                    <td>{{ truck.location }}</td>
+                                    <td class="text-center">
+                                        <span @click="view(truck)" class="btn btn-xs btn-success"><i class="fa fa-eye"></i></span>
+                                        <span @click="edit(truck)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
+                                        <button data-toggle="popover" :data-item="truck.id" class="btn btn-xs btn-danger btn-destroy"><i class="fa fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                                </tbody>
 
-                            <tfoot>
-                            <tr>
-                                <th>Plate Number</th>
-                                <th>Type</th>
-                                <th>Make</th>
-                                <th>Model</th>
-                                <th>T/Weight</th>
-                                <th>Driver</th>
-                                <th>Trailer</th>
-                                <th>Status</th>
-                                <th>Current Stage</th>
-                                <th></th>
-                            </tr>
-                            </tfoot>
-                        </table>
+                                <tfoot>
+                                <tr>
+                                    <th>Plate Number</th>
+                                    <th>Type</th>
+                                    <th>Make</th>
+                                    <th>Model</th>
+                                    <th>T/Weight</th>
+                                    <th>Driver</th>
+                                    <th>Trailer</th>
+                                    <th>Status</th>
+                                    <th>Current Stage</th>
+                                    <th></th>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -101,7 +103,7 @@
                 confirm2('.btn-destroy', (element) => {
                     this.destroy(element.dataset.item);
                 });
-                prepareTable();
+                prepareTable(true, [0, 5, 6, 7, 8, 9]);
             });
         },
         data() {
@@ -123,7 +125,9 @@
                         }
                         $('table').dataTable().fnDestroy();
                         this.trucks = response.trucks;
-                        prepareTable();
+                        $('.datatable').datatable().fnDestroy();
+                        $('.dt_filter').select2('destroy').remove();
+                        prepareTable(true, [0, 5, 6, 7, 8, 9]);
                         alert2(this.$root, [response.message], 'success');
                     }).catch((error) => {
                     this.$root.isLoading = false;
@@ -149,7 +153,10 @@
                     }
                     $('table').dataTable().fnDestroy();
                     this.trucks = response.trucks;
-                    prepareTable();
+
+                    $('.datatable').datatable().fnDestroy();
+                    $('.dt_filter').select2('destroy').remove();
+                    prepareTable(true, [0, 5, 6, 7, 8, 9]);
                     this.$root.isLoading = false;
                     alert2(this.$root, [response.message], 'success');
                 }).catch((error) => {

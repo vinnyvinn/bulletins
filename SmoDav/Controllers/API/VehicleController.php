@@ -18,6 +18,7 @@ use function json_encode;
 use Response;
 use SmoDav\Factory\TruckFactory;
 use SmoDav\Factory\VehicleFactory;
+use SmoDav\Models\Make;
 use SmoDav\Models\Vehicle;
 use SmoDav\Support\Excel;
 use function str_replace;
@@ -48,12 +49,15 @@ class VehicleController extends Controller
                 'trailers' => Vehicle::typeTrailer()->whereNull('truck_id')
                     ->orWhere('truck_id', request('truck_id'))
                     ->get(['id', 'plate_number']),
+                'makes' => Make::with(['models'])->get(['id', 'name']),
+                'truck' => VehicleFactory::findOrFail(request('truck_id')),
             ]);
         }
 
         return Response::json([
             'drivers' => Driver::doesntHave('vehicle')->get(),
             'trailers' => Vehicle::typeTrailer()->whereNull('truck_id')->get(['id', 'plate_number']),
+            'makes' => Make::with(['models'])->get(['id', 'name']),
         ]);
     }
 
@@ -231,76 +235,77 @@ class VehicleController extends Controller
 
     public function report($id)
     {
-      $truck = Vehicle::where('id', $id)->with('trailer')->first();
-      $activities = [];
-      $journeys = Journey::where('truck_id', $id)->with('inspection','delivery','fuel','mileage')->get();
+        $truck = Vehicle::where('id', $id)->with(['trailer', 'make', 'model'])->first();
+
+        $activities = [];
+        $journeys = Journey::where('truck_id', $id)->with('inspection', 'delivery', 'fuel', 'mileage')->get();
 
 
-      foreach($journeys as $journey) {
-        $activity = array(
-          'id' => $journey->id,
-          'activity' => 'Journey Creation',
-          'date' => $journey->created_at,
-          'time' => $journey->created_at,
-          'document_number' => 'JRNY-'.$journey->id,
-          'posted_by' => $journey->user->name
-        );
-        array_push($activities,$activity);
+        foreach ($journeys as $journey) {
+            $activity = [
+                'id'              => $journey->id,
+                'activity'        => 'Journey Creation',
+                'date'            => $journey->created_at,
+                'time'            => $journey->created_at,
+                'document_number' => 'JRNY-' . $journey->id,
+                'posted_by'       => $journey->user->name,
+            ];
+            array_push($activities, $activity);
 
-        if($journey->inspection){
-          $activity = array(
-            'id' => $journey->inspection->id,
-            'activity' => 'Inspection Done',
-            'date' => $journey->inspection->created_at,
-            'time' => $journey->inspection->created_at,
-            'document_number' => 'INSP-'.$journey->inspection->id,
-            'posted_by' => $journey->inspection->inspector->name
-          );
-          array_push($activities,$activity);
+            if ($journey->inspection) {
+                $activity = [
+                    'id'              => $journey->inspection->id,
+                    'activity'        => 'Inspection Done',
+                    'date'            => $journey->inspection->created_at,
+                    'time'            => $journey->inspection->created_at,
+                    'document_number' => 'INSP-' . $journey->inspection->id,
+                    'posted_by'       => $journey->inspection->inspector->name,
+                ];
+                array_push($activities, $activity);
+            }
+
+            if ($journey->delivery) {
+                $activity = [
+                    'id'              => $journey->delivery->id,
+                    'activity'        => 'Delivery Note Issue',
+                    'date'            => $journey->delivery->created_at,
+                    'time'            => $journey->delivery->created_at,
+                    'document_number' => 'RKS-' . $journey->delivery->id,
+                    'posted_by'       => $journey->delivery->user->name,
+                ];
+                array_push($activities, $activity);
+            }
+
+            if ($journey->fuel) {
+                $activity = [
+                    'id'              => $journey->fuel->id,
+                    'activity'        => 'Fuel Issue',
+                    'date'            => $journey->fuel->created_at,
+                    'time'            => $journey->fuel->created_at,
+                    'document_number' => 'FUEL-' . $journey->fuel->id,
+                    'posted_by'       => $journey->fuel->user->name,
+                ];
+                array_push($activities, $activity);
+            }
+
+            if ($journey->mileage) {
+                $activity = [
+                    'id'              => $journey->mileage->id,
+                    'activity'        => 'Mileage Issue',
+                    'date'            => $journey->mileage->created_at,
+                    'time'            => $journey->mileage->created_at,
+                    'document_number' => 'MLG-' . $journey->mileage->id,
+                    'posted_by'       => $journey->mileage->user->name,
+                ];
+                array_push($activities, $activity);
+            }
+
+
         }
 
-        if($journey->delivery){
-          $activity = array(
-            'id' => $journey->delivery->id,
-            'activity' => 'Delivery Note Issue',
-            'date' => $journey->delivery->created_at,
-            'time' => $journey->delivery->created_at,
-            'document_number' => 'RKS-'.$journey->delivery->id,
-            'posted_by' => $journey->delivery->user->name
-          );
-          array_push($activities,$activity);
-        }
-
-        if($journey->fuel){
-          $activity = array(
-            'id' => $journey->fuel->id,
-            'activity' => 'Fuel Issue',
-            'date' => $journey->fuel->created_at,
-            'time' => $journey->fuel->created_at,
-            'document_number' => 'FUEL-'.$journey->fuel->id,
-            'posted_by' => $journey->fuel->user->name
-          );
-          array_push($activities,$activity);
-        }
-
-        if($journey->mileage){
-          $activity = array(
-            'id' => $journey->mileage->id,
-            'activity' => 'Mileage Issue',
-            'date' => $journey->mileage->created_at,
-            'time' => $journey->mileage->created_at,
-            'document_number' => 'MLG-'.$journey->mileage->id,
-            'posted_by' => $journey->mileage->user->name
-          );
-          array_push($activities,$activity);
-        }
-
-
-      }
-
-      return Response::json([
-        'truck' => $truck,
-        'activities' => $activities
-      ]);
+        return Response::json([
+            'truck'      => $truck,
+            'activities' => $activities,
+        ]);
     }
 }

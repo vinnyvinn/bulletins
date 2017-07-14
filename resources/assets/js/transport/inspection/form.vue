@@ -24,8 +24,7 @@
                                 <div class="col-sm-3">
                                     <div class="form-group">
                                         <h5><strong>Vehicle: {{ journey.truck_plate_number }}</strong></h5>
-                                        <h5><strong>Trailer: {{ journey.truck.trailer.trailer_number }}
-                                          ({{journey.truck.trailer.make}})</strong></h5>
+                                        <h5><strong>Trailer: {{ journey.truck.trailer ? journey.truck.trailer.plate_number : '' }}</strong></h5>
                                     </div>
                                 </div>
 

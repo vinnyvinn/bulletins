@@ -123,7 +123,10 @@ class VehicleFactory
             }
         }
 
-        unset($attributes['_method'], $attributes['_token'], $attributes['driver'], $attributes['trailer']);
+        unset(
+            $attributes['_method'], $attributes['_token'], $attributes['driver'], $attributes['trailer'],
+            $attributes['make'], $attributes['model']
+        );
 
         foreach ($attributes as $key => $value) {
             $truck->{$key} = $value;
