@@ -75,7 +75,6 @@ class JourneyController extends Controller
 
         $trucks = Vehicle::typeTruck()
             ->has('trailer')
-            ->has('driver')
             ->with([
                 'driver' => function ($builder) {
                     return $builder->select(['id', 'first_name', 'last_name', 'mobile_phone']);
