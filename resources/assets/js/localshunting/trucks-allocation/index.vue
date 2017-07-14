@@ -102,7 +102,7 @@
         methods: {
             allocate (truck) {
               this.trucks.splice(truck, function(truck) {
-                
+
               });
               this.allocatedtrucks.push(truck);
             },

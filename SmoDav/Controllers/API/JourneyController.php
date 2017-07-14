@@ -15,6 +15,7 @@ use SmoDav\Models\CargoClassification;
 use SmoDav\Models\CargoType;
 use SmoDav\Models\CarriagePoint;
 use SmoDav\Models\Journey;
+use SmoDav\Models\Vehicle;
 use SmoDav\Support\Constants;
 use Auth;
 
@@ -72,7 +73,7 @@ class JourneyController extends Controller
             })
             ->toArray();
 
-        $trucks = Truck::with([
+        $trucks = Vehicle::typeTruck()->with([
             'driver' => function ($builder) {
                 return $builder->select(['id', 'first_name', 'last_name', 'mobile_phone']);
             },
@@ -146,7 +147,6 @@ class JourneyController extends Controller
         $contract->id = $journey->contract ? $journey->contract->id : '';
         unset($journey->contract);
 
-
         $journeys = Journey::where('status', '<>', 'Closed')
             ->where('id', '<>', $id)
             ->get(['truck_id'])
@@ -155,7 +155,7 @@ class JourneyController extends Controller
             })
             ->toArray();
 
-        $trucks = Truck::with([
+        $trucks = Vehicle::typeTruck()->with([
             'driver' => function ($builder) {
                 return $builder->select(['id', 'first_name', 'last_name', 'mobile_phone']);
             },

@@ -188,7 +188,6 @@ class RouteController extends Controller
             ->usingHeaders([
                 'source', 'destination', 'distance', 'fuel_required', 'allowance_amount'
             ])
-            ->whenNull(Excel::EXCLUDE_ROW)
             ->includeColumns([
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()

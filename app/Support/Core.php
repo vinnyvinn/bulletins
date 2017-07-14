@@ -15,6 +15,30 @@ class Core
     const IN_YARD = 'In Yard';
     const INCIDENT = 'Incident';
 
+    const TRUCK = 'Truck';
+    const TRAILER = 'Trailer';
+    const VAN = 'Van';
+    const OTHER = 'Other';
+    const COMPACT = 'Compact';
+    const BUS = 'Bus';
+    const BULLDOZER = 'Bulldozer';
+    const CRANE = 'Crane';
+
+    const DOUBLE_CAB = 'DoubeCab Pick-up';
+    const PICKUP = 'Pickup';
+    const EXCAVATOR = 'Excavator';
+    const FUEL_TANKER = 'Fuel Tanker';
+    const LORRY = 'Lorry';
+    const MINI_BUS = 'Mini-Bus';
+    const MOTORCYCLE = 'Motor Cycle';
+    const MOTOR_GRADER = 'Motor Grader';
+    const PRIME = 'Motor Grader';
+    const ROLLER = 'Roller';
+    const SALOON = 'Saloon';
+    const STATION_WAGON = 'Station Wagon';
+    const WHEEL_LOADER = 'Wheel-Loader';
+
+
     public static function nextStep($currentStep)
     {
         switch ($currentStep) {

@@ -6,7 +6,7 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-sm-2">
-                                <h4>Trucks</h4>
+                                <h4>Vehicles</h4>
                             </div>
                             <div class="col-sm-7">
                                 <transition
@@ -40,6 +40,7 @@
                             <thead>
                             <tr>
                                 <th>Plate Number</th>
+                                <th>Type</th>
                                 <th>Make</th>
                                 <th>Model</th>
                                 <th>T/Weight</th>
@@ -54,11 +55,12 @@
                             <tbody>
                             <tr v-for="truck in trucks">
                                 <td><router-link :to="'/trucks/' + truck.id +'/reports'" class="btn btn-danger btn-xs">{{ truck.plate_number }}</router-link></td>
+                                <td>{{ truck.type }}</td>
                                 <td>{{ truck.make }}</td>
                                 <td>{{ truck.model }}</td>
                                 <td class="text-right">{{ Number(truck.max_load).toLocaleString() }} KGs</td>
                                 <td>{{ truck.driver ? truck.driver.first_name + ' ' + truck.driver.last_name : 'No Driver' }}</td>
-                                <td>{{ truck.trailer ? truck.trailer.trailer_number : 'No Trailer' }}</td>
+                                <td>{{ truck.trailer ? truck.trailer.plate_number : 'No Trailer' }}</td>
                                 <td>{{ truck.status }}</td>
                                 <td>{{ truck.location }}</td>
                                 <td class="text-center">
@@ -72,6 +74,7 @@
                             <tfoot>
                             <tr>
                                 <th>Plate Number</th>
+                                <th>Type</th>
                                 <th>Make</th>
                                 <th>Model</th>
                                 <th>T/Weight</th>

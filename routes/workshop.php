@@ -29,7 +29,7 @@ Route::get('track', ['as' => 'repair_invoice_track', 'uses' =>'RepairProductCont
 Route::post('track', ['uses' =>'RepairProductController@trackRepairInvoicePost']);
 
 //Administrator Route
-Route::group(['prefix' => 'administrator'], function () {
+Route::group(['prefix' => 'administrator', 'middleware' => 'isSuper'], function () {
     Route::get('/', ['as' => 'login_page', 'uses' => 'AdminController@dashboard']);
 
     Route::group(['middleware' => 'superAdminAuth'], function () {

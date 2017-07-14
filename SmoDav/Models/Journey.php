@@ -51,7 +51,7 @@ class Journey extends SmoDavModel
 
     public function truck()
     {
-        return $this->belongsTo(Truck::class);
+        return $this->belongsTo(Vehicle::class, 'truck_id');
     }
 
     public function driver()
