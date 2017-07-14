@@ -92,7 +92,7 @@
 
                         <div class="form-group">
                             <label for="driver_id">Driver</label><br>
-                            {{ truck.driver.first_name }} {{ truck.driver.last_name }}
+                            {{ truck.driver ? truck.driver.first_name : '' }} {{ truck.driver ? truck.last_name : '' }}
                         </div>
                     </div>
 
@@ -380,7 +380,7 @@
         methods: {
             addTruck() {
               this.journey.trucks.push({'id': this.journey.truck_id});
-              this.journey.driver_id = this.truck.driver.id;
+              this.journey.driver_id = this.truck.driver ? this.truck.driver.id : null;
             },
 
             updateBooleans() {
