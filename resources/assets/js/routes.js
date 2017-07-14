@@ -32,7 +32,7 @@ module.exports = [
     { path: '/trucks/create', component: require('./transport/trucks/form.vue'), beforeEnter: authMiddleware },
     { path: '/trucks/:id', component: require('./transport/trucks/view.vue'), beforeEnter: authMiddleware },
     { path: '/trucks/:id/edit', component: require('./transport/trucks/form.vue'), beforeEnter: authMiddleware },
-    { path: '/trucks/:id/reports', component: require('./transport/trucks/report.vue'), beforeEnter: authMiddleware },
+    { path: '/trucks/:id/reports', component: require('./transport/reports/Trucks/report.vue'), beforeEnter: authMiddleware },
 
     { path: '/trailers', component: require('./components/trailers/index.vue'), beforeEnter: authMiddleware },
     { path: '/trailers/create', component: require('./components/trailers/form.vue'), beforeEnter: authMiddleware },

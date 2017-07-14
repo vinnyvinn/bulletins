@@ -59,5 +59,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('station-selection',  'HomeController@selectStation');
 
+    // include(__DIR__ .'/localshunting.php');
+    Route::any('/ls/{a?}/{b?}/{c?}', 'HomeController@localshunting');
+
     Route::any('{a}/{b?}/{c?}', 'HomeController@home');
 });

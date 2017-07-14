@@ -46,4 +46,9 @@ class HomeController extends Controller
 
         return redirect('/');
     }
+
+    public function localshunting ()
+    {
+      return view('localshunting');
+    }
 }

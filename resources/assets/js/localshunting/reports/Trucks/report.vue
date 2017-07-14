@@ -77,7 +77,7 @@
               </tr>
             </tbody>
           </table>
-          <h5 v-if="!activities.length">This truck doesn't have activity history.</h5>
+          <h5 v-if="!activities.length" class="text-center">This truck doesn't have activity history.</h5>
       </div>
     </div>
     </div>
