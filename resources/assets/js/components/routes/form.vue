@@ -38,9 +38,9 @@
                                 <div class="col-sm-6">
 
                                     <div class="form-group">
-                                        <label for="fuel_required">Fuel Required</label>
+                                        <label for="fuel_required">Average Fuel Required</label>
                                         <div class="input-group">
-                                            <input onclick="this.select()" v-model="route.fuel_required" min="1" type="number" class="form-control" id="fuel_required" name="fuel_required" describedby="fuel-addon" required>
+                                            <input onclick="this.select()" v-model="route.fuel_required" type="number" class="form-control" id="fuel_required" name="fuel_required" describedby="fuel-addon">
                                             <span class="input-group-addon" id="fuel-addon">Litres</span>
                                         </div>
                                     </div>

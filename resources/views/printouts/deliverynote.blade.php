@@ -29,7 +29,7 @@
             </div>
             <div class="col-xs-6">
                 <div class="pull-right">
-                    <h5><strong>Delivery Date: </strong> {{ Carbon\Carbon::parse($trip->journey->job_date)->format('d F Y') }}</h5>
+                    <h5><strong>Delivery Date: </strong> {{ Carbon\Carbon::parse($trip->loading_time)->format('d F Y') }}</h5>
                     <h5><strong>Journey No: </strong> JRNY-{{ $trip->journey->id }}</h5>
                     <h5><strong>Delivery To: </strong> {{ $trip->route->destination }}</h5>
                     <h5><strong>Weighbridge Ticket No: </strong> {{ $trip->loading_weighbridge_number }}</h5>
@@ -96,12 +96,15 @@
                 <h5>
                     <strong>Driver: </strong> {{ $trip->driver->first_name }}
                 </h5>
+                <br>
                 <h5>
                     <strong>Driver's Sign: __________________________________</strong>
                 </h5>
+                <br>
                 <h5>
                     <strong>Supervisor Name: </strong> {{ $trip->user->first_name }} {{ $trip->user->last_name }}
                 </h5>
+                <br>
                 <h5>
                     <strong>Supervisor's Sign: _______________________________</strong>
                 </h5>
@@ -128,7 +131,8 @@
                     and certify that the goods have arrived in good order and condition.
                 </p>
                 <br>
-                <strong>Remarks: </strong>________________________
+                <strong>Remarks: </strong>_________________________________________________________
+                <br>
             </div>
 
             <div class="col-xs-4">

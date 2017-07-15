@@ -103,8 +103,9 @@ module.exports = [
     // { path: '/route-card', component: require('./transport/routecard/index.vue'), beforeEnter: authMiddleware },
     { path: '/route-card/create', component: require('./transport/routecard/form.vue'), beforeEnter: authMiddleware },
 
-    { path: '/delivery', component: require('./transport/delivery_note/index.vue'), beforeEnter: authMiddleware },
-    { path: '/delivery/create', component: require('./transport/delivery_note/form.vue'), beforeEnter: authMiddleware },
+    { path: '/delivery', component: require('./transport/delivery_note/awaiting.vue'), beforeEnter: authMiddleware },
+    { path: '/delivery/loaded', component: require('./transport/delivery_note/index.vue'), beforeEnter: authMiddleware },
+    { path: '/delivery/create/:journey', component: require('./transport/delivery_note/form.vue'), beforeEnter: authMiddleware },
     { path: '/delivery/:id', component: require('./transport/delivery_note/view.vue'), beforeEnter: authMiddleware },
     { path: '/delivery/:unload/unload', component: require('./transport/delivery_note/form.vue'), beforeEnter: authMiddleware },
     { path: '/delivery/:id/edit', component: require('./transport/delivery_note/form.vue'), beforeEnter: authMiddleware },

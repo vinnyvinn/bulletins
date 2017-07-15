@@ -65,6 +65,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::resource('inspection', '\SmoDav\Controllers\API\InspectionController');
     Route::get('delivery/print/{id}', '\SmoDav\Controllers\API\DeliveryController@printNote');
+    Route::get('delivery/awaiting', '\SmoDav\Controllers\API\DeliveryController@awaiting');
     Route::resource('delivery', '\SmoDav\Controllers\API\DeliveryController');
     Route::get('dashboard', '\SmoDav\Controllers\API\DashboardController@index');
     Route::resource('fuel', 'FuelController');

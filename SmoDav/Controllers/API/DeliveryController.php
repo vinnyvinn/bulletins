@@ -43,6 +43,14 @@ class DeliveryController extends Controller
      */
     public function create()
     {
+        if (request('id')) {
+            return Response::json([
+                'journey' => Journey::with(['driver', 'truck.trailer', 'route', 'contract'])
+                    ->where('id', request('id'))
+                    ->firstOrFail(),
+            ]);
+        }
+
         return Response::json([
             'journeys' => Journey::when(request('s'), function ($builder) {
                 return $builder->where('station_id', request('s'));
@@ -94,18 +102,14 @@ class DeliveryController extends Controller
      */
     public function show($id)
     {
-        $journeys = Journey::whereHas('inspection', function ($query) {
-                return $query->where('suitable_for_loading', true);
-            })
-            ->whereHas('delivery', function ($query) use ($id) {
-                return $query->where('id', $id);
-            })
-            ->with(['driver', 'truck.trailer', 'route', 'contract'])
-            ->get();
+        $delivery = Delivery::findOrFail($id);
+        $journey = Journey::with(['driver', 'truck.trailer', 'route', 'contract'])
+            ->where('id', $delivery->journey_id)
+            ->firstOrFail();
 
         return Response::json([
-            'delivery' => Delivery::findOrFail($id),
-            'journeys' => $journeys,
+            'delivery' => $delivery,
+            'journey' => $journey,
         ]);
     }
 
@@ -177,6 +181,27 @@ class DeliveryController extends Controller
             'message' => 'Successfully completed loading.',
             'shouldPrint' => true,
             'printout' => $printout
+        ]);
+    }
+
+    public function awaiting()
+    {
+        $journeys = Journey::when(request('s'), function ($builder) {
+            return $builder->where('station_id', request('s'));
+        })
+            ->open()
+            ->doesntHave('delivery')
+            ->whereHas('inspection', function ($query) {
+                $query->where('suitable_for_loading', true);
+            })
+            ->with(['truck', 'truck.driver', 'truck.trailer'])
+            ->get(['id', 'raw', 'truck_id']);
+
+        return Response::json([
+            'status' => 'success',
+            'journeys' => $journeys,
+            'supervisor' => false,
+            'inspector' => true,
         ]);
     }
 }
