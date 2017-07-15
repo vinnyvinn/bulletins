@@ -28,6 +28,7 @@
                     <li><a href="{{ route('workshop.stations.index') }}"><i class="fa fa-list"></i> Stations</a></li>
                     <li><a href="{{ url('/trucks') }}"><i class="fa fa-list"></i> Vehicles</a></li>
                     <li><a href="{{ url('/routes') }}"><i class="fa fa-list"></i> Routes</a></li>
+                    <li><a href="{{ url('/fuel-routes') }}"><i class="fa fa-list"></i> Fuel Per Model</a></li>
 
                     <li class="dropdown-header">MAN POWER</li>
                     <li><a href="{{ url('/drivers') }}"><i class="fa fa-list"></i> Drivers</a></li>

@@ -3,10 +3,6 @@ function authMiddleware(to, from, next) {
         return next();
     }
 
-    let allowedPaths = [
-        '/station-selection', '/404', '/403', '/trucks', '/drivers', '/routes', '/trailers', '/login'
-    ];
-
     if (! localStorage.getItem('foeiwafwfuwe')) {
         return next({path: '/login'});
     }
@@ -15,10 +11,22 @@ function authMiddleware(to, from, next) {
         return next({path: '/login'});
     }
 
-    let isAllowed = (allowedPaths.indexOf(to.path) === -1) && (to.path.indexOf('/administrator') === -1) &&
-        (to.path.indexOf('/trucks') === -1);
+    if (window.Laravel.station_id) return next();
 
-    if (! window.Laravel.station_id && isAllowed) {
+    let allowedPaths = [
+        '/station-selection', '/404', '/403', '/trucks', '/drivers', '/routes', '/trailers', '/login',
+        '/fuel-routes'
+    ];
+
+    if (to.path.indexOf('/administrator') !== -1) return next();
+
+    let i;
+
+    for(i = 0; i < allowedPaths.length; i++) {
+        if (to.path.indexOf(allowedPaths[i]) !== -1) return next();
+    }
+
+    if (! window.Laravel.station_id) {
         return next({path: '/station-selection'});
     }
 
@@ -33,6 +41,11 @@ module.exports = [
     { path: '/routes/create', component: require('./components/routes/form.vue'), beforeEnter: authMiddleware },
     { path: '/routes/:id/edit', component: require('./components/routes/form.vue'), beforeEnter: authMiddleware },
     { path: '/routes/:id', component: require('./components/routes/view.vue'), beforeEnter: authMiddleware },
+
+    { path: '/fuel-routes', component: require('./transport/fuel_routes/index.vue'), beforeEnter: authMiddleware },
+    { path: '/fuel-routes/create', component: require('./transport/fuel_routes/form.vue'), beforeEnter: authMiddleware },
+    { path: '/fuel-routes/:id/edit', component: require('./transport/fuel_routes/form.vue'), beforeEnter: authMiddleware },
+    { path: '/fuel-routes/:id', component: require('./transport/fuel_routes/view.vue'), beforeEnter: authMiddleware },
 
     { path: '/drivers', component: require('./components/drivers/index.vue'), beforeEnter: authMiddleware },
     { path: '/drivers/create', component: require('./components/drivers/form.vue'), beforeEnter: authMiddleware },
@@ -108,10 +121,9 @@ module.exports = [
     { path: '/reports/{details}', component: require('./transport/reports/view.vue'), beforeEnter: authMiddleware },
 
     { path: '/403', component: require('./transport/403.vue'), beforeEnter: authMiddleware },
+    { path: '/station-selection', component: require('./transport/station.vue'), beforeEnter: authMiddleware },
 
     { path: '*', component: require('./transport/404.vue'), beforeEnter: authMiddleware },
-
-    { path: '/station-selection', component: require('./transport/station.vue'), beforeEnter: authMiddleware },
 
 
     { path: '/login',

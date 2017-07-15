@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace SmoDav\Controllers\API;
 
-use App\FuelTruckRoute;
+use App\Http\Controllers\Controller;
+use App\MileageRoute;
 use Illuminate\Http\Request;
 
-class FuelTruckRouteController extends Controller
+class MileageRouteController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +42,10 @@ class FuelTruckRouteController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\FuelTruckRoute  $fuelTruckRoute
+     * @param  \App\MileageRoute  $mileageRoute
      * @return \Illuminate\Http\Response
      */
-    public function show(FuelTruckRoute $fuelTruckRoute)
+    public function show(MileageRoute $mileageRoute)
     {
         //
     }
@@ -52,10 +53,10 @@ class FuelTruckRouteController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\FuelTruckRoute  $fuelTruckRoute
+     * @param  \App\MileageRoute  $mileageRoute
      * @return \Illuminate\Http\Response
      */
-    public function edit(FuelTruckRoute $fuelTruckRoute)
+    public function edit(MileageRoute $mileageRoute)
     {
         //
     }
@@ -64,10 +65,10 @@ class FuelTruckRouteController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\FuelTruckRoute  $fuelTruckRoute
+     * @param  \App\MileageRoute  $mileageRoute
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, FuelTruckRoute $fuelTruckRoute)
+    public function update(Request $request, MileageRoute $mileageRoute)
     {
         //
     }
@@ -75,10 +76,10 @@ class FuelTruckRouteController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\FuelTruckRoute  $fuelTruckRoute
+     * @param  \App\MileageRoute  $mileageRoute
      * @return \Illuminate\Http\Response
      */
-    public function destroy(FuelTruckRoute $fuelTruckRoute)
+    public function destroy(MileageRoute $mileageRoute)
     {
         //
     }

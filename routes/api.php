@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -76,4 +74,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('trucks_already_allocated/{contract_id}', '\SmoDav\Controllers\API\JourneyController@trucks_already_allocated');
     Route::get('truck-report/{id}', '\SmoDav\Controllers\API\VehicleController@report');
     Route::get('new_inspection/{id}', '\SmoDav\Controllers\API\InspectionController@newInspection');
+
+    Route::resource('fuel-route', '\SmoDav\Controllers\API\FuelTruckRouteController');
 });
