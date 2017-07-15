@@ -97,13 +97,13 @@
                     <strong>Driver: </strong> {{ $trip->driver->first_name }}
                 </h5>
                 <h5>
-                    <strong>Driver's Sign: ____________________________________________________________________________</strong>
+                    <strong>Driver's Sign: __________________________________</strong>
                 </h5>
                 <h5>
                     <strong>Supervisor Name: </strong> {{ $trip->user->first_name }} {{ $trip->user->last_name }}
                 </h5>
                 <h5>
-                    <strong>Supervisor's Sign: _______________________________________________________________________</strong>
+                    <strong>Supervisor's Sign: _______________________________</strong>
                 </h5>
 
             </div>
@@ -128,17 +128,17 @@
                     and certify that the goods have arrived in good order and condition.
                 </p>
                 <br>
-                <strong>Remarks: </strong>___________________________________
+                <strong>Remarks: </strong>________________________
             </div>
 
             <div class="col-xs-4">
-                <h5><strong>Date: </strong>___________________________________________</h5>
+                <h5><strong>Date: </strong>_________________________</h5>
             </div>
             <div class="col-xs-4">
-                <h5><strong>Name: </strong>___________________________________________</h5>
+                <h5><strong>Name: </strong>_________________________</h5>
             </div>
             <div class="col-xs-4">
-                <h5><strong>Signature</strong>________________________________</h5>
+                <h5><strong>Signature</strong>_______________________</h5>
                 <h5><strong>Stamp:</strong></h5>
                 <div class="" style="border: 1px; border-style: solid;  height: 100px;">
 
