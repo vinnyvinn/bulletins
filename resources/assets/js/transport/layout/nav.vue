@@ -79,6 +79,12 @@ $root.can('create-contract-template') || $root.can('view-contract-template') || 
             }
         },
 
+        computed: {
+            showSwitch() {
+                return this.$root.user.stations.length > 1;
+            }
+        },
+
         methods: {
             logout() {
                 localStorage.removeItem('foeiwafwfuwe');
@@ -89,10 +95,6 @@ $root.can('create-contract-template') || $root.can('view-contract-template') || 
             can(permission) {
                 return window.can(permission)
             },
-
-            showSwitch() {
-                return this.$root.user.stations.length > 1;
-            }
         }
     }
 </script>
