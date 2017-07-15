@@ -130,6 +130,7 @@
                 });
             },
             store(route) {
+                this.$root.isLoading = true;
                 let request = null;
 
                 if (this.$route.params.id) {
@@ -139,7 +140,6 @@
                 }
 
                 request.then((response) => {
-                    alert2(this.$root, [response.message], 'success');
                     this.fuelRoute = {
                         route_id: null,
                         make_id: null,
@@ -147,8 +147,11 @@
                         amount: 0
                     };
                     this.processResponse(response);
+                    this.$root.isLoading = false;
+                    alert2(this.$root, [response.message], 'success');
 //                    window._router.push({ path: '/fuel-routes' });
                 }).catch((error) => {
+                    this.$root.isLoading = false;
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                 });
             },
