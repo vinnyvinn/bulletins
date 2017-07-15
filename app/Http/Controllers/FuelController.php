@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Fuel;
 use Response;
+use SmoDav\Models\FuelTruckRoute;
 use SmoDav\Models\Journey;
 use SmoDav\Models\Delivery;
 use SmoDav\Models\Mileage;
@@ -47,11 +48,12 @@ class FuelController extends Controller
         })
             ->open()
             ->has('delivery')
-            ->with(['driver', 'route', 'truck', 'truck.trailer'])
+            ->with(['driver', 'route', 'truck.model.make', 'truck.trailer'])
             ->get();
 
         return Response::json([
-            'journeys' => $journeys
+            'journeys' => $journeys,
+            'fuelRoutes' => FuelTruckRoute::all(['model_id', 'route_id', 'amount'])
         ]);
     }
 
@@ -129,8 +131,8 @@ class FuelController extends Controller
       $journey = Journey::findOrFail($data['journey_id']);
 
       $truck = $journey->truck;
-      $truck->current_km = $data['current_km'];
-      $truck->current_fuel = $data['fuel_total'];
+      $truck->current_km = intval($data['current_km']);
+      $truck->current_fuel = intval($data['fuel_total']);
       $truck->update();
 
       return Response::json([

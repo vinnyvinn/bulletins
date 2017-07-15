@@ -31,10 +31,11 @@
                     <div class="col-sm-3">
                       <strong>Vehicle</strong><br>
                       Reg.No: {{ current_vehicle.plate_number }}<br>
-                      Model: {{ current_vehicle.model}}<br>
+                      Make: {{ current_vehicle.model.make.name }}<br>
+                      Model: {{ current_vehicle.model.name }}<br>
                       Trailer Attached: <input type="checkbox" name="trailer_attached" :checked="current_vehicle.trailer"><br>
                       <div class="" v-if="current_trailer">
-                        Trailer: {{ current_trailer.trailer_number }}<br>
+                        Trailer: {{ current_trailer.plate_number }}<br>
                         Trailer Category: {{ current_trailer.type }} <br>
                       </div>
                     </div>
@@ -57,7 +58,7 @@
                     <div class="col-sm-3">
                       <div class="form-group">
                         <label for="current_fuel">Current Fuel (Litres)</label>
-                        <input type="number" name="current_fuel" class="form-control input-sm" v-model="fuel.current_fuel" @change="calculateTotal">
+                        <input type="number" name="current_fuel" class="form-control input-sm" v-model="fuel.current_fuel" @keyup="calculateTotal">
                         <p v-if="below_reserve">Current fuel below reserve. Driver to pay for {{ this.deficit }} litre(s).</p>
                       </div>
                     </div>
@@ -65,14 +66,14 @@
                     <div class="col-sm-3">
                       <div class="form-group">
                         <label>Standard Quantity for this Route (Litres)</label><br>
-                        <h4>{{ current_route.fuel_required }}</h4>
+                        <h4>{{ fuelAmount }}</h4>
                       </div>
                     </div>
 
                     <div class="col-sm-3">
                       <div class="form-group">
                         <label for="fuel_issued">Requested Quantity (Litres)</label>
-                        <input type="text" name="fuel_requested" class="form-control input-sm" v-model="fuel.fuel_requested">
+                        <input disabled type="number" name="fuel_requested" class="form-control input-sm" v-model="fuel.fuel_requested">
                       </div>
                     </div>
 
@@ -113,7 +114,7 @@
                     <hr>
                     <div class="col-sm-3">
                       <label for="top_up">Top Up?</label>
-                      <input type="checkbox" name="top_up" id="top_up" v-model="fuel.top_up" @change="!fuel.top_up">
+                      <input type="checkbox" name="top_up" id="top_up" v-model="fuel.top_up">
                       <div class="form-group" v-if="fuel.top_up">
                         <label for="top_up_quantity">Top Up quantity:</label>
                         <input type="number" name="top_up_quantity" v-model="fuel.top_up_quantity">
@@ -184,6 +185,7 @@
           }
             http.get('/api/fuel/create/?s=' + window.Laravel.station_id).then((response) => {
                 this.journeys = response.journeys;
+                this.fuelRoutes = response.fuelRoutes;
             }).then(() => {
               this.checkState();
             }).then(() => {
@@ -204,10 +206,11 @@
             return {
                 fuel_reserve: 25,
                 journeys: [],
+                fuelRoutes: [],
                 current_journey: {},
                 current_driver: {},
-                current_vehicle: {},
-                current_trailer: {},
+                current_vehicle: { model: { make: {} } },
+                current_trailer: { model: { make: {} } },
                 current_route: {},
                 km_covered: 0,
                 fuel_used: 0,
@@ -250,9 +253,23 @@
               return this.current_journey = JSON.parse(JSON.stringify(journey[0]));
             }
           },
-          minimumKm () {
-            return this.fuel.previous_km;
-          }
+
+            minimumKm () {
+                return this.fuel.previous_km;
+            },
+
+            fuelAmount() {
+              if (! this.fuel.journey_id) return 0;
+              if (! this.current_vehicle.model_id) return 0;
+
+              let filtered = this.fuelRoutes.filter(e => {
+                  return e.route_id == this.current_route.id && e.model_id == this.current_vehicle.model_id
+              });
+
+              if (! filtered.length) return 0;
+
+              return filtered[0].amount;
+            },
         },
 
         methods: {
@@ -281,7 +298,7 @@
           calculateTotal() {
             let reserve = parseInt(this.fuel_reserve);
             let current_fuel = parseInt(this.fuel.current_fuel);
-            let route_fuel_required = parseInt(this.current_route.fuel_required);
+            let route_fuel_required = parseInt(this.fuelAmount);
 
             if(parseInt(this.fuel.current_fuel) < reserve){
               this.deficit = reserve - current_fuel;
@@ -291,6 +308,7 @@
             }
 
             this.fuel.fuel_requested = route_fuel_required + reserve - current_fuel;
+
             return this.fuel.fuel_total = parseInt(this.fuel.fuel_issued) + parseInt(this.fuel.current_fuel);
           },
 
@@ -320,7 +338,7 @@
                 this.$root.isLoading = true;
                 let request = null;
 
-                let body = Object.assign({}, this.fuel)
+                let body = Object.assign({}, this.fuel);
 
                 if(this.$route.params.id) {
                   request = axios.put('/api/fuel/'+ this.$route.params.id, body)
