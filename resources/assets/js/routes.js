@@ -1,4 +1,8 @@
 function authMiddleware(to, from, next) {
+    if (to.path === '/login') {
+        return next();
+    }
+
     let allowedPaths = [
         '/station-selection', '/404', '/403', '/trucks', '/drivers', '/routes', '/trailers', '/login'
     ];
@@ -103,10 +107,11 @@ module.exports = [
     { path: '/reports', component: require('./transport/reports/index.vue'), beforeEnter: authMiddleware },
     { path: '/reports/{details}', component: require('./transport/reports/view.vue'), beforeEnter: authMiddleware },
 
-    { path: '/station-selection', component: require('./transport/station.vue'), beforeEnter: authMiddleware },
-
     { path: '/403', component: require('./transport/403.vue'), beforeEnter: authMiddleware },
+
     { path: '*', component: require('./transport/404.vue'), beforeEnter: authMiddleware },
+
+    { path: '/station-selection', component: require('./transport/station.vue'), beforeEnter: authMiddleware },
 
 
     { path: '/login',

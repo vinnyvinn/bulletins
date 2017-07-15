@@ -35,6 +35,10 @@
 </template>
 
 <script>
-    export default {}
+    export default {
+        created() {
+            http.get('/api/user');
+        }
+    }
 </script>
 
