@@ -87,8 +87,6 @@
                         </div>
                         </fieldset>
                     </div>
-
-
                 </div>
 
 
@@ -97,52 +95,65 @@
                   <div class="col-sm-6">
                     <fieldset class="wizag-fieldset-border">
                       <legend class="wizag-fieldset-border">Payment Details</legend>
-                        <div class="form-group">
-                            <label class="col-sm-6">Standard Mileage Amount</label>
-                            <h5 class="col-sm-6"><strong>{{ formatNumber(journey.route.allowance_amount) }}</strong></h5>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-6">Amount Requested</label>
+                        <div class="row">
                             <div class="col-sm-6">
-                              <input min="0" v-model="mileage.requested_amount"
-                              @change="validateRequestedAmount" type="number" class="form-control input-sm"
-                              id="requested_amount" name="requested_amount">
+                                <label>Standard Mileage Amount</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <h5><strong>{{ formatNumber(journey.route.allowance_amount) }}</strong></h5>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label>Amount Requested</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <input min="0" v-model="mileage.requested_amount" @change="validateRequestedAmount" type="number" class="form-control input-sm" id="requested_amount" name="requested_amount">
+                            </div>
+
+
+                            <div class="col-sm-6">
+                                <label>Top Up?</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="checkbox" name="top_up" id="top_up" v-model="mileage.top_up">
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6" v-if="mileage.top_up">
+                                    <label>Top Up Amount</label>
+                                </div>
+                                <div class="col-sm-6" v-if="mileage.top_up">
+                                    <input type="number" name="top_up_amount" id="top_up_amount" v-model="mileage.top_up_amount">
+                                </div>
+
+                                <div class="col-sm-6" v-if="mileage.top_up">
+                                    <label>Top up reason</label>
+                                </div>
+                                <div class="col-sm-6" v-if="mileage.top_up">
+                                    <textarea name="top_up_reason" id="top_up_reason" class="form-control input-sm" v-model="mileage.top_up_reason"></textarea>
+                                </div>
+                            </div>
+
+
+                            <div class="col-sm-6">
+                                <label>Total Request Amount</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <h4><strong>{{ parseInt(mileage.requested_amount) + parseInt(mileage.top_up_amount) }}</strong></h4>
+                            </div>
+
+                            <div class="col-sm-6" v-if="$route.params.id">
+                                <label>Approved Amount</label>
+                            </div>
+                            <div class="col-sm-6"  v-if="$route.params.id">
+                                <input min="0" v-model="mileage.approved_amount" type="number" class="form-control input-sm" id="approved_amount" name="approved_amount">
                             </div>
                         </div>
 
-                        <div class="form-group">
-                          <label class="col-sm-6">Top Up?</label>
-                          <div class="col-sm-6">
-                            <input type="checkbox" name="top_up" id="top_up" v-model="mileage.top_up" @change="!mileage.top_up">
-                          </div>
-                        </div>
-
-                        <div class="form-group" v-if="mileage.top_up">
-                          <label class="col-sm-6">Top Up Amount:</label>
-                          <div class="col-sm-6">
-                            <input type="number" name="top_up_amount" id="top_up_amount" v-model="mileage.top_up_amount">
-                          </div>
-                        </div>
-
-                        <div class="form-group" v-if="mileage.top_up">
-                          <label class="col-sm-6">Top up reason</label>
-                          <div class="col-sm-6">
-                            <textarea name="top_up_reason" id="top_up_reason" class="form-control input-sm" v-model="mileage.top_up_reason"></textarea>
-                          </div>
-                        </div>
 
                         <div class="form-group">
-                          <label class="col-sm-6">Total Request Amount</label>
-                          <div class="col-sm-6">
-                            {{ parseInt(mileage.requested_amount) + parseInt(mileage.top_up_amount) }}
-                          </div>
-                        </div>
-
-                        <div class="form-group" v-if="$route.params.id">
-                            <label class="col-sm-6">Approved Amount</label>
+                            <label class="col-sm-6"></label>
                             <div class="col-sm-6">
-                              <input min="0" v-model="mileage.approved_amount" type="number" class="form-control input-sm" id="approved_amount" name="approved_amount">
                             </div>
                         </div>
                     </fieldset>
@@ -210,10 +221,19 @@
             }
 
           this.$root.isLoading = true;
+
+            if (this.$route.params.id || this.$route.params.approve) {
+                let id = this.$route.params.approve ? this.$route.params.approve : this.$route.params.id;
+                return http.get('/api/mileage/' + id + '/?s=' + window.Laravel.station_id).then((response) => {
+                    this.journeys = response.journeys;
+                    this.mileage = response.mileage;
+                    this.mileage.top_up = this.mileage.top_up != 0;
+                    this.$root.isLoading = false;
+                });
+            }
+
             http.get('/api/mileage/create?s=' + window.Laravel.station_id).then((response) => {
                 this.journeys = response.journeys;
-            }).then(() => {
-              this.checkState();
             }).then(() => {
               this.$root.isLoading = false;
             });

@@ -1,14 +1,21 @@
 
 
     <div class="container">
-        <header class="text-center">
-            <h3>DELIVERY NOTE</h3>
-            <h3>{{ config('app.name') }}</h3>
-            <h5>{{ config('app.telephone') }}</h5>
-            <h5>{{ config('app.email') }}</h5>
-            <h5>{{ config('app.location') }}</h5>
-            <h2><strong>RKS - {{ str_pad($trip->id, 5, '0', STR_PAD_LEFT) }}</strong></h2>
-        </header>
+        <div class="row">
+            <div class="col-xs-4">
+                <img style='display:block' src="/images/logo.jpg" alt="Sanghani">
+                <h3>DELIVERY NOTE</h3>
+            </div>
+            <div class="col-xs-4 text-center">
+                <h1><strong style="color: red !important;">RKS - {{ str_pad($trip->id, 5, '0', STR_PAD_LEFT) }}</strong></h1>
+            </div>
+            <div class="col-xs-4 text-right">
+                <h3>{{ config('app.name') }}</h3>
+                <h5>{{ config('app.telephone') }}</h5>
+                <h5>{{ config('app.email') }}</h5>
+                <h5>{{ config('app.location') }}</h5>
+            </div>
+        </div>
 
         <br>
 
@@ -46,15 +53,15 @@
                     <tbody>
                     <tr>
                         <td><strong>Product</strong></td>
-                        <td><strong>No. of Packages</strong></td>
+                        <td><strong>{{ $trip->bags_loaded ? 'No. of Packages' : '' }}</strong></td>
                         <td><strong>Product</strong></td>
-                        <td><strong>No. of Packages</strong></td>
+                        <td><strong>{{ $trip->bags_loaded ? 'No. of Packages' : '' }}</strong></td>
                     </tr>
                     <tr>
                         <td>{{ $trip->contract->cargoType->name }}</td>
-                        <td>{{ $trip->bags_loaded }}</td>
+                        <td>{{ $trip->bags_loaded ?: '' }}</td>
                         <td>{{ $trip->contract->cargoType->name }}</td>
-                        <td>{{ $trip->bags_loaded }}</td>
+                        <td>{{ $trip->bags_loaded ?: '' }}</td>
                     </tr>
                     <tr>
                         <td><strong>Gross Weight</strong></td>
@@ -93,7 +100,7 @@
                     <strong>Driver's Sign: ____________________________________________________________________________</strong>
                 </h5>
                 <h5>
-                    <strong>Supervisor Name: _______________________________________________________________________</strong>
+                    <strong>Supervisor Name: </strong> {{ $trip->user->first_name }} {{ $trip->user->last_name }}
                 </h5>
                 <h5>
                     <strong>Supervisor's Sign: _______________________________________________________________________</strong>
@@ -105,7 +112,7 @@
                   <strong>Vehicle Number: </strong> {{ $trip->truck->plate_number }}
               </h5>
               <h5>
-                  <strong>Attached Trailer: {{ $trip->truck->trailer->trailer_number }}</strong>
+                  <strong>Attached Trailer: {{ $trip->truck->trailer->plate_number }}</strong>
               </h5>
               <h5>
                   <strong>Lot No: {{ $trip->contract->lot_number }}</strong>

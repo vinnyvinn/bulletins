@@ -46,8 +46,13 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="allowance_amount">Allowance Amount</label>
+                                        <label for="allowance_amount">Going Mileage</label>
                                         <input onclick="this.select()" v-model="route.allowance_amount" min="0" type="number" class="form-control" id="allowance_amount" name="allowance_amount" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="return_mileage">Return Mileage</label>
+                                        <input onclick="this.select()" v-model="route.return_mileage" min="0" type="number" class="form-control" id="return_mileage" name="return_mileage" required>
                                     </div>
 
                                     <udf module="Routes" v-on:udfAdded="addUdfToObject" :state="route"></udf>
@@ -85,7 +90,8 @@
                     destination: '',
                     distance: '',
                     fuel_required: 1,
-                    allowance_amount: 0
+                    allowance_amount: 0,
+                    return_mileage: 0,
                 }
             };
         },

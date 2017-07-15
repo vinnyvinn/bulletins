@@ -14,6 +14,7 @@ Route::group(['prefix' => 'workshop', 'as' => 'workshop.'], function () {
     Route::resource('carriage-point', '\SmoDav\Controllers\CarriagePointController');
     Route::resource('stations', '\SmoDav\Controllers\StationController');
     Route::resource('users', '\SmoDav\Controllers\UsersController');
+    Route::resource('mileage', '\SmoDav\Controllers\API\MileageTypeController');
 });
 
 

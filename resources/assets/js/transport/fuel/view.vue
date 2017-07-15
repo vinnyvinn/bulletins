@@ -1,118 +1,378 @@
 <template>
-    <div class="panel panel-default">
-        <div class="panel-heading">
+<div>
+    <div class="panel panel-default hidden-print">
+        <div class="panel-heading hidden-print">
             <strong>Fuel Allocation</strong>
-        </div>
 
-        <div class="panel-body" id="printable">
-
-                <div class="row print-row" >
-                  <div class="col-xs-12">
-                    <h4><strong>FUEL VOUCHER (Delivery Note N0: RKS {{ delivery_note.id }})</strong></h4>
-                  </div>
-                  <div class="col-xs-3">
-                    <strong>Driver</strong><br>
-                    <img :src="getSource()" alt="" width="100" height="100"> <br>
-                    Name: {{ fuel.journey.driver.first_name  }}<br>
-                    Id No: {{ fuel.journey.driver.identification_number }}<br>
-                    Mobile No: {{ fuel.journey.driver.mobile_phone }}<br>
-                    DL number: {{ fuel.journey.driver.dl_number }}
-                  </div>
-
-                  <div class="col-xs-3">
-                      Date: {{ fuel.date }}<br>
-                      Journey: JRNY-{{ fuel.journey_id }}<br>
-                      Status: {{ fuel.status }}
-                      <hr>
-                      <strong>Route</strong>
-                      Route: Route: RT-{{ fuel.journey.route.id}}<br>
-                      From: {{ fuel.journey.route.source }}<br>
-                      To: {{ fuel.journey.route.destination }}<br>
-                      <hr>
-                      <strong>Vehicle</strong>
-                      Reg.No: {{ fuel.journey.truck.plate_number }}<br>
-                      Model: {{ fuel.journey.truck.model}}<br>
-                      Trailer Attached: <input type="checkbox" name="trailer_attached" :checked="fuel.journey.truck.trailer_id"><br>
-                      <div class="" v-if="fuel.journey.truck.trailer_id">
-                        Trailer: {{ fuel.journey.truck.trailer_id }}<br>
-                        Trailer Category: {{ fuel.journey.truck.trailer_id }} <br>
-                      </div>
-                  </div>
-
-                    <div class="col-xs-3">
-                      <strong>Fuel</strong><br>
-                      Standard Quantity for this route (Ltrs): {{ fuel.fuel_required }}<br>
-                      Current Fuel (Litres): {{ fuel.current_fuel }}<br>
-                      Requested Quantity: {{ fuel.fuel_requested }}<br>
-                      Fuel Issued: {{ fuel.fuel_issued }}<br>
-                      Total Fuel in Tank: {{ fuel.fuel_total }}<br>
-                      <hr>
-                      <strong>Narration</strong><br>
-                      {{ fuel.narration }}
-                      <hr>
-                      <strong>Top Up fuel</strong>
-                      <div class="col-xs-12" v-if="parseInt(fuel.top_up)">
-                        Top Up: {{ fuel.top_up_quantity}}<br>
-                        Reason: {{ fuel.top_up_reason }}
-                      </div>
-                      <hr>
-                    </div>
-
-                    <div class="col-xs-3">
-                      <strong>Mileage Readings</strong><br>
-                      Current Km: {{ fuel.current_km }}<br>
-                      Previous KM: {{ fuel.previous_km }}<br>
-                      <strong>KM Covered: {{ parseInt(fuel.current_km)-parseInt(fuel.previous_km) }} Kms<br></strong>
-                      Current Fuel (Litres): {{ fuel.current_fuel }}<br>
-                      Previous Fuel: {{ fuel.previous_fuel }}<br>
-                      <strong>Fuel Used: {{ parseInt(fuel.previous_fuel)-parseInt(fuel.current_fuel) }} Ltrs<br></strong>
-                      <hr>
-                      <strong>
-                        KM/Ltr: {{ parseInt((parseInt(fuel.current_km)-parseInt(fuel.previous_km))/parseInt(parseInt(fuel.previous_fuel)-parseInt(fuel.current_fuel))).toFixed(2) }}<br>
-                      </strong>
-                    </div>
-
-                  </div>
-
-
-            <hr class="print-hr">
-            <div class="row print-row">
-              <div class="col-xs-12">
-                <h4><strong>MILEAGE ALLOCATION (Delivery Note N0: RKS {{ delivery_note.id }})</strong></h4>
-              </div>
-              <div class="col-xs-3">
-                Journey Number: {{ mileage.journey_id }}<br>
-                Mileage Type: {{ mileage.mileage_type }}<br>
-                Requested Amount: {{ mileage.requested_amount }}<br>
-                Standard Amount: {{ mileage.standard_amount }}<br>
-              </div>
-              <div class="col-xs-3" v-if="parseInt(mileage.top_up)">
-                <strong>Top Up</strong><br>
-                Amount: {{ mileage.top_up_amount }}<br>
-                Reason: {{mileage.top_up_reason }}
-              </div>
-
-              <div class="col-xs-3">
-                Mileage Allocation No: {{ mileage.id }}<br>
-                Status: {{ mileage.status }}<br>
-                Amount Approved: {{ mileage.approved_amount }}<br>
-              </div>
-
-              <div class="col-xs-3">
-                Narration:<br>
-                {{ mileage.narration }}
-              </div>
+            <div class="form-group pull-right hidden-print">
+                <button type="button" name="button" v-if="fuel.status == 'Awaiting Approval'" class="btn btn-success" @click="approveFuel(fuel.id)">Approve</button>
+                <!-- <button type="button" name="button" v-else class="btn btn-warn btn-warning" @click="approveFuel(fuel.id)">Cancel Approval</button> -->
+                <button type="button" class="btn btn-success" @click="printFuelVoucher" :disabled="disablePrint"><i class="fa fa-print fa-fw"></i> Print</button>
+                <router-link to="/fuel" class="btn btn-danger">Back</router-link>
             </div>
         </div>
 
+        <div class="panel-body pm80">
+            <div class="row">
+                <div class="col-xs-6">
+                    <h3>
+                        <img style='display:block' src="/images/logo.jpg" alt="Sanghani">
+                        <strong>FUEL VOUCHER</strong>
+                    </h3>
+                </div>
+                <div class="col-xs-6">
+                    <div class="text-right">
+                        <h3>{{ config.name }}</h3>
+                        <h5>{{ config.telephone }}</h5>
+                        <h5>{{ config.email }}</h5>
+                        <h5>{{ config.location }}</h5>
+                    </div>
+                </div>
+            </div>
 
-        <div class="form-group pull-right">
-          <button type="button" name="button" v-if="fuel.status == 'Awaiting Approval'" class="btn btn-success" @click="approveFuel(fuel.id)">Approve</button>
-          <!-- <button type="button" name="button" v-else class="btn btn-warn btn-warning" @click="approveFuel(fuel.id)">Cancel Approval</button> -->
-          <button type="button" class="btn btn-success" @click="printFuelVoucher" :disabled="disablePrint"><i class="fa fa-print fa-fw"></i> Print</button>
-          <router-link to="/fuel" class="btn btn-danger">Back</router-link>
-      </div>
+            <div class="row">
+                <div class="col-xs-4">
+                    <strong>Voucher No: </strong> FUEL-{{ fuel.id }}
+                </div>
+                <div class="col-xs-4">
+                    <strong>Truck No: </strong> <span class="text-uppercase">{{ fuel.journey.truck.plate_number }}</span>
+                </div>
+                <div class="col-xs-4">
+                    <strong>Date to be issued: </strong> {{ fuel.date }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-4">
+                    <strong>Journey No: </strong> JRN-{{ fuel.journey.id }}
+                </div>
+                <div class="col-xs-4">
+                    <strong>Route: </strong> <span class="text-uppercase">{{ fuel.journey.route.source }}</span>
+                </div>
+                <div class="col-xs-4">
+                    <strong>To: </strong> <span class="text-uppercase">{{ fuel.journey.route.destination }}</span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-4">
+                    <strong>Driver: </strong> {{ fuel.journey.driver ? fuel.journey.driver.first_name : '' }} {{ fuel.journey.driver ? fuel.journey.driver.last_name : '' }}
+                </div>
+                <div class="col-xs-4">
+                    <strong>Distance: </strong> <span class="text-uppercase">{{ fuel.journey.distance }} KMs</span>
+                </div>
+                <div class="col-xs-4">
+                    <strong>Fuel Qty: </strong> <span class="text-uppercase">{{ fuel.fuel_issued }} Litres</span>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-xs-12">
+                    <strong>Supervisors Comment</strong>
+                    <br>
+                    <p>{{ fuel.narration }}</p>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-xs-4">
+                    <strong>Voucher Approved By:</strong>
+                    <br>
+                    <span v-if="fuel.user">
+                        {{ fuel.user.first_name }} {{ fuel.user.last_name }}
+                    </span>
+                </div>
+                <div class="col-xs-4">
+                    <strong>Voucher Processed By: </strong>
+                    <br>
+                    {{ fuel.user.first_name }} {{ fuel.user.last_name }}
+                </div>
+                <div class="col-xs-4">
+                    <strong>Recipient Sign: </strong>
+                    <br>
+                    .....................................................................
+                </div>
+            </div>
+
+            <hr>
+            <br>
+
+            <div class="row">
+                <div class="col-xs-6">
+                    <h3>
+                        <img style='display:block' src="/images/logo.jpg" alt="Sanghani">
+                        <strong>MILEAGE</strong>
+                        <span> <small>TOP UP</small></span>
+                    </h3>
+                </div>
+                <div class="col-xs-6">
+                    <div class="text-right">
+                        <h3>{{ config.name }}</h3>
+                        <h5>{{ config.telephone }}</h5>
+                        <h5>{{ config.email }}</h5>
+                        <h5>{{ config.location }}</h5>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <hr>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-4">
+                        <strong>Voucher No: </strong> MLG-{{ mileage.id }}
+                    </div>
+                    <div class="col-xs-4">
+                        <strong>Truck No: </strong> <span class="text-uppercase">{{ fuel.journey.truck.plate_number }}</span>
+                    </div>
+                    <div class="col-xs-4">
+                        <strong>Date to be issued: </strong> {{ fuel.date }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-4">
+                        <strong>Journey No: </strong> JRN-{{ mileage.journey_id }}
+                    </div>
+                    <div class="col-xs-4">
+                        <strong>Mileage Type: </strong> <span class="text-uppercase">{{ mileage.mileage_type }}</span>
+                    </div>
+                    <div class="col-xs-4">
+                        &nbsp;
+                    </div>
+                </div>
+
+                <div class="row" v-if="parseInt(mileage.top_up)">
+                    <div class="col-xs-4">
+                        <strong>Top Up Amount: </strong> {{ mileage.top_up_amount }}
+                    </div>
+                    <div class="col-xs-4">
+                        <strong>Top Up Reason: </strong> {{ mileage.top_up_reason }}
+                    </div>
+                    <div class="col-xs-4">
+                        &nbsp;
+                    </div>
+                </div>
+
+                <div class="row text-left">
+                    <div class="col-xs-12">
+                        <h4><strong>Amount Approved: </strong> {{ parseFloat(mileage.approved_amount).toLocaleString() }}</h4>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <strong>Supervisors Comment</strong>
+                        <br>
+                        <p>{{ mileage.narration }}</p>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <strong>Voucher Approved By:</strong>
+                        <br>
+                        <span v-if="mileage.user">
+                            {{ mileage.user.first_name }} {{ fuel.user.last_name }}
+                        </span>
+                    </div>
+                    <div class="col-xs-4">
+                        <strong>Voucher Processed By: </strong>
+                        <br>
+                        <span v-if="mileage.user">
+                            {{ mileage.user.first_name }} {{ fuel.user.last_name }}
+                        </span>
+                    </div>
+                    <div class="col-xs-4">
+                        <strong>Recipient Sign: </strong>
+                        <br>
+                        .....................................................................
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+
+    <div class="pm50">
+        <div class="row">
+            <div class="col-xs-6">
+                <h3>
+                    <img style='display:block' src="/images/logo.jpg" alt="Sanghani">
+                    <strong>FUEL VOUCHER</strong>
+                </h3>
+            </div>
+            <div class="col-xs-6">
+                <div class="text-right">
+                    <h3>{{ config.name }}</h3>
+                    <h5>{{ config.telephone }}</h5>
+                    <h5>{{ config.email }}</h5>
+                    <h5>{{ config.location }}</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-4">
+                <strong>Voucher No: </strong> FUEL-{{ fuel.id }}
+            </div>
+            <div class="col-xs-4">
+                <strong>Truck No: </strong> <span class="text-uppercase">{{ fuel.journey.truck.plate_number }}</span>
+            </div>
+            <div class="col-xs-4">
+                <strong>Date to be issued: </strong> {{ fuel.date }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-4">
+                <strong>Journey No: </strong> JRN-{{ fuel.journey.id }}
+            </div>
+            <div class="col-xs-4">
+                <strong>Route: </strong> <span class="text-uppercase">{{ fuel.journey.route.source }}</span>
+            </div>
+            <div class="col-xs-4">
+                <strong>To: </strong> <span class="text-uppercase">{{ fuel.journey.route.destination }}</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-4">
+                <strong>Driver: </strong> {{ fuel.journey.driver ? fuel.journey.driver.first_name : '' }} {{ fuel.journey.driver ? fuel.journey.driver.last_name : '' }}
+            </div>
+            <div class="col-xs-4">
+                <strong>Distance: </strong> <span class="text-uppercase">{{ fuel.journey.distance }} KMs</span>
+            </div>
+            <div class="col-xs-4">
+                <strong>Fuel Qty: </strong> <span class="text-uppercase">{{ fuel.fuel_issued }} Litres</span>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-xs-12">
+                <strong>Supervisors Comment</strong>
+                <br>
+                <p>{{ fuel.narration }}</p>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-xs-4">
+                <strong>Voucher Approved By:</strong>
+                <br>
+                <span v-if="fuel.user">
+                        {{ fuel.user.first_name }} {{ fuel.user.last_name }}
+                    </span>
+            </div>
+            <div class="col-xs-4">
+                <strong>Voucher Processed By: </strong>
+                <br>
+                {{ fuel.user.first_name }} {{ fuel.user.last_name }}
+            </div>
+            <div class="col-xs-4">
+                <strong>Recipient Sign: </strong>
+                <br>
+                .....................................................................
+            </div>
+        </div>
+
+        <hr>
+        <br>
+
+        <div class="row">
+            <div class="col-xs-6">
+                <h3>
+                    <img style='display:block' src="/images/logo.jpg" alt="Sanghani">
+                    <strong>MILEAGE</strong>
+                    <span> <small>TOP UP</small></span>
+                </h3>
+            </div>
+            <div class="col-xs-6">
+                <div class="text-right">
+                    <h3>{{ config.name }}</h3>
+                    <h5>{{ config.telephone }}</h5>
+                    <h5>{{ config.email }}</h5>
+                    <h5>{{ config.location }}</h5>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <hr>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-4">
+                    <strong>Voucher No: </strong> MLG-{{ mileage.id }}
+                </div>
+                <div class="col-xs-4">
+                    <strong>Truck No: </strong> <span class="text-uppercase">{{ fuel.journey.truck.plate_number }}</span>
+                </div>
+                <div class="col-xs-4">
+                    <strong>Date to be issued: </strong> {{ fuel.date }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-4">
+                    <strong>Journey No: </strong> JRN-{{ mileage.journey_id }}
+                </div>
+                <div class="col-xs-4">
+                    <strong>Mileage Type: </strong> <span class="text-uppercase">{{ mileage.mileage_type }}</span>
+                </div>
+                <div class="col-xs-4">
+                    &nbsp;
+                </div>
+            </div>
+
+            <div class="row" v-if="parseInt(mileage.top_up)">
+                <div class="col-xs-4">
+                    <strong>Top Up Amount: </strong> {{ mileage.top_up_amount }}
+                </div>
+                <div class="col-xs-4">
+                    <strong>Top Up Reason: </strong> {{ mileage.top_up_reason }}
+                </div>
+                <div class="col-xs-4">
+                    &nbsp;
+                </div>
+            </div>
+
+            <div class="row text-left">
+                <div class="col-xs-12">
+                    <h5><strong>Amount Approved: </strong> {{ parseFloat(mileage.approved_amount).toLocaleString() }}</h5>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-xs-12">
+                    <strong>Supervisors Comment</strong>
+                    <br>
+                    <p>{{ mileage.narration }}</p>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-xs-4">
+                    <strong>Voucher Approved By:</strong>
+                    <br>
+                    <span v-if="mileage.user">
+                            {{ mileage.user.first_name }} {{ fuel.user.last_name }}
+                        </span>
+                </div>
+                <div class="col-xs-4">
+                    <strong>Voucher Processed By: </strong>
+                    <br>
+                    <span v-if="mileage.user">
+                            {{ mileage.user.first_name }} {{ fuel.user.last_name }}
+                        </span>
+                </div>
+                <div class="col-xs-4">
+                    <strong>Recipient Sign: </strong>
+                    <br>
+                    .....................................................................
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 </template>
 
 <script>
@@ -120,28 +380,17 @@ import axios from 'axios';
     export default {
         data() {
             return {
+                config: {},
                 km_covered: 0,
                 fuel_used: 0,
                 km_per_litre: 0,
                 fuel: {
                   journey: {
-                    driver: {
-                      first_name: '',
-                      identification_number: '',
-                      mobile_phone: '',
-                      dl_number: '',
-                      avatar: ''
-                    },
-                    route: {
-                      id: '',
-                      source: '',
-                      destination: ''
-                    },
-                    truck: {
-                      model: '',
-                      trailer_id: ''
-                    }
+                    driver: {},
+                    route: {},
+                    truck: {},
                   },
+                    user: {},
                   fuel_required: '',
                   current_fuel: '',
                   fuel_requested: '',
@@ -156,6 +405,7 @@ import axios from 'axios';
                 },
                 delivery_note: '',
                 mileage: {
+                    user: {},
                   journey_id: '',
                   mileage_type: '',
                   requested_amount: '',
@@ -180,6 +430,7 @@ import axios from 'axios';
                 this.fuel = response.fuel;
                 this.delivery_note = response.delivery_note;
                 this.mileage = response.mileage;
+                this.config = response.config;
                 this.$root.isLoading = false;
             });
         },

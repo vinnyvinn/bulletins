@@ -130,7 +130,7 @@
                   <div class="col-sm-3">
                     <div class="form-group">
                       <label for="current_km">Current KM</label>
-                      <input type="number" :min="minimumKm" name="current_km" class="form-control input-sm" v-model="fuel.current_km" @change="calculateKms">
+                      <input step="0.1" type="number" :min="minimumKm" name="current_km" class="form-control input-sm" v-model="fuel.current_km" @change="calculateKms">
                     </div>
                   </div>
 
@@ -183,11 +183,21 @@
           if(this.$route.params.id){
             this.can_save = true;
           }
+            if (this.$route.params.id) {
+                return http.get('/api/fuel/' + this.$route.params.id).then((response) => {
+                    this.journeys = response.journeys;
+                    this.fuelRoutes = response.fuelRoutes;
+                    this.fuel = response.fuel;
+                    this.fuel.top_up = this.fuel.top_up != '0';
+                    this.setupUI();
+                    this.calculateKms();
+                    this.$root.isLoading = false;
+                });
+            }
+
             http.get('/api/fuel/create/?s=' + window.Laravel.station_id).then((response) => {
                 this.journeys = response.journeys;
                 this.fuelRoutes = response.fuelRoutes;
-            }).then(() => {
-              this.checkState();
             }).then(() => {
               this.calculateKms();
               this.$root.isLoading = false;
@@ -196,7 +206,6 @@
         },
 
         mounted() {
-
             $('input[type="number"]').on('focus', function () {
                 this.select();
             });
@@ -286,14 +295,7 @@
           },
 
           checkState() {
-              if (this.$route.params.id) {
-                      http.get('/api/fuel/' + this.$route.params.id).then((response) => {
-                          this.fuel = response.fuel;
-                          this.setupUI();
-                          this.$root.isLoading = false;
-                      });
-              }
-              this.setupUI();
+
           },
           calculateTotal() {
             let reserve = parseInt(this.fuel_reserve);

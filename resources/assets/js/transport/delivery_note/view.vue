@@ -77,7 +77,7 @@
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label>Trailer Attached</label>
-                                <h5>{{ journey.truck.trailer.trailer_number }}</h5>
+                                <h5>{{ journey.truck.trailer.plate_number }}</h5>
                             </div>
                         </div>
                         <div class="col-sm-3">

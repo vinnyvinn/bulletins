@@ -47,6 +47,7 @@ class FuelController extends Controller
             return $builder->where('station_id', request('s'));
         })
             ->open()
+            ->doesntHave('fuel')
             ->has('delivery')
             ->with(['driver', 'route', 'truck.model.make', 'truck.trailer'])
             ->get();
@@ -90,14 +91,33 @@ class FuelController extends Controller
      */
     public function show($id)
     {
-        $fuel = Fuel::with('journey', 'journey.driver', 'journey.truck', 'journey.route')->findOrFail($id);
+        $fuel = Fuel::with('journey', 'journey.driver', 'journey.truck', 'journey.route', 'user')->findOrFail($id);
         $delivery_note = Delivery::where('journey_id', $fuel->journey_id)->first();
-        $mileage = Mileage::where('journey_id', $fuel->journey_id)->first();
+        $mileage = Mileage::with(['user'])->where('journey_id', $fuel->journey_id)->first();
+
+        $journeys = Journey::when(request('s'), function ($builder) {
+            return $builder->where('station_id', request('s'));
+        })
+            ->open()
+            ->has('delivery')
+            ->where('id', $fuel->journey_id)
+            ->with(['driver', 'route', 'truck.model.make', 'truck.trailer'])
+            ->get();
+
+        $config = [
+            'name' => config('app.name'),
+            'telephone' => config('app.telephone'),
+            'email' => config('app.email'),
+            'location' => config('app.location'),
+        ];
 
         return Response::json([
+            'journeys' => $journeys,
             'fuel' => $fuel,
             'delivery_note' => $delivery_note,
-            'mileage' => $mileage
+            'mileage' => $mileage,
+            'fuelRoutes' => FuelTruckRoute::all(['model_id', 'route_id', 'amount']),
+            'config' => $config
         ]);
     }
 
@@ -117,7 +137,7 @@ class FuelController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
@@ -131,7 +151,7 @@ class FuelController extends Controller
       $journey = Journey::findOrFail($data['journey_id']);
 
       $truck = $journey->truck;
-      $truck->current_km = intval($data['current_km']);
+      $truck->current_km = floatval($data['current_km']);
       $truck->current_fuel = intval($data['fuel_total']);
       $truck->update();
 

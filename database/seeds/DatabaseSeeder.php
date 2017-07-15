@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
          $this->call(CarriagePointsSeeder::class);
          $this->call(CargoSeeder::class);
          $this->call(MakesAndModelsSeeder::class);
+//         $this->call(MileageTypeSeeder::class);
+
 
 //         $this->call(DevelopmentSeeder::class);
     }

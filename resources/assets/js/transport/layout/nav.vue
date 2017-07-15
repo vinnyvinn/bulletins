@@ -1,13 +1,13 @@
 <template>
     <div>
-        <div class="top-nav">
+        <div class="top-nav hidden-print">
             <h4 class="pull-left brand"><strong>{{ app }}</strong></h4>
             <router-link style="margin-right: 30px;margin-top: 3px" to="/station-selection" class="pull-right btn btn-success" v-if="showSwitch">
                 Change Station
             </router-link>
         </div>
 
-        <div class="bottom-nav">
+        <div class="bottom-nav hidden-print">
 
             <router-link to="/dashboard" class="nav-items">
                 <img src="/images/home.png" alt="home" class="img-responsive">

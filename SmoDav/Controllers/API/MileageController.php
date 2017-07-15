@@ -48,6 +48,7 @@ class MileageController extends Controller
             })
                 ->open()
                 ->has('delivery')
+                ->doesntHave('mileage')
                 ->with(['driver', 'truck.trailer', 'route'])
                 ->get(),
         ]);

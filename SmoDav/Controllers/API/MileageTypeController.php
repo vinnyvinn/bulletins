@@ -3,7 +3,9 @@
 namespace SmoDav\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\MileageType;
+use Carbon\Carbon;
+use SmoDav\Models\MileageType;
+use Datatables;
 use Illuminate\Http\Request;
 
 class MileageTypeController extends Controller
@@ -15,8 +17,30 @@ class MileageTypeController extends Controller
      */
     public function index()
     {
-        //
+        if (request()->ajax()) {
+            return $this->getTableData();
+        }
+
+        return view('workshop.mileage_type.index');
     }
+
+    private function getTableData()
+    {
+        $make = MileageType::select(['id', 'name', 'created_at']);
+
+        return Datatables::of($make)
+            ->addColumn('actions', function ($make) {
+                return '<a href="' . route('workshop.mileage.edit', $make->id) .
+                    '" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>';
+            })
+            ->editColumn('created_at', function ($make) {
+                return Carbon::parse($make->created_at)->format('d F Y');
+            })
+            ->removeColumn('id')
+            ->rawColumns(['actions'])
+            ->make(true);
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -25,7 +49,7 @@ class MileageTypeController extends Controller
      */
     public function create()
     {
-        //
+        return view('workshop.mileage_type.create');
     }
 
     /**
@@ -36,50 +60,52 @@ class MileageTypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $this->validate($request, ['name' => 'required']);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\MileageType  $mileageType
-     * @return \Illuminate\Http\Response
-     */
-    public function show(MileageType $mileageType)
-    {
-        //
+        $data = [
+            'name' => $request->get('name')
+        ];
+
+        MileageType::create($data);
+
+        return redirect()->route('workshop.mileage.index')->with('success', 'Mileage type created successfully');
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\MileageType  $mileageType
-     * @return \Illuminate\Http\Response
+     * @param $mileageTypeId
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function edit(MileageType $mileageType)
+    public function edit($mileageTypeId)
     {
-        //
+        $mileage = MileageType::findOrFail($mileageTypeId);
+
+        return view('workshop.mileage_type.create')->with('type', $mileage);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\MileageType  $mileageType
+     * @param  \App\Make  $make
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, MileageType $mileageType)
+    public function update(Request $request, $mileageTypeId)
     {
-        //
+        $mileage = MileageType::findOrFail($mileageTypeId);
+        $mileage->update($request->all());
+
+        return view('workshop.mileage_type.index')->with('success', 'Mileage type udpated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\MileageType  $mileageType
+     * @param  \App\Make  $make
      * @return \Illuminate\Http\Response
      */
-    public function destroy(MileageType $mileageType)
+    public function destroy(Make $make)
     {
         //
     }
