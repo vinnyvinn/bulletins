@@ -128,7 +128,7 @@
                     and certify that the goods have arrived in good order and condition.
                 </p>
                 <br>
-                <strong>Remarks: </strong>_______________________________________________________________________________________________________________________________________
+                <strong>Remarks: </strong>___________________________________
             </div>
 
             <div class="col-xs-4">
