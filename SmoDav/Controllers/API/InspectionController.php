@@ -52,8 +52,8 @@ class InspectionController extends Controller
         })
             ->open()
             ->doesntHave('inspection')
-            ->with(['truck', 'truck.driver', 'truck.trailer'])
-            ->get(['id', 'raw', 'truck_id']);
+            ->with(['truck', 'driver', 'truck.trailer'])
+            ->get(['id', 'raw', 'truck_id', 'driver_id']);
 
         return Response::json([
             'status' => 'success',
@@ -197,7 +197,9 @@ class InspectionController extends Controller
     {
         return Response::json([
             'status' => 'success',
-            'journey' => Journey::with('truck','truck.driver','truck.trailer','route')->where('id',$id)->first(['id', 'raw', 'truck_id','route_id']),
+            'journey' => Journey::with(['truck', 'driver', 'truck.trailer', 'route'])
+                ->where('id', $id)
+                ->first(['id', 'raw', 'truck_id', 'driver_id', 'route_id']),
             'supervisor' => false,
             'inspector' => true,
         ]);

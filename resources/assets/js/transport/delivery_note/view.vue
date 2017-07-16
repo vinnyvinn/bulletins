@@ -20,9 +20,10 @@
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label for="journey_id">Journey Number</label>
-                                <select disabled v-model="deliveryNote.journey_id" class="form-control input-sm" id="journey_id" name="journey_id" required>
-                                    <option v-for="journey in journeys" :value="journey.id">JRNY-{{ journey.id }}</option>
-                                </select>
+                                <input disabled type="text" class="form-control" id="journey_id" :value="'JRN-' + journey.id">
+                                <!--<select disabled v-model="deliveryNote.journey_id" class="form-control input-sm" id="journey_id" name="journey_id" required>-->
+                                    <!--<option v-for="journey in journeys" :value="journey.id">JRNY-{{ journey.id }}</option>-->
+                                <!--</select>-->
                             </div>
 
                             <div class="form-group">
@@ -165,6 +166,7 @@
         data() {
             return {
                 journeys: [],
+                journey: { route: {}, driver: {}, truck: { trailer: {} } },
                 uploads: [],
                 printout: '',
                 deliveryNote: {
@@ -190,7 +192,7 @@
             }
 
             http.get('/api/delivery/create').then((response) => {
-                this.journeys = response.journeys;
+                this.journey = response.journey;
             });
         },
 
@@ -202,7 +204,7 @@
 
 
         computed: {
-            journey() {
+            journeyff() {
                 let journey = this.journeys.filter(e => e.id == this.deliveryNote.journey_id);
                 if (journey.length) {
                     return journey[0];
@@ -236,7 +238,7 @@
 
             checkState() {
                 return http.get('/api/delivery/' + this.$route.params.id).then((response) => {
-                    this.journeys = response.journeys;
+                    this.journey = response.journey;
                     this.deliveryNote = response.delivery;
                 });
             },

@@ -30,12 +30,10 @@
                             </select>
                         </div>
 
-
                         <div class="form-group">
                             <label for="enquiry_from">Enquiry from</label>
                             <input :disabled="journey.is_contract_related == '1'" type="text" v-model="journey.enquiry_from" class="form-control input-sm" id="enquiry_from" name="enquiry_from">
                         </div>
-
 
                     </div>
 
@@ -90,16 +88,24 @@
                             </select>
                         </div>
 
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="driver_id">Driver</label><br>
+
                             {{ truck.driver ? truck.driver.first_name : '' }} {{ truck.driver ? truck.last_name : '' }}
+                        </div> -->
+
+                        <div class="form-group">
+                            <label for="driver_id">Driver</label>
+                            <select name="driver_id" id="driver_id" v-model="journey.driver_id" class="form-control input-sm select2" required>
+                                <option v-for="driver in drivers" :value="driver.id">{{ driver.first_name }} {{ driver.last_name }} ({{ driver.mobile_phone }})</option>
+                            </select>
                         </div>
                     </div>
 
 
 
-
-                    <!-- <div class="col-sm-3">
+<!-- 
+                    <div class="col-sm-3">
                         <div class="form-group">
                             <label for="ref_no">Ref No</label>
                             <input type="text" v-model="journey.ref_no" class="form-control input-sm" id="ref_no" name="ref_no">
@@ -468,6 +474,7 @@
                         autoclose: true,
                         format: 'dd/mm/yyyy',
                         todayHighlight: true,
+                        startDate: '0d',
                     });
 
                     $('#job_date').datepicker().on('changeDate', (e) => {
@@ -478,6 +485,7 @@
                         $('#truck_id').select2().on('change', e => {
                             this.journey.truck_id = e.target.value;
                             this.addTruck();
+                            $('#driver_id').select2().val(this.truck.driver_id).trigger('change');
                         });
                         $('#driver_id').select2().on('change', e => this.journey.driver_id = e.target.value);
                         $('#route_id').select2().on('change', e => this.journey.route_id = e.target.value);

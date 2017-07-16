@@ -16,6 +16,7 @@ use SmoDav\Models\CargoType;
 use SmoDav\Models\CarriagePoint;
 use SmoDav\Models\Journey;
 use SmoDav\Models\Mileage;
+use SmoDav\Models\MileageType;
 use SmoDav\Support\Constants;
 use Auth;
 
@@ -28,10 +29,16 @@ class MileageController extends Controller
      */
     public function index()
     {
+        $mileages = Mileage::when(request('s'), function ($builder) {
+            return $builder->where('station_id', request('s'));
+        })
+            ->with(['journey' => function ($builder) {
+                return $builder->select(['id', 'status']);
+            }])
+            ->get(['id', 'journey_id', 'mileage_type', 'standard_amount', 'requested_amount', 'approved_amount']);
+            
         return Response::json([
-            'mileages' => Mileage::when(request('s'), function ($builder) {
-                return $builder->where('station_id', request('s'));
-            })->get()
+            'mileages' => $mileages
         ]);
     }
 
@@ -42,6 +49,31 @@ class MileageController extends Controller
      */
     public function create()
     {
+        if (request('id')) {
+            $journey = Journey::with(['driver', 'truck.trailer', 'route', 'mileages' => function ($builder) {
+                return $builder->select(['journey_id', 'mileage_type']);
+            }])
+                    ->where('id', request('id'))
+                    ->firstOrFail();
+
+            $toExclude = ['Return Mileage'];
+
+
+            foreach ($journey->mileages as $mile) {
+                $toExclude[] = $mile->mileage_type;
+            }
+
+            $mileages = MileageType::whereNotIn('name', $toExclude)->get(['name', 'slug']);
+
+            unset($journey->mileages);
+
+            return Response::json([
+                'journey' => $journey,
+                'mileageTypes' => $mileages,
+                'toExclude' => $toExclude,
+            ]);
+        }
+
         return Response::json([
             'journeys' => Journey::when(request('s'), function ($builder) {
                 return $builder->where('station_id', request('s'));
@@ -92,17 +124,36 @@ class MileageController extends Controller
     {
         $mileage = Mileage::findOrFail($id);
 
-        $journeys = Journey::when(request('s'), function ($builder) {
+        $journey = Journey::when(request('s'), function ($builder) {
             return $builder->where('station_id', request('s'));
         })
             ->where('id', $mileage->journey_id)
             ->has('delivery')
-            ->with(['driver', 'truck.trailer', 'route'])
-            ->get();
+            ->with(['driver', 'truck.trailer.model.make', 'route', 'mileages' => function ($builder) use ($mileage) {
+                return $builder->where('mileage_type', '<>', $mileage->mileage_type)->select(['journey_id', 'mileage_type']);
+            }])
+            ->first();
+
+
+        $toExclude = [];
+
+        if ($mileage->mileage_type != 'Return Mileage') {
+            $toExclude[] = 'Return Mileage';
+        }
+
+        foreach ($journey->mileages as $mile) {
+            $toExclude[] = $mile->mileage_type;
+        }
+
+        unset($journey->mileages);
+
+        $mileages = MileageType::whereNotIn('name', $toExclude)->get(['name', 'slug']);
 
         return Response::json([
             'mileage' => $mileage,
-            'journeys' => $journeys
+            'journey' => $journey,
+            'mileageTypes' => $mileages,
+            'toExclude' => $toExclude,
         ]);
     }
 
@@ -190,6 +241,23 @@ class MileageController extends Controller
         return Response::json([
             'status' => 'success',
             'message' => 'Successfully reopened journey.',
+        ]);
+    }
+
+    public function awaiting()
+    {
+        $journeys = Journey::when(request('s'), function ($builder) {
+            return $builder->where('station_id', request('s'));
+        })
+            ->open()
+            ->has('delivery')
+            ->doesntHave('mileage')
+            ->with(['truck', 'driver', 'truck.trailer'])
+            ->get(['id', 'raw', 'truck_id', 'driver_id']);
+
+        return Response::json([
+            'status' => 'success',
+            'journeys' => $journeys,
         ]);
     }
 }

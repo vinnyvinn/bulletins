@@ -31,7 +31,7 @@
                                 <div class="col-sm-3" v-if="journey.truck">
                                     <div class="form-group">
                                         <label>Driver</label>
-                                        <h5><strong>{{ journey.truck.driver.first_name }} {{ journey.truck.driver.last_name }}</strong></h5>
+                                        <h5><strong>{{ journey.driver.first_name }} {{ journey.driver.last_name }}</strong></h5>
                                     </div>
                                 </div>
 
@@ -262,11 +262,11 @@
         data() {
             return {
                 journey: {
-                  truck: {
                     driver: {},
-                    trailer: {}
-                  },
-                  route: {}
+                    truck: {
+                        trailer: {}
+                    },
+                    route: {}
                 },
                 printout: '',
                 isSupervisor: false,

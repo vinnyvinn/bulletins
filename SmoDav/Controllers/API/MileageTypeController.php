@@ -60,13 +60,18 @@ class MileageTypeController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, ['name' => 'required']);
+        $this->validate($request, ['name' => 'required|unique:mileage_types']);
 
         $data = [
-            'name' => $request->get('name')
+            'name' => $request->get('name'),
+            'slug' => str_replace('-', '_', str_slug($request->get('name')))
         ];
 
         MileageType::create($data);
+
+        \Schema::table('routes', function($table) use ($data) {
+            $table->float($data['slug'])->default(0);
+        });
 
         return redirect()->route('workshop.mileage.index')->with('success', 'Mileage type created successfully');
     }
@@ -93,6 +98,8 @@ class MileageTypeController extends Controller
      */
     public function update(Request $request, $mileageTypeId)
     {
+        $this->validate($request, ['name' => 'required|unique:mileage_types,name,' . $mileageTypeId]);
+
         $mileage = MileageType::findOrFail($mileageTypeId);
         $mileage->update($request->all());
 
@@ -107,6 +114,8 @@ class MileageTypeController extends Controller
      */
     public function destroy(Make $make)
     {
-        //
+        Schema::table('routes', function($table) {
+            $table->dropColumn($data['slug']);
+        });
     }
 }

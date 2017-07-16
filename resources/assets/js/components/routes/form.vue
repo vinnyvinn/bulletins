@@ -57,12 +57,30 @@
 
                                     <udf module="Routes" v-on:udfAdded="addUdfToObject" :state="route"></udf>
 
+                                </div>
+
+                                <div v-if="mileageTypes.length">
+                                    <div class="col-sm-12">
+                                        <h4>Mileage Types</h4>
+                                    </div>
+
+                                    <div v-for="mileage in mileageTypes" class="col-sm-6">
+                                        <div class="form-group">
+                                            <label :for="mileage.slug">{{ mileage.name }}</label>
+                                            <input onclick="this.select()" v-model="route[mileage.slug]" min="0" type="number" class="form-control" :id="mileage.slug" :name="mileage.slug" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
                                     <div class="form-group">
                                         <button class="btn btn-success">Save</button>
                                         <router-link to="/routes" class="btn btn-danger">Back</router-link>
                                     </div>
                                 </div>
                             </div>
+
+
                         </form>
 
                     </div>
@@ -75,16 +93,24 @@
 <script>
     export default {
         created() {
+            if (this.$route.params.id) {
+                return http.get('/api/route/' + this.$route.params.id).then((response) => {
+                    this.locations = response.locations;
+                    this.prepareMilageTypes(response.mileageTypes, response.route);
+                    this.mileageTypes = response.mileageTypes;
+                });
+            }
             http.get('/api/route/create').then((response) => {
                 this.locations = response.locations;
+                this.prepareMilageTypes(response.mileageTypes);
+                this.mileageTypes = response.mileageTypes;
             });
         },
-        mounted() {
-            this.checkState();
-        },
+
         data() {
             return {
                 locations: [],
+                mileageTypes: [],
                 route: {
                     source: '',
                     destination: '',
@@ -97,12 +123,24 @@
         },
 
         methods: {
-            checkState() {
-                if (this.$route.params.id) {
-                    http.get('/api/route/' + this.$route.params.id).then((response) => {
-                        this.route = response.route;
-                    });
-                }
+            prepareMilageTypes(types, info = null) {
+                info = info ? info : {
+                    source: '',
+                    destination: '',
+                    distance: '',
+                    fuel_required: 1,
+                    allowance_amount: 0,
+                    return_mileage: 0,
+                };
+
+                let keys = Object.keys(info);
+
+                types.forEach(type => {
+                    if (keys.indexOf(type.slug) !== -1) return;
+                    info[type.slug] = 0;
+                });
+
+                this.route = info;
             },
 
             store(route) {
@@ -127,56 +165,3 @@
         }
     }
 </script>
-
-
-<!--export default {-->
-        <!--mounted() {-->
-            <!--this.checkState();-->
-        <!--},-->
-        <!--data() {-->
-            <!--return {-->
-                <!--sharedState: window._mainState,-->
-                <!--driver: {-->
-                    <!--_token: window.Laravel.csrfToken,-->
-                    <!--_method: 'POST',-->
-                    <!--name: '',-->
-                    <!--national_id: '',-->
-                    <!--dl_number: '',-->
-                    <!--mobile: ''-->
-                <!--},-->
-                <!--errors: [],-->
-                <!--level: 'danger',-->
-                <!--showError: false-->
-            <!--};-->
-        <!--},-->
-
-        <!--methods: {-->
-            <!--checkState() {-->
-                <!--if (this.$route.params.id) {-->
-                    <!--this.driver._method = 'PUT';-->
-                    <!--http.get('/api/driver/' + this.$route.params.id).then((response) => {-->
-                        <!--this.driver = response.driver;-->
-                    <!--});-->
-
-                    <!--return;-->
-                <!--}-->
-            <!--},-->
-
-            <!--store() {-->
-                <!--let request = null;-->
-
-                <!--if (this.$route.params.id) {-->
-                    <!--request = http.put('/api/driver/' + this.$route.params.id, this.driver);-->
-                <!--} else {-->
-                    <!--request = http.post('/api/driver', this.driver);-->
-                <!--}-->
-
-                <!--request.then((response) => {-->
-                    <!--alert2(this.$root, [response.message], 'success');-->
-                    <!--window._router.push({ path: '/drivers' });-->
-                <!--}).catch((error) => {-->
-                    <!--alert2(this.$root, Object.values(JSON.parse(error.message)), 'error');-->
-                <!--});-->
-            <!--}-->
-        <!--}-->
-    <!--}-->

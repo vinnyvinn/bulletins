@@ -5,7 +5,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>Mileage Allocation</strong>
-                        <router-link v-if="$root.can('create-mileage')" to="/mileage/create" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i> Add New</router-link>
+                        <!--<router-link v-if="$root.can('create-mileage')" to="/mileage/create" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i> Add New</router-link>-->
                     </div>
                     <div class="panel-body">
                         <div class="table-responsive">
@@ -35,7 +35,10 @@
                                     <td class="text-right">{{ formatNumber(mileage.standard_amount) }}</td>
                                     <td class="text-right">{{ formatNumber(mileage.requested_amount) }}</td>
                                     <td class="text-right">{{ formatNumber(mileage.approved_amount) }}</td>
-                                    <td class="text-center">
+                                    <td class="text-right">
+                                        <router-link  class="btn btn-success btn-xs" :to="'/mileage/create/'+ mileage.journey_id" v-if="$root.can('create-mileage') && (mileage.journey.status != 'Closed')">
+                                          ADD MILEAGE
+                                        </router-link>
                                         <span @click="edit(mileage)" v-if="$root.can('edit-mileage')" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
                                         <button v-if="$root.can('delete-mileage')" data-toggle="popover" :data-item="mileage.id" class="btn btn-xs btn-danger btn-destroy">
                                             <i class="fa fa-trash"></i>

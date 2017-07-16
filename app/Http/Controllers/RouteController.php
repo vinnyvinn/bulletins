@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Response;
 use function sleep;
 use SmoDav\Support\Excel;
+use SmoDav\Models\MileageType;
 
 class RouteController extends Controller
 {
@@ -43,8 +44,11 @@ class RouteController extends Controller
 
         $routes = array_values(array_unique($routes));
 
+        $mileageTypes = MileageType::all(['name', 'slug']);
+
         return Response::json([
-            'locations' => $routes
+            'locations' => $routes,
+            'mileageTypes' => $mileageTypes,
         ]);
     }
 
@@ -105,8 +109,22 @@ class RouteController extends Controller
      */
     public function show(Route $route)
     {
+        $source = Route::distinct('source')->get(['source'])->map(function ($item) {
+            return $item->source;
+        })->values()->toArray();
+        $destination = Route::distinct('destination')->get(['destination'])->map(function ($item) {
+            return $item->destination;
+        })->values()->toArray();
+
+        $locations = array_merge($source, $destination);
+        $locations = array_values(array_unique($locations));
+
+        $mileageTypes = MileageType::all(['name', 'slug']);
+
         return Response::json([
-            'route' => $route
+            'route' => $route,
+            'locations' => $locations,
+            'mileageTypes' => $mileageTypes
         ]);
     }
 

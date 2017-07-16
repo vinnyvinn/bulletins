@@ -194,8 +194,8 @@ class DeliveryController extends Controller
             ->whereHas('inspection', function ($query) {
                 $query->where('suitable_for_loading', true);
             })
-            ->with(['truck', 'truck.driver', 'truck.trailer'])
-            ->get(['id', 'raw', 'truck_id']);
+            ->with(['truck', 'driver', 'truck.trailer'])
+            ->get(['id', 'raw', 'truck_id', 'driver_id']);
 
         return Response::json([
             'status' => 'success',

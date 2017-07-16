@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class MileageType extends Model
 {
-    protected $fillable = ['id', 'name'];
+    protected $fillable = ['slug', 'name'];
 }

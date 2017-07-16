@@ -97,7 +97,7 @@
             <hr>
             <br>
 
-            <div class="row">
+            <div v-for="mileage in mileages">
                 <div class="col-xs-6">
                     <h3>
                         <img style='display:block' src="/images/logo.jpg" alt="Sanghani">
@@ -193,7 +193,7 @@
     </div>
 
 
-    <div class="pm50">
+    <div class="pm50 visible-print">
         <div class="row">
             <div class="col-xs-6">
                 <h3>
@@ -246,11 +246,9 @@
                 <strong>Fuel Qty: </strong> <span class="text-uppercase">{{ fuel.fuel_issued }} Litres</span>
             </div>
         </div>
-        <br>
         <div class="row">
             <div class="col-xs-12">
                 <strong>Supervisors Comment</strong>
-                <br>
                 <p>{{ fuel.narration }}</p>
             </div>
         </div>
@@ -274,11 +272,10 @@
                 .....................................................................
             </div>
         </div>
-
         <hr>
         <br>
 
-        <div class="row">
+        <div class="row" v-for="(mileage, index) in mileages">
             <div class="col-xs-6">
                 <h3>
                     <img style='display:block' src="/images/logo.jpg" alt="Sanghani">
@@ -318,7 +315,6 @@
                     <strong>Mileage Type: </strong> <span class="text-uppercase">{{ mileage.mileage_type }}</span>
                 </div>
                 <div class="col-xs-4">
-                    &nbsp;
                 </div>
             </div>
 
@@ -339,11 +335,9 @@
                     <h5><strong>Amount Approved: </strong> {{ parseFloat(mileage.approved_amount).toLocaleString() }}</h5>
                 </div>
             </div>
-            <br>
             <div class="row">
                 <div class="col-xs-12">
                     <strong>Supervisors Comment</strong>
-                    <br>
                     <p>{{ mileage.narration }}</p>
                 </div>
             </div>
@@ -369,6 +363,10 @@
                     .....................................................................
                 </div>
             </div>
+
+            <hr>
+
+            <div v-if="index % 2 == 0" class="page-break"></div>
         </div>
     </div>
 </div>
@@ -404,20 +402,7 @@ import axios from 'axios';
                   top_up_quantity: 0,
                 },
                 delivery_note: '',
-                mileage: {
-                    user: {},
-                  journey_id: '',
-                  mileage_type: '',
-                  requested_amount: '',
-                  standard_amount: '',
-                  id: '',
-                  status: '',
-                  approved_amount: '',
-                  narration: '',
-                  top_up: '',
-                  top_up_reason: '',
-                  top_up_amount: 0,
-                }
+                mileages: [],
             };
         },
         created() {
@@ -429,19 +414,24 @@ import axios from 'axios';
             http.get('/api/fuel/' + this.$route.params.id).then((response) => {
                 this.fuel = response.fuel;
                 this.delivery_note = response.delivery_note;
-                this.mileage = response.mileage;
+                this.mileages = response.mileages;
                 this.config = response.config;
                 this.$root.isLoading = false;
             });
         },
         computed: {
           disablePrint(){
-            if(this.fuel.status == "Approved" && this.mileage.status == "Approved"){
+            let isApproved = true;
+            this.mileages.forEach(mileage => {
+                if (mileage.status != "Approved") {
+                    isApproved = false;
+                }
+            });
+            if(this.fuel.status == "Approved" && isApproved){
               return false;
             }
-            else{
-              return true;
-            }
+              
+            return true;
           },
 
           minimumKm () {

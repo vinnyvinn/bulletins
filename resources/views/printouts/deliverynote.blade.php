@@ -1,6 +1,6 @@
 
 
-    <div class="container">
+    <div class="container" style="font-size: 1.1em">
         <div class="row">
             <div class="col-xs-4">
                 <img style='display:block' src="/images/logo.jpg" alt="Sanghani">
@@ -39,18 +39,22 @@
 
             <div class="col-xs-12">
                 <br>
-                <br>
-                <br>
                 <table class="table">
                     <thead>
                     <tr>
-                        <th>Loading Details</th>
-                        <th>Loading Date: {{ Carbon\Carbon::parse($trip->loading_time)->format('d F Y') }}</th>
-                        <th>Offloading Details</th>
-                        <th>Offloading Date: {{ $trip->offloading_time ? Carbon\Carbon::parse($trip->offloading_time)->format('d F Y') : '' }}</th>
+                        <th class="text-uppercase text-left"><h4><strong>Loading Details</strong></h4></th>
+                        <th class="text-uppercase text-left"><h4><strong>Loading Date: {{ Carbon\Carbon::parse($trip->loading_time)->format('d F Y') }}</strong></h4></th>
+                        <th class="text-uppercase text-left"><h4><strong>Offloading Details</strong></h4></th>
+                        <th class="text-uppercase text-left"><h4><strong>Offloading Date: {{ $trip->offloading_time ? Carbon\Carbon::parse($trip->offloading_time)->format('d F Y') : '' }}</strong></h4></th>
                     </tr>
                     </thead>
                     <tbody>
+                    <tr>
+                        <td><strong>Weighbridge Ticket No</strong></td>
+                        <td>{{ $trip->loading_weighbridge_number }}</td>
+                        <td><strong>Weighbridge Ticket No</strong></td>
+                        <td>{{ $trip->offloading_weighbridge_number ? $trip->offloading_weighbridge_number : '' }}</td>
+                    </tr>
                     <tr>
                         <td><strong>Product</strong></td>
                         <td><strong>{{ $trip->bags_loaded ? 'No. of Packages' : '' }}</strong></td>
@@ -81,33 +85,27 @@
                         <td><strong>Net Weight</strong></td>
                         <td>{{ $trip->offloading_net_weight != 0.00 ? number_format($trip->offloading_net_weight, 2) . ' KGs' : '' }}</td>
                     </tr>
-                    <tr>
-                        <td><strong>Weighbridge Ticket No</strong></td>
-                        <td>{{ $trip->loading_weighbridge_number }}</td>
-                        <td><strong>Weighbridge Ticket No</strong></td>
-                        <td>{{ $trip->offloading_weighbridge_number ? $trip->offloading_weighbridge_number : '' }}</td>
-                    </tr>
                     </tbody>
                 </table>
 
             </div>
 
             <div class="col-xs-8">
+                <br>
+                <h5>
+                    <strong>Driver's Sign: __________________________________</strong>
+                </h5>
                 <h5>
                     <strong>Driver: </strong> {{ $trip->driver->first_name }}
                 </h5>
                 <br>
                 <h5>
-                    <strong>Driver's Sign: __________________________________</strong>
+                    <strong>Supervisor's Sign: _______________________________</strong>
                 </h5>
-                <br>
                 <h5>
                     <strong>Supervisor Name: </strong> {{ $trip->user->first_name }} {{ $trip->user->last_name }}
                 </h5>
                 <br>
-                <h5>
-                    <strong>Supervisor's Sign: _______________________________</strong>
-                </h5>
 
             </div>
             <div class="col-xs-4" style="border: 1px; border-style: solid;">
@@ -127,27 +125,34 @@
 
             <div class="col-xs-12">
                 <p>
-                    We, {{ $trip->contract->client->Name }}, hereby acknowledge the full receipt n full goods as per above details
+                    We, <strong>{{ $trip->contract->client->Name }}</strong>, hereby acknowledge the full receipt n full goods as per above details
                     and certify that the goods have arrived in good order and condition.
                 </p>
                 <br>
-                <strong>Remarks: </strong>_________________________________________________________
+            </div>
+
+            <div class="col-xs-8">
+                <strong>Remarks: </strong>_____________________________________________________________________________
+                <br>______________________________________________________________________________________
+                <br>______________________________________________________________________________________
                 <br>
-            </div>
-
-            <div class="col-xs-4">
-                <h5><strong>Date: </strong>_________________________</h5>
-            </div>
-            <div class="col-xs-4">
-                <h5><strong>Name: </strong>_________________________</h5>
-            </div>
-            <div class="col-xs-4">
-                <h5><strong>Signature</strong>_______________________</h5>
-                <h5><strong>Stamp:</strong></h5>
-                <div class="" style="border: 1px; border-style: solid;  height: 100px;">
-
+                <div class="row">
+                    <div class="col-xs-6">
+                        <h5><strong>Name: </strong>_________________________</h5>
+                    </div>
+                    <div class="col-xs-6">
+                        <h5><strong>Date: </strong>_________________________</h5>
+                    </div>
                 </div>
             </div>
+            <div class="col-xs-4">
+                <div class="" style="border: 1px; border-style: solid;  height: 100px;">
+                    <h5><strong>Stamp:</strong></h5>
+                </div>
+                <br>
+                <h5><strong>Signature</strong>_______________________</h5>
+            </div>
+
 
             <div class="col-xs-12">
                 <ul style="list-style-type: decimal">

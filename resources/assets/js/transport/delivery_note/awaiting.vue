@@ -6,7 +6,7 @@
                     <div class="panel-heading">
                         <strong>Truck Awaiting Delivery Notes</strong>
 
-                        <router-link to="/delivery/loaded" class="pull-right">
+                        <router-link v-if="$root.can('view-delivery')" to="/delivery/loaded" class="pull-right">
                           <button type="button" name="button" class="btn btn-success btn-sm">DELIVERY NOTES</button>
                         </router-link>
                     </div>
@@ -23,11 +23,11 @@
                                 </thead>
                                 <tbody>
                                 <tr v-for="journey in journeys">
-                                    <td><router-link :to="'/truck/' + journey.truck.id">{{ journey.truck.plate_number }}</router-link></td>
-                                    <td>{{ journey.truck.driver.first_name }}</td>
+                                    <td>{{ journey.truck.plate_number }}</td>
+                                    <td>{{ journey.driver.first_name }} {{ journey.driver.last_name }}</td>
                                     <td>JRNY-{{ journey.id }}</td>
                                     <td>
-                                        <router-link :to="'delivery/create/'+ journey.id">
+                                        <router-link v-if="$root.can('create-delivery')" :to="'delivery/create/'+ journey.id">
                                           <button type="button" name="button" class="btn btn-success btn-sm">PROCESS</button>
                                         </router-link>
                                     </td>

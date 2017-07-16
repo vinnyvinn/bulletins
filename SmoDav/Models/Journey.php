@@ -24,6 +24,11 @@ class Journey extends SmoDavModel
         return $this->hasOne(Mileage::class);
     }
 
+    public function mileages()
+    {
+        return $this->hasMany(Mileage::class);
+    }
+
     public function fuel()
     {
         return $this->hasOne(Fuel::class);

@@ -5,7 +5,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>Delivery Notes</strong>
-                        <router-link v-if="$root.can('create-delivery')" to="/delivery/create" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i> Add New</router-link>
+                        <!--<router-link v-if="$root.can('create-delivery')" to="/delivery/create" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i> Add New</router-link>-->
                     </div>
                     <div class="panel-body">
                         <div class="table-responsive">

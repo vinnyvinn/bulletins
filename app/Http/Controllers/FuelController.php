@@ -14,8 +14,6 @@ use Auth;
 use App\Truck;
 use SmoDav\Support\Constants;
 
-
-
 class FuelController extends Controller
 {
     /**
@@ -43,6 +41,21 @@ class FuelController extends Controller
      */
     public function create()
     {
+        if (request('id')) {
+            $journey = Journey::with(['driver', 'route', 'truck.model.make', 'truck.trailer'])
+                ->where('id', request('id'))
+                ->firstOrFail();
+
+            $fuelRoute = FuelTruckRoute::where('route_id', $journey->route_id)
+                ->where('model_id', $journey->truck->model_id)
+                ->first(['model_id', 'route_id', 'amount']);
+
+            return Response::json([
+                'journey' => $journey,
+                'fuelRoute' => $fuelRoute
+            ]);
+        }
+
         $journeys = Journey::when(request('s'), function ($builder) {
             return $builder->where('station_id', request('s'));
         })
@@ -91,9 +104,11 @@ class FuelController extends Controller
      */
     public function show($id)
     {
-        $fuel = Fuel::with('journey', 'journey.driver', 'journey.truck', 'journey.route', 'user')->findOrFail($id);
+        $fuel = Fuel::with([
+            'journey', 'journey.driver', 'journey.truck.model.make', 'journey.route', 'journey.truck.trailer', 'user'
+        ])->findOrFail($id);
         $delivery_note = Delivery::where('journey_id', $fuel->journey_id)->first();
-        $mileage = Mileage::with(['user'])->where('journey_id', $fuel->journey_id)->first();
+        $mileages = Mileage::with(['user'])->where('journey_id', $fuel->journey_id)->get();
 
         $journeys = Journey::when(request('s'), function ($builder) {
             return $builder->where('station_id', request('s'));
@@ -111,12 +126,16 @@ class FuelController extends Controller
             'location' => config('app.location'),
         ];
 
+        $fuelRoute = FuelTruckRoute::where('route_id', $fuel->journey->route_id)
+            ->where('model_id', $fuel->journey->truck->model_id)
+            ->first(['model_id', 'route_id', 'amount']);
+
+
         return Response::json([
-            'journeys' => $journeys,
+            'fuelRoute' => $fuelRoute,
             'fuel' => $fuel,
             'delivery_note' => $delivery_note,
-            'mileage' => $mileage,
-            'fuelRoutes' => FuelTruckRoute::all(['model_id', 'route_id', 'amount']),
+            'mileages' => $mileages,
             'config' => $config
         ]);
     }
@@ -141,23 +160,23 @@ class FuelController extends Controller
      */
     public function update(Request $request, $id)
     {
-      $data = $request->all();
-      unset($data['_token'], $data['_method']);
-      $data['date'] = Carbon::parse(str_replace('/', '-', $data['date']))->format('Y-m-d');
+        $data = $request->all();
+        unset($data['_token'], $data['_method']);
+        $data['date'] = Carbon::parse(str_replace('/', '-', $data['date']))->format('Y-m-d');
 
-      $fuel = Fuel::findOrFail($id);
-      $fuel->update($data);
+        $fuel = Fuel::findOrFail($id);
+        $fuel->update($data);
 
-      $journey = Journey::findOrFail($data['journey_id']);
+        $journey = Journey::findOrFail($data['journey_id']);
 
-      $truck = $journey->truck;
-      $truck->current_km = floatval($data['current_km']);
-      $truck->current_fuel = intval($data['fuel_total']);
-      $truck->update();
+        $truck = $journey->truck;
+        $truck->current_km = floatval($data['current_km']);
+        $truck->current_fuel = intval($data['fuel_total']);
+        $truck->update();
 
-      return Response::json([
-        'message' => 'Fuel Allocation Successfully updated.'
-      ]);
+        return Response::json([
+            'message' => 'Fuel Allocation Successfully updated.',
+        ]);
 
     }
 
@@ -184,33 +203,52 @@ class FuelController extends Controller
 
     public function approve($id)
     {
-      $fuel = Fuel::findOrFail($id);
-      if($fuel->status == 'Awaiting Approval'){
-        $fuel->status = Constants::STATUS_APPROVED;
-        $fuel->user_id = Auth::id();
-        $fuel->save();
+        $fuel = Fuel::findOrFail($id);
+        if ($fuel->status == 'Awaiting Approval') {
+            $fuel->status = Constants::STATUS_APPROVED;
+            $fuel->user_id = Auth::id();
+            $fuel->save();
 
-        $fuel = Fuel::with(['journey','journey.driver', 'journey.route', 'journey.truck'])->where('id',$id)->first();
+            $fuel = Fuel::with(['journey', 'journey.driver', 'journey.route', 'journey.truck'])
+                ->where('id', $id)->first();
 
-        return Response::json([
-            'status' => 'success',
-            'message' => 'Successfully Approved fuel request.',
-            'fuel' => $fuel
-        ]);
-      }
-      else {
+            return Response::json([
+                'status'  => 'success',
+                'message' => 'Successfully Approved fuel request.',
+                'fuel'    => $fuel,
+            ]);
+        }
         $fuel->status = 'Awaiting Approval';
         $fuel->user_id = '';
         $fuel->save();
 
         // $fuels = Fuel::with(['journey','journey.driver', 'journey.route', 'journey.truck'])->get();
-        $fuel = Fuel::with(['journey','journey.driver', 'journey.route', 'journey.truck'])->where('id',$id)->first();
+        $fuel = Fuel::with(['journey', 'journey.driver', 'journey.route', 'journey.truck'])
+            ->where('id', $id)
+            ->first();
+
+        return Response::json([
+            'status'  => 'success',
+            'message' => 'Approval Revoked.',
+            'fuel'    => $fuel,
+        ]);
+
+    }
+
+    public function awaiting()
+    {
+        $journeys = Journey::when(request('s'), function ($builder) {
+            return $builder->where('station_id', request('s'));
+        })
+            ->open()
+            ->has('delivery')
+            ->doesntHave('fuel')
+            ->with(['truck', 'driver', 'truck.trailer'])
+            ->get(['id', 'raw', 'truck_id', 'driver_id']);
 
         return Response::json([
             'status' => 'success',
-            'message' => 'Approval Revoked.',
-            'fuel' => $fuel
+            'journeys' => $journeys,
         ]);
-      }
     }
 }
