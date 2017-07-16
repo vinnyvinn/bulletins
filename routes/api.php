@@ -77,5 +77,11 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('truck-report/{id}', 'TruckController@report');
     Route::get('new_inspection/{id}', '\SmoDav\Controllers\API\InspectionController@newInspection');
 
-    Route::resource('lscontract', '\SmoDav\Controllers\API\LocalShunting\LSContractController');
+    Route::post('allocate_truck', 'ContractController@allocateTruck');
+    Route::get('lscontracts', 'ContractController@lscontracts');
+    Route::get('lscontractshow/{id}', 'ContractController@lscontractShow');
+    Route::get('lsfuelcreate/{id}', '\SmoDav\Controllers\API\VehicleController@lsfuelcreate');
+    Route::resource('lsfuel', '\SmoDav\Controllers\API\LocalShunting\LSFuelController');
+    Route::resource('lsgatepass', '\SmoDav\Controllers\API\LocalShunting\GatePassController');
+    Route::resource('lsdelivery', '\SmoDav\Controllers\API\LocalShunting\LSDeliveryController');
 });

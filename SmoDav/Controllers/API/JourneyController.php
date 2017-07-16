@@ -72,13 +72,22 @@ class JourneyController extends Controller
                 return $journey->truck_id;
             })
             ->toArray();
+            
+        $ls = \DB::table('contract_truck')->get(['vehicle_id'])
+            ->map(function ($item) {
+                return $item->vehicle_id;
+            })
+            ->toArray();
+
+
 
         $trucks = Vehicle::typeTruck()->with([
             'driver' => function ($builder) {
                 return $builder->select(['id', 'first_name', 'last_name', 'mobile_phone']);
-            },
-        ])
+                },
+            ])
             ->whereNotIn('id', $journeys)
+            ->whereNotIn('id', $ls)
             ->get(['driver_id', 'id', 'plate_number']);
 
         $last_journey_id = Journey::orderBy('created_at', 'desc')->first(['id']);

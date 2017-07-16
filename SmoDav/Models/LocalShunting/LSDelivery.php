@@ -10,7 +10,6 @@ use App\User;
 class LSDelivery extends Model
 {
     protected $fillable = [
-        'journey_id',
         'narration',
         'loading_gross_weight',
         'loading_tare_weight',
@@ -22,17 +21,14 @@ class LSDelivery extends Model
         'offloading_weighbridge_number',
         'loading_time',
         'offloading_time',
-        'raw',
         'status',
-        'bags_loaded',
         'user_id',
-        'station_id'
+        'station_id',
+        'vehicle_id',
+        'contract_id'
     ];
 
-    public function journey()
-    {
-        return $this->belongsTo(Journey::class);
-    }
+
 
     public function routecard()
     {

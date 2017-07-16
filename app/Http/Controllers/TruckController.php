@@ -301,4 +301,6 @@ class TruckController extends Controller
         'activities' => $activities
       ]);
     }
+
+    
 }

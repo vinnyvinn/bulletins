@@ -9,62 +9,26 @@
                 <div class="row">
                     <div class="col-sm-3">
                         <div class="form-group">
-                            <label for="journey_id">Journey Number</label>
-                            <select :disabled="typeof $route.params.unload === 'string'" v-model="deliveryNote.journey_id" @change="journey" class="form-control input-sm" id="journey_id" name="journey_id" required>
-                                <option v-for="journey in journeys" :value="journey.id">JRNY-{{ journey.id }}</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label>Journey Date</label>
-                            <h5>{{ journey.job_date }}</h5>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label>Route From</label>
-                            <h5>{{ journey.route.source }}</h5>
-                        </div>
-                        <!--<div class="form-group">-->
-                            <!--<label>Journey Ref No.</label>-->
-                            <!--<h5>{{ journey.ref_no }}</h5>-->
-                        <!--</div>-->
-                    </div>
-
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label>Route To</label>
-                            <h5>{{ journey.route.destination }}</h5>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-sm-3">
-                        <div class="form-group">
                             <label>Vehicle Number</label>
-                            <h5>{{ journey.truck.plate_number }}</h5>
+                            <h5>{{ vehicle.plate_number }}</h5>
                         </div>
                     </div>
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label>Trailer Type</label>
-                            <h5>{{ journey.truck.trailer.type }}</h5>
+                            <h5 v-if="vehicle.trailer">{{ vehicle.trailer.type }}</h5>
                         </div>
                     </div>
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label>Trailer Attached</label>
-                            <h5>{{ journey.truck.trailer.trailer_number }}</h5>
+                            <h5 v-if="vehicle.trailer">{{ vehicle.trailer.trailer_number }}</h5>
                         </div>
                     </div>
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label>Driver Name</label>
-                            <h5>{{ journey.driver.first_name }} {{ journey.driver.last_name }}</h5>
+                            <h5 v-if="vehicle.driver">{{ vehicle.driver.first_name }} {{ vehicle.driver.last_name }}</h5>
                         </div>
                     </div>
                 </div>
@@ -93,8 +57,8 @@
                             <input disabled id="loading_net_weight" min="0" v-model="deliveryNote.loading_net_weight" type="number" class="form-control input-sm">
                         </div>
                         <div class="form-group">
-                            <label for="loading_weighbridge_number">Weighbridge Ticket Number</label>
-                            <input :disabled="typeof $route.params.unload === 'string'" id="loading_weighbridge_number" v-model="deliveryNote.loading_weighbridge_number" type="text" class="form-control input-sm">
+                            <label for="loading_weighbridge_number">Delivery Number</label>
+                            <input :disabled="typeof $route.params.unload === 'string'" id="loading_weighbridge_number" v-model="deliveryNote.loading_weighbridge_number" type="text" class="form-control input-sm" required>
                         </div>
                     </div>
 
@@ -116,7 +80,7 @@
                         </div>
                         <div class="form-group">
                             <label for="offloading_weighbridge_number">Weighbridge Ticket Number</label>
-                            <input :disabled="(typeof $route.params.unload !== 'string') && (typeof $route.params.id !== 'string')" id="offloading_weighbridge_number" v-model="deliveryNote.offloading_weighbridge_number" type="text" class="form-control input-sm">
+                            <input :disabled="(typeof $route.params.unload !== 'string') && (typeof $route.params.id !== 'string')" id="offloading_weighbridge_number" v-model="deliveryNote.offloading_weighbridge_number" type="text" class="form-control input-sm" required>
                         </div>
                     </div>
 
@@ -143,11 +107,15 @@
     export default {
         data() {
             return {
-                journeys: [],
-                uploads: [],
+                vehicle: {
+                  trailer: {},
+                  driver: {},
+                  contract: {}
+                },
                 deliveryNote: {
                     station_id: window.Laravel.station_id,
-                    journey_id: '',
+                    vehicle_id: '',
+                    contract_id: '',
                     narration: '',
                     bags_loaded: 0,
                     loading_gross_weight: 0,
@@ -177,9 +145,13 @@
                 this.checkState();
                 return;
             }
+            this.$root.isLoading = true;
+            http.get('/api/lsdelivery/create/?id=' + this.$route.params.new).then((response) => {
+                this.vehicle = response.vehicle;
+                this.deliveryNote.vehicle_id = this.vehicle.id;
+                this.deliveryNote.contract_id = this.vehicle.contract_id;
 
-            http.get('/api/delivery/create').then((response) => {
-                this.journeys = response.journeys;
+                this.$root.isLoading = false;
             });
         },
 
@@ -191,21 +163,7 @@
 
 
         computed: {
-            journey() {
-                let journey = this.journeys.filter(e => e.id == this.deliveryNote.journey_id);
-                if (journey.length) {
-                    return journey[0];
-                    this.deliveryNote.loading_weighbridge_number = 'JRNY-'+journey[0].id;
-                }
 
-                return {
-                    driver: {},
-                    truck: {
-                        trailer: {},
-                    },
-                    route: {},
-                };
-            },
         },
 
         methods: {
@@ -234,20 +192,19 @@
                 this.$root.isLoading = true;
                 let request = null;
 
-                let data = mapToFormData(this.deliveryNote, this.uploads, typeof this.$route.params.id === 'string' || typeof this.$route.params.unload === 'string');
 
                 if (this.$route.params.id) {
-                    request = http.put('/api/delivery/' + this.$route.params.id, data, true);
+                    request = http.put('/api/lsdelivery/' + this.$route.params.id, data, true);
                 } else if (this.$route.params.unload) {
-                    request = http.put('/api/delivery/' + this.$route.params.unload, data, true);
+                    request = http.put('/api/lsdelivery/' + this.$route.params.unload, data, true);
                 } else {
-                    request = http.post('/api/delivery', data, true);
+                    request = http.post('/api/lsdelivery', this.deliveryNote);
                 }
 
                 request.then((response) => {
                     this.$root.isLoading = false;
                     alert2(this.$root, [response.message], 'success');
-                    window._router.push({ path: '/delivery' });
+                    window._router.push({ path: '/ls/delivery' });
                 }).catch((error) => {
                     this.$root.isLoading = false;
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');

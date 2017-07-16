@@ -10,6 +10,7 @@ use SmoDav\Models\CarriagePoint;
 use SmoDav\Models\Delivery;
 use SmoDav\Support\Constants;
 use SmoDav\Models\Journey;
+use SmoDav\Models\Vehicle;
 
 class Contract extends Model
 {
@@ -88,5 +89,10 @@ class Contract extends Model
     public function user()
     {
       return $this->belongsTo(User::class);
+    }
+
+    public function vehicles()
+    {
+      return $this->hasMany(Vehicle::class);
     }
 }

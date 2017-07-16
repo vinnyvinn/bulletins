@@ -6,12 +6,14 @@ use App\Driver;
 use App\Support\Core;
 use App\Truck;
 use Illuminate\Database\Eloquent\Model;
+use App\Contract;
+use SmoDav\Models\LocalShunting\GatePass;
 
 class Vehicle extends Model
 {
     protected $fillable = [
         'plate_number', 'make', 'model', 'max_load', 'type', 'status', 'location', 'project_id', 'trailer_id',
-        'driver_id', 'current_fuel', 'current_km',
+        'driver_id', 'current_fuel', 'current_km','contract_id'
     ];
 
     public function scopeTypeTruck($builder)
@@ -47,5 +49,15 @@ class Vehicle extends Model
     public function driver()
     {
         return $this->belongsTo(Driver::class, 'driver_id');
+    }
+
+    public function contract()
+    {
+      return $this->belongsTo(Contract::class);
+    }
+
+    public function gatepass()
+    {
+      return $this->hasOne(GatePass::class);
     }
 }

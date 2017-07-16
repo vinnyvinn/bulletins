@@ -30,7 +30,7 @@ $root.can('create-contract-template') || $root.can('view-contract-template') || 
                 <div class="caption">Fuel Allocation</div>
             </router-link>
 
-            <router-link to="/ls/inspection" class="nav-items" v-if="$root.can('create-inspection') || $root.can('view-inspection') || $root.can('edit-inspection') || $root.can('approve-inspection') || $root.can('delete-inspection')">
+            <router-link to="/ls/gatepass" class="nav-items" v-if="$root.can('create-inspection') || $root.can('view-inspection') || $root.can('edit-inspection') || $root.can('approve-inspection') || $root.can('delete-inspection')">
                 <img src="/images/gatepass.png" alt="inspection" class="img-responsive">
                 <div class="caption">GatePass Inwards</div>
             </router-link>

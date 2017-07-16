@@ -303,4 +303,11 @@ class VehicleController extends Controller
         'activities' => $activities
       ]);
     }
+
+    public function lsfuelcreate($id)
+    {
+      return Response::json([
+      'truck' => Vehicle::findOrFail($id)
+      ]);
+    }
 }

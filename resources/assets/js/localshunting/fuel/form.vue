@@ -1,163 +1,79 @@
 <template>
     <div class="panel panel-default">
         <div class="panel-heading">
-            <strong>Fuel Allocation</strong>
+            <strong>Fuel Allocation -- Truck: {{ truck.plate_number }} </strong>
         </div>
 
         <div class="panel-body">
             <form action="#" role="form" @submit.prevent="store">
                 <div class="row">
-                  <div class="col-sm-3">
-                    <div class="form-group">
-                      <label for="date">Date</label>
-                      <input type="text" v-model="fuel.date" class="form-control input-sm datepicker" id="date" name="date" required>
+                  <div class="col-sm-4">
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label for="previous_km">Previous KM</label>
+                        <input disabled type="number" name="previous_km" class="form-control input-sm" v-model="truck.current_km">
+                      </div>
                     </div>
 
-                    <div class="form-group">
-                      <label for="journey_id">Journey</label>
-                      <select class="" name="journey_id" v-model="fuel.journey_id" class="form-control input-sm select2" required @change="selectJourney">
-                        <option v-for="journey in journeys" :value="journey.id">JRNY-{{ journey.id }}</option>
-                      </select>
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label for="current_km">Current KM</label>
+                        <input type="number" :min="minimumKm" name="current_km" class="form-control input-sm" v-model="fuel.current_km" @change="validateKm">
+                      </div>
                     </div>
+
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label for="current_fuel">Balance in Tank (Litres)</label>
+                        <input type="number" name="current_fuel" class="form-control input-sm" v-model="fuel.current_fuel" @keyup="calculateTotalFuel">
+                      </div>
+                    </div>
+
                   </div>
 
-                    <div class="col-sm-3">
-                      <strong>Route: RT-{{ current_route.id}}</strong><br>
-                      From: {{ current_route.source }}<br>
-                      To: {{ current_route.destination }}<br>
-                      Deliveries:<br>
-                    </div>
+                  <div class="col-sm-4">
 
-                    <div class="col-sm-3">
-                      <strong>Vehicle</strong><br>
-                      Reg.No: {{ current_vehicle.plate_number }}<br>
-                      Model: {{ current_vehicle.model}}<br>
-                      Trailer Attached: <input type="checkbox" name="trailer_attached" :checked="current_vehicle.trailer"><br>
-                      <div class="" v-if="current_trailer">
-                        Trailer: {{ current_trailer.trailer_number }}<br>
-                        Trailer Category: {{ current_trailer.type }} <br>
-                      </div>
-                    </div>
-
-                    <div class="col-sm-3">
-                      <strong>Driver</strong><br>
-                      <div class="col-sm-4">
-                        <img :src="getSource()" alt="" width="100%" height="100%"> <br>
-                      </div>
-                      <div class="col-sm-8">
-                        Name: {{ current_driver.first_name  }}<br>
-                        Id No: {{ current_driver.identification_number }}<br>
-                        Mobile No: {{ current_driver.mobile_phone                                                                                                                                                                                                                                                                                                                                                                                                        }}<br>
-                        DL number: {{ current_driver.dl_number }}<br>
-                      </div>
-                    </div>
-                  </div>
-                  <hr>
-                  <div class="row">
-                    <div class="col-sm-3">
+                    <div class="col-sm-12">
                       <div class="form-group">
-                        <label for="current_fuel">Current Fuel (Litres)</label>
-                        <input type="number" name="current_fuel" class="form-control input-sm" v-model="fuel.current_fuel" @change="calculateTotal">
-                        <p v-if="below_reserve">Current fuel below reserve. Driver to pay for {{ this.deficit }} litre(s).</p>
+                        <label for="fuel_issued">Previous Fuel</label>
+                        <input readonly type="text" name="previous_fuel" class="form-control input-sm" v-model="truck.current_fuel">
                       </div>
                     </div>
 
-                    <div class="col-sm-3">
-                      <div class="form-group">
-                        <label>Standard Quantity for this Route (Litres)</label><br>
-                        <h4>{{ current_route.fuel_required }}</h4>
-                      </div>
-                    </div>
-
-                    <div class="col-sm-3">
-                      <div class="form-group">
-                        <label for="fuel_issued">Requested Quantity (Litres)</label>
-                        <input type="text" name="fuel_requested" class="form-control input-sm" v-model="fuel.fuel_requested">
-                      </div>
-                    </div>
-
-                    <div class="col-sm-3">
-                      <div class="form-group">
-                        <label for="fuel_issued">Fuel Issued (Litres)</label>
-                        <input type="number" name="fuel_issued" class="form-control input-sm" v-model="fuel.fuel_issued" @keyup="calculateTotal">
-                      </div>
-                    </div>
-
-                    <div class="col-sm-3">
-                      <div class="form-group">
-                        <label for="tank">Tank to fill</label>
-                        <input type="text" name="tank" id="pump" class="form-control input-sm" v-model="fuel.tank">
-                      </div>
-                    </div>
-
-                    <div class="col-sm-3">
-                      <div class="form-group">
-                        <label for="pump">Pump</label>
-                        <input type="text" name="pump" id="pump" class="form-control input-sm" v-model="fuel.pump">
-                      </div>
-                    </div>
-
-                    <div class="col-sm-3">
+                    <div class="col-sm-12">
                       <div class="form-group">
                         <label for="fuel_issued">Total Fuel in Tank(Litres)</label>
-                        <input readonly type="text" name="fuel_total" class="form-control input-sm" v-model="fuel.fuel_total">
+                        <input readonly type="text" name="fuel_total" class="form-control input-sm" v-model="fuel.total_in_tank">
                       </div>
                     </div>
 
-                    <div class="col-sm-3">
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label for="fuel_issued">Fuel Approved (Litres)</label>
+                        <input type="number" name="fuel_issued" class="form-control input-sm" v-model="fuel.fuel_issued" @keyup="calculateTotalFuel">
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <div class="col-sm-4">
+
+                    <div class="col-sm-12">
                       <div class="form-group">
                         <label for="narration">Description</label>
                         <textarea name="narration" class="form-control input-sm" v-model="fuel.narration"></textarea>
                       </div>
                     </div>
-                    <hr>
-                    <div class="col-sm-3">
-                      <label for="top_up">Top Up?</label>
-                      <input type="checkbox" name="top_up" id="top_up" v-model="fuel.top_up" @change="!fuel.top_up">
-                      <div class="form-group" v-if="fuel.top_up">
-                        <label for="top_up_quantity">Top Up quantity:</label>
-                        <input type="number" name="top_up_quantity" v-model="fuel.top_up_quantity">
-                        <label for="top_up_reason">Top up reason</label>
-                        <textarea name="narration" id="top_up_reason" class="form-control input-sm" v-model="fuel.top_up_reason"></textarea>
+
+                    <div class="col-sm-12">
+                      <div class="form-group pull-right">
+                          <button class="btn btn-success" :disabled="!can_save">Save</button>
+                          <router-link to="/ls/fuel" class="btn btn-danger">Back</router-link>
                       </div>
                     </div>
-                </div>
-                <br>
-                <strong>Mileage Readings</strong>
-                <hr>
-                <div class="row">
-                  <div class="col-sm-3">
-                    <div class="form-group">
-                      <label for="current_km">Current KM</label>
-                      <input type="number" :min="minimumKm" name="current_km" class="form-control input-sm" v-model="fuel.current_km" @change="calculateKms">
-                    </div>
+
                   </div>
 
-                  <div class="col-sm-3">
-                    <div class="form-group">
-                      <label for="previous_km">Previous KM</label>
-                      <input disabled type="number" name="previous_km" class="form-control input-sm" v-model="current_vehicle.current_km">
-                    </div>
-                  </div>
-
-                  <div class="col-sm-3">
-                    <div class="form-group">
-                      <label for="previous_fuel">Previous Fuel</label>
-                      <input disabled type="number" name="previous_fuel" class="form-control input-sm" v-model="current_vehicle.current_fuel">
-                    </div>
-                  </div>
-
-                  <div class="col-sm-3">
-                    KM Covered: {{ km_covered }}<br>
-                    Fuel Used: {{ fuel_used }}<br>
-                    KM/Ltr: {{ km_per_litre.toFixed(2) }}<br>
-                  </div>
-
-                </div>
-
-                <div class="form-group pull-right">
-                    <button class="btn btn-success" :disabled="!can_save">Save</button>
-                    <router-link to="/fuel" class="btn btn-danger">Back</router-link>
                 </div>
             </form>
 
@@ -179,18 +95,16 @@
             }
 
           this.$root.isLoading = true;
+          this.fuel.vehicle_id = this.$route.params.id;
+          this.fuel.contract_id = this.$route.params.contract;
+
           if(this.$route.params.id){
             this.can_save = true;
           }
-            http.get('/api/fuel/create/?s=' + window.Laravel.station_id).then((response) => {
-                this.journeys = response.journeys;
-            }).then(() => {
-              this.checkState();
-            }).then(() => {
-              this.calculateKms();
-              this.$root.isLoading = false;
+            http.get('/api/lsfuelcreate/' + this.$route.params.id).then((response) => {
+                this.truck = response.truck;
+                this.$root.isLoading = false;
             });
-
         },
 
         mounted() {
@@ -202,34 +116,24 @@
 
         data() {
             return {
+                truck: {},
                 fuel_reserve: 25,
-                journeys: [],
-                current_journey: {},
-                current_driver: {},
-                current_vehicle: {},
-                current_trailer: {},
-                current_route: {},
                 km_covered: 0,
                 fuel_used: 0,
                 km_per_litre: 0,
                 fuel: {
                     station_id: window.Laravel.station_id,
-                    journey_id: '',
-                    date: '',
+                    contract_id: '',
+                    vehicle_id: '',
                     current_fuel: 0,
-                    fuel_requested: 0,
                     fuel_issued: 0,
-                    fuel_total: 0,
+                    total_in_tank: 0,
                     narration: '',
                     previous_km: 0,
                     previous_fuel: 0,
                     current_km: 0,
-                    status: 'Awaiting Approval',
                     tank: '',
                     pump: '',
-                    top_up: false,
-                    top_up_reason: '',
-                    top_up_quantity: 0,
                 },
                 can_save: false,
                 below_reserve: false,
@@ -237,25 +141,20 @@
             };
         },
         computed: {
-          selectJourney() {
-            let journey = this.journeys.filter(e => e.id == this.fuel.journey_id);
-            if (journey.length) {
-              this.current_driver = JSON.parse(JSON.stringify(journey[0].driver));
-              this.current_vehicle = JSON.parse(JSON.stringify(journey[0].truck));
-              this.current_trailer = JSON.parse(JSON.stringify(journey[0].truck.trailer));
-              this.current_route = JSON.parse(JSON.stringify(journey[0].route));
-              this.fuel.previous_fuel = this.current_vehicle.current_fuel;
-              this.fuel.previous_km = this.current_vehicle.current_km;
-
-              return this.current_journey = JSON.parse(JSON.stringify(journey[0]));
-            }
-          },
           minimumKm () {
-            return this.fuel.previous_km;
-          }
+            return this.truck.current_km;
+          },
+
         },
 
         methods: {
+          validateKm () {
+            if(parseFloat(this.fuel.current_km) < parseFloat(this.truck.current_km)){
+              alert2(this.$root, ['Current Km should be more than previous Km'], 'danger');
+              this.fuel.current_km = 0;
+              return;
+            }
+          },
           setupUI() {
               $('.datepicker').datepicker({
                   autoclose: true,
@@ -277,6 +176,9 @@
                       });
               }
               this.setupUI();
+          },
+          calculateTotalFuel() {
+            this.fuel.total_in_tank =   parseInt(this.fuel.current_fuel) + parseInt(this.fuel.fuel_issued);
           },
           calculateTotal() {
             let reserve = parseInt(this.fuel_reserve);
@@ -318,20 +220,21 @@
           },
           store() {
                 this.$root.isLoading = true;
-                let request = null;
+                // let request = null;
 
-                let body = Object.assign({}, this.fuel)
+                // let body = Object.assign({}, this.fuel)
 
-                if(this.$route.params.id) {
-                  request = axios.put('/api/fuel/'+ this.$route.params.id, body)
-                } else {
-                  request = axios.post('/api/fuel', body)
-                }
+                // if(this.$route.params.id) {
+                //   request = axios.put('/api/fuel/'+ this.$route.params.id, body)
+                // } else {
+                let  request = axios.post('/api/lsfuel', this.fuel)
+                // }
 
                 request.then((response) => {
                     this.$root.isLoading = false;
                     alert2(this.$root, [response.data.message], 'success');
-                    window._router.push({ path: '/fuel' });
+
+                    this.$router.push('/ls/trucks-allocation/' + this.fuel.contract_id);
                 }).catch((error) => {
                     this.$root.isLoading = false;
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');

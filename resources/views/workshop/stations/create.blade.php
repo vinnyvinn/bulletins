@@ -39,7 +39,7 @@
                             @if ($errors->has('name'))
                                 <span class="error-display"><strong>{{ $errors->first('name') }}</strong></span>
                             @else
-                                <span class="help-block">Enter the cargo classification item name to be created.</span>
+                                <span class="help-block">Enter the name of the station to be created.</span>
                             @endif
                         </div>
 
@@ -49,7 +49,7 @@
                             @if ($errors->has('location'))
                                 <span class="error-display"><strong>{{ $errors->first('location') }}</strong></span>
                             @else
-                                <span class="help-block">Enter the cargo classification item location to be created.</span>
+                                <span class="help-block">Enter the station Location.</span>
                             @endif
                         </div>
 

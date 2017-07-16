@@ -191,4 +191,11 @@ class FuelController extends Controller
         ]);
       }
     }
+
+    public function lsfuel (Request $request)
+    {
+      $data = $request->all();
+
+      
+    }
 }

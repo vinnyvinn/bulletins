@@ -47,15 +47,17 @@ module.exports = [
     { path: '/ls/contract-templates/:id/edit', component: require('../transport/contracts-templates/form.vue'), beforeEnter: authMiddleware },
 
     { path: '/ls/trucks-allocation', component: require('./trucks-allocation/index.vue'), beforeEnter: authMiddleware },
-    { path: '/ls/trucks-allocation/create', component: require('./trucks-allocation/form.vue'), beforeEnter: authMiddleware },
+    { path: '/ls/trucks-allocation/create/:id', component: require('./trucks-allocation/form.vue'), beforeEnter: authMiddleware },
     { path: '/ls/trucks-allocation/:id', component: require('./trucks-allocation/view.vue'), beforeEnter: authMiddleware },
     { path: '/ls/trucks-allocation/:id/edit', component: require('./trucks-allocation/form.vue'), beforeEnter: authMiddleware },
 
 
     { path: '/ls/fuel', component: require('./fuel/index.vue'), beforeEnter: authMiddleware },
-    { path: '/ls/fuel/create', component: require('./fuel/form.vue'), beforeEnter: authMiddleware },
+    { path: '/ls/fuel/create/:id/:contract', component: require('./fuel/form.vue'), beforeEnter: authMiddleware },
     { path: '/ls/fuel/:id', component: require('./fuel/view.vue'), beforeEnter: authMiddleware },
     { path: '/ls/fuel/:id/edit', component: require('./fuel/form.vue'), beforeEnter: authMiddleware },
+
+    { path: '/ls/gatepass', component: require('./gatepass/form.vue'), beforeEnter: authMiddleware },
 
     { path: '/ls/mileage', component: require('./mileage/index.vue'), beforeEnter: authMiddleware },
     { path: '/ls/mileage/create', component: require('./mileage/form.vue'), beforeEnter: authMiddleware },
@@ -67,7 +69,7 @@ module.exports = [
     // { path: '/route-card/create', component: require('../transport/routecard/form.vue'), beforeEnter: authMiddleware },
 
     { path: '/ls/delivery', component: require('./delivery_note/index.vue'), beforeEnter: authMiddleware },
-    { path: '/ls/delivery/create', component: require('./delivery_note/form.vue'), beforeEnter: authMiddleware },
+    { path: '/ls/delivery/create/:new', component: require('./delivery_note/form.vue'), beforeEnter: authMiddleware },
     { path: '/ls/delivery/:id', component: require('./delivery_note/view.vue'), beforeEnter: authMiddleware },
     { path: '/ls/delivery/:unload/unload', component: require('./delivery_note/form.vue'), beforeEnter: authMiddleware },
     { path: '/ls/delivery/:id/edit', component: require('./delivery_note/form.vue'), beforeEnter: authMiddleware },
@@ -91,11 +93,11 @@ module.exports = [
         component: require('../components/auth/login.vue'),
         beforeEnter: (to, from, next) => {
             if (localStorage.getItem('foeiwafwfuwe')) {
-                return next({path: '/dashboard'});
+                return next({path: '/ls/dashboard'});
             }
 
             if (localStorage.getItem('fewuia32rfwe')) {
-                return next({path: '/dashboard'});
+                return next({path: '/ls/dashboard'});
             }
 
             return next();

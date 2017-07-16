@@ -12,6 +12,7 @@ use SmoDav\Models\Mileage;
 use SmoDav\Models\Journey;
 use SmoDav\Models\Delivery;
 use SmoDav\Models\Station;
+use SmoDav\Models\LocalShunting\GatePass;
 
 class User extends Authenticatable
 {
@@ -154,5 +155,10 @@ class User extends Authenticatable
     public function stations()
     {
         return $this->belongsToMany(Station::class);
+    }
+
+    public function gatepass ()
+    {
+        return $this->hasOne(GatePass::class);
     }
 }

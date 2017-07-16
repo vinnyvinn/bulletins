@@ -16,8 +16,10 @@ use SmoDav\Models\CargoClassification;
 use SmoDav\Models\CargoType;
 use SmoDav\Models\CarriagePoint;
 use SmoDav\Support\Constants;
+use SmoDav\Models\Vehicle;
 use function str_replace;
 use Auth;
+use SmoDav\Models\Journey;
 
 class ContractController extends Controller
 {
@@ -314,5 +316,38 @@ class ContractController extends Controller
             'status' => 'success',
             'message' => 'Successfully reopened contract.',
         ]);
+    }
+
+    public function allocateTruck(Request $request)
+    {
+      $data = $request->all();
+      $contract = Contract::findOrFail($data['contract_id']);
+
+      foreach($data['allocatedtrucks'] as $truck) {
+        $truck = Vehicle::findOrFail($truck['id']);
+        $contract->vehicles()->save($truck);
+      }
+
+      return Response::json([
+        'status' => 'success',
+        'message' => 'Trucks Successfully Allocated',
+        'allocated_trucks' => $contract->vehicles
+      ]);
+    }
+
+    public function lscontracts ()
+    {
+      return Response::json([
+        'contracts' => Contract::with('client')->get()
+      ]);
+    }
+
+    public function lscontractShow($id)
+    {
+      return Response::json([
+        'contract' => Contract::where('id', $id)
+        ->with(['vehicles', 'client'])
+        ->first()
+      ]);
     }
 }

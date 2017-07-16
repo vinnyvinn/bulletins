@@ -11,7 +11,7 @@
     <title>{{ config('app.name', 'Local Shunting') }}</title>
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset(mix('css/app.css')) }}" rel="stylesheet">
 
     <!-- Scripts -->
     <script>
@@ -40,6 +40,6 @@
 </div>
 
 <!-- Scripts -->
-<script src="{{ asset('js/localshunting.js') }}"></script>
+<script src="{{ asset(mix('js/localshunting.js')) }}"></script>
 </body>
 </html>

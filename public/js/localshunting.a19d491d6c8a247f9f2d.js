@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "./";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 470);
+/******/ 	return __webpack_require__(__webpack_require__.s = 471);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -44200,7 +44200,7 @@ var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(186),
   /* template */
-  __webpack_require__(226),
+  __webpack_require__(225),
   /* scopeId */
   null,
   /* cssModules */
@@ -62957,7 +62957,7 @@ var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(163),
   /* template */
-  __webpack_require__(249),
+  __webpack_require__(248),
   /* scopeId */
   null,
   /* cssModules */
@@ -62992,7 +62992,7 @@ var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(183),
   /* template */
-  __webpack_require__(231),
+  __webpack_require__(230),
   /* scopeId */
   null,
   /* cssModules */
@@ -63026,7 +63026,7 @@ var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(187),
   /* template */
-  __webpack_require__(246),
+  __webpack_require__(245),
   /* scopeId */
   null,
   /* cssModules */
@@ -78105,7 +78105,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_whatwg_fetch__ = __webpack_require__(161);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_whatwg_fetch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_whatwg_fetch__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(252);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(251);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__core__ = __webpack_require__(151);
 
 
@@ -78127,7 +78127,7 @@ window._ = __webpack_require__(153);
  */
 
 window.$ = window.jQuery = __webpack_require__(2);
-__webpack_require__(201);
+__webpack_require__(200);
 
 __webpack_require__(191);
 __webpack_require__(6);
@@ -86008,12 +86008,6 @@ return DataTable.Buttons;
 /* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
-!function(e,t){ true?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports["modal-vue"]=t():e["modal-vue"]=t()}(this,function(){return function(e){function t(r){if(n[r])return n[r].exports;var o=n[r]={i:r,l:!1,exports:{}};return e[r].call(o.exports,o,o.exports,t),o.l=!0,o.exports}var n={};return t.m=e,t.c=n,t.i=function(e){return e},t.d=function(e,n,r){t.o(e,n)||Object.defineProperty(e,n,{configurable:!1,enumerable:!0,get:r})},t.n=function(e){var n=e&&e.__esModule?function(){return e.default}:function(){return e};return t.d(n,"a",n),n},t.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},t.p="",t(t.s=9)}([function(e,t,n){n(6);var r=n(4)(n(1),n(5),"data-v-5e6a9794",null);e.exports=r.exports},function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t.default={props:{showModal:Boolean,closeAction:Function,containerClass:String}}},function(e,t,n){t=e.exports=n(3)(),t.push([e.i,"",""])},function(e,t){e.exports=function(){var e=[];return e.toString=function(){for(var e=[],t=0;t<this.length;t++){var n=this[t];n[2]?e.push("@media "+n[2]+"{"+n[1]+"}"):e.push(n[1])}return e.join("")},e.i=function(t,n){"string"==typeof t&&(t=[[null,t,""]]);for(var r={},o=0;o<this.length;o++){var s=this[o][0];"number"==typeof s&&(r[s]=!0)}for(o=0;o<t.length;o++){var a=t[o];"number"==typeof a[0]&&r[a[0]]||(n&&!a[2]?a[2]=n:n&&(a[2]="("+a[2]+") and ("+n+")"),e.push(a))}},e}},function(e,t){e.exports=function(e,t,n,r){var o,s=e=e||{},a=typeof e.default;"object"!==a&&"function"!==a||(o=e,s=e.default);var i="function"==typeof s?s.options:s;if(t&&(i.render=t.render,i.staticRenderFns=t.staticRenderFns),n&&(i._scopeId=n),r){var u=i.computed||(i.computed={});Object.keys(r).forEach(function(e){var t=r[e];u[e]=function(){return t}})}return{esModule:o,exports:s,options:i}}},function(e,t){e.exports={render:function(){var e=this,t=e.$createElement,n=e._self._c||t;return n("div",{class:e.containerClass},[n("div",{class:{modal:!0,in:e.showModal},style:{display:e.showModal?"block":"none"}},[n("div",{staticClass:"modal-dialog"},[n("div",{staticClass:"modal-content"},[this.$slots.header||e.closeAction?n("div",{staticClass:"modal-header"},[n("button",{staticClass:"close",on:{click:e.closeAction}},[e._v("x")]),e._v(" "),e._t("header")],2):e._e(),e._v(" "),this.$slots.body?n("div",{staticClass:"modal-body"},[e._t("body")],2):e._e(),e._v(" "),this.$slots.footer?n("div",{staticClass:"modal-footer"},[e._t("footer")],2):e._e()])])]),e._v(" "),n("div",{class:{"modal-backdrop":e.showModal,in:e.showModal}})])},staticRenderFns:[]}},function(e,t,n){var r=n(2);"string"==typeof r&&(r=[[e.i,r,""]]),r.locals&&(e.exports=r.locals),n(7)("778b1955",r,!0)},function(e,t,n){function r(e){for(var t=0;t<e.length;t++){var n=e[t],r=l[n.id];if(r){r.refs++;for(var o=0;o<r.parts.length;o++)r.parts[o](n.parts[o]);for(;o<n.parts.length;o++)r.parts.push(a(n.parts[o]));r.parts.length>n.parts.length&&(r.parts.length=n.parts.length)}else{for(var s=[],o=0;o<n.parts.length;o++)s.push(a(n.parts[o]));l[n.id]={id:n.id,refs:1,parts:s}}}}function o(e,t){for(var n=[],r={},o=0;o<t.length;o++){var s=t[o],a=s[0],i=s[1],u=s[2],c=s[3],l={css:i,media:u,sourceMap:c};r[a]?(l.id=e+":"+r[a].parts.length,r[a].parts.push(l)):(l.id=e+":0",n.push(r[a]={id:a,parts:[l]}))}return n}function s(){var e=document.createElement("style");return e.type="text/css",d.appendChild(e),e}function a(e){var t,n,r=document.querySelector('style[data-vue-ssr-id~="'+e.id+'"]'),o=null!=r;if(o&&v)return h;if(m){var a=p++;r=f||(f=s()),t=i.bind(null,r,a,!1),n=i.bind(null,r,a,!0)}else r=r||s(),t=u.bind(null,r),n=function(){r.parentNode.removeChild(r)};return o||t(e),function(r){if(r){if(r.css===e.css&&r.media===e.media&&r.sourceMap===e.sourceMap)return;t(e=r)}else n()}}function i(e,t,n,r){var o=n?"":r.css;if(e.styleSheet)e.styleSheet.cssText=y(t,o);else{var s=document.createTextNode(o),a=e.childNodes;a[t]&&e.removeChild(a[t]),a.length?e.insertBefore(s,a[t]):e.appendChild(s)}}function u(e,t){var n=t.css,r=t.media,o=t.sourceMap;if(r&&e.setAttribute("media",r),o&&(n+="\n/*# sourceURL="+o.sources[0]+" */",n+="\n/*# sourceMappingURL=data:application/json;base64,"+btoa(unescape(encodeURIComponent(JSON.stringify(o))))+" */"),e.styleSheet)e.styleSheet.cssText=n;else{for(;e.firstChild;)e.removeChild(e.firstChild);e.appendChild(document.createTextNode(n))}}var c="undefined"!=typeof document;if("undefined"!=typeof DEBUG&&DEBUG&&!c)throw new Error("vue-style-loader cannot be used in a non-browser environment. Use { target: 'node' } in your Webpack config to indicate a server-rendering environment.");var o=n(8),l={},d=c&&(document.head||document.getElementsByTagName("head")[0]),f=null,p=0,v=!1,h=function(){},m="undefined"!=typeof navigator&&/msie [6-9]\b/.test(navigator.userAgent.toLowerCase());e.exports=function(e,t,n){v=n;var s=o(e,t);return r(s),function(t){for(var n=[],a=0;a<s.length;a++){var i=s[a],u=l[i.id];u.refs--,n.push(u)}t?(s=o(e,t),r(s)):s=[];for(var a=0;a<n.length;a++){var u=n[a];if(0===u.refs){for(var c=0;c<u.parts.length;c++)u.parts[c]();delete l[u.id]}}}};var y=function(){var e=[];return function(t,n){return e[t]=n,e.filter(Boolean).join("\n")}}()},function(e,t){e.exports=function(e,t){for(var n=[],r={},o=0;o<t.length;o++){var s=t[o],a=s[0],i=s[1],u=s[2],c=s[3],l={id:e+":"+o,css:i,media:u,sourceMap:c};r[a]?r[a].parts.push(l):n.push(r[a]={id:a,parts:[l]})}return n}},function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var r=n(0),o=n.n(r);t.default=o.a}])});
-
-/***/ }),
-/* 201 */
-/***/ (function(module, exports, __webpack_require__) {
-
 /* WEBPACK VAR INJECTION */(function($) {var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var require;var require;/*!
  * Select2 4.0.3
  * https://select2.github.io
@@ -91746,14 +91740,14 @@ S2.define('jquery.select2',[
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
-/* 202 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(164),
   /* template */
-  __webpack_require__(250),
+  __webpack_require__(249),
   /* scopeId */
   null,
   /* cssModules */
@@ -91780,14 +91774,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 203 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(165),
   /* template */
-  __webpack_require__(247),
+  __webpack_require__(246),
   /* scopeId */
   null,
   /* cssModules */
@@ -91814,18 +91808,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 204 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(253)
+__webpack_require__(252)
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(166),
   /* template */
-  __webpack_require__(232),
+  __webpack_require__(231),
   /* scopeId */
   null,
   /* cssModules */
@@ -91852,18 +91846,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 205 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(255)
+__webpack_require__(254)
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(167),
   /* template */
-  __webpack_require__(239),
+  __webpack_require__(238),
   /* scopeId */
   null,
   /* cssModules */
@@ -91890,14 +91884,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 206 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(169),
   /* template */
-  __webpack_require__(237),
+  __webpack_require__(236),
   /* scopeId */
   null,
   /* cssModules */
@@ -91924,14 +91918,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 207 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(170),
   /* template */
-  __webpack_require__(230),
+  __webpack_require__(229),
   /* scopeId */
   null,
   /* cssModules */
@@ -91958,14 +91952,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 208 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(171),
   /* template */
-  __webpack_require__(236),
+  __webpack_require__(235),
   /* scopeId */
   null,
   /* cssModules */
@@ -91992,14 +91986,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 209 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(172),
   /* template */
-  __webpack_require__(240),
+  __webpack_require__(239),
   /* scopeId */
   null,
   /* cssModules */
@@ -92026,14 +92020,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 210 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(173),
   /* template */
-  __webpack_require__(244),
+  __webpack_require__(243),
   /* scopeId */
   null,
   /* cssModules */
@@ -92060,14 +92054,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 211 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(174),
   /* template */
-  __webpack_require__(235),
+  __webpack_require__(234),
   /* scopeId */
   null,
   /* cssModules */
@@ -92094,14 +92088,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 212 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(175),
   /* template */
-  __webpack_require__(229),
+  __webpack_require__(228),
   /* scopeId */
   null,
   /* cssModules */
@@ -92128,14 +92122,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 213 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(176),
   /* template */
-  __webpack_require__(242),
+  __webpack_require__(241),
   /* scopeId */
   null,
   /* cssModules */
@@ -92162,14 +92156,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 214 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(177),
   /* template */
-  __webpack_require__(245),
+  __webpack_require__(244),
   /* scopeId */
   null,
   /* cssModules */
@@ -92196,14 +92190,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 215 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(178),
   /* template */
-  __webpack_require__(241),
+  __webpack_require__(240),
   /* scopeId */
   null,
   /* cssModules */
@@ -92230,14 +92224,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 216 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(180),
   /* template */
-  __webpack_require__(251),
+  __webpack_require__(250),
   /* scopeId */
   null,
   /* cssModules */
@@ -92264,14 +92258,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 217 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(181),
   /* template */
-  __webpack_require__(228),
+  __webpack_require__(227),
   /* scopeId */
   null,
   /* cssModules */
@@ -92298,14 +92292,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 218 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(281),
+  __webpack_require__(280),
   /* template */
-  __webpack_require__(448),
+  __webpack_require__(450),
   /* scopeId */
   null,
   /* cssModules */
@@ -92332,18 +92326,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 219 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(464)
+__webpack_require__(465)
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(288),
   /* template */
-  __webpack_require__(435),
+  __webpack_require__(437),
   /* scopeId */
   "data-v-869d73e6",
   /* cssModules */
@@ -92370,14 +92364,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 220 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(182),
   /* template */
-  __webpack_require__(243),
+  __webpack_require__(242),
   /* scopeId */
   null,
   /* cssModules */
@@ -92404,14 +92398,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 221 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(184),
   /* template */
-  __webpack_require__(227),
+  __webpack_require__(226),
   /* scopeId */
   null,
   /* cssModules */
@@ -92438,14 +92432,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 222 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(185),
   /* template */
-  __webpack_require__(238),
+  __webpack_require__(237),
   /* scopeId */
   null,
   /* cssModules */
@@ -92472,14 +92466,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 223 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(188),
   /* template */
-  __webpack_require__(233),
+  __webpack_require__(232),
   /* scopeId */
   null,
   /* cssModules */
@@ -92506,9 +92500,9 @@ module.exports = Component.exports
 
 
 /***/ }),
+/* 223 */,
 /* 224 */,
-/* 225 */,
-/* 226 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -94148,7 +94142,7 @@ if (false) {
 }
 
 /***/ }),
-/* 227 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -94230,7 +94224,7 @@ if (false) {
 }
 
 /***/ }),
-/* 228 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -94297,7 +94291,7 @@ if (false) {
 }
 
 /***/ }),
-/* 229 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -94343,7 +94337,7 @@ if (false) {
 }
 
 /***/ }),
-/* 230 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -94602,7 +94596,7 @@ if (false) {
 }
 
 /***/ }),
-/* 231 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -96250,7 +96244,7 @@ if (false) {
 }
 
 /***/ }),
-/* 232 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -96279,7 +96273,7 @@ if (false) {
 }
 
 /***/ }),
-/* 233 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -97814,8 +97808,8 @@ if (false) {
 }
 
 /***/ }),
-/* 234 */,
-/* 235 */
+/* 233 */,
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -97861,7 +97855,7 @@ if (false) {
 }
 
 /***/ }),
-/* 236 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -97907,7 +97901,7 @@ if (false) {
 }
 
 /***/ }),
-/* 237 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -98138,7 +98132,7 @@ if (false) {
 }
 
 /***/ }),
-/* 238 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -99544,7 +99538,7 @@ if (false) {
 }
 
 /***/ }),
-/* 239 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -99573,7 +99567,7 @@ if (false) {
 }
 
 /***/ }),
-/* 240 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -99832,7 +99826,7 @@ if (false) {
 }
 
 /***/ }),
-/* 241 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -99878,7 +99872,7 @@ if (false) {
 }
 
 /***/ }),
-/* 242 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -99924,7 +99918,7 @@ if (false) {
 }
 
 /***/ }),
-/* 243 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -99947,7 +99941,7 @@ if (false) {
 }
 
 /***/ }),
-/* 244 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -100955,7 +100949,7 @@ if (false) {
 }
 
 /***/ }),
-/* 245 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -101001,7 +100995,7 @@ if (false) {
 }
 
 /***/ }),
-/* 246 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -101184,7 +101178,7 @@ if (false) {
 }
 
 /***/ }),
-/* 247 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -101308,8 +101302,8 @@ if (false) {
 }
 
 /***/ }),
-/* 248 */,
-/* 249 */
+/* 247 */,
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -101437,7 +101431,7 @@ if (false) {
 }
 
 /***/ }),
-/* 250 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -101497,7 +101491,7 @@ if (false) {
 }
 
 /***/ }),
-/* 251 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -101799,7 +101793,7 @@ if (false) {
 }
 
 /***/ }),
-/* 252 */
+/* 251 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -104271,7 +104265,7 @@ if (inBrowser && window.Vue) {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(8)))
 
 /***/ }),
-/* 253 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -104297,8 +104291,8 @@ if(false) {
 }
 
 /***/ }),
-/* 254 */,
-/* 255 */
+/* 253 */,
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -104324,16 +104318,16 @@ if(false) {
 }
 
 /***/ }),
+/* 255 */,
 /* 256 */,
-/* 257 */,
-/* 258 */
+/* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(284),
+  __webpack_require__(283),
   /* template */
-  __webpack_require__(421),
+  __webpack_require__(422),
   /* scopeId */
   null,
   /* cssModules */
@@ -104360,14 +104354,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 259 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(294),
   /* template */
-  __webpack_require__(403),
+  __webpack_require__(404),
   /* scopeId */
   null,
   /* cssModules */
@@ -104394,12 +104388,12 @@ module.exports = Component.exports
 
 
 /***/ }),
+/* 259 */,
 /* 260 */,
 /* 261 */,
 /* 262 */,
 /* 263 */,
-/* 264 */,
-/* 265 */
+/* 264 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -104420,15 +104414,16 @@ __webpack_require__(189);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('alert', __webpack_require__(204));
-Vue.component('loader', __webpack_require__(205));
-Vue.component('core-nav', __webpack_require__(206));
+Vue.component('alert', __webpack_require__(203));
+Vue.component('loader', __webpack_require__(204));
+Vue.component('core-nav', __webpack_require__(205));
 
-Vue.component('ls-nav', __webpack_require__(362));
+Vue.component('ls-nav', __webpack_require__(363));
 
 var app = new __WEBPACK_IMPORTED_MODULE_0__vuerouter__["a" /* RouterSingleton */].getRouter();
 
 /***/ }),
+/* 265 */,
 /* 266 */,
 /* 267 */,
 /* 268 */,
@@ -104441,8 +104436,7 @@ var app = new __WEBPACK_IMPORTED_MODULE_0__vuerouter__["a" /* RouterSingleton */
 /* 275 */,
 /* 276 */,
 /* 277 */,
-/* 278 */,
-/* 279 */
+/* 278 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -104457,147 +104451,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
-/* 280 */
+/* 279 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -104676,7 +104534,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 281 */
+/* 280 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -104786,51 +104644,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            journeys: [],
-            uploads: [],
+            vehicle: {
+                trailer: {},
+                driver: {},
+                contract: {}
+            },
             deliveryNote: {
                 station_id: window.Laravel.station_id,
-                journey_id: '',
+                vehicle_id: '',
+                contract_id: '',
                 narration: '',
                 bags_loaded: 0,
                 loading_gross_weight: 0,
@@ -104861,9 +104687,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.checkState();
             return;
         }
+        this.$root.isLoading = true;
+        http.get('/api/lsdelivery/create/?id=' + this.$route.params.new).then(function (response) {
+            _this.vehicle = response.vehicle;
+            _this.deliveryNote.vehicle_id = _this.vehicle.id;
+            _this.deliveryNote.contract_id = _this.vehicle.contract_id;
 
-        http.get('/api/delivery/create').then(function (response) {
-            _this.journeys = response.journeys;
+            _this.$root.isLoading = false;
         });
     },
     mounted: function mounted() {
@@ -104873,27 +104703,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
 
-    computed: {
-        journey: function journey() {
-            var _this2 = this;
-
-            var journey = this.journeys.filter(function (e) {
-                return e.id == _this2.deliveryNote.journey_id;
-            });
-            if (journey.length) {
-                return journey[0];
-                this.deliveryNote.loading_weighbridge_number = 'JRNY-' + journey[0].id;
-            }
-
-            return {
-                driver: {},
-                truck: {
-                    trailer: {}
-                },
-                route: {}
-            };
-        }
-    },
+    computed: {},
 
     methods: {
         updateNote: function updateNote() {
@@ -104906,40 +104716,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         checkState: function checkState() {
-            var _this3 = this;
+            var _this2 = this;
 
             this.$root.isLoading = true;
             var id = this.$route.params.unload ? this.$route.params.unload : this.$route.params.id;
 
             return http.get('/api/delivery/' + id).then(function (response) {
-                _this3.deliveryNote = response.delivery;
-                _this3.journeys = response.journeys;
-                _this3.$root.isLoading = false;
+                _this2.deliveryNote = response.delivery;
+                _this2.journeys = response.journeys;
+                _this2.$root.isLoading = false;
             });
         },
         store: function store() {
-            var _this4 = this;
+            var _this3 = this;
 
             this.$root.isLoading = true;
             var request = null;
 
-            var data = mapToFormData(this.deliveryNote, this.uploads, typeof this.$route.params.id === 'string' || typeof this.$route.params.unload === 'string');
-
             if (this.$route.params.id) {
-                request = http.put('/api/delivery/' + this.$route.params.id, data, true);
+                request = http.put('/api/lsdelivery/' + this.$route.params.id, data, true);
             } else if (this.$route.params.unload) {
-                request = http.put('/api/delivery/' + this.$route.params.unload, data, true);
+                request = http.put('/api/lsdelivery/' + this.$route.params.unload, data, true);
             } else {
-                request = http.post('/api/delivery', data, true);
+                request = http.post('/api/lsdelivery', this.deliveryNote);
             }
 
             request.then(function (response) {
-                _this4.$root.isLoading = false;
-                alert2(_this4.$root, [response.message], 'success');
-                window._router.push({ path: '/delivery' });
+                _this3.$root.isLoading = false;
+                alert2(_this3.$root, [response.message], 'success');
+                window._router.push({ path: '/ls/delivery' });
             }).catch(function (error) {
-                _this4.$root.isLoading = false;
-                alert2(_this4.$root, Object.values(JSON.parse(error.message)), 'danger');
+                _this3.$root.isLoading = false;
+                alert2(_this3.$root, Object.values(JSON.parse(error.message)), 'danger');
             });
         }
     }
@@ -104947,41 +104755,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
 
 /***/ }),
-/* 282 */
+/* 281 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* WEBPACK VAR INJECTION */(function($) {//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -105027,74 +104805,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    created: function created() {
-        var _this = this;
+  data: function data() {
+    return {
+      gatepasses: []
+    };
+  },
+  created: function created() {
+    var _this = this;
 
-        http.get('/api/delivery/?s=' + window.Laravel.station_id).then(function (response) {
-            _this.deliveries = response.deliveries;
-            _this.setupConfirm();
-            prepareTable();
-        });
-    },
-    data: function data() {
-        return {
-            deliveries: []
-        };
-    },
+    http.get('/api/lsgatepass').then(function (response) {
+      _this.gatepasses = response.gatepasses;
+    });
+  },
 
-
-    methods: {
-        formatNumber: function formatNumber(number) {
-            if (!number) {
-                return '';
-            }
-
-            return parseFloat(number).toLocaleString();
-        },
-        setupConfirm: function setupConfirm() {
-            var _this2 = this;
-
-            $('.btn-destroy').off();
-            confirm2('.btn-destroy', function (element) {
-                _this2.destroy(element.dataset.item);
-            });
-        },
-        date2: function date2(value) {
-            return window._date2(value);
-        },
-        edit: function edit(delivery) {
-            window._router.push({ path: '/delivery/' + delivery.id + '/edit' });
-        },
-        unload: function unload(delivery) {
-            window._router.push({ path: '/delivery/' + delivery.id + '/unload' });
-        },
-        destroy: function destroy(id) {
-            var _this3 = this;
-
-            this.$root.isLoading = true;
-
-            http.destroy('api/delivery/' + id + '/?s=' + window.Laravel.station_id).then(function (response) {
-                if (response.status != 'success') {
-                    _this3.$root.isLoading = false;
-                    alert2(_this3.$root, [response.message], 'danger');
-                    return;
-                }
-                $('table').dataTable().fnDestroy();
-                _this3.deliveries = response.deliveries;
-                prepareTable();
-                _this3.$root.isLoading = false;
-                alert2(_this3.$root, [response.message], 'success');
-            }).catch(function (error) {
-                _this3.$root.isLoading = false;
-                alert2(_this3.$root, Object.values(JSON.parse(error.message)), 'danger');
-            });
-        }
+  methods: {
+    createDelivery: function createDelivery(id) {
+      this.$router.push('/ls/delivery/create/' + id);
     }
+  }
 });
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
 
 /***/ }),
-/* 283 */
+/* 282 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -105376,96 +105108,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
 
 /***/ }),
-/* 284 */
+/* 283 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function($) {//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -105564,15 +105212,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
 
         this.$root.isLoading = true;
+        this.fuel.vehicle_id = this.$route.params.id;
+        this.fuel.contract_id = this.$route.params.contract;
+
         if (this.$route.params.id) {
             this.can_save = true;
         }
-        http.get('/api/fuel/create/?s=' + window.Laravel.station_id).then(function (response) {
-            _this.journeys = response.journeys;
-        }).then(function () {
-            _this.checkState();
-        }).then(function () {
-            _this.calculateKms();
+        http.get('/api/lsfuelcreate/' + this.$route.params.id).then(function (response) {
+            _this.truck = response.truck;
             _this.$root.isLoading = false;
         });
     },
@@ -105584,34 +105231,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     data: function data() {
         return {
+            truck: {},
             fuel_reserve: 25,
-            journeys: [],
-            current_journey: {},
-            current_driver: {},
-            current_vehicle: {},
-            current_trailer: {},
-            current_route: {},
             km_covered: 0,
             fuel_used: 0,
             km_per_litre: 0,
             fuel: {
                 station_id: window.Laravel.station_id,
-                journey_id: '',
-                date: '',
+                contract_id: '',
+                vehicle_id: '',
                 current_fuel: 0,
-                fuel_requested: 0,
                 fuel_issued: 0,
-                fuel_total: 0,
+                total_in_tank: 0,
                 narration: '',
                 previous_km: 0,
                 previous_fuel: 0,
                 current_km: 0,
-                status: 'Awaiting Approval',
                 tank: '',
-                pump: '',
-                top_up: false,
-                top_up_reason: '',
-                top_up_quantity: 0
+                pump: ''
             },
             can_save: false,
             below_reserve: false,
@@ -105620,31 +105257,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     computed: {
-        selectJourney: function selectJourney() {
-            var _this2 = this;
-
-            var journey = this.journeys.filter(function (e) {
-                return e.id == _this2.fuel.journey_id;
-            });
-            if (journey.length) {
-                this.current_driver = JSON.parse(JSON.stringify(journey[0].driver));
-                this.current_vehicle = JSON.parse(JSON.stringify(journey[0].truck));
-                this.current_trailer = JSON.parse(JSON.stringify(journey[0].truck.trailer));
-                this.current_route = JSON.parse(JSON.stringify(journey[0].route));
-                this.fuel.previous_fuel = this.current_vehicle.current_fuel;
-                this.fuel.previous_km = this.current_vehicle.current_km;
-
-                return this.current_journey = JSON.parse(JSON.stringify(journey[0]));
-            }
-        },
         minimumKm: function minimumKm() {
-            return this.fuel.previous_km;
+            return this.truck.current_km;
         }
     },
 
     methods: {
+        validateKm: function validateKm() {
+            if (parseFloat(this.fuel.current_km) < parseFloat(this.truck.current_km)) {
+                alert2(this.$root, ['Current Km should be more than previous Km'], 'danger');
+                this.fuel.current_km = 0;
+                return;
+            }
+        },
         setupUI: function setupUI() {
-            var _this3 = this;
+            var _this2 = this;
 
             $('.datepicker').datepicker({
                 autoclose: true,
@@ -105653,20 +105280,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
 
             $('#date').datepicker().on('changeDate', function (e) {
-                _this3.fuel.date = e.date.toLocaleDateString('en-GB');
+                _this2.fuel.date = e.date.toLocaleDateString('en-GB');
             });
         },
         checkState: function checkState() {
-            var _this4 = this;
+            var _this3 = this;
 
             if (this.$route.params.id) {
                 http.get('/api/fuel/' + this.$route.params.id).then(function (response) {
-                    _this4.fuel = response.fuel;
-                    _this4.setupUI();
-                    _this4.$root.isLoading = false;
+                    _this3.fuel = response.fuel;
+                    _this3.setupUI();
+                    _this3.$root.isLoading = false;
                 });
             }
             this.setupUI();
+        },
+        calculateTotalFuel: function calculateTotalFuel() {
+            this.fuel.total_in_tank = parseInt(this.fuel.current_fuel) + parseInt(this.fuel.fuel_issued);
         },
         calculateTotal: function calculateTotal() {
             var reserve = parseInt(this.fuel_reserve);
@@ -105705,26 +105335,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return '/images/default_avatar.png';
         },
         store: function store() {
-            var _this5 = this;
+            var _this4 = this;
 
             this.$root.isLoading = true;
-            var request = null;
+            // let request = null;
 
-            var body = Object.assign({}, this.fuel);
+            // let body = Object.assign({}, this.fuel)
 
-            if (this.$route.params.id) {
-                request = axios.put('/api/fuel/' + this.$route.params.id, body);
-            } else {
-                request = axios.post('/api/fuel', body);
-            }
+            // if(this.$route.params.id) {
+            //   request = axios.put('/api/fuel/'+ this.$route.params.id, body)
+            // } else {
+            var request = axios.post('/api/lsfuel', this.fuel
+            // }
 
-            request.then(function (response) {
-                _this5.$root.isLoading = false;
-                alert2(_this5.$root, [response.data.message], 'success');
-                window._router.push({ path: '/fuel' });
+            );request.then(function (response) {
+                _this4.$root.isLoading = false;
+                alert2(_this4.$root, [response.data.message], 'success');
+
+                _this4.$router.push('/ls/trucks-allocation/' + _this4.fuel.contract_id);
             }).catch(function (error) {
-                _this5.$root.isLoading = false;
-                alert2(_this5.$root, Object.values(JSON.parse(error.message)), 'danger');
+                _this4.$root.isLoading = false;
+                alert2(_this4.$root, Object.values(JSON.parse(error.message)), 'danger');
             });
         }
     }
@@ -105732,7 +105363,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
 
 /***/ }),
-/* 285 */
+/* 284 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -105788,54 +105419,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            vehicles: [],
+            contract: {
+                client: {}
+            }
+        };
+    },
     created: function created() {
         var _this = this;
 
-        http.get('/api/fuel/?s=' + window.Laravel.station_id).then(function (response) {
-            _this.fuels = response.fuel;
-            _this.setupConfirm();
-            prepareTable();
+        http.get('/api/lsfuel').then(function (response) {
+            _this.vehicles = response.vehicles;
         });
-    },
-    data: function data() {
-        return {
-            fuels: []
-        };
     },
 
 
     methods: {
+        fuel: function fuel(truck) {
+            this.$router.push('/ls/fuel/create/' + truck.id + '/' + truck.contract_id);
+        },
         setupConfirm: function setupConfirm() {
             var _this2 = this;
 
@@ -105847,22 +105453,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         date2: function date2(value) {
             return window._date2(value);
         },
-        edit: function edit(fuel) {
-            window._router.push({ path: '/fuel/' + fuel.id + '/edit' });
-        },
         destroy: function destroy(id) {
             var _this3 = this;
 
             this.$root.isLoading = true;
 
-            http.destroy('api/fuel/' + id + '/?s=' + window.Laravel.station_id).then(function (response) {
+            http.destroy('api/journey/' + id + '/?s=' + window.Laravel.station_id).then(function (response) {
                 if (response.status != 'success') {
                     _this3.$root.isLoading = false;
                     alert2(_this3.$root, [response.message], 'danger');
                     return;
                 }
                 $('table').dataTable().fnDestroy();
-                _this3.fuels = response.fuel;
+                _this3.contracts = response.contracts;
                 prepareTable();
                 _this3.$root.isLoading = false;
                 alert2(_this3.$root, [response.message], 'success');
@@ -105870,35 +105473,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this3.$root.isLoading = false;
                 alert2(_this3.$root, Object.values(JSON.parse(error.message)), 'danger');
             });
-        },
-        approveFuel: function approveFuel(id) {
-            var _this4 = this;
-
-            http.get('/api/approve/' + id).then(function (response) {
-                if (response.status != 'success') {
-                    _this4.$root.isLoading = false;
-                    alert2(_this4.$root, [response.message], 'danger');
-                    return;
-                }
-
-                http.get('/api/fuel/?s=' + window.Laravel.station_id).then(function (response) {
-                    _this4.fuels = response.fuel;
-                    _this4.setupConfirm();
-                });
-
-                _this4.$root.isLoading = false;
-                alert2(_this4.$root, [response.message], 'success');
-            }).catch(function (error) {
-                _this4.$root.isLoading = false;
-                alert2(_this4.$root, Object.values(JSON.parse(error.message)), 'danger');
-            });
         }
     }
 });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
 
 /***/ }),
-/* 286 */
+/* 285 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -106149,6 +105730,120 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     }
   }
 });
+
+/***/ }),
+/* 286 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* WEBPACK VAR INJECTION */(function($) {//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      gatepass: {
+        vehicle_id: ''
+      },
+      vehicles: [],
+      gatepasses: []
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    this.$root.isLoading = true;
+    http.get('/api/lsgatepass/create').then(function (response) {
+      _this.vehicles = response.vehicles;
+      _this.gatepasses = response.gatepasses;
+
+      _this.$root.isLoading = false;
+    });
+  },
+  mounted: function mounted() {
+    var _this2 = this;
+
+    $(document).ready(function () {
+      $('#truck').select2().on('change', function (e) {
+        _this2.gatepass.vehicle_id = e.target.value;
+      });
+    });
+  },
+
+  methods: {
+    updateFields: function updateFields() {
+      var _this3 = this;
+
+      $('#truck').select2('destroy');
+      $('#truck').select2().on('change', function (e) {
+        return _this3.gatepass.vehicle_id = e.target.value;
+      });
+    },
+    store: function store() {
+      var _this4 = this;
+
+      http.post('/api/lsgatepass', this.gatepass).then(function (response) {
+        _this4.gatepasses = response.gatepasses;
+        alert2(_this4.$root, [response.message], 'success');
+      });
+    }
+  }
+
+});
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
 
 /***/ }),
 /* 287 */
@@ -107859,459 +107554,82 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     created: function created() {
         var _this = this;
 
-        if (!this.$route.params.id && !this.$root.can('create-journey')) {
-            this.$router.push('/403');
-            return false;
-        }
-
-        if (this.$route.params.id && !this.$root.can('edit-journey')) {
-            this.$router.push('/403');
-            return false;
-        }
-
-        this.$root.isLoading = true;
-
         http.get('/api/journey/create').then(function (response) {
-            _this.clients = response.clients;
-            _this.routes = response.routes;
-            _this.classifications = response.cargo_classifications;
-            _this.cargo_types = response.cargo_types;
-            _this.carriage_points = response.carriage_points;
+            _this.allocation.contract_id = _this.$route.params.id;
             _this.trucks = response.trucks;
-            _this.drivers = response.drivers;
-            if (response.last_journey_id) {
-                _this.last_journey_id = response.last_journey_id;
-            }
-
-            return response;
-        }).then(function () {
-            return http.get('/api/journey/create?contracts=true').then(function (response) {
-                _this.contracts = response.contracts;
-                _this.isContractsLoaded = true;
-                _this.$root.isLoading = false;
-
-                return response;
-            });
-        }).then(function () {
-            return _this.checkState();
-        }).catch(function () {
-            return _this.$root.isLoading = false;
-        });
-    },
-    mounted: function mounted() {
-        this.setupUI();
-
-        $('input[type="number"]').on('focus', function () {
-            this.select();
         });
     },
     data: function data() {
         return {
-            isContractsLoaded: false,
-            contracts: [],
-            drivers: [],
             trucks: [],
-            classifications: [],
-            cargo_types: [],
-            carriage_points: [],
-            unloadingPoint: null,
-            clients: [],
-            routes: [],
-            uploads: [],
-            stockItems: [],
-            journey: {
-                station_id: window.Laravel.station_id,
-                is_contract_related: 1,
-                contract_id: '',
-                journey_type: 'Local',
-                job_date: '',
-                truck_id: '',
-                trucks: [],
-                driver_id: '',
-                ref_no: '',
-                route_id: '',
-                job_description: '',
-                enquiry_from: '',
-
-                subcontracted: false,
-                sub_company_name: '',
-                sub_address_1: '',
-                sub_address_2: '',
-                sub_address_3: '',
-                sub_address_4: ''
-            },
-            last_journey_id: {
-                id: 0
-            },
-            trucks_already_allocated: ''
+            allocation: {
+                allocatedtrucks: [],
+                contract_id: ''
+            }
         };
     },
 
 
-    computed: {
-        truck: function truck() {
-            var _this2 = this;
-
-            var truck = this.trucks.filter(function (e) {
-                return e.id == _this2.journey.truck_id;
-            });
-            if (truck.length) {
-                return truck[0];
-            }
-
-            return {
-                driver: {}
-            };
-        },
-        contract: function contract() {
-            var _this3 = this;
-
-            var contract = this.contracts.filter(function (e) {
-                return e.id == _this3.journey.contract_id;
-            });
-            if (contract.length) {
-                return JSON.parse(contract[0].raw);
-            }
-
-            return {
-                cargo_classification_id: null,
-                cargo_type_id: null,
-                name: '',
-                client_id: null,
-                loading_point_id: null,
-                quantity: null,
-                route_id: null,
-                start_date: null
-            };
-        },
-        viableCargoTypes: function viableCargoTypes() {
-            var _this4 = this;
-
-            return this.cargo_types.filter(function (e) {
-                return e.cargo_classification_id == _this4.contract.cargo_classification_id;
-            });
-        },
-        toTime: function toTime() {
-            var date = new Date();
-            var timeSplit = this.shift.from_time.split(':');
-
-            date.setHours(timeSplit[0], timeSplit[1]);
-            date.setTime(date.getTime() + parseInt(this.shift.hours) * 60 * 60 * 1000);
-            var minutes = date.getMinutes().toString();
-            var hours = date.getHours().toString();
-
-            hours = hours.length == 1 ? '0' + hours : hours;
-            minutes = minutes.length == 1 ? '0' + minutes : minutes;
-
-            return hours + ':' + minutes;
-        }
-    },
-
     methods: {
-        addTruck: function addTruck() {
-            this.journey.trucks.push({ 'id': this.journey.truck_id });
-            this.journey.driver_id = this.truck.driver.id;
-        },
-        updateBooleans: function updateBooleans() {
-            var _this5 = this;
-
-            var keys = ['subcontracted'];
-
-            keys.forEach(function (item) {
-                return _this5.setBoolState(item);
-            });
-        },
-        setBoolState: function setBoolState(key) {
-            this.journey[key] = this.journey[key] == 'true';
-        },
-        fetchContracts: function fetchContracts() {
-            var _this6 = this;
-
-            if (this.journey.is_contract_related == 1) {
-                $('#route_id').select2('destroy');
-                if (!this.isContractsLoaded) {
-                    this.$root.isLoading = true;
-
-                    return http.get('/api/journey/create?contracts=true').then(function (response) {
-                        _this6.contracts = response.contracts;
-                        _this6.isContractsLoaded = true;
-                        _this6.$root.isLoading = false;
-
-                        return response;
-                    });
+        allocate: function allocate(truck) {
+            for (var i = 0; i < this.trucks.length; i++) {
+                if (this.trucks[i].id == truck.id) {
+                    this.trucks.splice(i, 1);
                 }
-
-                return;
             }
-
-            $(document).ready(function () {
-                return $('#route_id').select2();
-            });
+            this.allocation.allocatedtrucks.push(truck);
         },
-        updateFields: function updateFields() {
-            var _this7 = this;
-
-            $('#route_id').select2('destroy');
-            setTimeout(function () {
-                http.get('/api/trucks_already_allocated/' + _this7.journey.contract_id).then(function (response) {
-                    _this7.trucks_already_allocated = response.trucks_already_allocated;
-                });
-                _this7.journey.route_id = _this7.contract.route_id;
-                _this7.journey.job_description = _this7.contract.job_description;
-                _this7.journey.enquiry_from = _this7.contract.enquiry_from == 'null' ? '' : _this7.contract.enquiry_from;
-                $('#route_id').select2().on('change', function (e) {
-                    return _this7.journey.route_id = e.target.value;
-                });
-            }, 5000);
-        },
-        checkState: function checkState() {
-            var _this8 = this;
-
-            if (this.$route.params.id) {
-                http.get('/api/journey/' + this.$route.params.id).then(function (response) {
-                    _this8.clients = response.clients;
-                    _this8.routes = response.routes;
-                    _this8.classifications = response.cargo_classifications;
-                    _this8.cargo_types = response.cargo_types;
-                    _this8.carriage_points = response.carriage_points;
-                    _this8.trucks = response.trucks;
-                    _this8.drivers = response.drivers;
-                    //                            this.contract = response.contract;
-                    var journey = response.journey.raw;
-                    journey.enquiry_from = journey.enquiry_from == 'null' ? '' : _this8.journey.enquiry_from;
-                    journey.ref_no = journey.ref_no == 'null' ? '' : _this8.journey.ref_no;
-                    journey.ref_no = journey.contract_id == 'null' ? '' : _this8.journey.contract_id;
-                    _this8.journey = Object.assign({}, journey);
-                    _this8.trucks_already_allocated = response.allocated;
-                    _this8.updateBooleans();
-                    _this8.status = response.journey.status;
-                    _this8.setupUI();
-                });
+        remove: function remove(allocatedtruck) {
+            for (var i = 0; i < this.allocation.allocatedtrucks.length; i++) {
+                if (this.allocation.allocatedtrucks[i].id == allocatedtruck.id) {
+                    this.allocation.allocatedtrucks.splice(i, 1);
+                }
             }
-            this.setupUI();
-        },
-        formatDate: function formatDate(date) {
-            date = date.split('-');
-
-            return date[2] + '/' + date[1] + '/' + date[0];
-        },
-        setupUI: function setupUI() {
-            var _this9 = this;
-
-            $(document).ready(function () {
-                $('.datepicker').datepicker({
-                    autoclose: true,
-                    format: 'dd/mm/yyyy',
-                    todayHighlight: true
-                });
-
-                $('#job_date').datepicker().on('changeDate', function (e) {
-                    _this9.journey.job_date = e.date.toLocaleDateString('en-GB');
-                });
-
-                setTimeout(function () {
-                    $('#truck_id').select2().on('change', function (e) {
-                        _this9.journey.truck_id = e.target.value;
-                        _this9.addTruck();
-                    });
-                    $('#driver_id').select2().on('change', function (e) {
-                        return _this9.journey.driver_id = e.target.value;
-                    });
-                    $('#route_id').select2().on('change', function (e) {
-                        return _this9.journey.route_id = e.target.value;
-                    });
-                }, 1000);
-            });
+            this.trucks.push(allocatedtruck);
         },
         store: function store() {
-            var _this10 = this;
+            var _this2 = this;
+
+            http.post('/api/allocate_truck', this.allocation).then(function (response) {
+                alert2(_this2.$root, [response.message], 'success');
+                _this2.$router.push('/ls/trucks-allocation/' + _this2.allocation.contract_id);
+            });
+        },
+        setupConfirm: function setupConfirm() {
+            var _this3 = this;
+
+            $('.btn-destroy').off();
+            confirm2('.btn-destroy', function (element) {
+                _this3.destroy(element.dataset.item);
+            });
+        },
+        date2: function date2(value) {
+            return window._date2(value);
+        },
+        destroy: function destroy(id) {
+            var _this4 = this;
 
             this.$root.isLoading = true;
-            var request = null;
 
-            var truck = this.trucks.filter(function (e) {
-                return e.id == _this10.journey.truck_id;
-            })[0];
-            var route = this.routes.filter(function (e) {
-                return e.id == _this10.journey.route_id;
-            })[0];
-
-            this.journey.truck_plate_number = truck.plate_number;
-            this.journey.route_source = route.source;
-            this.journey.route_destination = route.destination;
-
-            var data = mapToFormData(this.journey, this.uploads, typeof this.$route.params.id === 'string');
-
-            if (this.$route.params.id) {
-                request = http.put('/api/journey/' + this.$route.params.id, data, true);
-            } else {
-                request = http.post('/api/journey', data, true);
-            }
-
-            request.then(function (response) {
-                _this10.$root.isLoading = false;
-                alert2(_this10.$root, [response.message], 'success');
-                window._router.push({ path: '/journey' });
+            http.destroy('api/journey/' + id + '/?s=' + window.Laravel.station_id).then(function (response) {
+                if (response.status != 'success') {
+                    _this4.$root.isLoading = false;
+                    alert2(_this4.$root, [response.message], 'danger');
+                    return;
+                }
+                $('table').dataTable().fnDestroy();
+                _this4.contracts = response.contracts;
+                prepareTable();
+                _this4.$root.isLoading = false;
+                alert2(_this4.$root, [response.message], 'success');
             }).catch(function (error) {
-                _this10.$root.isLoading = false;
-                alert2(_this10.$root, Object.values(JSON.parse(error.message)), 'danger');
+                _this4.$root.isLoading = false;
+                alert2(_this4.$root, Object.values(JSON.parse(error.message)), 'danger');
             });
         }
     }
@@ -108320,6 +107638,87 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 /* 295 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    created: function created() {
+        var _this = this;
+
+        http.get('/api/lscontracts').then(function (response) {
+            _this.contracts = response.contracts;
+        });
+    },
+    data: function data() {
+        return {
+            contracts: []
+        };
+    },
+
+
+    methods: {
+        allocate: function allocate(contract) {
+            this.allocation.allocatedtrucks.push(truck);
+        }
+    }
+});
+
+/***/ }),
+/* 296 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -108375,66 +107774,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            contract: {}
+        };
+    },
     created: function created() {
         var _this = this;
 
-        http.get('/api/journey/create').then(function (response) {
-            _this.trucks = response.trucks;
+        http.get('/api/lscontractshow/' + this.$route.params.id).then(function (response) {
+            _this.contract = response.contract;
         });
-    },
-    data: function data() {
-        return {
-            trucks: [],
-            allocatedtrucks: []
-        };
     },
 
 
     methods: {
-        allocate: function allocate(truck) {
-            this.trucks.splice(truck, function (truck) {});
-            this.allocatedtrucks.push(truck);
-        },
-        remove: function remove(truck) {
-            this.allocatedtrucks.splice(truck);
-            this.trucks.push(truck);
+        fuel: function fuel(truck) {
+            this.$router.push('/ls/fuel/create/' + truck.id + '/' + this.contract.id);
         },
         setupConfirm: function setupConfirm() {
             var _this2 = this;
@@ -108467,515 +107825,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this3.$root.isLoading = false;
                 alert2(_this3.$root, Object.values(JSON.parse(error.message)), 'danger');
             });
-        }
-    }
-});
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
-
-/***/ }),
-/* 296 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_modal_vue__ = __webpack_require__(200);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_modal_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_modal_vue__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    components: { Modal: __WEBPACK_IMPORTED_MODULE_0_modal_vue___default.a },
-    created: function created() {
-        var _this = this;
-
-        this.$root.isLoading = true;
-        http.get('/api/journey/' + this.$route.params.id).then(function (response) {
-            _this.clients = response.clients;
-            _this.routes = response.routes;
-            _this.classifications = response.cargo_classifications;
-            _this.cargo_types = response.cargo_types;
-            _this.carriage_points = response.carriage_points;
-            _this.trucks = response.trucks;
-            _this.drivers = response.drivers;
-            _this.contract = response.contract;
-
-            _this.journey = response.journey.raw;
-
-            var journey = response.journey;
-            journey.current_km = '';
-            journey.current_fuel = '';
-            journey.fuel_reserve = 25;
-            journey.fuel_price = 100;
-            journey.mileage_balance = '';
-            journey.below_reserve = false;
-
-            _this.journey_close = journey;
-
-            _this.journey.enquiry_from = _this.journey.enquiry_from == 'null' ? '' : _this.journey.enquiry_from;
-            _this.journey.ref_no = _this.journey.ref_no == 'null' ? '' : _this.journey.ref_no;
-            _this.journey.contract_id = _this.journey.contract_id == 'null' ? '' : _this.journey.contract_id;
-            _this.updateBooleans();
-            _this.status = response.journey.status;
-            _this.$root.isLoading = false;
-        });
-    },
-    data: function data() {
-
-        return {
-            showModal: false,
-            drivers: [],
-            trucks: [],
-            status: '',
-            contract: {},
-            classifications: [],
-            cargo_types: [],
-            carriage_points: [],
-            unloadingPoint: null,
-
-            clients: [],
-            routes: [],
-            uploads: [],
-            stockItems: [],
-            journey: {
-                is_contract_related: 0,
-                contract_id: null,
-                journey_type: 'Local',
-                job_date: null,
-                truck_id: null,
-                driver_id: null,
-                ref_no: '',
-                route_id: null,
-                job_description: '',
-                enquiry_from: '',
-                truck: {
-                    driver: {}
-                },
-                subcontracted: false,
-                sub_company_name: '',
-                sub_address_1: '',
-                sub_address_2: '',
-                sub_address_3: '',
-                sub_address_4: ''
-            },
-            journey_close: {
-                truck: {
-                    driver: {}
-                },
-                fuel: {},
-                mileage: {},
-                current_km: '',
-                current_fuel: '',
-                fuel_reserve: 25,
-                fuel_price: 100,
-                mileage_balance: ''
-            }
-        };
-    },
-
-
-    computed: {
-        viableCargoTypes: function viableCargoTypes() {
-            var _this2 = this;
-
-            return this.cargo_types.filter(function (e) {
-                return e.cargo_classification_id == _this2.contract.cargo_classification_id;
-            });
-        },
-        toTime: function toTime() {
-            var date = new Date();
-            var timeSplit = this.shift.from_time.split(':');
-
-            date.setHours(timeSplit[0], timeSplit[1]);
-            date.setTime(date.getTime() + parseInt(this.shift.hours) * 60 * 60 * 1000);
-            var minutes = date.getMinutes().toString();
-            var hours = date.getHours().toString();
-
-            hours = hours.length == 1 ? '0' + hours : hours;
-            minutes = minutes.length == 1 ? '0' + minutes : minutes;
-
-            return hours + ':' + minutes;
-        },
-        belowReserve: function belowReserve() {
-            return this.fuelDifference > 0;
-        },
-        fuelDifference: function fuelDifference() {
-            var current = parseInt(this.journey_close.current_fuel);
-
-            if (isNaN(current)) return 0;
-
-            if (current < 0) {
-                this.journey_close.current_fuel = current * -1;
-            }
-
-            var fuel_difference = parseInt(this.journey_close.fuel_reserve) - current;
-
-            if (fuel_difference > 0) {
-                this.journey_close.mileage_balance = parseInt(this.journey_close.fuel_price) * fuel_difference;
-            } else {
-                this.journey_close.mileage_balance = 0;
-            }
-
-            return fuel_difference;
-        }
-    },
-
-    methods: {
-        closeModal: function closeModal() {
-            this.showModal = false;
-        },
-        updateBooleans: function updateBooleans() {
-            var _this3 = this;
-
-            var keys = ['subcontracted'];
-
-            keys.forEach(function (item) {
-                return _this3.setBoolState(item);
-            });
-        },
-        setBoolState: function setBoolState(key) {
-            this.journey[key] = this.journey[key] == 'true';
-        },
-        fetchContracts: function fetchContracts() {
-            var _this4 = this;
-
-            this.$root.isLoading = true;
-            http.get('/api/journey/create?contracts=true').then(function (response) {
-                _this4.contracts = response.contracts;
-                _this4.$root.isLoading = false;
-            });
-        },
-        updateFields: function updateFields() {
-            var _this5 = this;
-
-            $('#route_id').select2('destroy');
-            setTimeout(function () {
-                _this5.journey.route_id = _this5.contract.route_id;
-                _this5.journey.job_description = _this5.contract.job_description;
-                _this5.journey.enquiry_from = _this5.contract.enquiry_from == 'null' ? '' : _this5.contract.enquiry_from;
-                $('#route_id').select2().on('change', function (e) {
-                    return _this5.journey.route_id = e.target.value;
-                });
-            }, 1000);
-        },
-        checkState: function checkState() {
-            var _this6 = this;
-
-            if (this.$route.params.id) {
-                http.get('/api/journey/' + this.$route.params.id).then(function (response) {
-                    _this6.contract = response.contract.raw;
-                    _this6.contract.start_date = _this6.formatDate(_this6.contract.start_date);
-                    _this6.contract.end_date = _this6.formatDate(_this6.contract.end_date);
-                    _this6.setupUI();
-                });
-
-                return;
-            }
-        },
-        formatDate: function formatDate(date) {
-            date = date.split('-');
-
-            return date[2] + '/' + date[1] + '/' + date[0];
-        },
-        approveJourney: function approveJourney() {
-            this.processJourney('approve');
-        },
-        closeJourney: function closeJourney() {
-            var _this7 = this;
-
-            this.$root.isLoading = true;
-            http.post('/api/journey/' + this.$route.params.id + '/close', this.journey_close).then(function (response) {
-                alert2(_this7.$root, [response.message], 'success');
-                window._router.push({ path: '/journey' });
-            }).catch(function (error) {
-                alert2(_this7.$root, Object.values(JSON.parse(error.message)), 'danger');
-            });
-            this.$root.isLoading = false;
-        },
-        reopenJourney: function reopenJourney() {
-            this.processJourney('reopen');
-        },
-        processJourney: function processJourney(endpoint) {
-            var _this8 = this;
-
-            this.$root.isLoading = true;
-            http.post('/api/journey/' + this.$route.params.id + '/' + endpoint, {}).then(function (response) {
-                _this8.$root.isLoading = false;
-                alert2(_this8.$root, [response.message], 'success');
-                window._router.push({ path: '/journey' });
-            }).catch(function (error) {
-                _this8.$root.isLoading = false;
-                alert2(_this8.$root, Object.values(JSON.parse(error.message)), 'danger');
-            });
-        },
-        validateKms: function validateKms() {
-            if (parseInt(this.journey_close.current_km) < parseInt(this.journey_close.truck.current_km)) {
-                this.journey_close.current_km = 0;
-                return alert2(this.$root, ['Current Km readings should be greater than previous Km reading'], 'danger');
-            }
         }
     }
 });
@@ -109031,20 +107880,20 @@ function authMiddleware(to, from, next) {
     return next();
 }
 
-module.exports = [{ path: '/', redirect: '/login', beforeEnter: authMiddleware }, { path: '/ls/dashboard', component: __webpack_require__(357), beforeEnter: authMiddleware }, { path: '/progress', component: __webpack_require__(208), beforeEnter: authMiddleware }, { path: '/progress/pre-loading', component: __webpack_require__(215), beforeEnter: authMiddleware }, { path: '/progress/pre-loading/:id', component: __webpack_require__(210), beforeEnter: authMiddleware }, { path: '/progress/loading', component: __webpack_require__(213), beforeEnter: authMiddleware }, { path: '/progress/loading/:id', component: __webpack_require__(209), beforeEnter: authMiddleware }, { path: '/progress/enroute', component: __webpack_require__(211), beforeEnter: authMiddleware }, { path: '/progress/enroute/:id', component: __webpack_require__(207), beforeEnter: authMiddleware }, { path: '/progress/offloading', component: __webpack_require__(214), beforeEnter: authMiddleware }, { path: '/progress/in-yard', component: __webpack_require__(212), beforeEnter: authMiddleware }, { path: '/users', component: __webpack_require__(217), beforeEnter: authMiddleware }, { path: '/users/create', component: __webpack_require__(216), beforeEnter: authMiddleware }, { path: '/ls/contracts', component: __webpack_require__(158), beforeEnter: authMiddleware }, { path: '/ls/contracts/r/:print', component: __webpack_require__(158), beforeEnter: authMiddleware }, { path: '/ls/contracts/create', component: __webpack_require__(133), beforeEnter: authMiddleware }, { path: '/ls/contracts/create/:templateId', component: __webpack_require__(133), beforeEnter: authMiddleware }, { path: '/ls/contracts/:id', component: __webpack_require__(223), beforeEnter: authMiddleware }, { path: '/ls/contracts/:id/edit', component: __webpack_require__(133), beforeEnter: authMiddleware }, { path: '/ls/contract-templates', component: __webpack_require__(221), beforeEnter: authMiddleware }, { path: '/ls/contract-templates/create', component: __webpack_require__(157), beforeEnter: authMiddleware }, { path: '/ls/contract-templates/:id', component: __webpack_require__(222), beforeEnter: authMiddleware }, { path: '/ls/contract-templates/:id/edit', component: __webpack_require__(157), beforeEnter: authMiddleware }, { path: '/ls/trucks-allocation', component: __webpack_require__(368), beforeEnter: authMiddleware }, { path: '/ls/trucks-allocation/create', component: __webpack_require__(259), beforeEnter: authMiddleware }, { path: '/ls/trucks-allocation/:id', component: __webpack_require__(369), beforeEnter: authMiddleware }, { path: '/ls/trucks-allocation/:id/edit', component: __webpack_require__(259), beforeEnter: authMiddleware }, { path: '/ls/fuel', component: __webpack_require__(360), beforeEnter: authMiddleware }, { path: '/ls/fuel/create', component: __webpack_require__(258), beforeEnter: authMiddleware }, { path: '/ls/fuel/:id', component: __webpack_require__(361), beforeEnter: authMiddleware }, { path: '/ls/fuel/:id/edit', component: __webpack_require__(258), beforeEnter: authMiddleware }, { path: '/ls/mileage', component: __webpack_require__(363), beforeEnter: authMiddleware }, { path: '/ls/mileage/create', component: __webpack_require__(219), beforeEnter: authMiddleware }, { path: '/ls/mileage/:id', component: __webpack_require__(364), beforeEnter: authMiddleware }, { path: '/ls/mileage/:approve/approve', component: __webpack_require__(219), beforeEnter: authMiddleware }, { path: '/ls/mileage/:id/edit', component: __webpack_require__(219), beforeEnter: authMiddleware },
+module.exports = [{ path: '/', redirect: '/login', beforeEnter: authMiddleware }, { path: '/ls/dashboard', component: __webpack_require__(357), beforeEnter: authMiddleware }, { path: '/progress', component: __webpack_require__(207), beforeEnter: authMiddleware }, { path: '/progress/pre-loading', component: __webpack_require__(214), beforeEnter: authMiddleware }, { path: '/progress/pre-loading/:id', component: __webpack_require__(209), beforeEnter: authMiddleware }, { path: '/progress/loading', component: __webpack_require__(212), beforeEnter: authMiddleware }, { path: '/progress/loading/:id', component: __webpack_require__(208), beforeEnter: authMiddleware }, { path: '/progress/enroute', component: __webpack_require__(210), beforeEnter: authMiddleware }, { path: '/progress/enroute/:id', component: __webpack_require__(206), beforeEnter: authMiddleware }, { path: '/progress/offloading', component: __webpack_require__(213), beforeEnter: authMiddleware }, { path: '/progress/in-yard', component: __webpack_require__(211), beforeEnter: authMiddleware }, { path: '/users', component: __webpack_require__(216), beforeEnter: authMiddleware }, { path: '/users/create', component: __webpack_require__(215), beforeEnter: authMiddleware }, { path: '/ls/contracts', component: __webpack_require__(158), beforeEnter: authMiddleware }, { path: '/ls/contracts/r/:print', component: __webpack_require__(158), beforeEnter: authMiddleware }, { path: '/ls/contracts/create', component: __webpack_require__(133), beforeEnter: authMiddleware }, { path: '/ls/contracts/create/:templateId', component: __webpack_require__(133), beforeEnter: authMiddleware }, { path: '/ls/contracts/:id', component: __webpack_require__(222), beforeEnter: authMiddleware }, { path: '/ls/contracts/:id/edit', component: __webpack_require__(133), beforeEnter: authMiddleware }, { path: '/ls/contract-templates', component: __webpack_require__(220), beforeEnter: authMiddleware }, { path: '/ls/contract-templates/create', component: __webpack_require__(157), beforeEnter: authMiddleware }, { path: '/ls/contract-templates/:id', component: __webpack_require__(221), beforeEnter: authMiddleware }, { path: '/ls/contract-templates/:id/edit', component: __webpack_require__(157), beforeEnter: authMiddleware }, { path: '/ls/trucks-allocation', component: __webpack_require__(369), beforeEnter: authMiddleware }, { path: '/ls/trucks-allocation/create/:id', component: __webpack_require__(258), beforeEnter: authMiddleware }, { path: '/ls/trucks-allocation/:id', component: __webpack_require__(370), beforeEnter: authMiddleware }, { path: '/ls/trucks-allocation/:id/edit', component: __webpack_require__(258), beforeEnter: authMiddleware }, { path: '/ls/fuel', component: __webpack_require__(360), beforeEnter: authMiddleware }, { path: '/ls/fuel/create/:id/:contract', component: __webpack_require__(257), beforeEnter: authMiddleware }, { path: '/ls/fuel/:id', component: __webpack_require__(361), beforeEnter: authMiddleware }, { path: '/ls/fuel/:id/edit', component: __webpack_require__(257), beforeEnter: authMiddleware }, { path: '/ls/gatepass', component: __webpack_require__(362), beforeEnter: authMiddleware }, { path: '/ls/mileage', component: __webpack_require__(364), beforeEnter: authMiddleware }, { path: '/ls/mileage/create', component: __webpack_require__(218), beforeEnter: authMiddleware }, { path: '/ls/mileage/:id', component: __webpack_require__(365), beforeEnter: authMiddleware }, { path: '/ls/mileage/:approve/approve', component: __webpack_require__(218), beforeEnter: authMiddleware }, { path: '/ls/mileage/:id/edit', component: __webpack_require__(218), beforeEnter: authMiddleware },
 
 // { path: '/route-card', component: require('./transport/routecard/index.vue'), beforeEnter: authMiddleware },
 // { path: '/route-card/create', component: require('../transport/routecard/form.vue'), beforeEnter: authMiddleware },
 
-{ path: '/ls/delivery', component: __webpack_require__(358), beforeEnter: authMiddleware }, { path: '/ls/delivery/create', component: __webpack_require__(218), beforeEnter: authMiddleware }, { path: '/ls/delivery/:id', component: __webpack_require__(359), beforeEnter: authMiddleware }, { path: '/ls/delivery/:unload/unload', component: __webpack_require__(218), beforeEnter: authMiddleware }, { path: '/ls/delivery/:id/edit', component: __webpack_require__(218), beforeEnter: authMiddleware }, { path: '/allocation', component: __webpack_require__(202), beforeEnter: authMiddleware }, { path: '/allocation/create', component: __webpack_require__(155), beforeEnter: authMiddleware }, { path: '/allocation/:id/edit', component: __webpack_require__(155), beforeEnter: authMiddleware }, { path: '/reports', component: __webpack_require__(365), beforeEnter: authMiddleware }, { path: '/reports/{details}', component: __webpack_require__(366), beforeEnter: authMiddleware }, { path: '/station-selection', component: __webpack_require__(367), beforeEnter: authMiddleware }, { path: '/403', component: __webpack_require__(220), beforeEnter: authMiddleware }, { path: '/login',
-    component: __webpack_require__(203),
+{ path: '/ls/delivery', component: __webpack_require__(358), beforeEnter: authMiddleware }, { path: '/ls/delivery/create/:new', component: __webpack_require__(217), beforeEnter: authMiddleware }, { path: '/ls/delivery/:id', component: __webpack_require__(359), beforeEnter: authMiddleware }, { path: '/ls/delivery/:unload/unload', component: __webpack_require__(217), beforeEnter: authMiddleware }, { path: '/ls/delivery/:id/edit', component: __webpack_require__(217), beforeEnter: authMiddleware }, { path: '/allocation', component: __webpack_require__(201), beforeEnter: authMiddleware }, { path: '/allocation/create', component: __webpack_require__(155), beforeEnter: authMiddleware }, { path: '/allocation/:id/edit', component: __webpack_require__(155), beforeEnter: authMiddleware }, { path: '/reports', component: __webpack_require__(366), beforeEnter: authMiddleware }, { path: '/reports/{details}', component: __webpack_require__(367), beforeEnter: authMiddleware }, { path: '/station-selection', component: __webpack_require__(368), beforeEnter: authMiddleware }, { path: '/403', component: __webpack_require__(219), beforeEnter: authMiddleware }, { path: '/login',
+    component: __webpack_require__(202),
     beforeEnter: function beforeEnter(to, from, next) {
         if (localStorage.getItem('foeiwafwfuwe')) {
-            return next({ path: '/dashboard' });
+            return next({ path: '/ls/dashboard' });
         }
 
         if (localStorage.getItem('fewuia32rfwe')) {
-            return next({ path: '/dashboard' });
+            return next({ path: '/ls/dashboard' });
         }
 
         return next();
@@ -109172,31 +108021,25 @@ var MainRouter = function () {
 /* 337 */,
 /* 338 */,
 /* 339 */,
-/* 340 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(4)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-/***/ }),
-/* 341 */,
-/* 342 */
+/* 340 */,
+/* 341 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)();
 exports.push([module.i, "\nfieldset.wizag-fieldset-border[data-v-869d73e6] {\n  border: 1px groove #ddd !important;\n  padding: 0 1.4em 1.4em 1.4em !important;\n  margin: 0 0 1.5em 0 !important;\n  box-shadow:  0px 0px 0px 0px #000;\n}\nlegend.wizag-fieldset-border[data-v-869d73e6] {\n      font-size: 1.2em !important;\n      font-weight: bold !important;\n      text-align: left !important;\n      width:auto;\n      padding:0 10px;\n      border-bottom:none;\n}\n", ""]);
 
 /***/ }),
-/* 343 */,
-/* 344 */,
-/* 345 */,
-/* 346 */
+/* 342 */,
+/* 343 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
+/* 344 */,
+/* 345 */,
+/* 346 */,
 /* 347 */,
 /* 348 */,
 /* 349 */,
@@ -109211,9 +108054,9 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(279),
+  __webpack_require__(278),
   /* template */
-  __webpack_require__(432),
+  __webpack_require__(433),
   /* scopeId */
   null,
   /* cssModules */
@@ -109245,9 +108088,9 @@ module.exports = Component.exports
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(280),
+  __webpack_require__(279),
   /* template */
-  __webpack_require__(451),
+  __webpack_require__(453),
   /* scopeId */
   null,
   /* cssModules */
@@ -109277,11 +108120,15 @@ module.exports = Component.exports
 /* 358 */
 /***/ (function(module, exports, __webpack_require__) {
 
+
+/* styles */
+__webpack_require__(467)
+
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(282),
+  __webpack_require__(281),
   /* template */
-  __webpack_require__(447),
+  __webpack_require__(449),
   /* scopeId */
   null,
   /* cssModules */
@@ -109313,9 +108160,9 @@ module.exports = Component.exports
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(283),
+  __webpack_require__(282),
   /* template */
-  __webpack_require__(439),
+  __webpack_require__(441),
   /* scopeId */
   null,
   /* cssModules */
@@ -109345,15 +108192,11 @@ module.exports = Component.exports
 /* 360 */
 /***/ (function(module, exports, __webpack_require__) {
 
-
-/* styles */
-__webpack_require__(468)
-
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(285),
+  __webpack_require__(284),
   /* template */
-  __webpack_require__(452),
+  __webpack_require__(454),
   /* scopeId */
   null,
   /* cssModules */
@@ -109385,9 +108228,9 @@ module.exports = Component.exports
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(286),
+  __webpack_require__(285),
   /* template */
-  __webpack_require__(434),
+  __webpack_require__(436),
   /* scopeId */
   null,
   /* cssModules */
@@ -109419,9 +108262,43 @@ module.exports = Component.exports
 
 var Component = __webpack_require__(1)(
   /* script */
+  __webpack_require__(286),
+  /* template */
+  __webpack_require__(434),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/sam/gaitara/rk/resources/assets/js/localshunting/gatepass/form.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] form.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-76de2f23", Component.options)
+  } else {
+    hotAPI.reload("data-v-76de2f23", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 363 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
   __webpack_require__(287),
   /* template */
-  __webpack_require__(406),
+  __webpack_require__(407),
   /* scopeId */
   null,
   /* cssModules */
@@ -109448,14 +108325,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 363 */
+/* 364 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(289),
   /* template */
-  __webpack_require__(414),
+  __webpack_require__(415),
   /* scopeId */
   null,
   /* cssModules */
@@ -109482,14 +108359,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 364 */
+/* 365 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(290),
   /* template */
-  __webpack_require__(409),
+  __webpack_require__(410),
   /* scopeId */
   null,
   /* cssModules */
@@ -109516,14 +108393,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 365 */
+/* 366 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(291),
   /* template */
-  __webpack_require__(410),
+  __webpack_require__(411),
   /* scopeId */
   null,
   /* cssModules */
@@ -109550,14 +108427,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 366 */
+/* 367 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(292),
   /* template */
-  __webpack_require__(408),
+  __webpack_require__(409),
   /* scopeId */
   null,
   /* cssModules */
@@ -109584,14 +108461,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 367 */
+/* 368 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(293),
   /* template */
-  __webpack_require__(424),
+  __webpack_require__(425),
   /* scopeId */
   null,
   /* cssModules */
@@ -109618,14 +108495,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 368 */
+/* 369 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(295),
   /* template */
-  __webpack_require__(437),
+  __webpack_require__(439),
   /* scopeId */
   null,
   /* cssModules */
@@ -109652,20 +108529,16 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 369 */
+/* 370 */
 /***/ (function(module, exports, __webpack_require__) {
-
-
-/* styles */
-__webpack_require__(462)
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(296),
   /* template */
-  __webpack_require__(419),
+  __webpack_require__(420),
   /* scopeId */
-  "data-v-4ec201bf",
+  null,
   /* cssModules */
   null
 )
@@ -109690,7 +108563,6 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 370 */,
 /* 371 */,
 /* 372 */,
 /* 373 */,
@@ -109723,819 +108595,82 @@ module.exports = Component.exports
 /* 400 */,
 /* 401 */,
 /* 402 */,
-/* 403 */
+/* 403 */,
+/* 404 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
+    staticClass: "container"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-6"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('div', {
+    staticClass: "table-responsive"
+  }, [_c('table', {
+    staticClass: "table no-wrap"
+  }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.trucks), function(truck) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(truck.plate_number))]), _vm._v(" "), (truck.trailer) ? _c('td', [_vm._v(_vm._s(truck.trailer.trailer_number))]) : _vm._e(), _vm._v(" "), (!truck.trailer) ? _c('td', [_vm._v(" - ")]) : _vm._e(), _vm._v(" "), (truck.driver) ? _c('td', [_vm._v(_vm._s(truck.driver.first_name))]) : _vm._e(), _vm._v(" "), _c('td', [_c('button', {
+      staticClass: "btn btn-sm btn-success",
+      attrs: {
+        "type": "button",
+        "name": "button"
+      },
+      on: {
+        "click": function($event) {
+          _vm.allocate(truck)
+        }
+      }
+    }, [_vm._v("Add")])])])
+  })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("Plate #")]), _vm._v(" "), _c('th', [_vm._v("Trailer")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th')])])], 1)])])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-6"
+  }, [_c('div', {
     staticClass: "panel panel-default"
   }, [_c('div', {
     staticClass: "panel-heading"
-  }, [_c('strong', [_vm._v("Journey Details:  [Journey Id: " + _vm._s(parseInt(_vm.last_journey_id.id) + 1) + "]")])]), _vm._v(" "), _c('div', {
+  }, [_c('strong', [_vm._v("Allocated Trucks")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-success btn-sm pull-right",
+    attrs: {
+      "type": "button",
+      "name": "button"
+    },
+    on: {
+      "click": _vm.store
+    }
+  }, [_vm._v("Save Allocation")])]), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
-  }, [_c('form', {
-    attrs: {
-      "action": "#",
-      "role": "form"
-    },
-    on: {
-      "submit": function($event) {
-        $event.preventDefault();
-        _vm.store($event)
-      }
-    }
   }, [_c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "is_contract_related"
-    }
-  }, [_vm._v("Contract Related?")]), _vm._v(" "), _c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.journey.is_contract_related),
-      expression: "journey.is_contract_related"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "id": "is_contract_related",
-      "name": "is_contract_related",
-      "required": ""
-    },
-    on: {
-      "change": [function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.journey.is_contract_related = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }, _vm.fetchContracts]
-    }
-  }, [_c('option', {
-    attrs: {
-      "value": "0"
-    }
-  }, [_vm._v("No")]), _vm._v(" "), _c('option', {
-    attrs: {
-      "value": "1"
-    }
-  }, [_vm._v("Yes")])])]), _vm._v(" "), (_vm.journey.is_contract_related == '1') ? _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "contract_id"
-    }
-  }, [_vm._v("Contract")]), _vm._v(" "), _c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.journey.contract_id),
-      expression: "journey.contract_id"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "id": "contract_id",
-      "name": "contract_id",
-      "required": ""
-    },
-    on: {
-      "change": [function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.journey.contract_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }, _vm.updateFields]
-    }
-  }, _vm._l((_vm.contracts), function(item) {
-    return _c('option', {
-      domProps: {
-        "value": item.id
-      }
-    }, [_vm._v("CNTR" + _vm._s(item.id) + " - (" + _vm._s(item.name) + ") - " + _vm._s(item.client.Name))])
-  }))]) : _vm._e(), _vm._v(" "), (_vm.journey.is_contract_related == '0') ? _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "route_id"
-    }
-  }, [_vm._v("Route")]), _vm._v(" "), _c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.journey.route_id),
-      expression: "journey.route_id"
-    }],
-    staticClass: "form-control input-sm select2",
-    attrs: {
-      "disabled": _vm.journey.is_contract_related == '1',
-      "name": "route_id",
-      "id": "route_id",
-      "required": ""
-    },
-    on: {
-      "change": function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.journey.route_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
-    }
-  }, _vm._l((_vm.routes), function(route) {
-    return _c('option', {
-      domProps: {
-        "value": route.id
-      }
-    }, [_vm._v(_vm._s(route.source) + " - " + _vm._s(route.destination) + " (" + _vm._s(route.distance) + " KM)")])
-  }))]) : _vm._e(), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "enquiry_from"
-    }
-  }, [_vm._v("Enquiry from")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.journey.enquiry_from),
-      expression: "journey.enquiry_from"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "disabled": _vm.journey.is_contract_related == '1',
-      "type": "text",
-      "id": "enquiry_from",
-      "name": "enquiry_from"
-    },
-    domProps: {
-      "value": (_vm.journey.enquiry_from)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.journey.enquiry_from = $event.target.value
-      }
-    }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "journey_type"
-    }
-  }, [_vm._v("Job Type")]), _vm._v(" "), _c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.journey.journey_type),
-      expression: "journey.journey_type"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "disabled": _vm.journey.is_contract_related == '1',
-      "id": "journey_type",
-      "name": "journey_type",
-      "required": ""
-    },
-    on: {
-      "change": function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.journey.journey_type = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
-    }
-  }, [_c('option', {
-    attrs: {
-      "value": "Local"
-    }
-  }, [_vm._v("Local")]), _vm._v(" "), _c('option', {
-    attrs: {
-      "value": "International"
-    }
-  }, [_vm._v("International")])])]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "job_date"
-    }
-  }, [_vm._v("Job Date")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.journey.job_date),
-      expression: "journey.job_date"
-    }],
-    staticClass: "form-control input-sm datepicker",
-    attrs: {
-      "type": "text",
-      "id": "job_date",
-      "name": "job_date",
-      "required": ""
-    },
-    domProps: {
-      "value": (_vm.journey.job_date)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.journey.job_date = $event.target.value
-      }
-    }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "job_description"
-    }
-  }, [_vm._v("Job Description")]), _vm._v(" "), _c('textarea', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.journey.job_description),
-      expression: "journey.job_description"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "disabled": _vm.journey.is_contract_related == '1',
-      "name": "job_description",
-      "id": "job_description",
-      "rows": "5"
-    },
-    domProps: {
-      "value": (_vm.journey.job_description)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.journey.job_description = $event.target.value
-      }
-    }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [(_vm.journey.is_contract_related == '1') ? _c('div', [_c('h5', [_c('strong', [_vm._v("Required trucks allocation: " + _vm._s(_vm.contract.trucks_allocated))])]), _vm._v(" "), _c('h5', [_c('strong', [_vm._v("Trucks already allocated: " + _vm._s(_vm.trucks_already_allocated))])]), _vm._v(" "), _c('h5', [_c('strong', [_vm._v("Trucks to be allocated: " + _vm._s(parseInt(_vm.contract.trucks_allocated) - parseInt(_vm.trucks_already_allocated)))])])]) : _vm._e(), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "truck_id"
-    }
-  }, [_vm._v("Vehicle Reg. No")]), _vm._v(" "), _c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.journey.truck_id),
-      expression: "journey.truck_id"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "disabled": _vm.$route.params.id,
-      "id": "truck_id",
-      "name": "truck_id",
-      "required": ""
-    },
-    on: {
-      "change": [function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.journey.truck_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }, function($event) {
-        _vm.addTruck()
-      }]
-    }
-  }, _vm._l((_vm.trucks), function(truck) {
-    return _c('option', {
-      domProps: {
-        "value": truck.id
-      }
-    }, [_vm._v(_vm._s(truck.plate_number))])
-  }))]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "driver_id"
-    }
-  }, [_vm._v("Driver")]), _c('br'), _vm._v("\n                        " + _vm._s(_vm.truck.driver.first_name) + " " + _vm._s(_vm.truck.driver.last_name) + "\n                    ")])])]), _vm._v(" "), _c('hr'), _vm._v(" "), (_vm.journey.is_contract_related == '1') ? _c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "name"
-    }
-  }, [_vm._v("Contract Name")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.contract.name),
-      expression: "contract.name"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "disabled": "",
-      "type": "text",
-      "id": "name",
-      "name": "name",
-      "required": ""
-    },
-    domProps: {
-      "value": (_vm.contract.name)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.contract.name = $event.target.value
-      }
-    }
-  })]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "cargo_classification_id"
-    }
-  }, [_vm._v("Cargo Classification")]), _vm._v(" "), _c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.contract.cargo_classification_id),
-      expression: "contract.cargo_classification_id"
-    }],
-    staticClass: "form-control input-sm select2",
-    attrs: {
-      "disabled": "",
-      "name": "cargo_classification_id",
-      "id": "cargo_classification_id",
-      "required": ""
-    },
-    on: {
-      "change": function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.contract.cargo_classification_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
-    }
-  }, _vm._l((_vm.classifications), function(classification) {
-    return _c('option', {
-      domProps: {
-        "value": classification.id
-      }
-    }, [_vm._v(_vm._s(classification.name))])
-  }))])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "client_id"
-    }
-  }, [_vm._v("Client")]), _vm._v(" "), _c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.contract.client_id),
-      expression: "contract.client_id"
-    }],
-    staticClass: "form-control input-sm select2",
-    attrs: {
-      "disabled": "",
-      "name": "client_id",
-      "id": "client_id",
-      "required": ""
-    },
-    on: {
-      "change": function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.contract.client_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
-    }
-  }, _vm._l((_vm.clients), function(client) {
-    return _c('option', {
-      domProps: {
-        "value": client.DCLink
-      }
-    }, [_vm._v(_vm._s(client.Name) + " (" + _vm._s(client.Account) + ")")])
-  }))]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "cargo_type_id"
-    }
-  }, [_vm._v("Cargo Type")]), _vm._v(" "), _c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.contract.cargo_type_id),
-      expression: "contract.cargo_type_id"
-    }],
-    staticClass: "form-control input-sm select2",
-    attrs: {
-      "disabled": "",
-      "name": "cargo_type_id",
-      "id": "cargo_type_id",
-      "required": ""
-    },
-    on: {
-      "change": function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.contract.cargo_type_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
-    }
-  }, _vm._l((_vm.viableCargoTypes), function(type) {
-    return _c('option', {
-      domProps: {
-        "value": type.id
-      }
-    }, [_vm._v(_vm._s(type.name))])
-  }))])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "start_date"
-    }
-  }, [_vm._v("Contract Start")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.contract.start_date),
-      expression: "contract.start_date"
-    }],
-    staticClass: "datepicker form-control input-sm",
-    attrs: {
-      "disabled": "",
-      "type": "text",
-      "id": "start_date",
-      "name": "start_date",
-      "required": ""
-    },
-    domProps: {
-      "value": (_vm.contract.start_date)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.contract.start_date = $event.target.value
-      }
-    }
-  })]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "quantity"
-    }
-  }, [_vm._v("Quantity")]), _vm._v(" "), _c('div', {
-    staticClass: "input-group"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.contract.quantity),
-      expression: "contract.quantity"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "disabled": "",
-      "min": "0",
-      "type": "number",
-      "id": "quantity",
-      "name": "quantity",
-      "describedby": "quantity-addon",
-      "required": ""
-    },
-    domProps: {
-      "value": (_vm.contract.quantity)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.contract.quantity = $event.target.value
+    staticClass: "table-responsive"
+  }, [_c('table', {
+    staticClass: "table no-wrap"
+  }, [_vm._m(2), _vm._v(" "), _c('tbody', _vm._l((_vm.allocation.allocatedtrucks), function(allocatedtruck) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(allocatedtruck.plate_number))]), _vm._v(" "), (allocatedtruck.trailer) ? _c('td', [_vm._v(_vm._s(allocatedtruck.trailer.trailer_number))]) : _vm._e(), _vm._v(" "), (!allocatedtruck.trailer) ? _c('td', [_vm._v(" - ")]) : _vm._e(), _vm._v(" "), (allocatedtruck.driver) ? _c('td', [_vm._v(_vm._s(allocatedtruck.driver.first_name))]) : _vm._e(), _vm._v(" "), _c('td', [_c('button', {
+      staticClass: "btn btn-sm btn-danger",
+      attrs: {
+        "type": "button",
+        "name": "button"
       },
-      "blur": function($event) {
-        _vm.$forceUpdate()
-      }
-    }
-  }), _vm._v(" "), _c('span', {
-    staticClass: "input-group-addon",
-    attrs: {
-      "id": "quantity-addon"
-    }
-  }, [_vm._v("KGs")])])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "route_id"
-    }
-  }, [_vm._v("Route")]), _vm._v(" "), _c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.contract.route_id),
-      expression: "contract.route_id"
-    }],
-    staticClass: "form-control input-sm select2",
-    attrs: {
-      "disabled": "",
-      "required": ""
-    },
-    on: {
-      "change": function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.contract.route_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
-    }
-  }, _vm._l((_vm.routes), function(route) {
-    return _c('option', {
-      domProps: {
-        "value": route.id
-      }
-    }, [_vm._v(_vm._s(route.source) + " - " + _vm._s(route.destination) + " (" + _vm._s(route.distance) + " KM)")])
-  }))]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "loading_point_id"
-    }
-  }, [_vm._v("Loading Point")]), _vm._v(" "), _c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.contract.loading_point_id),
-      expression: "contract.loading_point_id"
-    }],
-    staticClass: "form-control input-sm select2",
-    attrs: {
-      "disabled": "",
-      "name": "loading_point_id",
-      "id": "loading_point_id",
-      "required": ""
-    },
-    on: {
-      "change": function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.contract.loading_point_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
-    }
-  }, _vm._l((_vm.carriage_points), function(point) {
-    return _c('option', {
-      domProps: {
-        "value": point.id
-      }
-    }, [_vm._v(_vm._s(point.name))])
-  }))])])]) : _vm._e(), _vm._v(" "), _c('hr'), _vm._v(" "), (_vm.journey.is_contract_related == '0') ? _c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-sm-12"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', [_vm._v("Sub-Contracts")]), _vm._v(" "), _c('div', {
-    staticClass: "checkbox"
-  }, [_c('label', [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.journey.subcontracted),
-      expression: "journey.subcontracted"
-    }],
-    attrs: {
-      "type": "checkbox"
-    },
-    domProps: {
-      "checked": Array.isArray(_vm.journey.subcontracted) ? _vm._i(_vm.journey.subcontracted, null) > -1 : (_vm.journey.subcontracted)
-    },
-    on: {
-      "__c": function($event) {
-        var $$a = _vm.journey.subcontracted,
-          $$el = $event.target,
-          $$c = $$el.checked ? (true) : (false);
-        if (Array.isArray($$a)) {
-          var $$v = null,
-            $$i = _vm._i($$a, $$v);
-          if ($$c) {
-            $$i < 0 && (_vm.journey.subcontracted = $$a.concat($$v))
-          } else {
-            $$i > -1 && (_vm.journey.subcontracted = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
-          }
-        } else {
-          _vm.journey.subcontracted = $$c
+      on: {
+        "click": function($event) {
+          _vm.remove(allocatedtruck)
         }
       }
-    }
-  }), _vm._v("\n                                Check if the trucks have been subcontracted by another company.\n                                Note that the delivery note will be processed in the name of the other company.\n                            ")])])])])]) : _vm._e(), _vm._v(" "), (_vm.journey.subcontracted && _vm.journey.is_contract_related == '0') ? _c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-sm-6"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "sub_company_name"
-    }
-  }, [_vm._v("Company Name")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.journey.sub_company_name),
-      expression: "journey.sub_company_name"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "required": "",
-      "type": "text",
-      "id": "sub_company_name",
-      "name": "sub_company_name"
-    },
-    domProps: {
-      "value": (_vm.journey.sub_company_name)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.journey.sub_company_name = $event.target.value
-      }
-    }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-6"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "sub_address_3"
-    }
-  }, [_vm._v("Address Line 3")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.journey.sub_address_3),
-      expression: "journey.sub_address_3"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "type": "text",
-      "id": "sub_address_3",
-      "name": "sub_address_3"
-    },
-    domProps: {
-      "value": (_vm.journey.sub_address_3)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.journey.sub_address_3 = $event.target.value
-      }
-    }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-6"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "sub_address_1"
-    }
-  }, [_vm._v("Address Line 1")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.journey.sub_address_1),
-      expression: "journey.sub_address_1"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "required": "",
-      "type": "text",
-      "id": "sub_address_1",
-      "name": "sub_address_1"
-    },
-    domProps: {
-      "value": (_vm.journey.sub_address_1)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.journey.sub_address_1 = $event.target.value
-      }
-    }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-6"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "sub_address_4"
-    }
-  }, [_vm._v("Address Line 4")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.journey.sub_address_4),
-      expression: "journey.sub_address_4"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "type": "text",
-      "id": "sub_address_4",
-      "name": "sub_address_4"
-    },
-    domProps: {
-      "value": (_vm.journey.sub_address_4)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.journey.sub_address_4 = $event.target.value
-      }
-    }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-6"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "sub_address_2"
-    }
-  }, [_vm._v("Address Line 2")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.journey.sub_address_2),
-      expression: "journey.sub_address_2"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "required": "",
-      "type": "text",
-      "id": "sub_address_2",
-      "name": "sub_address_2"
-    },
-    domProps: {
-      "value": (_vm.journey.sub_address_2)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.journey.sub_address_2 = $event.target.value
-      }
-    }
-  })])])]) : _vm._e(), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('button', {
-    staticClass: "btn btn-success"
-  }, [_vm._v("Save")]), _vm._v(" "), _c('router-link', {
-    staticClass: "btn btn-danger",
-    attrs: {
-      "to": "/journey"
-    }
-  }, [_vm._v("Back")])], 1)])])])
-},staticRenderFns: []}
+    }, [_vm._v("Remove")])])])
+  })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("Plate #")]), _vm._v(" "), _c('th', [_vm._v("Trailer")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th')])])], 1)])])])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "panel-heading"
+  }, [_c('strong', [_vm._v("Trucks Available")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('thead', [_c('tr', [_c('th', [_vm._v("Plate #")]), _vm._v(" "), _c('th', [_vm._v("Trailer")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th')])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('thead', [_c('tr', [_c('th', [_vm._v("Plate #")]), _vm._v(" "), _c('th', [_vm._v("Trailer")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th')])])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -110545,9 +108680,9 @@ if (false) {
 }
 
 /***/ }),
-/* 404 */,
 /* 405 */,
-/* 406 */
+/* 406 */,
+/* 407 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -110622,7 +108757,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("Fuel Allocation")])]) : _vm._e(), _vm._v(" "), (_vm.$root.can('create-inspection') || _vm.$root.can('view-inspection') || _vm.$root.can('edit-inspection') || _vm.$root.can('approve-inspection') || _vm.$root.can('delete-inspection')) ? _c('router-link', {
     staticClass: "nav-items",
     attrs: {
-      "to": "/ls/inspection"
+      "to": "/ls/gatepass"
     }
   }, [_c('img', {
     staticClass: "img-responsive",
@@ -110685,8 +108820,8 @@ if (false) {
 }
 
 /***/ }),
-/* 407 */,
-/* 408 */
+/* 408 */,
+/* 409 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -112221,7 +110356,7 @@ if (false) {
 }
 
 /***/ }),
-/* 409 */
+/* 410 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -112491,7 +110626,7 @@ if (false) {
 }
 
 /***/ }),
-/* 410 */
+/* 411 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -112526,10 +110661,10 @@ if (false) {
 }
 
 /***/ }),
-/* 411 */,
 /* 412 */,
 /* 413 */,
-/* 414 */
+/* 414 */,
+/* 415 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -112616,933 +110751,47 @@ if (false) {
 }
 
 /***/ }),
-/* 415 */,
 /* 416 */,
 /* 417 */,
 /* 418 */,
-/* 419 */
+/* 419 */,
+/* 420 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
+    staticClass: "container"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-12"
+  }, [_c('div', {
     staticClass: "panel panel-default"
   }, [_c('div', {
     staticClass: "panel-heading"
-  }, [_c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-sm-6"
-  }, [_c('h4', [_c('strong', [_vm._v("Journey Details: JRNY-" + _vm._s(_vm.$route.params.id) + " (" + _vm._s(_vm.status) + ")")])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-6"
-  }, [(_vm.$root.can('approve-journey')) ? _c('div', {
-    staticClass: "form-group pull-right"
-  }, [(_vm.status == 'Pending Approval') ? _c('button', {
-    staticClass: "btn btn-success",
-    on: {
-      "click": function($event) {
-        $event.preventDefault();
-        _vm.approveJourney($event)
-      }
-    }
-  }, [_vm._v("Approve Journey")]) : _vm._e(), _vm._v(" "), ((_vm.status == 'Pending Approval') || (_vm.status == 'Approved')) ? _c('button', {
-    staticClass: "btn btn-danger",
-    on: {
-      "click": function($event) {
-        $event.preventDefault();
-        _vm.showModal = true
-      }
-    }
-  }, [_vm._v("Close Journey")]) : _vm._e()]) : _vm._e()])])]), _vm._v(" "), _c('div', {
+  }, [_c('strong', [_vm._v("Trucks Allocated for Contract "), (_vm.contract.name) ? _c('i', [_vm._v(_vm._s(_vm.contract.id) + " - " + _vm._s(_vm.contract.name))]) : _vm._e(), _vm._v(" "), (_vm.contract.client) ? _c('i', [_vm._v("Client: " + _vm._s(_vm.contract.client.Name))]) : _vm._e()])]), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
-  }, [_c('form', {
-    attrs: {
-      "action": "#",
-      "role": "form"
-    },
-    on: {
-      "submit": function($event) {
-        $event.preventDefault();
-        _vm.store($event)
-      }
-    }
   }, [_c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "is_contract_related"
-    }
-  }, [_vm._v("Contract Related?")]), _vm._v(" "), _c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.journey.is_contract_related),
-      expression: "journey.is_contract_related"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "disabled": "",
-      "id": "is_contract_related",
-      "name": "is_contract_related",
-      "required": ""
-    },
-    on: {
-      "change": [function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.journey.is_contract_related = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }, _vm.fetchContracts]
-    }
-  }, [_c('option', {
-    attrs: {
-      "value": "0"
-    }
-  }, [_vm._v("No")]), _vm._v(" "), _c('option', {
-    attrs: {
-      "value": "1"
-    }
-  }, [_vm._v("Yes")])])]), _vm._v(" "), (_vm.journey.is_contract_related == '1') ? _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "contract_id"
-    }
-  }, [_vm._v("Contract")]), _vm._v(" "), _c('input', {
-    staticClass: "form-control input-sm",
-    attrs: {
-      "disabled": "",
-      "id": "contract_id",
-      "type": "text"
-    },
-    domProps: {
-      "value": 'CNTR-' + _vm.contract.id
-    }
-  })]) : _vm._e(), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "job_description"
-    }
-  }, [_vm._v("Job Description")]), _vm._v(" "), _c('textarea', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.journey.job_description),
-      expression: "journey.job_description"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "disabled": "",
-      "name": "job_description",
-      "id": "job_description",
-      "rows": "5"
-    },
-    domProps: {
-      "value": (_vm.journey.job_description)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.journey.job_description = $event.target.value
-      }
-    }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "journey_type"
-    }
-  }, [_vm._v("Job Type")]), _vm._v(" "), _c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.journey.journey_type),
-      expression: "journey.journey_type"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "disabled": "",
-      "id": "journey_type",
-      "name": "journey_type",
-      "required": ""
-    },
-    on: {
-      "change": function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.journey.journey_type = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
-    }
-  }, [_c('option', {
-    attrs: {
-      "value": "Local"
-    }
-  }, [_vm._v("Local")]), _vm._v(" "), _c('option', {
-    attrs: {
-      "value": "International"
-    }
-  }, [_vm._v("International")])])]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "route_id"
-    }
-  }, [_vm._v("Route")]), _vm._v(" "), _c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.journey.route_id),
-      expression: "journey.route_id"
-    }],
-    staticClass: "form-control input-sm select2",
-    attrs: {
-      "disabled": "",
-      "name": "route_id",
-      "id": "route_id",
-      "required": ""
-    },
-    on: {
-      "change": function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.journey.route_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
-    }
-  }, _vm._l((_vm.routes), function(route) {
-    return _c('option', {
-      domProps: {
-        "value": route.id
-      }
-    }, [_vm._v(_vm._s(route.source) + " - " + _vm._s(route.destination) + " (" + _vm._s(route.distance) + " KM)")])
-  }))]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "driver_id"
-    }
-  }, [_vm._v("Driver")]), _vm._v(" "), _c('h5', [_vm._v(_vm._s(_vm.journey_close.truck.driver.first_name) + " " + _vm._s(_vm.journey_close.truck.driver.last_name) + " (" + _vm._s(_vm.journey_close.truck.driver.mobile_phone) + ")")])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "truck_id"
-    }
-  }, [_vm._v("Vehicle Reg. No")]), _vm._v(" "), _c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.journey.truck_id),
-      expression: "journey.truck_id"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "disabled": "",
-      "id": "truck_id",
-      "name": "truck_id",
-      "required": ""
-    },
-    on: {
-      "change": function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.journey.truck_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
-    }
-  }, _vm._l((_vm.trucks), function(truck) {
-    return _c('option', {
-      domProps: {
-        "value": truck.id
-      }
-    }, [_vm._v(_vm._s(truck.plate_number))])
-  }))]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "enquiry_from"
-    }
-  }, [_vm._v("Enquiry from")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.journey.enquiry_from),
-      expression: "journey.enquiry_from"
-    }],
-    staticClass: "form-control input-sm datepicker",
-    attrs: {
-      "disabled": "",
-      "type": "text",
-      "id": "enquiry_from",
-      "name": "enquiry_from"
-    },
-    domProps: {
-      "value": (_vm.journey.enquiry_from)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.journey.enquiry_from = $event.target.value
-      }
-    }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "job_date"
-    }
-  }, [_vm._v("Job Date")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.journey.job_date),
-      expression: "journey.job_date"
-    }],
-    staticClass: "form-control input-sm datepicker",
-    attrs: {
-      "disabled": "",
-      "type": "text",
-      "id": "job_date",
-      "name": "job_date",
-      "required": ""
-    },
-    domProps: {
-      "value": (_vm.journey.job_date)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.journey.job_date = $event.target.value
-      }
-    }
-  })])])]), _vm._v(" "), _c('hr'), _vm._v(" "), (_vm.journey.is_contract_related == '1') ? _c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "name"
-    }
-  }, [_vm._v("Contract Name")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.contract.name),
-      expression: "contract.name"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "disabled": "",
-      "type": "text",
-      "id": "name",
-      "name": "name",
-      "required": ""
-    },
-    domProps: {
-      "value": (_vm.contract.name)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.contract.name = $event.target.value
-      }
-    }
-  })]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "cargo_classification_id"
-    }
-  }, [_vm._v("Cargo Classification")]), _vm._v(" "), _c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.contract.cargo_classification_id),
-      expression: "contract.cargo_classification_id"
-    }],
-    staticClass: "form-control input-sm select2",
-    attrs: {
-      "disabled": "",
-      "name": "cargo_classification_id",
-      "id": "cargo_classification_id",
-      "required": ""
-    },
-    on: {
-      "change": function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.contract.cargo_classification_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
-    }
-  }, _vm._l((_vm.classifications), function(classification) {
-    return _c('option', {
-      domProps: {
-        "value": classification.id
-      }
-    }, [_vm._v(_vm._s(classification.name))])
-  }))])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "client_id"
-    }
-  }, [_vm._v("Client")]), _vm._v(" "), _c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.contract.client_id),
-      expression: "contract.client_id"
-    }],
-    staticClass: "form-control input-sm select2",
-    attrs: {
-      "disabled": "",
-      "name": "client_id",
-      "id": "client_id",
-      "required": ""
-    },
-    on: {
-      "change": function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.contract.client_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
-    }
-  }, _vm._l((_vm.clients), function(client) {
-    return _c('option', {
-      domProps: {
-        "value": client.DCLink
-      }
-    }, [_vm._v(_vm._s(client.Name) + " (" + _vm._s(client.Account) + ")")])
-  }))]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "cargo_type_id"
-    }
-  }, [_vm._v("Cargo Type")]), _vm._v(" "), _c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.contract.cargo_type_id),
-      expression: "contract.cargo_type_id"
-    }],
-    staticClass: "form-control input-sm select2",
-    attrs: {
-      "disabled": "",
-      "name": "cargo_type_id",
-      "id": "cargo_type_id",
-      "required": ""
-    },
-    on: {
-      "change": function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.contract.cargo_type_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
-    }
-  }, _vm._l((_vm.viableCargoTypes), function(type) {
-    return _c('option', {
-      domProps: {
-        "value": type.id
-      }
-    }, [_vm._v(_vm._s(type.name))])
-  }))])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "start_date"
-    }
-  }, [_vm._v("Contract Start")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.contract.start_date),
-      expression: "contract.start_date"
-    }],
-    staticClass: "datepicker form-control input-sm",
-    attrs: {
-      "disabled": "",
-      "type": "text",
-      "id": "start_date",
-      "name": "start_date",
-      "required": ""
-    },
-    domProps: {
-      "value": (_vm.contract.start_date)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.contract.start_date = $event.target.value
-      }
-    }
-  })]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "quantity"
-    }
-  }, [_vm._v("Quantity")]), _vm._v(" "), _c('div', {
-    staticClass: "input-group"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.contract.quantity),
-      expression: "contract.quantity"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "disabled": "",
-      "min": "0",
-      "type": "number",
-      "id": "quantity",
-      "name": "quantity",
-      "describedby": "quantity-addon",
-      "required": ""
-    },
-    domProps: {
-      "value": (_vm.contract.quantity)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.contract.quantity = $event.target.value
+    staticClass: "table-responsive"
+  }, [_c('table', {
+    staticClass: "table no-wrap"
+  }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.contract.vehicles), function(truck) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(truck.plate_number))]), _vm._v(" "), (truck.trailer) ? _c('td', [_vm._v(_vm._s(truck.trailer.trailer_number))]) : _vm._e(), _vm._v(" "), (!truck.trailer) ? _c('td', [_vm._v(" -- ")]) : _vm._e(), _vm._v(" "), (truck.driver) ? _c('td', [_vm._v(_vm._s(truck.driver.first_name))]) : _vm._e(), _vm._v(" "), (!truck.driver) ? _c('td', [_vm._v("--")]) : _vm._e(), _vm._v(" "), _c('td', [_vm._v(_vm._s(truck.current_fuel))]), _vm._v(" "), _c('td', [_c('button', {
+      staticClass: "btn btn-sm btn-success",
+      attrs: {
+        "type": "button",
+        "name": "button"
       },
-      "blur": function($event) {
-        _vm.$forceUpdate()
-      }
-    }
-  }), _vm._v(" "), _c('span', {
-    staticClass: "input-group-addon",
-    attrs: {
-      "id": "quantity-addon"
-    }
-  }, [_vm._v("KGs")])])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "route_id"
-    }
-  }, [_vm._v("Route")]), _vm._v(" "), _c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.contract.route_id),
-      expression: "contract.route_id"
-    }],
-    staticClass: "form-control input-sm select2",
-    attrs: {
-      "disabled": "",
-      "required": ""
-    },
-    on: {
-      "change": function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.contract.route_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
-    }
-  }, _vm._l((_vm.routes), function(route) {
-    return _c('option', {
-      domProps: {
-        "value": route.id
-      }
-    }, [_vm._v(_vm._s(route.source) + " - " + _vm._s(route.destination) + " (" + _vm._s(route.distance) + " KM)")])
-  }))]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "loading_point_id"
-    }
-  }, [_vm._v("Loading Point")]), _vm._v(" "), _c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.contract.loading_point_id),
-      expression: "contract.loading_point_id"
-    }],
-    staticClass: "form-control input-sm select2",
-    attrs: {
-      "disabled": "",
-      "name": "loading_point_id",
-      "id": "loading_point_id",
-      "required": ""
-    },
-    on: {
-      "change": function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.contract.loading_point_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
-    }
-  }, _vm._l((_vm.carriage_points), function(point) {
-    return _c('option', {
-      domProps: {
-        "value": point.id
-      }
-    }, [_vm._v(_vm._s(point.name))])
-  }))])])]) : _vm._e(), _vm._v(" "), _c('hr'), _vm._v(" "), (_vm.journey.is_contract_related == '0') ? _c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-sm-12"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', [_vm._v("Sub-Contracts")]), _vm._v(" "), _c('div', {
-    staticClass: "checkbox"
-  }, [_c('label', [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.journey.subcontracted),
-      expression: "journey.subcontracted"
-    }],
-    attrs: {
-      "disabled": "",
-      "type": "checkbox"
-    },
-    domProps: {
-      "checked": Array.isArray(_vm.journey.subcontracted) ? _vm._i(_vm.journey.subcontracted, null) > -1 : (_vm.journey.subcontracted)
-    },
-    on: {
-      "__c": function($event) {
-        var $$a = _vm.journey.subcontracted,
-          $$el = $event.target,
-          $$c = $$el.checked ? (true) : (false);
-        if (Array.isArray($$a)) {
-          var $$v = null,
-            $$i = _vm._i($$a, $$v);
-          if ($$c) {
-            $$i < 0 && (_vm.journey.subcontracted = $$a.concat($$v))
-          } else {
-            $$i > -1 && (_vm.journey.subcontracted = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
-          }
-        } else {
-          _vm.journey.subcontracted = $$c
+      on: {
+        "click": function($event) {
+          _vm.fuel(truck)
         }
       }
-    }
-  }), _vm._v("\n                                Check if the trucks have been subcontracted by another company.\n                                Note that the delivery note will be processed in the name of the other company.\n                            ")])])])])]) : _vm._e(), _vm._v(" "), (_vm.journey.subcontracted && _vm.journey.is_contract_related == '0') ? _c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-sm-6"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "sub_company_name"
-    }
-  }, [_vm._v("Company Name")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.journey.sub_company_name),
-      expression: "journey.sub_company_name"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "disabled": "",
-      "required": "",
-      "type": "text",
-      "id": "sub_company_name",
-      "name": "sub_company_name"
-    },
-    domProps: {
-      "value": (_vm.journey.sub_company_name)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.journey.sub_company_name = $event.target.value
-      }
-    }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-6"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "sub_address_3"
-    }
-  }, [_vm._v("Address Line 3")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.journey.sub_address_3),
-      expression: "journey.sub_address_3"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "disabled": "",
-      "type": "text",
-      "id": "sub_address_3",
-      "name": "sub_address_3"
-    },
-    domProps: {
-      "value": (_vm.journey.sub_address_3)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.journey.sub_address_3 = $event.target.value
-      }
-    }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-6"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "sub_address_1"
-    }
-  }, [_vm._v("Address Line 1")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.journey.sub_address_1),
-      expression: "journey.sub_address_1"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "disabled": "",
-      "required": "",
-      "type": "text",
-      "id": "sub_address_1",
-      "name": "sub_address_1"
-    },
-    domProps: {
-      "value": (_vm.journey.sub_address_1)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.journey.sub_address_1 = $event.target.value
-      }
-    }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-6"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "sub_address_4"
-    }
-  }, [_vm._v("Address Line 4")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.journey.sub_address_4),
-      expression: "journey.sub_address_4"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "disabled": "",
-      "type": "text",
-      "id": "sub_address_4",
-      "name": "sub_address_4"
-    },
-    domProps: {
-      "value": (_vm.journey.sub_address_4)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.journey.sub_address_4 = $event.target.value
-      }
-    }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-6"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "sub_address_2"
-    }
-  }, [_vm._v("Address Line 2")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.journey.sub_address_2),
-      expression: "journey.sub_address_2"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "disabled": "",
-      "required": "",
-      "type": "text",
-      "id": "sub_address_2",
-      "name": "sub_address_2"
-    },
-    domProps: {
-      "value": (_vm.journey.sub_address_2)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.journey.sub_address_2 = $event.target.value
-      }
-    }
-  })])])]) : _vm._e(), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('router-link', {
-    staticClass: "btn btn-danger",
-    attrs: {
-      "to": "/journey"
-    }
-  }, [_vm._v("Back")])], 1)]), _vm._v(" "), (_vm.showModal) ? _c('modal', {
-    attrs: {
-      "showModal": _vm.showModal,
-      "closeAction": _vm.closeModal
-    }
-  }, [_c('h5', {
-    slot: "header"
-  }, [_vm._v("Close Journey (JRNY-" + _vm._s(_vm.$route.params.id) + ")")]), _vm._v(" "), _c('div', {
-    staticClass: "row",
-    slot: "body"
-  }, [_c('div', {
-    staticClass: "col-xs-6"
-  }, [_vm._v("\n              Journey: JNY-" + _vm._s(_vm.journey.id)), _c('br'), _vm._v("\n              Contract: CNTR-" + _vm._s(_vm.journey.contract_id)), _c('br'), _vm._v("\n              From: " + _vm._s(_vm.journey.route_source)), _c('br'), _vm._v("\n              To: " + _vm._s(_vm.journey.route_destination)), _c('br'), _vm._v("\n              Truck: " + _vm._s(_vm.journey.truck_plate_number)), _c('br'), _vm._v("\n              Driver: " + _vm._s(_vm.journey_close.truck.driver.first_name) + " " + _vm._s(_vm.journey_close.truck.driver.last_name)), _c('br'), _vm._v(" "), _c('hr'), _vm._v(" "), (_vm.belowReserve) ? _c('p', [_c('i', {
-    staticStyle: {
-      "color": "red"
-    }
-  }, [_vm._v("Fuel in truck (" + _vm._s(_vm.journey_close.current_fuel) + " ltrs) is below reserve by\n                " + _vm._s(_vm.fuelDifference) + " ltrs.\n                Driver to pay Ksh. " + _vm._s(_vm.fuelDifference * parseInt(_vm.journey_close.fuel_price)))])]) : _vm._e(), _vm._v(" "), _c('hr'), _vm._v(" "), (_vm.journey_close.current_km) ? _c('p', [_vm._v("Kms Covered: " + _vm._s(parseInt(_vm.journey_close.current_km) - parseInt(_vm.journey_close.truck.current_km)))]) : _vm._e(), _c('br'), _vm._v(" "), (_vm.journey_close.current_fuel) ? _c('p', [_vm._v("Fuel Used (ltrs): " + _vm._s(parseInt(_vm.journey_close.truck.current_fuel) - parseInt(_vm.journey_close.current_fuel)))]) : _vm._e(), _c('br')]), _vm._v(" "), _c('div', {
-    staticClass: "col-xs-6"
-  }, [_vm._v("\n              Journey Start Km readings: " + _vm._s(_vm.journey_close.truck.current_km)), _c('br'), _vm._v("\n              Mileage Allocated: " + _vm._s(_vm.journey_close.mileage.approved_amount)), _c('br'), _vm._v("\n              Top-up Mileage: " + _vm._s(_vm.journey_close.mileage.top_up_amount)), _c('br'), _vm._v("\n              Fuel Allocated: " + _vm._s(_vm.journey_close.truck.current_fuel)), _c('br'), _vm._v("\n              Top-up fuel: " + _vm._s(_vm.journey_close.fuel.top_up)), _c('br'), _vm._v(" "), _c('div', {
-    staticClass: "col-xs-12"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "current_km"
-    }
-  }, [_vm._v("Truck Current Km reading:")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.journey_close.current_km),
-      expression: "journey_close.current_km"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "type": "number",
-      "name": "current_km"
-    },
-    domProps: {
-      "value": (_vm.journey_close.current_km)
-    },
-    on: {
-      "change": _vm.validateKms,
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.journey_close.current_km = $event.target.value
-      },
-      "blur": function($event) {
-        _vm.$forceUpdate()
-      }
-    }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "col-xs-12"
-  }, [_c('div', {
-    class: {
-      'form-group': true, 'has-error': _vm.belowReserve
-    }
-  }, [_c('label', {
-    staticClass: "control-label",
-    attrs: {
-      "for": "current_km"
-    }
-  }, [_vm._v("Truck Current fuel reading:")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.journey_close.current_fuel),
-      expression: "journey_close.current_fuel"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "type": "number",
-      "id": "current_fuel",
-      "name": "current_fuel"
-    },
-    domProps: {
-      "value": (_vm.journey_close.current_fuel)
-    },
-    on: {
-      "change": function($event) {},
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.journey_close.current_fuel = $event.target.value
-      },
-      "blur": function($event) {
-        _vm.$forceUpdate()
-      }
-    }
-  })])])])]), _vm._v(" "), _c('div', {
-    slot: "footer"
-  }, [_c('button', {
-    staticClass: "btn btn-success",
-    attrs: {
-      "type": "button",
-      "name": "button"
-    },
-    on: {
-      "click": function($event) {
-        $event.preventDefault();
-        _vm.closeJourney($event)
-      }
-    }
-  }, [_vm._v("Process & Close")])])]) : _vm._e()], 1)])
-},staticRenderFns: []}
+    }, [_vm._v("Fuel")])])])
+  })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("Plate #")]), _vm._v(" "), _c('th', [_vm._v("Trailer")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th', [_vm._v("Current Ltrs")]), _vm._v(" "), _c('th', [_vm._v("Action")])])])], 1)])])])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('thead', [_c('tr', [_c('th', [_vm._v("Plate #")]), _vm._v(" "), _c('th', [_vm._v("Trailer")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th', [_vm._v("Current Ltrs")]), _vm._v(" "), _c('th', [_vm._v("Action")])])])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -113552,14 +110801,16 @@ if (false) {
 }
 
 /***/ }),
-/* 420 */,
-/* 421 */
+/* 421 */,
+/* 422 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "panel panel-default"
-  }, [_vm._m(0), _vm._v(" "), _c('div', {
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_c('strong', [_vm._v("Fuel Allocation -- Truck: " + _vm._s(_vm.truck.plate_number) + " ")])]), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
   }, [_c('form', {
     attrs: {
@@ -113575,108 +110826,83 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "row"
   }, [_c('div', {
-    staticClass: "col-sm-3"
+    staticClass: "col-sm-4"
+  }, [_c('div', {
+    staticClass: "col-sm-12"
   }, [_c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
-      "for": "date"
+      "for": "previous_km"
     }
-  }, [_vm._v("Date")]), _vm._v(" "), _c('input', {
+  }, [_vm._v("Previous KM")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.fuel.date),
-      expression: "fuel.date"
+      value: (_vm.truck.current_km),
+      expression: "truck.current_km"
     }],
-    staticClass: "form-control input-sm datepicker",
+    staticClass: "form-control input-sm",
     attrs: {
-      "type": "text",
-      "id": "date",
-      "name": "date",
-      "required": ""
+      "disabled": "",
+      "type": "number",
+      "name": "previous_km"
     },
     domProps: {
-      "value": (_vm.fuel.date)
+      "value": (_vm.truck.current_km)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.fuel.date = $event.target.value
+        _vm.truck.current_km = $event.target.value
+      },
+      "blur": function($event) {
+        _vm.$forceUpdate()
       }
     }
-  })]), _vm._v(" "), _c('div', {
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-12"
+  }, [_c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
-      "for": "journey_id"
+      "for": "current_km"
     }
-  }, [_vm._v("Journey")]), _vm._v(" "), _c('select', {
+  }, [_vm._v("Current KM")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.fuel.journey_id),
-      expression: "fuel.journey_id"
+      value: (_vm.fuel.current_km),
+      expression: "fuel.current_km"
     }],
-    staticClass: "form-control input-sm select2",
+    staticClass: "form-control input-sm",
     attrs: {
-      "name": "journey_id",
-      "class": "form-control input-sm select2",
-      "required": ""
-    },
-    on: {
-      "change": [function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.fuel.journey_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }, _vm.selectJourney]
-    }
-  }, _vm._l((_vm.journeys), function(journey) {
-    return _c('option', {
-      domProps: {
-        "value": journey.id
-      }
-    }, [_vm._v("JRNY-" + _vm._s(journey.id))])
-  }))])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('strong', [_vm._v("Route: RT-" + _vm._s(_vm.current_route.id))]), _c('br'), _vm._v("\n                  From: " + _vm._s(_vm.current_route.source)), _c('br'), _vm._v("\n                  To: " + _vm._s(_vm.current_route.destination)), _c('br'), _vm._v("\n                  Deliveries:"), _c('br')]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('strong', [_vm._v("Vehicle")]), _c('br'), _vm._v("\n                  Reg.No: " + _vm._s(_vm.current_vehicle.plate_number)), _c('br'), _vm._v("\n                  Model: " + _vm._s(_vm.current_vehicle.model)), _c('br'), _vm._v("\n                  Trailer Attached: "), _c('input', {
-    attrs: {
-      "type": "checkbox",
-      "name": "trailer_attached"
+      "type": "number",
+      "min": _vm.minimumKm,
+      "name": "current_km"
     },
     domProps: {
-      "checked": _vm.current_vehicle.trailer
+      "value": (_vm.fuel.current_km)
+    },
+    on: {
+      "change": _vm.validateKm,
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.fuel.current_km = $event.target.value
+      },
+      "blur": function($event) {
+        _vm.$forceUpdate()
+      }
     }
-  }), _c('br'), _vm._v(" "), (_vm.current_trailer) ? _c('div', {}, [_vm._v("\n                    Trailer: " + _vm._s(_vm.current_trailer.trailer_number)), _c('br'), _vm._v("\n                    Trailer Category: " + _vm._s(_vm.current_trailer.type) + " "), _c('br')]) : _vm._e()]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('strong', [_vm._v("Driver")]), _c('br'), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-4"
-  }, [_c('img', {
-    attrs: {
-      "src": _vm.getSource(),
-      "alt": "",
-      "width": "100%",
-      "height": "100%"
-    }
-  }), _vm._v(" "), _c('br')]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-8"
-  }, [_vm._v("\n                    Name: " + _vm._s(_vm.current_driver.first_name)), _c('br'), _vm._v("\n                    Id No: " + _vm._s(_vm.current_driver.identification_number)), _c('br'), _vm._v("\n                    Mobile No: " + _vm._s(_vm.current_driver.mobile_phone)), _c('br'), _vm._v("\n                    DL number: " + _vm._s(_vm.current_driver.dl_number)), _c('br')])])]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-sm-3"
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-12"
   }, [_c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
       "for": "current_fuel"
     }
-  }, [_vm._v("Current Fuel (Litres)")]), _vm._v(" "), _c('input', {
+  }, [_vm._v("Balance in Tank (Litres)")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -113692,7 +110918,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "value": (_vm.fuel.current_fuel)
     },
     on: {
-      "change": _vm.calculateTotal,
+      "keyup": _vm.calculateTotalFuel,
       "input": function($event) {
         if ($event.target.composing) { return; }
         _vm.fuel.current_fuel = $event.target.value
@@ -113701,48 +110927,77 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.$forceUpdate()
       }
     }
-  }), _vm._v(" "), (_vm.below_reserve) ? _c('p', [_vm._v("Current fuel below reserve. Driver to pay for " + _vm._s(this.deficit) + " litre(s).")]) : _vm._e()])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
+  })])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-4"
   }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', [_vm._v("Standard Quantity for this Route (Litres)")]), _c('br'), _vm._v(" "), _c('h4', [_vm._v(_vm._s(_vm.current_route.fuel_required))])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
+    staticClass: "col-sm-12"
   }, [_c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
       "for": "fuel_issued"
     }
-  }, [_vm._v("Requested Quantity (Litres)")]), _vm._v(" "), _c('input', {
+  }, [_vm._v("Previous Fuel")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.fuel.fuel_requested),
-      expression: "fuel.fuel_requested"
+      value: (_vm.truck.current_fuel),
+      expression: "truck.current_fuel"
     }],
     staticClass: "form-control input-sm",
     attrs: {
+      "readonly": "",
       "type": "text",
-      "name": "fuel_requested"
+      "name": "previous_fuel"
     },
     domProps: {
-      "value": (_vm.fuel.fuel_requested)
+      "value": (_vm.truck.current_fuel)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.fuel.fuel_requested = $event.target.value
+        _vm.truck.current_fuel = $event.target.value
       }
     }
   })])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
+    staticClass: "col-sm-12"
   }, [_c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
       "for": "fuel_issued"
     }
-  }, [_vm._v("Fuel Issued (Litres)")]), _vm._v(" "), _c('input', {
+  }, [_vm._v("Total Fuel in Tank(Litres)")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.fuel.total_in_tank),
+      expression: "fuel.total_in_tank"
+    }],
+    staticClass: "form-control input-sm",
+    attrs: {
+      "readonly": "",
+      "type": "text",
+      "name": "fuel_total"
+    },
+    domProps: {
+      "value": (_vm.fuel.total_in_tank)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.fuel.total_in_tank = $event.target.value
+      }
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-12"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "fuel_issued"
+    }
+  }, [_vm._v("Fuel Approved (Litres)")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -113758,7 +111013,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "value": (_vm.fuel.fuel_issued)
     },
     on: {
-      "keyup": _vm.calculateTotal,
+      "keyup": _vm.calculateTotalFuel,
       "input": function($event) {
         if ($event.target.composing) { return; }
         _vm.fuel.fuel_issued = $event.target.value
@@ -113767,98 +111022,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.$forceUpdate()
       }
     }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
+  })])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-4"
   }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "tank"
-    }
-  }, [_vm._v("Tank to fill")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.fuel.tank),
-      expression: "fuel.tank"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "type": "text",
-      "name": "tank",
-      "id": "pump"
-    },
-    domProps: {
-      "value": (_vm.fuel.tank)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.fuel.tank = $event.target.value
-      }
-    }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "pump"
-    }
-  }, [_vm._v("Pump")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.fuel.pump),
-      expression: "fuel.pump"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "type": "text",
-      "name": "pump",
-      "id": "pump"
-    },
-    domProps: {
-      "value": (_vm.fuel.pump)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.fuel.pump = $event.target.value
-      }
-    }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "fuel_issued"
-    }
-  }, [_vm._v("Total Fuel in Tank(Litres)")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.fuel.fuel_total),
-      expression: "fuel.fuel_total"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "readonly": "",
-      "type": "text",
-      "name": "fuel_total"
-    },
-    domProps: {
-      "value": (_vm.fuel.fuel_total)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.fuel.fuel_total = $event.target.value
-      }
-    }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
+    staticClass: "col-sm-12"
   }, [_c('div', {
     staticClass: "form-group"
   }, [_c('label', {
@@ -113885,207 +111052,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.fuel.narration = $event.target.value
       }
     }
-  })])]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('label', {
-    attrs: {
-      "for": "top_up"
-    }
-  }, [_vm._v("Top Up?")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.fuel.top_up),
-      expression: "fuel.top_up"
-    }],
-    attrs: {
-      "type": "checkbox",
-      "name": "top_up",
-      "id": "top_up"
-    },
-    domProps: {
-      "checked": Array.isArray(_vm.fuel.top_up) ? _vm._i(_vm.fuel.top_up, null) > -1 : (_vm.fuel.top_up)
-    },
-    on: {
-      "change": function($event) {
-        !_vm.fuel.top_up
-      },
-      "__c": function($event) {
-        var $$a = _vm.fuel.top_up,
-          $$el = $event.target,
-          $$c = $$el.checked ? (true) : (false);
-        if (Array.isArray($$a)) {
-          var $$v = null,
-            $$i = _vm._i($$a, $$v);
-          if ($$c) {
-            $$i < 0 && (_vm.fuel.top_up = $$a.concat($$v))
-          } else {
-            $$i > -1 && (_vm.fuel.top_up = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
-          }
-        } else {
-          _vm.fuel.top_up = $$c
-        }
-      }
-    }
-  }), _vm._v(" "), (_vm.fuel.top_up) ? _c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "top_up_quantity"
-    }
-  }, [_vm._v("Top Up quantity:")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.fuel.top_up_quantity),
-      expression: "fuel.top_up_quantity"
-    }],
-    attrs: {
-      "type": "number",
-      "name": "top_up_quantity"
-    },
-    domProps: {
-      "value": (_vm.fuel.top_up_quantity)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.fuel.top_up_quantity = $event.target.value
-      },
-      "blur": function($event) {
-        _vm.$forceUpdate()
-      }
-    }
-  }), _vm._v(" "), _c('label', {
-    attrs: {
-      "for": "top_up_reason"
-    }
-  }, [_vm._v("Top up reason")]), _vm._v(" "), _c('textarea', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.fuel.top_up_reason),
-      expression: "fuel.top_up_reason"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "name": "narration",
-      "id": "top_up_reason"
-    },
-    domProps: {
-      "value": (_vm.fuel.top_up_reason)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.fuel.top_up_reason = $event.target.value
-      }
-    }
-  })]) : _vm._e()])]), _vm._v(" "), _c('br'), _vm._v(" "), _c('strong', [_vm._v("Mileage Readings")]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "current_km"
-    }
-  }, [_vm._v("Current KM")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.fuel.current_km),
-      expression: "fuel.current_km"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "type": "number",
-      "min": _vm.minimumKm,
-      "name": "current_km"
-    },
-    domProps: {
-      "value": (_vm.fuel.current_km)
-    },
-    on: {
-      "change": _vm.calculateKms,
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.fuel.current_km = $event.target.value
-      },
-      "blur": function($event) {
-        _vm.$forceUpdate()
-      }
-    }
   })])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
+    staticClass: "col-sm-12"
   }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "previous_km"
-    }
-  }, [_vm._v("Previous KM")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.current_vehicle.current_km),
-      expression: "current_vehicle.current_km"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "disabled": "",
-      "type": "number",
-      "name": "previous_km"
-    },
-    domProps: {
-      "value": (_vm.current_vehicle.current_km)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.current_vehicle.current_km = $event.target.value
-      },
-      "blur": function($event) {
-        _vm.$forceUpdate()
-      }
-    }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "previous_fuel"
-    }
-  }, [_vm._v("Previous Fuel")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.current_vehicle.current_fuel),
-      expression: "current_vehicle.current_fuel"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "disabled": "",
-      "type": "number",
-      "name": "previous_fuel"
-    },
-    domProps: {
-      "value": (_vm.current_vehicle.current_fuel)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.current_vehicle.current_fuel = $event.target.value
-      },
-      "blur": function($event) {
-        _vm.$forceUpdate()
-      }
-    }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [_vm._v("\n                KM Covered: " + _vm._s(_vm.km_covered)), _c('br'), _vm._v("\n                Fuel Used: " + _vm._s(_vm.fuel_used)), _c('br'), _vm._v("\n                KM/Ltr: " + _vm._s(_vm.km_per_litre.toFixed(2))), _c('br')])]), _vm._v(" "), _c('div', {
     staticClass: "form-group pull-right"
   }, [_c('button', {
     staticClass: "btn btn-success",
@@ -114095,14 +111064,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("Save")]), _vm._v(" "), _c('router-link', {
     staticClass: "btn btn-danger",
     attrs: {
-      "to": "/fuel"
+      "to": "/ls/fuel"
     }
-  }, [_vm._v("Back")])], 1)])])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "panel-heading"
-  }, [_c('strong', [_vm._v("Fuel Allocation")])])
-}]}
+  }, [_vm._v("Back")])], 1)])])])])])])
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -114112,9 +111077,9 @@ if (false) {
 }
 
 /***/ }),
-/* 422 */,
 /* 423 */,
-/* 424 */
+/* 424 */,
+/* 425 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -114188,14 +111153,14 @@ if (false) {
 }
 
 /***/ }),
-/* 425 */,
 /* 426 */,
 /* 427 */,
 /* 428 */,
 /* 429 */,
 /* 430 */,
 /* 431 */,
-/* 432 */
+/* 432 */,
+/* 433 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -114216,8 +111181,91 @@ if (false) {
 }
 
 /***/ }),
-/* 433 */,
 /* 434 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "container"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_vm._v("\n        Gatepass Inwards\n      ")]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('form', {
+    attrs: {
+      "action": "#"
+    }
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('select', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.gatepass.vehicle_id),
+      expression: "gatepass.vehicle_id"
+    }],
+    staticClass: "select2 col-sm-12",
+    attrs: {
+      "name": "truck",
+      "id": "truck"
+    },
+    on: {
+      "change": function($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+          return o.selected
+        }).map(function(o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val
+        });
+        _vm.gatepass.vehicle_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      }
+    }
+  }, [_vm._l((_vm.vehicles), function(vehicle) {
+    return _c('option', {
+      domProps: {
+        "value": vehicle.id
+      }
+    }, [_vm._v(_vm._s(vehicle.plate_number))])
+  }), _vm._v(" "), _c('label', {
+    attrs: {
+      "for": "truck"
+    }
+  }, [_vm._v("Select Vehicle")])], 2)])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('button', {
+    staticClass: "btn btn-sm btn-success",
+    attrs: {
+      "type": "button",
+      "name": "button"
+    },
+    on: {
+      "click": _vm.store
+    }
+  }, [_vm._v("Check In")])])])]), _vm._v(" "), _c('table', {
+    staticClass: "table no-wrap"
+  }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.gatepasses), function(gatepass) {
+    return _c('tr', [_c('td', [_vm._v("GP - " + _vm._s(gatepass.id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(gatepass.vehicle.plate_number) + " ")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(gatepass.user.first_name))])])
+  })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("#")]), _vm._v(" "), _c('th', [_vm._v("Vehicle")]), _vm._v(" "), _c('th', [_vm._v("Created By")])])])], 1)])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('thead', [_c('tr', [_c('th', [_vm._v("#")]), _vm._v(" "), _c('th', [_vm._v("Vehicle")]), _vm._v(" "), _c('th', [_vm._v("Created By")])])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-76de2f23", module.exports)
+  }
+}
+
+/***/ }),
+/* 435 */,
+/* 436 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -114315,7 +111363,7 @@ if (false) {
 }
 
 /***/ }),
-/* 435 */
+/* 437 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -114719,8 +111767,8 @@ if (false) {
 }
 
 /***/ }),
-/* 436 */,
-/* 437 */
+/* 438 */,
+/* 439 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -114729,7 +111777,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "row"
   }, [_c('div', {
-    staticClass: "col-md-6"
+    staticClass: "col-md-12"
   }, [_c('div', {
     staticClass: "panel panel-default"
   }, [_vm._m(0), _vm._v(" "), _c('div', {
@@ -114738,55 +111786,21 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "table-responsive"
   }, [_c('table', {
     staticClass: "table no-wrap"
-  }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.trucks), function(truck) {
-    return _c('tr', [_c('td', [_vm._v(_vm._s(truck.plate_number))]), _vm._v(" "), (truck.trailer) ? _c('td', [_vm._v(_vm._s(truck.trailer.trailer_number))]) : _vm._e(), _vm._v(" "), (!truck.trailer) ? _c('td', [_vm._v(" - ")]) : _vm._e(), _vm._v(" "), (truck.driver) ? _c('td', [_vm._v(_vm._s(truck.driver.first_name))]) : _vm._e(), _vm._v(" "), _c('td', [_c('button', {
-      staticClass: "btn btn-sm btn-success",
+  }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.contracts), function(contract) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(contract.id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(contract.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(contract.client.Name))]), _vm._v(" "), _c('td', [_vm._v("Progress")]), _vm._v(" "), _c('td', [_c('router-link', {
       attrs: {
-        "type": "button",
-        "name": "button"
-      },
-      on: {
-        "click": function($event) {
-          _vm.allocate(truck)
-        }
+        "to": '/ls/trucks-allocation/create/' + contract.id
       }
-    }, [_vm._v("Allocate")])])])
-  })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("Plate #")]), _vm._v(" "), _c('th', [_vm._v("Trailer")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th')])])], 1)])])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-md-6"
-  }, [_c('div', {
-    staticClass: "panel panel-default"
-  }, [_vm._m(2), _vm._v(" "), _c('div', {
-    staticClass: "panel-body"
-  }, [_c('div', {
-    staticClass: "table-responsive"
-  }, [_c('table', {
-    staticClass: "table no-wrap"
-  }, [_vm._m(3), _vm._v(" "), _c('tbody', _vm._l((_vm.allocatedtrucks), function(allocatedtruck) {
-    return _c('tr', [_c('td', [_vm._v(_vm._s(allocatedtruck.plate_number))]), _vm._v(" "), (allocatedtruck.trailer) ? _c('td', [_vm._v(_vm._s(allocatedtruck.trailer.trailer_number))]) : _vm._e(), _vm._v(" "), (!allocatedtruck.trailer) ? _c('td', [_vm._v(" - ")]) : _vm._e(), _vm._v(" "), (allocatedtruck.driver) ? _c('td', [_vm._v(_vm._s(allocatedtruck.driver.first_name))]) : _vm._e(), _vm._v(" "), _c('td', [_c('button', {
-      staticClass: "btn btn-sm btn-success",
-      attrs: {
-        "type": "button",
-        "name": "button"
-      },
-      on: {
-        "click": function($event) {
-          _vm.remove(allocatedtruck)
-        }
-      }
-    }, [_vm._v("Remove")])])])
-  })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("Plate #")]), _vm._v(" "), _c('th', [_vm._v("Trailer")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th')])])], 1)])])])])])])
+    }, [_c('span', {
+      staticClass: "btn btn-xs btn-success"
+    }, [_vm._v("Allocate Trucks")])])], 1)])
+  })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("#")]), _vm._v(" "), _c('th', [_vm._v("Contract")]), _vm._v(" "), _c('th', [_vm._v("Client")]), _vm._v(" "), _c('th', [_vm._v("Progress")]), _vm._v(" "), _c('th', [_vm._v("Action")])])])], 1)])])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "panel-heading"
-  }, [_c('strong', [_vm._v("Trucks Available")])])
+  }, [_c('strong', [_vm._v("Local Shunting Contracts")])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('thead', [_c('tr', [_c('th', [_vm._v("Plate #")]), _vm._v(" "), _c('th', [_vm._v("Trailer")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th')])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "panel-heading"
-  }, [_c('strong', [_vm._v("Allocated Trucks")])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('thead', [_c('tr', [_c('th', [_vm._v("Plate #")]), _vm._v(" "), _c('th', [_vm._v("Trailer")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th')])])
+  return _c('thead', [_c('tr', [_c('th', [_vm._v("#")]), _vm._v(" "), _c('th', [_vm._v("Contract")]), _vm._v(" "), _c('th', [_vm._v("Client")]), _vm._v(" "), _c('th', [_vm._v("Progress")]), _vm._v(" "), _c('th', [_vm._v("Action")])])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
@@ -114797,8 +111811,8 @@ if (false) {
 }
 
 /***/ }),
-/* 438 */,
-/* 439 */
+/* 440 */,
+/* 441 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -115267,91 +112281,43 @@ if (false) {
 }
 
 /***/ }),
-/* 440 */,
-/* 441 */,
 /* 442 */,
 /* 443 */,
 /* 444 */,
 /* 445 */,
 /* 446 */,
-/* 447 */
+/* 447 */,
+/* 448 */,
+/* 449 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "container"
   }, [_c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-md-12"
-  }, [_c('div', {
     staticClass: "panel panel-default"
   }, [_c('div', {
     staticClass: "panel-heading"
-  }, [_c('strong', [_vm._v("Delivery Notes")]), _vm._v(" "), (_vm.$root.can('create-delivery')) ? _c('router-link', {
-    staticClass: "btn btn-primary btn-xs pull-right",
-    attrs: {
-      "to": "/delivery/create"
-    }
-  }, [_c('i', {
-    staticClass: "fa fa-plus"
-  }), _vm._v(" Add New")]) : _vm._e()], 1), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n        Trucks Awaiting Loading\n    ")]), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
-  }, [_c('div', {
-    staticClass: "table-responsive"
   }, [_c('table', {
     staticClass: "table no-wrap"
-  }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.deliveries), function(delivery) {
-    return _c('tr', [_c('td', [(_vm.$root.can('view-delivery')) ? _c('router-link', {
+  }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.gatepasses), function(gatepass, index) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(gatepass.vehicle.plate_number))]), _vm._v(" "), _c('td', [_vm._v("GP - " + _vm._s(gatepass.id))]), _vm._v(" "), (gatepass.vehicle.driver) ? _c('td', [_vm._v(_vm._s(gatepass.vehicle.driver.first_name) + " " + _vm._s(gatepass.vehicle.driver.last_name))]) : _vm._e(), _vm._v(" "), (!gatepass.vehicle.driver) ? _c('td', [_vm._v(" -- ")]) : _vm._e(), _vm._v(" "), _c('td', [_c('button', {
+      staticClass: "btn btn-sm btn-success",
       attrs: {
-        "to": '/delivery/' + delivery.id
-      }
-    }, [_vm._v("RKS-" + _vm._s(delivery.id))]) : _c('span', [_vm._v("RKS-" + _vm._s(delivery.id))])], 1), _vm._v(" "), _c('td', [(_vm.$root.can('view-journey')) ? _c('router-link', {
-      attrs: {
-        "to": '/journey/' + delivery.journey_id
-      }
-    }, [_vm._v("JRNY-" + _vm._s(delivery.journey_id))]) : _c('span', [_vm._v("JRNY-" + _vm._s(delivery.journey_id))])], 1), _vm._v(" "), _c('td', {
-      staticClass: "text-right"
-    }, [_vm._v(_vm._s(_vm.formatNumber(delivery.loading_gross_weight)))]), _vm._v(" "), _c('td', {
-      staticClass: "text-right"
-    }, [_vm._v(_vm._s(_vm.formatNumber(delivery.loading_tare_weight)))]), _vm._v(" "), _c('td', {
-      staticClass: "text-right"
-    }, [_vm._v(_vm._s(_vm.formatNumber(delivery.loading_net_weight)))]), _vm._v(" "), _c('td', {
-      staticClass: "text-right"
-    }, [_vm._v(_vm._s(_vm.formatNumber(delivery.offloading_gross_weight)))]), _vm._v(" "), _c('td', {
-      staticClass: "text-right"
-    }, [_vm._v(_vm._s(_vm.formatNumber(delivery.offloading_tare_weight)))]), _vm._v(" "), _c('td', {
-      staticClass: "text-right"
-    }, [_vm._v(_vm._s(_vm.formatNumber(delivery.offloading_net_weight)))]), _vm._v(" "), _c('td', {
-      staticClass: "text-center"
-    }, [((delivery.status == 'Loaded') && _vm.$root.can('create-delivery')) ? _c('span', {
-      staticClass: "btn btn-xs btn-success",
+        "type": "button",
+        "name": "button"
+      },
       on: {
         "click": function($event) {
-          _vm.unload(delivery)
+          _vm.createDelivery(gatepass.vehicle.id)
         }
       }
-    }, [_vm._v("Offload")]) : _vm._e(), _vm._v(" "), (_vm.$root.can('edit-delivery')) ? _c('span', {
-      staticClass: "btn btn-xs btn-info",
-      on: {
-        "click": function($event) {
-          _vm.edit(delivery)
-        }
-      }
-    }, [_c('i', {
-      staticClass: "fa fa-pencil"
-    })]) : _vm._e(), _vm._v(" "), (_vm.$root.can('delete-delivery')) ? _c('button', {
-      staticClass: "btn btn-xs btn-danger btn-destroy",
-      attrs: {
-        "data-toggle": "popover",
-        "data-item": delivery.id
-      }
-    }, [_c('i', {
-      staticClass: "fa fa-trash"
-    })]) : _vm._e()])])
-  })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("Del. Note #")]), _vm._v(" "), _c('th', [_vm._v("Journey #")]), _vm._v(" "), _c('th', [_vm._v("Loading GW")]), _vm._v(" "), _c('th', [_vm._v("Loading TW")]), _vm._v(" "), _c('th', [_vm._v("Loading NW")]), _vm._v(" "), _c('th', [_vm._v("Offloading GW")]), _vm._v(" "), _c('th', [_vm._v("Offloading TW")]), _vm._v(" "), _c('th', [_vm._v("Offloading NW")]), _vm._v(" "), _c('th')])])], 1)])])])])])])
+    }, [_vm._v("Create Delivery Note")])])])
+  })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("#")]), _vm._v(" "), _c('th', [_vm._v("Plate #")]), _vm._v(" "), _c('th', [_vm._v("Gate Pass #")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th', [_vm._v("Action")])])])], 1)])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('thead', [_c('tr', [_c('th', [_vm._v("Del. Note #")]), _vm._v(" "), _c('th', [_vm._v("Journey #")]), _vm._v(" "), _c('th', [_vm._v("Loading GW")]), _vm._v(" "), _c('th', [_vm._v("Loading TW")]), _vm._v(" "), _c('th', [_vm._v("Loading NW")]), _vm._v(" "), _c('th', [_vm._v("Offloading GW")]), _vm._v(" "), _c('th', [_vm._v("Offloading TW")]), _vm._v(" "), _c('th', [_vm._v("Offloading NW")]), _vm._v(" "), _c('th')])])
+  return _c('thead', [_c('tr', [_c('th', [_vm._v("#")]), _vm._v(" "), _c('th', [_vm._v("Plate #")]), _vm._v(" "), _c('th', [_vm._v("Gate Pass #")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th', [_vm._v("Action")])])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
@@ -115362,7 +112328,7 @@ if (false) {
 }
 
 /***/ }),
-/* 448 */
+/* 450 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -115387,72 +112353,19 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "col-sm-3"
   }, [_c('div', {
     staticClass: "form-group"
-  }, [_c('label', {
-    attrs: {
-      "for": "journey_id"
-    }
-  }, [_vm._v("Journey Number")]), _vm._v(" "), _c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.deliveryNote.journey_id),
-      expression: "deliveryNote.journey_id"
-    }],
-    staticClass: "form-control input-sm",
-    attrs: {
-      "disabled": typeof _vm.$route.params.unload === 'string',
-      "id": "journey_id",
-      "name": "journey_id",
-      "required": ""
-    },
-    on: {
-      "change": [function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.deliveryNote.journey_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }, _vm.journey]
-    }
-  }, _vm._l((_vm.journeys), function(journey) {
-    return _c('option', {
-      domProps: {
-        "value": journey.id
-      }
-    }, [_vm._v("JRNY-" + _vm._s(journey.id))])
-  }))])]), _vm._v(" "), _c('div', {
+  }, [_c('label', [_vm._v("Vehicle Number")]), _vm._v(" "), _c('h5', [_vm._v(_vm._s(_vm.vehicle.plate_number))])])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-3"
   }, [_c('div', {
     staticClass: "form-group"
-  }, [_c('label', [_vm._v("Journey Date")]), _vm._v(" "), _c('h5', [_vm._v(_vm._s(_vm.journey.job_date))])])]), _vm._v(" "), _c('div', {
+  }, [_c('label', [_vm._v("Trailer Type")]), _vm._v(" "), (_vm.vehicle.trailer) ? _c('h5', [_vm._v(_vm._s(_vm.vehicle.trailer.type))]) : _vm._e()])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-3"
   }, [_c('div', {
     staticClass: "form-group"
-  }, [_c('label', [_vm._v("Route From")]), _vm._v(" "), _c('h5', [_vm._v(_vm._s(_vm.journey.route.source))])])]), _vm._v(" "), _c('div', {
+  }, [_c('label', [_vm._v("Trailer Attached")]), _vm._v(" "), (_vm.vehicle.trailer) ? _c('h5', [_vm._v(_vm._s(_vm.vehicle.trailer.trailer_number))]) : _vm._e()])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-3"
   }, [_c('div', {
     staticClass: "form-group"
-  }, [_c('label', [_vm._v("Route To")]), _vm._v(" "), _c('h5', [_vm._v(_vm._s(_vm.journey.route.destination))])])])]), _vm._v(" "), _c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', [_vm._v("Vehicle Number")]), _vm._v(" "), _c('h5', [_vm._v(_vm._s(_vm.journey.truck.plate_number))])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', [_vm._v("Trailer Type")]), _vm._v(" "), _c('h5', [_vm._v(_vm._s(_vm.journey.truck.trailer.type))])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', [_vm._v("Trailer Attached")]), _vm._v(" "), _c('h5', [_vm._v(_vm._s(_vm.journey.truck.trailer.trailer_number))])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', [_vm._v("Driver Name")]), _vm._v(" "), _c('h5', [_vm._v(_vm._s(_vm.journey.driver.first_name) + " " + _vm._s(_vm.journey.driver.last_name))])])])]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
+  }, [_c('label', [_vm._v("Driver Name")]), _vm._v(" "), (_vm.vehicle.driver) ? _c('h5', [_vm._v(_vm._s(_vm.vehicle.driver.first_name) + " " + _vm._s(_vm.vehicle.driver.last_name))]) : _vm._e()])])]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-5"
@@ -115592,7 +112505,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "for": "loading_weighbridge_number"
     }
-  }, [_vm._v("Weighbridge Ticket Number")]), _vm._v(" "), _c('input', {
+  }, [_vm._v("Delivery Number")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -115603,7 +112516,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "disabled": typeof _vm.$route.params.unload === 'string',
       "id": "loading_weighbridge_number",
-      "type": "text"
+      "type": "text",
+      "required": ""
     },
     domProps: {
       "value": (_vm.deliveryNote.loading_weighbridge_number)
@@ -115731,7 +112645,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "disabled": (typeof _vm.$route.params.unload !== 'string') && (typeof _vm.$route.params.id !== 'string'),
       "id": "offloading_weighbridge_number",
-      "type": "text"
+      "type": "text",
+      "required": ""
     },
     domProps: {
       "value": (_vm.deliveryNote.offloading_weighbridge_number)
@@ -115802,9 +112717,9 @@ if (false) {
 }
 
 /***/ }),
-/* 449 */,
-/* 450 */,
-/* 451 */
+/* 451 */,
+/* 452 */,
+/* 453 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -115831,7 +112746,7 @@ if (false) {
 }
 
 /***/ }),
-/* 452 */
+/* 454 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -115843,58 +112758,32 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "col-md-12"
   }, [_c('div', {
     staticClass: "panel panel-default"
-  }, [_c('div', {
-    staticClass: "panel-heading"
-  }, [_c('strong', [_vm._v("Fuel Allocation")]), _vm._v(" "), (_vm.$root.can('create-fuel')) ? _c('router-link', {
-    staticClass: "btn btn-primary btn-xs pull-right",
-    attrs: {
-      "to": "/fuel/create"
-    }
-  }, [_c('i', {
-    staticClass: "fa fa-plus"
-  }), _vm._v(" Add New")]) : _vm._e()], 1), _vm._v(" "), _c('div', {
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
   }, [_c('div', {
     staticClass: "table-responsive"
   }, [_c('table', {
-    staticClass: "table nowrap"
-  }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.fuels), function(fuel) {
-    return _c('tr', [_c('td', [(_vm.$root.can('view-fuel')) ? _c('router-link', {
-      attrs: {
-        "to": '/fuel/' + fuel.id
-      }
-    }, [_vm._v("FUEL-" + _vm._s(fuel.id))]) : _c('span', [_vm._v("FUEL-" + _vm._s(fuel.id))])], 1), _vm._v(" "), _c('td', [_vm._v("JRNY-" + _vm._s(fuel.journey_id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.date))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.journey.driver.first_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.journey.truck.plate_number))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.journey.route.source) + " - " + _vm._s(fuel.journey.route.destination))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.journey.route.distance))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.current_fuel))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.fuel_requested))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.fuel_issued))]), _vm._v(" "), (fuel.status == 'Awaiting Approval' && _vm.$root.can('approve-fuel')) ? _c('td', [(fuel.status == 'Awaiting Approval') ? _c('button', {
-      staticClass: "btn btn-xs btn-success",
+    staticClass: "table no-wrap"
+  }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.vehicles), function(truck) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(truck.plate_number))]), _vm._v(" "), (truck.trailer) ? _c('td', [_vm._v(_vm._s(truck.trailer.trailer_number))]) : _vm._e(), _vm._v(" "), (!truck.trailer) ? _c('td', [_vm._v(" -- ")]) : _vm._e(), _vm._v(" "), (truck.driver) ? _c('td', [_vm._v(_vm._s(truck.driver.first_name))]) : _vm._e(), _vm._v(" "), (!truck.driver) ? _c('td', [_vm._v("--")]) : _vm._e(), _vm._v(" "), _c('td', [_vm._v(_vm._s(truck.current_fuel))]), _vm._v(" "), _c('td', [_c('button', {
+      staticClass: "btn btn-sm btn-success",
       attrs: {
         "type": "button",
         "name": "button"
       },
       on: {
         "click": function($event) {
-          _vm.approveFuel(fuel.id)
+          _vm.fuel(truck)
         }
       }
-    }, [_vm._v("Approve")]) : _vm._e()]) : _c('td', [_vm._v(_vm._s(fuel.status))]), _vm._v(" "), _c('td', [(_vm.$root.can('edit-fuel')) ? _c('span', {
-      staticClass: "btn btn-xs btn-info",
-      on: {
-        "click": function($event) {
-          _vm.edit(fuel)
-        }
-      }
-    }, [_c('i', {
-      staticClass: "fa fa-pencil"
-    })]) : _vm._e(), _vm._v(" "), (_vm.$root.can('delete-fuel')) ? _c('button', {
-      staticClass: "btn btn-xs btn-danger btn-destroy",
-      attrs: {
-        "data-toggle": "popover",
-        "data-item": fuel.id
-      }
-    }, [_c('i', {
-      staticClass: "fa fa-trash"
-    })]) : _vm._e()])])
-  })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("Journey")]), _vm._v(" "), _c('th', [_vm._v("Date")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th', [_vm._v("Vehicle")]), _vm._v(" "), _c('th', [_vm._v("Source")]), _vm._v(" "), _c('th', [_vm._v("Destination")]), _vm._v(" "), _c('th', [_vm._v("Journey Distance")]), _vm._v(" "), _c('th', [_vm._v("Current Fuel")]), _vm._v(" "), _c('th', [_vm._v("Fuel Requested")]), _vm._v(" "), _c('th', [_vm._v("Fuel Issued")]), _vm._v(" "), _c('th', [_vm._v("Status")]), _vm._v(" "), _c('th', [_vm._v("Action")])])])], 1)])])])])])])
+    }, [_vm._v("Fuel")])])])
+  })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("Plate #")]), _vm._v(" "), _c('th', [_vm._v("Trailer")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th', [_vm._v("Current Ltrs")]), _vm._v(" "), _c('th', [_vm._v("Action")])])])], 1)])])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('thead', [_c('tr', [_c('th', [_vm._v("Fuel No.")]), _vm._v(" "), _c('th', [_vm._v("Journey")]), _vm._v(" "), _c('th', [_vm._v("Date")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th', [_vm._v("Vehicle")]), _vm._v(" "), _c('th', [_vm._v("Source - Destination")]), _vm._v(" "), _c('th', [_vm._v("Journey Distance")]), _vm._v(" "), _c('th', [_vm._v("Current Fuel")]), _vm._v(" "), _c('th', [_vm._v("Fuel Requested")]), _vm._v(" "), _c('th', [_vm._v("Fuel Issued")]), _vm._v(" "), _c('th', [_vm._v("Status")]), _vm._v(" "), _c('th', [_vm._v("Action")])])])
+  return _c('div', {
+    staticClass: "panel-heading"
+  }, [_c('strong', [_vm._v("Trucks Awaiting Fueling ")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('thead', [_c('tr', [_c('th', [_vm._v("Plate #")]), _vm._v(" "), _c('th', [_vm._v("Trailer")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th', [_vm._v("Current Ltrs")]), _vm._v(" "), _c('th', [_vm._v("Action")])])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
@@ -115905,8 +112794,6 @@ if (false) {
 }
 
 /***/ }),
-/* 453 */,
-/* 454 */,
 /* 455 */,
 /* 456 */,
 /* 457 */,
@@ -115914,40 +112801,16 @@ if (false) {
 /* 459 */,
 /* 460 */,
 /* 461 */,
-/* 462 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(340);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(5)("3ce944df", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-4ec201bf&scoped=true!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./view.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-4ec201bf&scoped=true!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./view.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
+/* 462 */,
 /* 463 */,
-/* 464 */
+/* 464 */,
+/* 465 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(342);
+var content = __webpack_require__(341);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -115967,26 +112830,24 @@ if(false) {
 }
 
 /***/ }),
-/* 465 */,
 /* 466 */,
-/* 467 */,
-/* 468 */
+/* 467 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(346);
+var content = __webpack_require__(343);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(5)("41972ef6", content, false);
+var update = __webpack_require__(5)("731d016e", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-fae61546!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./index.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-fae61546!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./index.vue");
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-e1c31ca8!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./index.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-e1c31ca8!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./index.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -115996,11 +112857,13 @@ if(false) {
 }
 
 /***/ }),
+/* 468 */,
 /* 469 */,
-/* 470 */
+/* 470 */,
+/* 471 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(265);
+module.exports = __webpack_require__(264);
 
 
 /***/ })

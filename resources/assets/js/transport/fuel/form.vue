@@ -7,19 +7,6 @@
         <div class="panel-body">
             <form action="#" role="form" @submit.prevent="store">
                 <div class="row">
-                  <div class="col-sm-3">
-                    <div class="form-group">
-                      <label for="date">Date</label>
-                      <input type="text" v-model="fuel.date" class="form-control input-sm datepicker" id="date" name="date" required>
-                    </div>
-
-                    <div class="form-group">
-                      <label for="journey_id">Journey</label>
-                      <select class="" name="journey_id" v-model="fuel.journey_id" class="form-control input-sm select2" required @change="selectJourney">
-                        <option v-for="journey in journeys" :value="journey.id">JRNY-{{ journey.id }}</option>
-                      </select>
-                    </div>
-                  </div>
 
                     <div class="col-sm-3">
                       <strong>Route: RT-{{ current_route.id}}</strong><br>
