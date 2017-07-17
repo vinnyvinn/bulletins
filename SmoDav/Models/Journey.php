@@ -64,7 +64,6 @@ class Journey extends SmoDavModel
         return $this->belongsTo(Driver::class);
     }
 
-
     public function scopePending($builder)
     {
         return $builder->where('status', Constants::STATUS_PENDING);
@@ -82,7 +81,11 @@ class Journey extends SmoDavModel
 
     public function user()
     {
-      return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
+    public function gatepass()
+    {
+        return $this->hasOne(GatePass::class);
+    }
 }

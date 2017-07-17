@@ -14,6 +14,7 @@ class PermissionsTableSeeder extends Seeder
     {
         $transportModules = [
             'contract', 'contract-template', 'journey', 'inspection', 'delivery', 'mileage', 'fuel', 'route-card',
+            'gatepass'
         ];
 
         $commonModules = [

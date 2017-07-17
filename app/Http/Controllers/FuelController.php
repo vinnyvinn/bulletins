@@ -232,7 +232,6 @@ class FuelController extends Controller
             'message' => 'Approval Revoked.',
             'fuel'    => $fuel,
         ]);
-
     }
 
     public function awaiting()

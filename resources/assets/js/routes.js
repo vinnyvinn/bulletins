@@ -57,14 +57,6 @@ module.exports = [
     { path: '/trucks/:id', component: require('./transport/trucks/view.vue'), beforeEnter: authMiddleware },
     { path: '/trucks/:id/edit', component: require('./transport/trucks/form.vue'), beforeEnter: authMiddleware },
     { path: '/trucks/:id/reports', component: require('./transport/trucks/report.vue'), beforeEnter: authMiddleware },
-    //
-    // { path: '/trailers', component: require('./components/trailers/index.vue'), beforeEnter: authMiddleware },
-    // { path: '/trailers/create', component: require('./components/trailers/form.vue'), beforeEnter: authMiddleware },
-    // { path: '/trailers/:id', component: require('./components/trailers/view.vue'), beforeEnter: authMiddleware },
-    // { path: '/trailers/:id/edit', component: require('./components/trailers/form.vue'), beforeEnter: authMiddleware },
-
-    { path: '/users', component: require('./components/users/index.vue'), beforeEnter: authMiddleware },
-    { path: '/users/create', component: require('./components/users/form.vue'), beforeEnter: authMiddleware },
 
     { path: '/contracts', component: require('./transport/contracts/index.vue'), beforeEnter: authMiddleware },
     { path: '/contracts/r/:print', component: require('./transport/contracts/index.vue'), beforeEnter: authMiddleware },
@@ -94,6 +86,12 @@ module.exports = [
     { path: '/fuel/create/:new', component: require('./transport/fuel/form.vue'), beforeEnter: authMiddleware },
     { path: '/fuel/:id', component: require('./transport/fuel/view.vue'), beforeEnter: authMiddleware },
     { path: '/fuel/:id/edit', component: require('./transport/fuel/form.vue'), beforeEnter: authMiddleware },
+
+    { path: '/gatepass', component: require('./transport/gatepass/awaiting.vue'), beforeEnter: authMiddleware },
+    { path: '/gatepass/completed', component: require('./transport/gatepass/index.vue'), beforeEnter: authMiddleware },
+    { path: '/gatepass/create/:new', component: require('./transport/gatepass/form.vue'), beforeEnter: authMiddleware },
+    { path: '/gatepass/:id', component: require('./transport/gatepass/view.vue'), beforeEnter: authMiddleware },
+    { path: '/gatepass/:id/edit', component: require('./transport/gatepass/form.vue'), beforeEnter: authMiddleware },
 
     { path: '/mileage', component: require('./transport/mileage/awaiting.vue'), beforeEnter: authMiddleware },
     { path: '/mileage/completed', component: require('./transport/mileage/index.vue'), beforeEnter: authMiddleware },
