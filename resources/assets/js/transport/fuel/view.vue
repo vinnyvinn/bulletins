@@ -276,6 +276,7 @@
         <br>
 
         <div class="row" v-for="(mileage, index) in mileages">
+            <div v-if="index % 2 == 1" class="page-break"></div>
             <div class="col-xs-6">
                 <h3>
                     <img style='display:block' src="/images/logo.jpg" alt="Sanghani">
@@ -363,10 +364,7 @@
                     .....................................................................
                 </div>
             </div>
-
             <hr>
-
-            <div v-if="index % 2 == 0" class="page-break"></div>
         </div>
     </div>
 </div>
