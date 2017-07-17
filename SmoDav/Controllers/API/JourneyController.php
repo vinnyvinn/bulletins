@@ -176,6 +176,12 @@ class JourneyController extends Controller
         })
             ->orWhere('id', $journey->driver_id)
             ->get(['id', 'first_name', 'last_name', 'mobile_phone']);
+
+            $contracts = Contract::open()
+                ->orWhere('id', $journey->contract_id)
+                ->whereRaw("(select count(*) from journeys where contracts.id = journeys.contract_id and status = 'Approved') < contracts.trucks_allocated")
+                ->with('client')
+                ->get(['id', 'raw', 'name', 'client_id', 'ignore_delivery_note']);
             
 
         return Response::json([
@@ -188,6 +194,7 @@ class JourneyController extends Controller
             'journey' => $journey,
             'contract' => $contract,
             'drivers' => $drivers,
+            'contracts' => $contracts,
             'allocated' => Journey::open()->where('contract_id', $journey->contract_id)->count() - 1,
         ]);
     }

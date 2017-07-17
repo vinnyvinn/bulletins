@@ -259,6 +259,10 @@
 
             this.$root.isLoading = true;
 
+            if (this.$route.params.id) {
+                return this.checkState();
+            }
+
             http.get('/api/journey/create').then((response) => {
                 this.clients = response.clients;
                 this.routes = response.routes;
@@ -280,7 +284,7 @@
 
                     return response;
                 })
-            }).then(() => this.checkState())
+            }).then(() => this.setupUI())
                 .catch(() => this.$root.isLoading = false);
         },
 
@@ -389,8 +393,10 @@
 
         methods: {
             addTruck() {
-              this.journey.trucks.push({'id': this.journey.truck_id});
-              this.journey.driver_id = this.truck.driver ? this.truck.driver.id : null;
+              setTimeout(() => {
+                this.journey.trucks.push({'id': this.journey.truck_id});
+                this.journey.driver_id = this.truck.driver ? this.truck.driver.id : null;
+              }, 500);
             },
 
             updateBooleans() {
@@ -427,7 +433,6 @@
             },
 
             updateFields() {
-
                 $('#route_id').select2('destroy');
                 setTimeout(() => {
                   http.get('/api/trucks_already_allocated/' + this.journey.contract_id).then((response) => {
@@ -443,7 +448,7 @@
 
             checkState() {
                 if (this.$route.params.id) {
-                    http.get('/api/journey/' + this.$route.params.id).then((response) => {
+                    return http.get('/api/journey/' + this.$route.params.id).then((response) => {
                         this.clients = response.clients;
                         this.routes = response.routes;
                         this.classifications = response.cargo_classifications;
@@ -451,6 +456,9 @@
                         this.carriage_points = response.carriage_points;
                         this.trucks = response.trucks;
                         this.drivers = response.drivers;
+                        this.contracts = response.contracts;
+                        this.isContractsLoaded = true;
+
 //                            this.contract = response.contract;
                         let journey = response.journey.raw;
                         journey.enquiry_from = journey.enquiry_from == 'null' ? '' : this.journey.enquiry_from;
@@ -461,9 +469,9 @@
                         this.updateBooleans();
                         this.status = response.journey.status;
                         this.setupUI();
+                        this.$root.isLoading = false;
                     });
                 }
-                this.setupUI();
             },
 
             formatDate(date) {
