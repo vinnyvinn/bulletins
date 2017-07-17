@@ -162,7 +162,6 @@ class JourneyController extends Controller
 
         $trucks = Vehicle::typeTruck()
             ->has('trailer')
-            ->has('driver')
             ->with([
                 'driver' => function ($builder) {
                     return $builder->select(['id', 'first_name', 'last_name', 'mobile_phone']);
@@ -177,11 +176,11 @@ class JourneyController extends Controller
             ->orWhere('id', $journey->driver_id)
             ->get(['id', 'first_name', 'last_name', 'mobile_phone']);
 
-            $contracts = Contract::open()
-                ->orWhere('id', $journey->contract_id)
-                ->whereRaw("(select count(*) from journeys where contracts.id = journeys.contract_id and status = 'Approved') < contracts.trucks_allocated")
-                ->with('client')
-                ->get(['id', 'raw', 'name', 'client_id', 'ignore_delivery_note']);
+        $contracts = Contract::open()
+            ->orWhere('id', $journey->contract_id)
+            ->whereRaw("(select count(*) from journeys where contracts.id = journeys.contract_id and status = 'Approved') < contracts.trucks_allocated")
+            ->with('client')
+            ->get(['id', 'raw', 'name', 'client_id', 'ignore_delivery_note']);
             
 
         return Response::json([
