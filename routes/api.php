@@ -80,7 +80,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('new_inspection/{id}', '\SmoDav\Controllers\API\InspectionController@newInspection');
 
     Route::resource('fuel-route', '\SmoDav\Controllers\API\FuelTruckRouteController');
+    Route::get('gatepass/print/{id}', '\SmoDav\Controllers\API\GatePassController@printPass');
     Route::get('gatepass/awaiting', '\SmoDav\Controllers\API\GatePassController@awaiting');
     Route::resource('gatepass', '\SmoDav\Controllers\API\GatePassController');
 });
-    Route::get('gatepass/print/{id}', '\SmoDav\Controllers\API\GatePassController@printPass');
