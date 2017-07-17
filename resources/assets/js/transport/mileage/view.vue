@@ -3,7 +3,7 @@
         <div class="panel-heading">
             <strong>Mileage Allocation</strong>
             <div class="form-group pull-right">
-                <router-link to="/mileage" class="btn btn-danger">Back</router-link>
+                <router-link to="/mileage/completed" class="btn btn-danger">Back</router-link>
                 <button type="button" name="button" v-if="mileage.status == 'Pending Approval'" class="btn btn-success" @click="approveMileage(mileage.id)">Approve</button>
             </div>
         </div>
@@ -180,7 +180,7 @@
                         this.fuel = response.fuel;
                         this.$root.isLoading = false;
                         alert2(this.$root, [response.message], 'success');
-                        this.$router.push('/mileage');
+                        this.$router.push('/mileage/completed');
                     }).catch((error) => {
                         this.$root.isLoading = false;
                         alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');

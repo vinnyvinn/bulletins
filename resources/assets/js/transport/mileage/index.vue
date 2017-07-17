@@ -13,6 +13,7 @@
                                 <thead>
                                 <tr>
                                     <th>Mileage #</th>
+                                    <th>Status</th>
                                     <th>Journey #</th>
                                     <th>Mileage Type</th>
                                     <th class="text-right">Std Amount</th>
@@ -26,6 +27,10 @@
                                     <td>
                                         <router-link v-if="$root.can('view-mileage')" :to="'/mileage/' + mileage.id">MLG-{{ mileage.id }}</router-link>
                                         <span v-else>MLG-{{ mileage.id }}</span>
+                                    </td>
+                                    <td>
+                                        <span v-if="mileage.status == 'Approved'" class="label label-success">Approved</span>
+                                        <span v-else class="label label-info">Pending</span>
                                     </td>
                                     <td>
                                         <router-link v-if="$root.can('create-journey')" :to="'/journey/' + mileage.journey_id">JRNY-{{ mileage.journey_id }}</router-link>
@@ -50,6 +55,7 @@
                                 <tfoot>
                                 <tr>
                                     <th>Mileage #</th>
+                                    <th>Status</th>
                                     <th>Journey #</th>
                                     <th>Mileage Type</th>
                                     <th class="text-right">Std Amount</th>
@@ -112,7 +118,7 @@
             destroy(id) {
                 this.$root.isLoading = true;
 
-                http.destroy('api/mileage/' + id + '/?s=' + window.Laravel.station_id).then(response => {
+                http.destroy('/api/mileage/' + id + '/?s=' + window.Laravel.station_id).then(response => {
                     if (response.status != 'success') {
                         this.$root.isLoading = false;
                         alert2(this.$root, [response.message], 'danger');

@@ -35,7 +35,9 @@ class MileageController extends Controller
             ->with(['journey' => function ($builder) {
                 return $builder->select(['id', 'status']);
             }])
-            ->get(['id', 'journey_id', 'mileage_type', 'standard_amount', 'requested_amount', 'approved_amount']);
+            ->get([
+                'id', 'journey_id', 'mileage_type', 'standard_amount', 'requested_amount', 'approved_amount', 'status'
+            ]);
             
         return Response::json([
             'mileages' => $mileages
@@ -128,7 +130,6 @@ class MileageController extends Controller
             return $builder->where('station_id', request('s'));
         })
             ->where('id', $mileage->journey_id)
-            ->has('delivery')
             ->with(['driver', 'truck.trailer.model.make', 'route', 'mileages' => function ($builder) use ($mileage) {
                 return $builder->where('mileage_type', '<>', $mileage->mileage_type)->select(['journey_id', 'mileage_type']);
             }])
@@ -197,14 +198,20 @@ class MileageController extends Controller
     public function destroy(Mileage $mileage)
     {
         $mileage->delete();
+        $mileages = Mileage::when(request('s'), function ($builder) {
+            return $builder->where('station_id', request('s'));
+        })
+            ->with(['journey' => function ($builder) {
+                return $builder->select(['id', 'status']);
+            }])
+            ->get([
+                'id', 'journey_id', 'mileage_type', 'standard_amount', 'requested_amount', 'approved_amount', 'status'
+            ]);
 
         return Response::json([
             'status' => 'success',
             'message' => 'Successfully deleted mileage voucher.',
-            'mileages' => Mileage::when(request('s'), function ($builder) {
-                return $builder->where('station_id', request('s'));
-            })
-                ->get()
+            'mileages' => $mileages
         ]);
     }
 
@@ -250,8 +257,13 @@ class MileageController extends Controller
             return $builder->where('station_id', request('s'));
         })
             ->open()
-            ->has('delivery')
             ->doesntHave('mileage')
+            ->whereHas('inspection', function ($query) {
+                return $query->where('suitable_for_loading', true);
+            })
+            ->where(function ($builder) {
+                return $builder->has('delivery')->orWhere('ignore_delivery_note', 1);
+            })
             ->with(['truck', 'driver', 'truck.trailer'])
             ->get(['id', 'raw', 'truck_id', 'driver_id']);
 

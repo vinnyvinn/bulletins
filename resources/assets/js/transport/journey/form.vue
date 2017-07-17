@@ -348,10 +348,14 @@
             contract() {
                 let contract = this.contracts.filter(e => e.id == this.journey.contract_id);
                 if (contract.length) {
-                    return JSON.parse(contract[0].raw);
+                    let selectedContract = contract[0];
+                    contract = JSON.parse(selectedContract.raw);
+                    contract.ignore_delivery_note = selectedContract.ignore_delivery_note;
+                    return contract;
                 }
 
                 return {
+                    ignore_delivery_note: 0,
                     cargo_classification_id: null,
                     cargo_type_id: null,
                     name: '',
@@ -503,6 +507,7 @@
                 this.journey.truck_plate_number = truck.plate_number;
                 this.journey.route_source = route.source;
                 this.journey.route_destination = route.destination;
+                this.journey.ignore_delivery_note = this.contract.ignore_delivery_note;
 
                 let data = mapToFormData(this.journey, this.uploads, typeof this.$route.params.id === 'string');
 

@@ -69,6 +69,15 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <label>Mileage &amp; Fuel</label>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input disabled v-model="contract.ignore_delivery_note" type="checkbox"> Allow fuel and mileage before delivery note?
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
                                     <label>Weights</label>
                                     <div class="checkbox">
                                         <label>
@@ -585,7 +594,7 @@ export default {
         updateBooleans() {
             let keys = [
                 'capture_loading_weights', 'capture_offloading_weights', 'packages_captured', 'ls_loading_weights',
-                'ls_offloading_weights', 'lh_offloading_weights', 'lh_loading_weights', 'subcontracted'
+                'ls_offloading_weights', 'lh_offloading_weights', 'lh_loading_weights', 'subcontracted', 'ignore_delivery_note'
             ];
 
             keys.forEach(item => this.setBoolState(item));

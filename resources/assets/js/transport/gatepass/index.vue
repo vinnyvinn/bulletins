@@ -11,8 +11,8 @@
               <table class="table nowrap">
                 <thead>
                   <tr>
-                    <th>Print</th>
                     <th>Gatepass No.</th>
+                    <th>Print</th>
                     <th>Vehicle</th>
                     <th>Journey</th>
                     <th>Date</th>
@@ -24,9 +24,9 @@
                 </thead>
                 <tbody>
                   <tr v-for="gatepass in gatepasses">
-                    <td><button class="btn btn-success btn-xs" @click.prevent="printPass(gatepass.id)">PRINT</button></td>
                     <td v-if="$root.can('view-gatepass')"><router-link :to="'/gatepass/' + gatepass.id">PASS-{{ gatepass.id }}</router-link></td>
                     <td v-else>PASS-{{ gatepass.id }}</td>
+                    <td><button class="btn btn-success btn-xs" @click.prevent="printPass(gatepass.id)">PRINT</button></td>
                     <td>{{ gatepass.journey.truck.plate_number }}</td>
                     <td>JRNY-{{ gatepass.journey_id }}</td>
                     <td>{{ gatepass.gatepass_date }}</td>
@@ -43,8 +43,8 @@
                 </tbody>
                 <tfoot>
                   <tr>
-                    <th>Print</th>
                     <th>Gatepass No.</th>
+                    <th>Print</th>
                     <th>Vehicle</th>
                     <th>Journey</th>
                     <th>Date</th>

@@ -240,8 +240,13 @@ class FuelController extends Controller
             return $builder->where('station_id', request('s'));
         })
             ->open()
-            ->has('delivery')
             ->doesntHave('fuel')
+            ->whereHas('inspection', function ($query) {
+                return $query->where('suitable_for_loading', true);
+            })
+            ->where(function ($builder) {
+                return $builder->has('delivery')->orWhere('ignore_delivery_note', 1);
+            })
             ->with(['truck', 'driver', 'truck.trailer'])
             ->get(['id', 'raw', 'truck_id', 'driver_id']);
 

@@ -30,7 +30,7 @@ class InspectionController extends Controller
         $inspections = Inspection::when(request('s'), function ($builder) {
             return $builder->where('station_id', request('s'));
         })
-            ->with(['journey','journey.truck','journey.truck.trailer','journey.driver'])
+            ->with(['journey', 'journey.truck', 'journey.truck.trailer', 'journey.driver'])
             ->get([
                 'id', 'journey_id', 'status', 'from_station', 'to_station', 'created_at','suitable_for_loading'
             ]);
@@ -95,7 +95,7 @@ class InspectionController extends Controller
      */
     public function show($id)
     {
-        $inspection = Inspection::with(['journey','journey.truck','journey.truck.driver','journey.truck.trailer','journey.route'])
+        $inspection = Inspection::with(['journey','journey.truck','journey.driver','journey.truck.trailer','journey.route'])
         ->where('id', $id)
         ->first();
         $inspection->fields = json_decode($inspection->fields);
