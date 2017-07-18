@@ -57,12 +57,12 @@ class VehicleFactory
 
     public static function all($columns = ['*'])
     {
-        return Vehicle::with(['trailer', 'driver'])->get($columns);
+        return Vehicle::with(['trailer', 'driver', 'make', 'model'])->get($columns);
     }
 
     public static function findOrFail($id)
     {
-        return Vehicle::with(['trailer', 'driver'])->findOrFail($id);
+        return Vehicle::with(['trailer', 'driver', 'make', 'model'])->findOrFail($id);
     }
 
     public static function create($attributes)
@@ -123,7 +123,10 @@ class VehicleFactory
             }
         }
 
-        unset($attributes['_method'], $attributes['_token'], $attributes['driver'], $attributes['trailer']);
+        unset(
+            $attributes['_method'], $attributes['_token'], $attributes['driver'], $attributes['trailer'],
+            $attributes['make'], $attributes['model']
+        );
 
         foreach ($attributes as $key => $value) {
             $truck->{$key} = $value;

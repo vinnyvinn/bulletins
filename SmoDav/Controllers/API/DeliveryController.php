@@ -94,8 +94,7 @@ class DeliveryController extends Controller
      */
     public function show($id)
     {
-        $journeys = Journey::open()
-            ->whereHas('inspection', function ($query) {
+        $journeys = Journey::whereHas('inspection', function ($query) {
                 return $query->where('suitable_for_loading', true);
             })
             ->whereHas('delivery', function ($query) use ($id) {

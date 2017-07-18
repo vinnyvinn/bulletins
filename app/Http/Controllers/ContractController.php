@@ -171,7 +171,7 @@ class ContractController extends Controller
             },
             'journeys.truck' => function ($builder) {
                 return $builder->select([
-                    'trucks.id', 'plate_number'
+                    'vehicles.id', 'plate_number'
                 ]);
             },
             'deliveries' => function ($builder) {

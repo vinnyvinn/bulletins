@@ -236,8 +236,8 @@
 
             checkState() {
                 return http.get('/api/delivery/' + this.$route.params.id).then((response) => {
-                    this.deliveryNote = response.delivery;
                     this.journeys = response.journeys;
+                    this.deliveryNote = response.delivery;
                 });
             },
             store() {

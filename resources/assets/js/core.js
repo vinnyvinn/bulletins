@@ -201,7 +201,7 @@ export function prepareTable(includeFilters = false, ignoreColumns = []) {
                     if (ignoreColumns.indexOf($index) !== -1) return;
                     // if ($index == cols[0].length - 3 || $index == cols[0].length - 1) return;
                     let column = this;
-                    let selectControl = $('<br/><select class="form-control input-sm select2"></select>')
+                    let selectControl = $('<br/><select class="form-control input-sm select2 dt_filter"></select>')
 
                         .appendTo($(column.header()))
                         .on('change', function() {

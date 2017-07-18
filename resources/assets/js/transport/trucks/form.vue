@@ -15,8 +15,33 @@
                                 <select v-model="truck.type" class="form-control" id="type" name="type" required>
                                     <option value="Truck">Truck</option>
                                     <option value="Trailer">Trailer</option>
-                                    <option value="Van">Van</option>
+                                    <option value="Bus">Bus</option>
+                                    <option value="Bulldozer">Bulldozer</option>
+                                    <option value="Compact">Compact</option>
+                                    <option value="Crane">Crane</option>
+                                    <option value="DoubleCab Pick-up">DoubleCab Pick-up</option>
+                                    <option value="Excavator">Excavator</option>
+                                    <option value="Fuel Tanker">Fuel Tanker</option>
+                                    <option value="Lorry">Lorry</option>
+                                    <option value="Mini-Bus">Mini-Bus</option>
+                                    <option value="Motor Cycle">Motor Cycle</option>
+                                    <option value="Motor Grader">Motor Grader</option>
+                                    <option value="Motor Grader">Motor Grader</option>
                                     <option value="Other">Other</option>
+                                    <option value="Pickup">Pickup</option>
+                                    <option value="Roller">Roller</option>
+                                    <option value="Saloon">Saloon</option>
+                                    <option value="Station Wagon">Station Wagon</option>
+                                    <option value="Van">Van</option>
+                                    <option value="Wheel-Loader">Wheel-Loader</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sub_contracted">Sub-Contract Vehicle</label>
+                                <select v-model="truck.sub_contracted" class="form-control" id="sub_contracted" name="sub_contracted" required>
+                                    <option value="0">No</option>
+                                    <option value="1">Yes</option>
                                 </select>
                             </div>
 
@@ -27,12 +52,16 @@
 
                             <div class="form-group">
                                 <label for="make">Make</label>
-                                <input v-model="truck.make" type="text" class="form-control text-uppercase" id="make" name="make" required>
+                                <select v-model="truck.make_id" class="form-control" id="make" name="make" required>
+                                    <option v-for="make in makes" :value="make.id">{{ make.name }}</option>
+                                </select>
                             </div>
 
                             <div class="form-group">
                                 <label for="model">Model</label>
-                                <input v-model="truck.model" type="text" class="form-control text-uppercase" id="model" name="model" required>
+                                <select v-model="truck.model_id" class="form-control" id="model" name="model" required>
+                                    <option v-for="model in models" :value="model.id">{{ model.name }}</option>
+                                </select>
                             </div>
 
                             <div class="form-group">
@@ -85,39 +114,54 @@
     export default {
         created() {
             this.$root.isLoading = true;
+
             if (this.$route.params.id) {
-                http.get('/api/truck/create?truck_id=' + this.$route.params.id)
+                return http.get('/api/truck/create?truck_id=' + this.$route.params.id)
                     .then((response) => {
+                        this.makes = response.makes;
                         this.trailers = response.trailers;
                         this.drivers = response.drivers;
+                        setTimeout(() => {
+                            this.truck = response.truck;
+                        }, 500);
                     })
-                    .then(() => this.checkState())
                     .then(() => this.$root.isLoading = false)
                     .catch(() => this.$root.isLoading = false);
-
-                return;
             }
 
             http.get('/api/truck/create').then((response) => {
+                this.makes = response.makes;
                 this.trailers = response.trailers;
                 this.drivers = response.drivers;
             })
-            .then(() => this.$root.isLoading = false)
-            .catch(() => this.$root.isLoading = false);
+                .then(() => this.$root.isLoading = false)
+                .catch(() => this.$root.isLoading = false);
         },
 
+        computed: {
+            models() {
+                if (! this.truck.make_id) return [];
+
+                let filtered = this.makes.filter(e => e.id == this.truck.make_id);
+                if (! filtered.length) return [];
+
+                return filtered[0].models;
+            }
+        },
 
         data() {
             return {
                 trailers: [],
                 drivers: [],
+                makes: [],
                 truck: {
+                    sub_contracted: 0,
                     type: 'Truck',
                     trailer_id: '',
                     plate_number: '',
                     max_load: '',
-                    make: '',
-                    model: '',
+                    make_id: null,
+                    model_id: null,
                     status: 'Active',
                     location: 'Awaiting Allocation',
                     driver_id: ''
@@ -126,15 +170,6 @@
         },
 
         methods: {
-            checkState() {
-                if (this.$route.params.id) {
-                    return http.get('/api/truck/' + this.$route.params.id)
-                        .then((response) => {
-                            this.truck = response.truck;
-                        });
-                }
-            },
-
             store() {
                 let request = null;
 
@@ -151,6 +186,7 @@
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                 });
             },
+
             addUdfToObject (slug) {
               Vue.set(this.truck,slug,'');
             }

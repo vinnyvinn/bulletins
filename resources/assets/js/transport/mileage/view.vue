@@ -131,13 +131,16 @@
         },
 
         created() {
+            if (this.$route.params.id) {
+                return this.checkState();
+            }
+
             http.get('/api/mileage/create').then((response) => {
                 this.journeys = response.journeys;
             });
         },
 
         mounted() {
-            this.checkState();
             $('input[type="number"]').on('focus', function () {
                 this.select();
             });
@@ -172,11 +175,10 @@
             },
 
             checkState() {
-                if (this.$route.params.id) {
-                    http.get('/api/mileage/' + this.$route.params.id).then((response) => {
-                        this.mileage = response.mileage;
-                    });
-                }
+                http.get('/api/mileage/' + this.$route.params.id).then((response) => {
+                    this.journeys = response.journeys;
+                    this.mileage = response.mileage;
+                });
             },
 
             formatNumber(number) {

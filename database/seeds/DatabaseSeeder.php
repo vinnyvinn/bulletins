@@ -15,6 +15,10 @@ class DatabaseSeeder extends Seeder
          $this->call(UsersTableSeeder::class);
          $this->call(PassportSeeder::class);
          $this->call(IntegrationsSeeder::class);
+         $this->call(CarriagePointsSeeder::class);
+         $this->call(CargoSeeder::class);
+         $this->call(MakesAndModelsSeeder::class);
+
 //         $this->call(DevelopmentSeeder::class);
     }
 }

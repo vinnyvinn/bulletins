@@ -59,6 +59,12 @@ module.exports = [
     { path: '/progress/offloading', component: require('./components/truck-progress/stage-offloading.vue'), beforeEnter: authMiddleware },
     { path: '/progress/in-yard', component: require('./components/truck-progress/stage-inyard.vue'), beforeEnter: authMiddleware },
 
+    // { path: '/trailers', component: require('./components/trailers/index.vue'), beforeEnter: authMiddleware },
+    // { path: '/trailers/create', component: require('./components/trailers/form.vue'), beforeEnter: authMiddleware },
+    // { path: '/trailers/:id', component: require('./components/trailers/view.vue'), beforeEnter: authMiddleware },
+    // { path: '/trailers/:id/edit', component: require('./components/trailers/form.vue'), beforeEnter: authMiddleware },
+>>>>>>> master
+
     { path: '/users', component: require('./components/users/index.vue'), beforeEnter: authMiddleware },
     { path: '/users/create', component: require('./components/users/form.vue'), beforeEnter: authMiddleware },
 

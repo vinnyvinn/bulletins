@@ -11,10 +11,10 @@
             <strong>Truck:</strong> {{ truck.plate_number }}
           </div>
           <div class="col-xs-2" v-if="truck.trailer">
-            <strong>Trailer:</strong> {{ truck.trailer.trailer_number }}
+            <strong>Trailer:</strong> {{ truck.trailer ? truck.trailer.plate_number : '' }}
           </div>
           <div class="col-xs-2">
-            <label for="activity_time"><strong>Time</strong></label>
+            <!--<label for="activity_time"><strong>Time</strong></label>-->
             <!-- <select class="form-control select-2 input-sm" id="activity_time" name="activity_time">
               <option value="Today">Today</option>
               <option value="Yesterday">Yesterday</option>
@@ -54,7 +54,7 @@
         </div>
         <hr>
         <div class="row table-responsive">
-          <table class="table nowrap table-hover" v-if="activities.length">
+          <div class="col-sm-12"><table class="table nowrap table-hover" v-if="activities.length">
             <thead>
               <tr>
                 <th>#</th>
@@ -78,6 +78,7 @@
             </tbody>
           </table>
           <h5 v-if="!activities.length" class="text-center">This truck doesn't have activity history.</h5>
+        </div>
       </div>
     </div>
     </div>

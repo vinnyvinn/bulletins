@@ -72,7 +72,7 @@ class JourneyController extends Controller
                 return $journey->truck_id;
             })
             ->toArray();
-            
+
         $ls = \DB::table('contract_truck')->get(['vehicle_id'])
             ->map(function ($item) {
                 return $item->vehicle_id;
@@ -80,10 +80,12 @@ class JourneyController extends Controller
             ->toArray();
 
 
-
-        $trucks = Vehicle::typeTruck()->with([
-            'driver' => function ($builder) {
-                return $builder->select(['id', 'first_name', 'last_name', 'mobile_phone']);
+        $trucks = Vehicle::typeTruck()
+            ->has('trailer')
+            ->has('driver')
+            ->with([
+                'driver' => function ($builder) {
+                    return $builder->select(['id', 'first_name', 'last_name', 'mobile_phone']);
                 },
             ])
             ->whereNotIn('id', $journeys)
@@ -164,11 +166,14 @@ class JourneyController extends Controller
             })
             ->toArray();
 
-        $trucks = Vehicle::typeTruck()->with([
-            'driver' => function ($builder) {
-                return $builder->select(['id', 'first_name', 'last_name', 'mobile_phone']);
-            },
-        ])
+        $trucks = Vehicle::typeTruck()
+            ->has('trailer')
+            ->has('driver')
+            ->with([
+                'driver' => function ($builder) {
+                    return $builder->select(['id', 'first_name', 'last_name', 'mobile_phone']);
+                },
+            ])
             ->whereNotIn('id', $journeys)
             ->get(['driver_id', 'id', 'plate_number']);
 
