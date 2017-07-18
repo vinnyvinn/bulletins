@@ -1,7 +1,7 @@
 function authMiddleware(to, from, next) {
-    let allowedPaths = [
-        '/station-selection', '/404', '/403', '/trucks', '/drivers', '/routes', '/trailers', '/login'
-    ];
+    if (to.path === '/login') {
+        return next();
+    }
 
     if (! localStorage.getItem('foeiwafwfuwe')) {
         return next({path: '/login'});
@@ -11,10 +11,22 @@ function authMiddleware(to, from, next) {
         return next({path: '/login'});
     }
 
-    let isAllowed = (allowedPaths.indexOf(to.path) === -1) && (to.path.indexOf('/administrator') === -1) &&
-        (to.path.indexOf('/trucks') === -1);
+    if (window.Laravel.station_id) return next();
 
-    if (! window.Laravel.station_id && isAllowed) {
+    let allowedPaths = [
+        '/station-selection', '/404', '/403', '/trucks', '/drivers', '/routes', '/trailers', '/login',
+        '/fuel-routes'
+    ];
+
+    if (to.path.indexOf('/administrator') !== -1) return next();
+
+    let i;
+
+    for(i = 0; i < allowedPaths.length; i++) {
+        if (to.path.indexOf(allowedPaths[i]) !== -1) return next();
+    }
+
+    if (! window.Laravel.station_id) {
         return next({path: '/station-selection'});
     }
 
@@ -29,6 +41,11 @@ module.exports = [
     { path: '/routes/create', component: require('./components/routes/form.vue'), beforeEnter: authMiddleware },
     { path: '/routes/:id/edit', component: require('./components/routes/form.vue'), beforeEnter: authMiddleware },
     { path: '/routes/:id', component: require('./components/routes/view.vue'), beforeEnter: authMiddleware },
+
+    { path: '/fuel-routes', component: require('./transport/fuel_routes/index.vue'), beforeEnter: authMiddleware },
+    { path: '/fuel-routes/create', component: require('./transport/fuel_routes/form.vue'), beforeEnter: authMiddleware },
+    { path: '/fuel-routes/:id/edit', component: require('./transport/fuel_routes/form.vue'), beforeEnter: authMiddleware },
+    { path: '/fuel-routes/:id', component: require('./transport/fuel_routes/view.vue'), beforeEnter: authMiddleware },
 
     { path: '/drivers', component: require('./components/drivers/index.vue'), beforeEnter: authMiddleware },
     { path: '/drivers/create', component: require('./components/drivers/form.vue'), beforeEnter: authMiddleware },
@@ -90,13 +107,21 @@ module.exports = [
     { path: '/inspection/:id', component: require('./transport/inspection/view.vue'), beforeEnter: authMiddleware },
     { path: '/inspection/:id/edit', component: require('./transport/inspection/form.vue'), beforeEnter: authMiddleware },
 
-    { path: '/fuel', component: require('./transport/fuel/index.vue'), beforeEnter: authMiddleware },
-    { path: '/fuel/create', component: require('./transport/fuel/form.vue'), beforeEnter: authMiddleware },
+    { path: '/fuel', component: require('./transport/fuel/awaiting.vue'), beforeEnter: authMiddleware },
+    { path: '/fuel/completed', component: require('./transport/fuel/index.vue'), beforeEnter: authMiddleware },
+    { path: '/fuel/create/:new', component: require('./transport/fuel/form.vue'), beforeEnter: authMiddleware },
     { path: '/fuel/:id', component: require('./transport/fuel/view.vue'), beforeEnter: authMiddleware },
     { path: '/fuel/:id/edit', component: require('./transport/fuel/form.vue'), beforeEnter: authMiddleware },
 
-    { path: '/mileage', component: require('./transport/mileage/index.vue'), beforeEnter: authMiddleware },
-    { path: '/mileage/create', component: require('./transport/mileage/form.vue'), beforeEnter: authMiddleware },
+    { path: '/gatepass', component: require('./transport/gatepass/awaiting.vue'), beforeEnter: authMiddleware },
+    { path: '/gatepass/completed', component: require('./transport/gatepass/index.vue'), beforeEnter: authMiddleware },
+    { path: '/gatepass/create/:new', component: require('./transport/gatepass/form.vue'), beforeEnter: authMiddleware },
+    { path: '/gatepass/:id', component: require('./transport/gatepass/view.vue'), beforeEnter: authMiddleware },
+    { path: '/gatepass/:id/edit', component: require('./transport/gatepass/form.vue'), beforeEnter: authMiddleware },
+
+    { path: '/mileage', component: require('./transport/mileage/awaiting.vue'), beforeEnter: authMiddleware },
+    { path: '/mileage/completed', component: require('./transport/mileage/index.vue'), beforeEnter: authMiddleware },
+    { path: '/mileage/create/:new', component: require('./transport/mileage/form.vue'), beforeEnter: authMiddleware },
     { path: '/mileage/:id', component: require('./transport/mileage/view.vue'), beforeEnter: authMiddleware },
     { path: '/mileage/:approve/approve', component: require('./transport/mileage/form.vue'), beforeEnter: authMiddleware },
     { path: '/mileage/:id/edit', component: require('./transport/mileage/form.vue'), beforeEnter: authMiddleware },
@@ -104,8 +129,9 @@ module.exports = [
     // { path: '/route-card', component: require('./transport/routecard/index.vue'), beforeEnter: authMiddleware },
     { path: '/route-card/create', component: require('./transport/routecard/form.vue'), beforeEnter: authMiddleware },
 
-    { path: '/delivery', component: require('./transport/delivery_note/index.vue'), beforeEnter: authMiddleware },
-    { path: '/delivery/create', component: require('./transport/delivery_note/form.vue'), beforeEnter: authMiddleware },
+    { path: '/delivery', component: require('./transport/delivery_note/awaiting.vue'), beforeEnter: authMiddleware },
+    { path: '/delivery/loaded', component: require('./transport/delivery_note/index.vue'), beforeEnter: authMiddleware },
+    { path: '/delivery/create/:journey', component: require('./transport/delivery_note/form.vue'), beforeEnter: authMiddleware },
     { path: '/delivery/:id', component: require('./transport/delivery_note/view.vue'), beforeEnter: authMiddleware },
     { path: '/delivery/:unload/unload', component: require('./transport/delivery_note/form.vue'), beforeEnter: authMiddleware },
     { path: '/delivery/:id/edit', component: require('./transport/delivery_note/form.vue'), beforeEnter: authMiddleware },
@@ -121,9 +147,9 @@ module.exports = [
     { path: '/reports', component: require('./transport/reports/index.vue'), beforeEnter: authMiddleware },
     { path: '/reports/{details}', component: require('./transport/reports/view.vue'), beforeEnter: authMiddleware },
 
+    { path: '/403', component: require('./transport/403.vue'), beforeEnter: authMiddleware },
     { path: '/station-selection', component: require('./transport/station.vue'), beforeEnter: authMiddleware },
 
-    { path: '/403', component: require('./transport/403.vue'), beforeEnter: authMiddleware },
     { path: '*', component: require('./transport/404.vue'), beforeEnter: authMiddleware },
 
 

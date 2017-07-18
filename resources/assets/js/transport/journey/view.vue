@@ -1,15 +1,20 @@
 <template>
-    <div class="panel panel-default">
-        <div class="panel-heading">
+    <div>
+        <div class="panel panel-default" v-if="! showModal">
+            <div class="panel-heading">
             <div class="row">
                 <div class="col-sm-6">
                     <h4><strong>Journey Details: JRNY-{{ $route.params.id }} ({{ status }})</strong></h4>
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group pull-right" v-if="$root.can('approve-journey')">
-                        <button @click.prevent="approveJourney" class="btn btn-success" v-if="status == 'Pending Approval'">Approve Journey</button>
+                        <button @click.prevent="approveJourney" class="btn btn-success"
+                                v-if="status == 'Pending Approval'">Approve Journey
+                        </button>
                         <!-- <button @click.prevent="closeJourney" class="btn btn-danger" v-if="(status == 'Pending Approval') || (status == 'Approved')">Close Journey</button> -->
-                        <button @click.prevent="showModal = true" class="btn btn-danger" v-if="(status == 'Pending Approval') || (status == 'Approved')">Close Journey</button>
+                        <button @click.prevent="showModal = true" class="btn btn-danger"
+                                v-if="(status == 'Approved') && journey_close.mileage">Close Journey
+                        </button>
                         <!-- <button @click.prevent="reopenJourney" class="btn btn-primary" v-if="status == 'Closed'">Reopen Journey</button> -->
                     </div>
                 </div>
@@ -22,7 +27,9 @@
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label for="is_contract_related">Contract Related?</label>
-                            <select disabled v-model="journey.is_contract_related" @change="fetchContracts" class="form-control input-sm" id="is_contract_related" name="is_contract_related" required>
+                            <select disabled v-model="journey.is_contract_related" @change="fetchContracts"
+                                    class="form-control input-sm" id="is_contract_related" name="is_contract_related"
+                                    required>
                                 <option value="0">No</option>
                                 <option value="1">Yes</option>
                             </select>
@@ -30,7 +37,8 @@
 
                         <div class="form-group" v-if="journey.is_contract_related == '1'">
                             <label for="contract_id">Contract</label>
-                            <input disabled id="contract_id" type="text" class="form-control input-sm" :value="'CNTR-' + contract.id">
+                            <input disabled id="contract_id" type="text" class="form-control input-sm"
+                                   :value="'CNTR-' + contract.id">
                         </div>
 
                         <div class="form-group">
@@ -43,7 +51,8 @@
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label for="journey_type">Job Type</label>
-                            <select disabled v-model="journey.journey_type" class="form-control input-sm" id="journey_type" name="journey_type" required>
+                            <select disabled v-model="journey.journey_type" class="form-control input-sm"
+                                    id="journey_type" name="journey_type" required>
                                 <option value="Local">Local</option>
                                 <option value="International">International</option>
                             </select>
@@ -51,15 +60,19 @@
 
                         <div class="form-group">
                             <label for="route_id">Route</label>
-                            <select disabled name="route_id" id="route_id" v-model="journey.route_id" class="form-control input-sm select2" required>
-                                <option v-for="route in routes" :value="route.id">{{ route.source }} - {{ route.destination }} ({{ route.distance }} KM)</option>
+                            <select disabled name="route_id" id="route_id" v-model="journey.route_id"
+                                    class="form-control input-sm select2" required>
+                                <option v-for="route in routes" :value="route.id">{{ route.source
+                                    }} - {{ route.destination }} ({{ route.distance }} KM)
+                                </option>
                             </select>
                         </div>
 
 
                         <div class="form-group">
                             <label for="driver_id">Driver</label>
-                            <h5>{{ journey_close.truck.driver.first_name }} {{ journey_close.truck.driver.last_name }} ({{ journey_close.truck.driver.mobile_phone }})</h5>
+                            <h5>{{ journey_close.driver.first_name }} {{ journey_close.driver.last_name
+                                }} ({{ journey_close.driver.mobile_phone }})</h5>
                         </div>
 
                     </div>
@@ -67,26 +80,29 @@
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label for="truck_id">Vehicle Reg. No</label>
-                            <select disabled v-model="journey.truck_id" class="form-control input-sm" id="truck_id" name="truck_id" required>
+                            <select disabled v-model="journey.truck_id" class="form-control input-sm" id="truck_id"
+                                    name="truck_id" required>
                                 <option v-for="truck in trucks" :value="truck.id">{{ truck.plate_number }}</option>
                             </select>
                         </div>
 
                         <div class="form-group">
                             <label for="enquiry_from">Enquiry from</label>
-                            <input disabled type="text" v-model="journey.enquiry_from" class="form-control input-sm datepicker" id="enquiry_from" name="enquiry_from">
+                            <input disabled type="text" v-model="journey.enquiry_from"
+                                   class="form-control input-sm datepicker" id="enquiry_from" name="enquiry_from">
                         </div>
                     </div>
 
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label for="job_date">Job Date</label>
-                            <input disabled type="text" v-model="journey.job_date" class="form-control input-sm datepicker" id="job_date" name="job_date" required>
+                            <input disabled type="text" v-model="journey.job_date"
+                                   class="form-control input-sm datepicker" id="job_date" name="job_date" required>
                         </div>
 
                         <!--<div class="form-group">-->
-                            <!--<label for="ref_no">Ref No</label>-->
-                            <!--<input disabled type="text" v-model="journey.ref_no" class="form-control input-sm" id="ref_no" name="ref_no">-->
+                        <!--<label for="ref_no">Ref No</label>-->
+                        <!--<input disabled type="text" v-model="journey.ref_no" class="form-control input-sm" id="ref_no" name="ref_no">-->
                         <!--</div>-->
                     </div>
 
@@ -98,13 +114,17 @@
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label for="name">Contract Name</label>
-                            <input disabled v-model="contract.name" type="text" class="form-control input-sm" id="name" name="name" required>
+                            <input disabled v-model="contract.name" type="text" class="form-control input-sm" id="name"
+                                   name="name" required>
                         </div>
 
                         <div class="form-group">
                             <label for="cargo_classification_id">Cargo Classification</label>
-                            <select disabled v-model="contract.cargo_classification_id" name="cargo_classification_id" id="cargo_classification_id" class="form-control input-sm select2" required>
-                                <option v-for="classification in classifications" :value="classification.id">{{ classification.name }}</option>
+                            <select disabled v-model="contract.cargo_classification_id" name="cargo_classification_id"
+                                    id="cargo_classification_id" class="form-control input-sm select2" required>
+                                <option v-for="classification in classifications" :value="classification.id">
+                                    {{ classification.name }}
+                                </option>
                             </select>
                         </div>
                     </div>
@@ -113,13 +133,16 @@
                         <div class="form-group">
                             <label for="client_id">Client</label>
                             <select disabled v-model="contract.client_id" name="client_id" id="client_id" class="form-control input-sm select2" required>
-                                <option v-for="client in clients" :value="client.DCLink">{{ client.Name }} ({{ client.Account }})</option>
+                                <option v-for="client in clients" :value="client.DCLink">{{ client.Name
+                                    }} ({{ client.Account }})
+                                </option>
                             </select>
                         </div>
 
                         <div class="form-group">
                             <label for="cargo_type_id">Cargo Type</label>
-                            <select disabled v-model="contract.cargo_type_id" name="cargo_type_id" id="cargo_type_id" class="form-control input-sm select2" required>
+                            <select disabled v-model="contract.cargo_type_id" name="cargo_type_id" id="cargo_type_id"
+                                    class="form-control input-sm select2" required>
                                 <option v-for="type in viableCargoTypes" :value="type.id">{{ type.name }}</option>
                             </select>
                         </div>
@@ -129,13 +152,16 @@
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label for="start_date">Contract Start</label>
-                            <input disabled v-model="contract.start_date" type="text" class="datepicker form-control input-sm" id="start_date" name="start_date" required>
+                            <input disabled v-model="contract.start_date" type="text"
+                                   class="datepicker form-control input-sm" id="start_date" name="start_date" required>
                         </div>
 
                         <div class="form-group">
                             <label for="quantity">Quantity</label>
                             <div class="input-group">
-                                <input disabled v-model="contract.quantity" min="0" type="number" class="form-control input-sm" id="quantity" name="quantity" describedby="quantity-addon" required>
+                                <input disabled v-model="contract.quantity" min="0" type="number"
+                                       class="form-control input-sm" id="quantity" name="quantity"
+                                       describedby="quantity-addon" required>
                                 <span class="input-group-addon" id="quantity-addon">KGs</span>
                             </div>
                         </div>
@@ -145,13 +171,15 @@
                         <div class="form-group">
                             <label for="route_id">Route</label>
                             <select disabled v-model="contract.route_id" class="form-control input-sm select2" required>
-                                <option v-for="route in routes" :value="route.id">{{ route.source }} - {{ route.destination }} ({{ route.distance }} KM)</option>
+                                <option v-for="route in routes" :value="route.id">{{ route.source }} - {{ route.destination }} ({{ route.distance }} KM)
+                                </option>
                             </select>
                         </div>
 
                         <div class="form-group">
                             <label for="loading_point_id">Loading Point</label>
-                            <select disabled v-model="contract.loading_point_id" name="loading_point_id" id="loading_point_id" class="form-control input-sm select2" required>
+                            <select disabled v-model="contract.loading_point_id" name="loading_point_id"
+                                    id="loading_point_id" class="form-control input-sm select2" required>
                                 <option v-for="point in carriage_points" :value="point.id">{{ point.name }}</option>
                             </select>
                         </div>
@@ -186,7 +214,8 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="sub_address_3">Address Line 3</label>
-                            <input disabled v-model="journey.sub_address_3" type="text" class="form-control input-sm" id="sub_address_3" name="sub_address_3">
+                            <input disabled v-model="journey.sub_address_3" type="text" class="form-control input-sm"
+                                   id="sub_address_3" name="sub_address_3">
                         </div>
                     </div>
                     <div class="col-sm-6">
@@ -204,7 +233,8 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="sub_address_2">Address Line 2</label>
-                            <input disabled required v-model="journey.sub_address_2" type="text" class="form-control input-sm" id="sub_address_2" name="sub_address_2">
+                            <input disabled required v-model="journey.sub_address_2" type="text"
+                                   class="form-control input-sm" id="sub_address_2" name="sub_address_2">
                         </div>
                     </div>
                 </div>
@@ -215,58 +245,173 @@
                     <router-link to="/journey" class="btn btn-danger">Back</router-link>
                 </div>
             </form>
-
-            <modal :showModal="showModal" :closeAction="closeModal" v-if="showModal">
-              <h5 slot="header">Close Journey (JRNY-{{ $route.params.id }})</h5>
-              <div slot="body" class="row">
-                <div class="col-xs-6">
-                  Journey: JNY-{{journey.id}}<br>
-                  Contract: CNTR-{{ journey.contract_id }}<br>
-                  From: {{ journey.route_source }}<br>
-                  To: {{ journey.route_destination }}<br>
-                  Truck: {{ journey.truck_plate_number }}<br>
-                  Driver: {{ journey_close.truck.driver.first_name}} {{ journey_close.truck.driver.last_name}}<br>
-                  <hr>
-                  <p v-if="belowReserve"><i style="color: red;">Fuel in truck ({{journey_close.current_fuel}} ltrs) is below reserve by
-                    {{ fuelDifference }} ltrs.
-                    Driver to pay Ksh. {{ fuelDifference * parseInt(journey_close.fuel_price) }}</i></p>
-                    <hr>
-                    <p v-if="journey_close.current_km">Kms Covered: {{ parseInt(journey_close.current_km) - parseInt(journey_close.truck.current_km) }}</p><br>
-                    <p v-if="journey_close.current_fuel">Fuel Used (ltrs): {{ parseInt(journey_close.truck.current_fuel) - parseInt(journey_close.current_fuel) }}</p><br>
-                </div>
-                <div class="col-xs-6">
-                  Journey Start Km readings: {{ journey_close.truck.current_km }}<br>
-                  Mileage Allocated: {{ journey_close.mileage.approved_amount }}<br>
-                  Top-up Mileage: {{ journey_close.mileage.top_up_amount }}<br>
-                  Fuel Allocated: {{ journey_close.truck.current_fuel }}<br>
-                  Top-up fuel: {{ journey_close.fuel.top_up }}<br>
-                  <div class="col-xs-12">
-                    <div class="form-group">
-                      <label for="current_km">Truck Current Km reading:</label>
-                      <input type="number" name="current_km" class="form-control input-sm" v-model="journey_close.current_km" @change="validateKms">
-                    </div>
-                  </div>
-                  <div class="col-xs-12">
-                    <div :class="{'form-group': true, 'has-error': belowReserve}">
-                      <label class="control-label" for="current_km">Truck Current fuel reading:</label>
-                      <input type="number" id="current_fuel" name="current_fuel" class="form-control input-sm" v-model="journey_close.current_fuel" @change="">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div slot="footer" class="">
-                <button type="button" @click.prevent="closeJourney" class="btn btn-success" name="button">Process & Close</button>
-              </div>
-            </modal>
-
         </div>
+    </div>
+    <div v-if="showModal">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>Return Mileage Allocation</strong>
+                    </div>
+
+                    <div class="panel-body">
+                        <form action="#" role="form" @submit.prevent="closeJourney">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <fieldset class="wizag-fieldset-border">
+                                        <legend class="wizag-fieldset-border">Journey Details</legend>
+                                        <div class="form-group">
+                                            <label for="journey_id" class="col-sm-6">Journey Number</label>
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" disabled :value="'JRNY-' + journey_close.id">
+                                                <!--<select v-model="mileage.journey_id" class="form-control input-sm" id="journey_id" name="journey_id" required>-->
+                                                <!--<option v-for="journey in journeys" :value="journey.id">JRNY-{{ journey.id }}</option>-->
+                                                <!--</select>-->
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-6">Document Date</label>
+                                            <div class="col-sm-6">
+                                                <h5>{{ new Date().toLocaleDateString('en-GB') }}</h5>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="mileage_type" class="col-sm-6">Mileage Type</label>
+                                            <div class="col-sm-6">
+                                                <select disabled v-model="mileage.mileage_type" class="form-control input-sm" id="mileage_type" name="mileage_type" required>
+                                                    <option value="Return Mileage">Return Mileage</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <fieldset class="wizag-fieldset-border">
+                                        <legend class="wizag-fieldset-border">Vehicle Details</legend>
+                                        <div class="form-group">
+                                            <label class="col-sm-6">Vehicle Number</label>
+                                            <div class="col-sm-6">
+                                                <h5>{{ journey_close.truck.plate_number }}</h5>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-6">Trailer Attached</label>
+                                            <div class="col-sm-6">
+                                                <h5>{{ journey_close.truck.trailer.plate_number }}</h5>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-6">Trailer Type</label>
+                                            <div class="col-sm-6">
+                                                <h5>{{ journey_close.truck.trailer.type }}</h5>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <fieldset class="wizag-fieldset-border">
+                                        <legend class="wizag-fieldset-border">Driver Details</legend>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <img :src="getSource()" class="img-responsive">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <div class="form-group">
+                                                <label class="col-sm-6">Full Name</label>
+                                                <h5 class="col-sm-6">{{ journey_close.driver.first_name }} {{ journey_close.driver.last_name }}</h5>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-6">License #:</label>
+                                                <h5 class="col-sm-6">{{ journey_close.driver.dl_number }}</h5>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-6">National ID:</label>
+                                                <h5 class="col-sm-6">{{ journey_close.driver.identification_number }}</h5>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <fieldset class="wizag-fieldset-border">
+                                        <legend class="wizag-fieldset-border">Payment Details</legend>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label for="current_km">Truck Current Km reading:</label>
+                                                    <input min="0" type="number" name="current_km" class="form-control input-sm" v-model="journey_close.current_km" @change="validateKms" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div :class="{'form-group': true, 'has-error': belowReserve}">
+                                                    <label class="control-label" for="current_km">Truck Current fuel reading:</label>
+                                                    <input min="0" type="number" id="current_fuel" name="current_fuel" class="form-control input-sm" v-model="journey_close.current_fuel" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <p v-if="belowReserve">
+                                                    <i style="color: red;">
+                                                        Fuel in truck ({{journey_close.current_fuel}} ltrs) is below reserve by {{ fuelDifference }} ltrs.
+                                                        Driver to pay Ksh. {{ fuelDifference * parseInt(journey_close.fuel_price) }}
+                                                    </i>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <label>Standard Mileage Amount</label>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <h5 class="text-right"><strong>{{ formatNumber(journey_close.route.return_mileage) }}</strong></h5>
+                                            </div>
+
+                                            <div class="col-sm-6">
+                                                <label>Total Return Mileage Amount</label>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <h4 class="text-right"><strong>{{ parseInt(mileage.requested_amount).toLocaleString() }}</strong></h4>
+                                            </div>
+
+                                            <div class="col-sm-6" v-if="$route.params.id">
+                                                <label>Approved Amount</label>
+                                            </div>
+                                            <div class="col-sm-6"  v-if="$route.params.id">
+                                                <input min="0" :max="mileage.requested_amount" v-model="mileage.approved_amount" type="number" class="form-control input-sm" id="approved_amount" name="approved_amount">
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <div class="col-sm-10">
+                                            <label>Narration</label>
+                                            <textarea v-model="mileage.narration" name="narration" id="narration" rows="5" class="form-control input-sm"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="form-group">
+                                <button class="btn btn-success">Process</button>
+                                <button class="btn btn-danger" @click.prevent="showModal = false">Back</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
     </div>
 </template>
 
 <script>
-    import Modal from 'modal-vue'
     export default {
-      components: { Modal },
         created() {
             this.$root.isLoading = true;
             http.get('/api/journey/' + this.$route.params.id).then((response) => {
@@ -289,6 +434,7 @@
                 journey.fuel_price = 100;
                 journey.mileage_balance = '';
                 journey.below_reserve = false;
+                this.mileage.requested_amount = journey.route.return_mileage;
 
                 this.journey_close = journey;
 
@@ -300,11 +446,31 @@
                 this.$root.isLoading = false;
             });
         },
+        mounted() {
+            $(document).ready(function () {
+                $('input[type=number]').on('focus', function () {
+                    this.select();
+                });
+            });
+        },
 
         data() {
 
             return {
                 showModal: false,
+                mileage: {
+                    station_id: window.Laravel.station_id,
+                    journey_id: '',
+                    mileage_type: 'Return Mileage',
+                    standard_amount: 0,
+                    requested_amount: 0,
+                    approved_amount: '',
+                    balance_amount: '',
+                    narration: '',
+                    top_up: false,
+                    top_up_amount: 0,
+                    top_up_reason: ''
+                },
                 drivers: [],
                 trucks: [],
                 status: '',
@@ -340,16 +506,16 @@
                     sub_address_4: '',
                 },
                 journey_close: {
-                  truck: {
-                    driver: {}
-                  },
-                  fuel: {},
-                  mileage: {},
-                  current_km: '',
-                  current_fuel: '',
-                  fuel_reserve: 25,
-                  fuel_price: 100,
-                  mileage_balance: '',
+                    route: {},
+                    driver: {},
+                    truck: { trailer: {} },
+                    fuel: {},
+                    mileage: {},
+                    current_km: '',
+                    current_fuel: '',
+                    fuel_reserve: 25,
+                    fuel_price: 100,
+                    mileage_balance: '',
                 }
             };
         },
@@ -364,7 +530,7 @@
                 let timeSplit = this.shift.from_time.split(':');
 
                 date.setHours(timeSplit[0], timeSplit[1]);
-                date.setTime(date.getTime() + (parseInt(this.shift.hours) *60*60*1000));
+                date.setTime(date.getTime() + (parseInt(this.shift.hours) * 60 * 60 * 1000));
                 let minutes = date.getMinutes().toString();
                 let hours = date.getHours().toString();
 
@@ -374,33 +540,73 @@
                 return hours + ':' + minutes;
             },
             belowReserve() {
-              return this.fuelDifference > 0;
+                return this.fuelDifference > 0;
             },
             fuelDifference() {
-              let current = parseInt(this.journey_close.current_fuel);
+                let current = parseInt(this.journey_close.current_fuel);
 
-              if (isNaN(current)) return 0;
+                if (isNaN(current)) return 0;
 
-              if (current < 0) {
-                this.journey_close.current_fuel = current * -1;
-              }
+                if (current < 0) {
+                    this.journey_close.current_fuel = current * -1;
+                }
 
-              let fuel_difference = parseInt(this.journey_close.fuel_reserve) - current;
+                let fuel_difference = parseInt(this.journey_close.fuel_reserve) - current;
 
-              if(fuel_difference > 0){
-                this.journey_close.mileage_balance = parseInt(this.journey_close.fuel_price) * fuel_difference;
-              } else {
-                this.journey_close.mileage_balance = 0;
-              }
+                if (fuel_difference > 0) {
+                    this.journey_close.mileage_balance = parseInt(this.journey_close.fuel_price) * fuel_difference;
+                } else {
+                    this.journey_close.mileage_balance = 0;
+                }
 
-              return fuel_difference
-            }
+                return fuel_difference
+            },
+
+            mileageAmount() {
+                let defaultAmount = parseInt(this.journey_close.route.return_mileage);
+                if (! this.fuelDifference) return defaultAmount;
+
+                defaultAmount = defaultAmount - (parseInt(this.journey_close.fuel_price) * this.fuelDifference);
+
+                if (defaultAmount < 1) return 0;
+
+                return defaultAmount;
+            },
 
         },
 
+        watch: {
+            mileageAmount(value) {
+                this.mileage.requested_amount = value;
+            }
+        },
+
         methods: {
+            getSource() {
+                if(this.journey_close.driver.avatar){
+                    return this.journey_close.driver.avatar;
+                }
+
+                return '/images/default_avatar.png';
+            },
+
+            validateRequestedAmount() {
+                if (parseInt(this.mileage.requested_amount) > parseInt(this.journey_close.route.return_mileage)) {
+                    this.mileage.requested_amount = 0;
+                    return alert2(this.$root, ['Requested amount cannot be more than standard return allowance'], 'danger');
+                }
+            },
+
+            formatNumber(number) {
+                if (! number) {
+                    return '';
+                }
+
+                return parseFloat(number).toLocaleString();
+            },
+
             closeModal() {
-              this.showModal = false;
+                this.showModal = false;
             },
             updateBooleans() {
                 let keys = [
@@ -457,11 +663,13 @@
 
             closeJourney() {
                 this.$root.isLoading = true;
+                this.mileage.standard_amount = this.journey_close.route.return_mileage;
+                this.journey_close.returnMileage = this.mileage;
                 http.post('/api/journey/' + this.$route.params.id + '/close', this.journey_close).then((response) => {
-                  alert2(this.$root, [response.message], 'success');
-                  window._router.push({ path: '/journey' });
+                    alert2(this.$root, [response.message], 'success');
+                    window._router.push({path: '/journey'});
                 }).catch((error) => {
-                  alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
+                    alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                 });
                 this.$root.isLoading = false;
             },
@@ -476,17 +684,17 @@
                     .then((response) => {
                         this.$root.isLoading = false;
                         alert2(this.$root, [response.message], 'success');
-                        window._router.push({ path: '/journey' });
+                        window._router.push({path: '/journey'});
                     }).catch((error) => {
                     this.$root.isLoading = false;
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                 });
             },
             validateKms() {
-              if(parseInt(this.journey_close.current_km) < parseInt(this.journey_close.truck.current_km)){
-                this.journey_close.current_km = 0;
-                return alert2(this.$root, ['Current Km readings should be greater than previous Km reading'], 'danger');
-              }
+                if (parseInt(this.journey_close.current_km) < parseInt(this.journey_close.truck.current_km)) {
+                    this.journey_close.current_km = 0;
+                    return alert2(this.$root, ['Current Km readings should be greater than previous Km reading'], 'danger');
+                }
             },
 
         }

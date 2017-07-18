@@ -105,6 +105,7 @@
                 uploads: [],
                 stockItems: [],
                 contract: {
+                    ignore_delivery_note: false,
                     name: null,
                     rate: 'Per Tonne',
                     amount: null,
@@ -123,6 +124,7 @@
                 if (this.$route.params.id) {
                     http.get('/api/contract/' + this.$route.params.id).then((response) => {
                         this.contract = response.contract;
+                        this.contract.ignore_delivery_note = response.contractignore_delivery_note != 0;
                         this.contract.start_date = this.formatDate(this.contract.start_date);
                         this.contract.end_date = this.formatDate(this.contract.end_date);
                         this.setupUI();

@@ -1,54 +1,125 @@
-<div class="container">
-    <div class="col-md-6 col-md-offset-3">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <router-link to="/contracts" class="btn btn-danger btn-xs">Back</router-link>
-                <strong>Contract for {{ contract.name }}</strong>
-            </div>
-
-            <div class="panel-body">
-                <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active">
-                        <a href="#details" aria-controls="home" role="tab" data-toggle="tab">Contract Details</a>
-                    </li>
-                    <li role="presentation">
-                        <a href="#journeys" aria-controls="profile" role="tab" data-toggle="tab">Journeys</a>
-                    </li>
-                    <li role="presentation">
-                        <a href="#deliveries" aria-controls="profile" role="tab" data-toggle="tab">Deliveries</a>
-                    </li>
-                </ul>
-
-                <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="details">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <h5><strong>Billing Rate</strong></h5>
-                                {{ contract.rate }}
-                                <hr>
-
-                                <h5><strong>Amount</strong></h5>
-                                {{ contract.amount }}
-                                <hr>
-
-                            </div>
-                            <div class="col-sm-6">
-                                <h5><strong>Start Date</strong></h5>
-                                {{ contract.start_date }}
-                                <hr>
-
-                                <h5><strong>End Date</strong></h5>
-                                {{ contract.end_date }}
-                                <hr>
-                            </div>
-                        </div>
-
-                        <show-udfs module="Contracts" :state="contract"></show-udfs>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="journeys">...</div>
-                    <div role="tabpanel" class="tab-pane" id="deliveries">...</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+update vehicles set driver_id = case id
+when 11 then 144
+when 14 then 152
+when 17 then 208
+when 18 then 202
+when 22 then 187
+when 28 then 178
+when 30 then 183
+when 32 then 205
+when 35 then 118
+when 37 then 54
+when 43 then 181
+when 44 then 41
+when 45 then 180
+when 46 then 179
+when 47 then 204
+when 48 then 190
+when 49 then 191
+when 50 then 203
+when 51 then 186
+when 52 then 195
+when 53 then 185
+when 54 then 192
+when 55 then 188
+when 56 then 184
+when 57 then 182
+when 58 then 11
+when 59 then 126
+when 60 then 9
+when 61 then 25
+when 62 then 111
+when 63 then 154
+when 65 then 12
+when 66 then 32
+when 67 then 108
+when 68 then 26
+when 69 then 21
+when 70 then 132
+when 71 then 18
+when 72 then 15
+when 73 then 101
+when 74 then 10
+when 75 then 117
+when 76 then 36
+when 77 then 103
+when 78 then 14
+when 79 then 165
+when 80 then 68
+when 81 then 17
+when 83 then 106
+when 85 then 114
+when 86 then 115
+when 87 then 37
+when 88 then 20
+when 89 then 28
+when 90 then 33
+when 91 then 75
+when 92 then 146
+when 94 then 125
+when 95 then 45
+when 96 then 139
+when 97 then 35
+when 98 then 162
+when 100 then 42
+when 101 then 24
+when 102 then 127
+when 105 then 121
+when 106 then 47
+when 107 then 169
+when 108 then 102
+when 109 then 77
+when 115 then 74
+when 117 then 158
+when 118 then 83
+when 119 then 164
+when 120 then 147
+when 121 then 91
+when 122 then 163
+when 123 then 136
+when 124 then 81
+when 125 then 150
+when 127 then 76
+when 129 then 55
+when 130 then 135
+when 133 then 137
+when 136 then 148
+when 137 then 58
+when 138 then 73
+when 139 then 133
+when 144 then 200
+when 159 then 59
+when 160 then 51
+when 161 then 16
+when 162 then 62
+when 163 then 34
+when 164 then 159
+when 165 then 104
+when 166 then 160
+when 167 then 52
+when 168 then 138
+when 169 then 22
+when 170 then 110
+when 171 then 157
+when 173 then 69
+when 179 then 27
+when 184 then 53
+when 185 then 196
+when 186 then 112
+when 187 then 48
+when 189 then 23
+when 193 then 167
+when 194 then 38
+when 196 then 50
+when 197 then 166
+when 198 then 122
+when 199 then 57
+when 201 then 116
+when 202 then 79
+when 203 then 131
+when 204 then 156
+when 205 then 31
+when 206 then 194
+when 207 then 39
+when 208 then 71
+end

@@ -1,14 +1,21 @@
 
 
-    <div class="container">
-        <header class="text-center">
-            <h3>DELIVERY NOTE</h3>
-            <h3>{{ config('app.name') }}</h3>
-            <h5>{{ config('app.telephone') }}</h5>
-            <h5>{{ config('app.email') }}</h5>
-            <h5>{{ config('app.location') }}</h5>
-            <h2><strong>RKS - {{ str_pad($trip->id, 5, '0', STR_PAD_LEFT) }}</strong></h2>
-        </header>
+    <div class="container" style="font-size: 1.1em">
+        <div class="row">
+            <div class="col-xs-4">
+                <img style='display:block' src="/images/logo.jpg" alt="Sanghani">
+                <h3>DELIVERY NOTE</h3>
+            </div>
+            <div class="col-xs-4 text-center">
+                <h1><strong style="color: red !important;">RKS - {{ str_pad($trip->id, 5, '0', STR_PAD_LEFT) }}</strong></h1>
+            </div>
+            <div class="col-xs-4 text-right">
+                <h3>{{ config('app.name') }}</h3>
+                <h5>{{ config('app.telephone') }}</h5>
+                <h5>{{ config('app.email') }}</h5>
+                <h5>{{ config('app.location') }}</h5>
+            </div>
+        </div>
 
         <br>
 
@@ -22,7 +29,7 @@
             </div>
             <div class="col-xs-6">
                 <div class="pull-right">
-                    <h5><strong>Delivery Date: </strong> {{ Carbon\Carbon::parse($trip->journey->job_date)->format('d F Y') }}</h5>
+                    <h5><strong>Delivery Date: </strong> {{ Carbon\Carbon::parse($trip->loading_time)->format('d F Y') }}</h5>
                     <h5><strong>Journey No: </strong> JRNY-{{ $trip->journey->id }}</h5>
                     <h5><strong>Delivery To: </strong> {{ $trip->route->destination }}</h5>
                     <h5><strong>Weighbridge Ticket No: </strong> {{ $trip->loading_weighbridge_number }}</h5>
@@ -32,29 +39,33 @@
 
             <div class="col-xs-12">
                 <br>
-                <br>
-                <br>
                 <table class="table">
                     <thead>
                     <tr>
-                        <th>Loading Details</th>
-                        <th>Loading Date: {{ Carbon\Carbon::parse($trip->loading_time)->format('d F Y') }}</th>
-                        <th>Offloading Details</th>
-                        <th>Offloading Date: {{ $trip->offloading_time ? Carbon\Carbon::parse($trip->offloading_time)->format('d F Y') : '' }}</th>
+                        <th class="text-uppercase text-left"><h4><strong>Loading Details</strong></h4></th>
+                        <th class="text-uppercase text-left"><h4><strong>Loading Date: {{ Carbon\Carbon::parse($trip->loading_time)->format('d F Y') }}</strong></h4></th>
+                        <th class="text-uppercase text-left"><h4><strong>Offloading Details</strong></h4></th>
+                        <th class="text-uppercase text-left"><h4><strong>Offloading Date: {{ $trip->offloading_time ? Carbon\Carbon::parse($trip->offloading_time)->format('d F Y') : '' }}</strong></h4></th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
+                        <td><strong>Weighbridge Ticket No</strong></td>
+                        <td>{{ $trip->loading_weighbridge_number }}</td>
+                        <td><strong>Weighbridge Ticket No</strong></td>
+                        <td>{{ $trip->offloading_weighbridge_number ? $trip->offloading_weighbridge_number : '' }}</td>
+                    </tr>
+                    <tr>
                         <td><strong>Product</strong></td>
-                        <td><strong>No. of Packages</strong></td>
+                        <td><strong>{{ $trip->bags_loaded ? 'No. of Packages' : '' }}</strong></td>
                         <td><strong>Product</strong></td>
-                        <td><strong>No. of Packages</strong></td>
+                        <td><strong>{{ $trip->bags_loaded ? 'No. of Packages' : '' }}</strong></td>
                     </tr>
                     <tr>
                         <td>{{ $trip->contract->cargoType->name }}</td>
-                        <td>{{ $trip->bags_loaded }}</td>
+                        <td>{{ $trip->bags_loaded ?: '' }}</td>
                         <td>{{ $trip->contract->cargoType->name }}</td>
-                        <td>{{ $trip->bags_loaded }}</td>
+                        <td>{{ $trip->bags_loaded ?: '' }}</td>
                     </tr>
                     <tr>
                         <td><strong>Gross Weight</strong></td>
@@ -74,30 +85,27 @@
                         <td><strong>Net Weight</strong></td>
                         <td>{{ $trip->offloading_net_weight != 0.00 ? number_format($trip->offloading_net_weight, 2) . ' KGs' : '' }}</td>
                     </tr>
-                    <tr>
-                        <td><strong>Weighbridge Ticket No</strong></td>
-                        <td>{{ $trip->loading_weighbridge_number }}</td>
-                        <td><strong>Weighbridge Ticket No</strong></td>
-                        <td>{{ $trip->offloading_weighbridge_number ? $trip->offloading_weighbridge_number : '' }}</td>
-                    </tr>
                     </tbody>
                 </table>
 
             </div>
 
             <div class="col-xs-8">
+                <br>
+                <h5>
+                    <strong>Driver's Sign: __________________________________</strong>
+                </h5>
                 <h5>
                     <strong>Driver: </strong> {{ $trip->driver->first_name }}
                 </h5>
+                <br>
                 <h5>
-                    <strong>Driver's Sign: ____________________________________________________________________________</strong>
+                    <strong>Supervisor's Sign: _______________________________</strong>
                 </h5>
                 <h5>
-                    <strong>Supervisor Name: _______________________________________________________________________</strong>
+                    <strong>Supervisor Name: </strong> {{ $trip->user->first_name }} {{ $trip->user->last_name }}
                 </h5>
-                <h5>
-                    <strong>Supervisor's Sign: _______________________________________________________________________</strong>
-                </h5>
+                <br>
 
             </div>
             <div class="col-xs-4" style="border: 1px; border-style: solid;">
@@ -105,7 +113,7 @@
                   <strong>Vehicle Number: </strong> {{ $trip->truck->plate_number }}
               </h5>
               <h5>
-                  <strong>Attached Trailer: {{ $trip->truck->trailer->trailer_number }}</strong>
+                  <strong>Attached Trailer: {{ $trip->truck->trailer->plate_number }}</strong>
               </h5>
               <h5>
                   <strong>Lot No: {{ $trip->contract->lot_number }}</strong>
@@ -117,26 +125,34 @@
 
             <div class="col-xs-12">
                 <p>
-                    We, {{ $trip->contract->client->Name }}, hereby acknowledge the full receipt n full goods as per above details
+                    We, <strong>{{ $trip->contract->client->Name }}</strong>, hereby acknowledge the full receipt n full goods as per above details
                     and certify that the goods have arrived in good order and condition.
                 </p>
                 <br>
-                <strong>Remarks: </strong>_______________________________________________________________________________________________________________________________________
             </div>
 
-            <div class="col-xs-4">
-                <h5><strong>Date: </strong>___________________________________________</h5>
-            </div>
-            <div class="col-xs-4">
-                <h5><strong>Name: </strong>___________________________________________</h5>
-            </div>
-            <div class="col-xs-4">
-                <h5><strong>Signature</strong>________________________________</h5>
-                <h5><strong>Stamp:</strong></h5>
-                <div class="" style="border: 1px; border-style: solid;  height: 100px;">
-
+            <div class="col-xs-8">
+                <strong>Remarks: </strong>_____________________________________________________________________________
+                <br>______________________________________________________________________________________
+                <br>______________________________________________________________________________________
+                <br>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <h5><strong>Name: </strong>_________________________</h5>
+                    </div>
+                    <div class="col-xs-6">
+                        <h5><strong>Date: </strong>_________________________</h5>
+                    </div>
                 </div>
             </div>
+            <div class="col-xs-4">
+                <div class="" style="border: 1px; border-style: solid;  height: 100px;">
+                    <h5><strong>Stamp:</strong></h5>
+                </div>
+                <br>
+                <h5><strong>Signature</strong>_______________________</h5>
+            </div>
+
 
             <div class="col-xs-12">
                 <ul style="list-style-type: decimal">

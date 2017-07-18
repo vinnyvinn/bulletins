@@ -163,6 +163,7 @@ function flatten(arr) {
 export function prepareTable(includeFilters = false, ignoreColumns = []) {
     setTimeout(() => {
         let config = {
+            "order": [[ 0, "desc" ]],
             "lengthMenu": [ [-1, 10, 25, 50, 100, 200], ["All", 10, 25, 50, 100, 200] ],
             dom: '<".pull-right"f>l<".pull-right"B>rtip',
             buttons: [

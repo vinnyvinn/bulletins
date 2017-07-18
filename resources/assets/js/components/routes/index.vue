@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="row">
-            <div class="col-md-10 col-md-offset-1">
+            <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <div class="row">
@@ -43,7 +43,8 @@
                                 <th>To</th>
                                 <th class="text-right">Distance</th>
                                 <th class="text-right">Fuel Required</th>
-                                <th class="text-right">Allowance Amount</th>
+                                <th class="text-right">Going Amount</th>
+                                <th class="text-right">Return Amount</th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -55,6 +56,7 @@
                                 <td class="text-right">{{ route.distance }} KM</td>
                                 <td class="text-right">{{ Number(route.fuel_required).toLocaleString() }} Ltrs</td>
                                 <td class="text-right">KES {{ Number(route.allowance_amount).toLocaleString() }}</td>
+                                <td class="text-right">KES {{ Number(route.return_mileage).toLocaleString() }}</td>
                                 <td class="text-center">
                                     <span @click="view(route)" class="btn btn-xs btn-success"><i class="fa fa-eye"></i></span>
                                     <span @click="edit(route)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>

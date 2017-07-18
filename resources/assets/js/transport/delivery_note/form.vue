@@ -10,10 +10,12 @@
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label for="journey_id">Journey Number</label>
-                            <select :disabled="typeof $route.params.unload === 'string'" v-model="deliveryNote.journey_id" @change="journey" class="form-control input-sm" id="journey_id" name="journey_id" required>
-                                <option v-for="journey in journeys" :value="journey.id">JRNY-{{ journey.id }}</option>
-                            </select>
+                            <input disabled type="text" class="form-control" id="journey_id" :value="'JRN-' + journey.id">
+                            <!--<select :disabled="typeof $route.params.unload === 'string'" v-model="deliveryNote.journey_id" @change="journey" class="form-control input-sm" id="journey_id" name="journey_id" required>-->
+                                <!--<option v-for="journey in journeys" :value="journey.id">JRNY-{{ journey.id }}</option>-->
+                            <!--</select>-->
                         </div>
+
                     </div>
 
                     <div class="col-sm-3">
@@ -143,6 +145,13 @@
     export default {
         data() {
             return {
+                journey: {
+                    driver: {},
+                    truck: {
+                        trailer: {},
+                    },
+                    route: {},
+                },
                 journeys: [],
                 uploads: [],
                 deliveryNote: {
@@ -178,8 +187,9 @@
                 return;
             }
 
-            http.get('/api/delivery/create').then((response) => {
-                this.journeys = response.journeys;
+            http.get('/api/delivery/create?id=' + this.$route.params.journey).then((response) => {
+                this.journey = response.journey;
+                this.deliveryNote.journey_id = response.journey.id;
             });
         },
 
@@ -191,7 +201,7 @@
 
 
         computed: {
-            journey() {
+            journeydddd() {
                 let journey = this.journeys.filter(e => e.id == this.deliveryNote.journey_id);
                 if (journey.length) {
                     return journey[0];
@@ -226,7 +236,8 @@
 
                 return http.get('/api/delivery/' + id).then((response) => {
                     this.deliveryNote = response.delivery;
-                    this.journeys = response.journeys;
+                    this.journey = response.journey;
+                    this.deliveryNote.journey_id = response.journey.id;
                     this.$root.isLoading = false;
                 });
             },

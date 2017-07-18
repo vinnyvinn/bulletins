@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -11,7 +9,7 @@ use Illuminate\Http\Request;
 | routes are loaded by the RouteServiceProvider within a group which
 | is assigned the "api" middleware group. Enjoy building your API!
 |
-*/
+ */
 
 Route::middleware('auth:api')->get('/user', 'HomeController@user');
 
@@ -49,7 +47,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('parts/{id}/consume', '\SmoDav\Controllers\API\PartsController@consume');
     Route::post('parts/{id}/disapprove', '\SmoDav\Controllers\API\PartsController@disapprove');
 
-
     Route::post('contract/{id}/approve', 'ContractController@approve');
     Route::post('contract/{id}/close', 'ContractController@close');
     Route::post('contract/{id}/reopen', 'ContractController@reopen');
@@ -60,6 +57,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('journey/{id}/reopen', '\SmoDav\Controllers\API\JourneyController@reopen');
     Route::resource('journey', '\SmoDav\Controllers\API\JourneyController');
 
+    Route::get('mileage/awaiting', '\SmoDav\Controllers\API\MileageController@awaiting');
     Route::post('mileage/{id}/approve', '\SmoDav\Controllers\API\MileageController@approve');
     Route::post('mileage/{id}/close', '\SmoDav\Controllers\API\MileageController@close');
     Route::post('mileage/{id}/reopen', '\SmoDav\Controllers\API\MileageController@reopen');
@@ -67,13 +65,17 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::resource('inspection', '\SmoDav\Controllers\API\InspectionController');
     Route::get('delivery/print/{id}', '\SmoDav\Controllers\API\DeliveryController@printNote');
+    Route::get('delivery/awaiting', '\SmoDav\Controllers\API\DeliveryController@awaiting');
     Route::resource('delivery', '\SmoDav\Controllers\API\DeliveryController');
     Route::get('dashboard', '\SmoDav\Controllers\API\DashboardController@index');
+
+    Route::get('fuel/awaiting', 'FuelController@awaiting');
     Route::resource('fuel', 'FuelController');
+
     Route::get('approve/{id}', 'FuelController@approve');
     Route::resource('route-card', 'RouteCardController');
     Route::get('approve_mileage/{id}', '\SmoDav\Controllers\API\MileageController@approve');
-    Route::get('trucks_already_allocated/{contract_id}', '\SmoDav\Controllers\API\JourneyController@trucks_already_allocated');
+    Route::get('trucks_already_allocated/{contract_id}', '\SmoDav\Controllers\API\JourneyController@trucksAlreadyAllocated');
     Route::get('truck-report/{id}', '\SmoDav\Controllers\API\VehicleController@report');
     Route::get('new_inspection/{id}', '\SmoDav\Controllers\API\InspectionController@newInspection');
 
@@ -84,4 +86,10 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('lsfuel', '\SmoDav\Controllers\API\LocalShunting\LSFuelController');
     Route::resource('lsgatepass', '\SmoDav\Controllers\API\LocalShunting\GatePassController');
     Route::resource('lsdelivery', '\SmoDav\Controllers\API\LocalShunting\LSDeliveryController');
+
+    Route::resource('fuel-route', '\SmoDav\Controllers\API\FuelTruckRouteController');
+    Route::get('gatepass/print/{id}', '\SmoDav\Controllers\API\GatePassController@printPass');
+    Route::get('gatepass/awaiting', '\SmoDav\Controllers\API\GatePassController@awaiting');
+    Route::resource('gatepass', '\SmoDav\Controllers\API\GatePassController');
+
 });

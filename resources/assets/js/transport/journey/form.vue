@@ -30,12 +30,10 @@
                             </select>
                         </div>
 
-
                         <div class="form-group">
                             <label for="enquiry_from">Enquiry from</label>
                             <input :disabled="journey.is_contract_related == '1'" type="text" v-model="journey.enquiry_from" class="form-control input-sm" id="enquiry_from" name="enquiry_from">
                         </div>
-
 
                     </div>
 
@@ -90,16 +88,24 @@
                             </select>
                         </div>
 
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="driver_id">Driver</label><br>
-                            {{ truck.driver.first_name }} {{ truck.driver.last_name }}
+
+                            {{ truck.driver ? truck.driver.first_name : '' }} {{ truck.driver ? truck.last_name : '' }}
+                        </div> -->
+
+                        <div class="form-group">
+                            <label for="driver_id">Driver</label>
+                            <select name="driver_id" id="driver_id" v-model="journey.driver_id" class="form-control input-sm select2" required>
+                                <option v-for="driver in drivers" :value="driver.id">{{ driver.first_name }} {{ driver.last_name }} ({{ driver.mobile_phone }})</option>
+                            </select>
                         </div>
                     </div>
 
 
 
-
-                    <!-- <div class="col-sm-3">
+<!-- 
+                    <div class="col-sm-3">
                         <div class="form-group">
                             <label for="ref_no">Ref No</label>
                             <input type="text" v-model="journey.ref_no" class="form-control input-sm" id="ref_no" name="ref_no">
@@ -253,6 +259,10 @@
 
             this.$root.isLoading = true;
 
+            if (this.$route.params.id) {
+                return this.checkState();
+            }
+
             http.get('/api/journey/create').then((response) => {
                 this.clients = response.clients;
                 this.routes = response.routes;
@@ -274,7 +284,7 @@
 
                     return response;
                 })
-            }).then(() => this.checkState())
+            }).then(() => this.setupUI())
                 .catch(() => this.$root.isLoading = false);
         },
 
@@ -342,10 +352,14 @@
             contract() {
                 let contract = this.contracts.filter(e => e.id == this.journey.contract_id);
                 if (contract.length) {
-                    return JSON.parse(contract[0].raw);
+                    let selectedContract = contract[0];
+                    contract = JSON.parse(selectedContract.raw);
+                    contract.ignore_delivery_note = selectedContract.ignore_delivery_note;
+                    return contract;
                 }
 
                 return {
+                    ignore_delivery_note: 0,
                     cargo_classification_id: null,
                     cargo_type_id: null,
                     name: '',
@@ -379,8 +393,10 @@
 
         methods: {
             addTruck() {
-              this.journey.trucks.push({'id': this.journey.truck_id});
-              this.journey.driver_id = this.truck.driver.id;
+              setTimeout(() => {
+                this.journey.trucks.push({'id': this.journey.truck_id});
+                this.journey.driver_id = this.truck.driver ? this.truck.driver.id : null;
+              }, 500);
             },
 
             updateBooleans() {
@@ -417,7 +433,6 @@
             },
 
             updateFields() {
-
                 $('#route_id').select2('destroy');
                 setTimeout(() => {
                   http.get('/api/trucks_already_allocated/' + this.journey.contract_id).then((response) => {
@@ -433,7 +448,7 @@
 
             checkState() {
                 if (this.$route.params.id) {
-                    http.get('/api/journey/' + this.$route.params.id).then((response) => {
+                    return http.get('/api/journey/' + this.$route.params.id).then((response) => {
                         this.clients = response.clients;
                         this.routes = response.routes;
                         this.classifications = response.cargo_classifications;
@@ -441,6 +456,9 @@
                         this.carriage_points = response.carriage_points;
                         this.trucks = response.trucks;
                         this.drivers = response.drivers;
+                        this.contracts = response.contracts;
+                        this.isContractsLoaded = true;
+
 //                            this.contract = response.contract;
                         let journey = response.journey.raw;
                         journey.enquiry_from = journey.enquiry_from == 'null' ? '' : this.journey.enquiry_from;
@@ -451,9 +469,9 @@
                         this.updateBooleans();
                         this.status = response.journey.status;
                         this.setupUI();
+                        this.$root.isLoading = false;
                     });
                 }
-                this.setupUI();
             },
 
             formatDate(date) {
@@ -468,6 +486,7 @@
                         autoclose: true,
                         format: 'dd/mm/yyyy',
                         todayHighlight: true,
+                        startDate: '0d',
                     });
 
                     $('#job_date').datepicker().on('changeDate', (e) => {
@@ -478,6 +497,7 @@
                         $('#truck_id').select2().on('change', e => {
                             this.journey.truck_id = e.target.value;
                             this.addTruck();
+                            $('#driver_id').select2().val(this.truck.driver_id).trigger('change');
                         });
                         $('#driver_id').select2().on('change', e => this.journey.driver_id = e.target.value);
                         $('#route_id').select2().on('change', e => this.journey.route_id = e.target.value);
@@ -495,6 +515,7 @@
                 this.journey.truck_plate_number = truck.plate_number;
                 this.journey.route_source = route.source;
                 this.journey.route_destination = route.destination;
+                this.journey.ignore_delivery_note = this.contract.ignore_delivery_note;
 
                 let data = mapToFormData(this.journey, this.uploads, typeof this.$route.params.id === 'string');
 

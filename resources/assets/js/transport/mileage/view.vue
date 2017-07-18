@@ -2,6 +2,10 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <strong>Mileage Allocation</strong>
+            <div class="form-group pull-right">
+                <router-link to="/mileage/completed" class="btn btn-danger">Back</router-link>
+                <button type="button" name="button" v-if="mileage.status == 'Pending Approval'" class="btn btn-success" @click="approveMileage(mileage.id)">Approve</button>
+            </div>
         </div>
 
         <div class="panel-body">
@@ -10,14 +14,15 @@
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label for="journey_id">Journey Number</label>
-                            <select disabled v-model="mileage.journey_id" class="form-control input-sm" id="journey_id" name="journey_id" required>
-                                <option v-for="journey in journeys" :value="journey.id">JRNY-{{ journey.id }}</option>
-                            </select>
+                            <input type="text" class="form-control" disabled :value="'JRNY-' + journey.id">
+                            <!--<select disabled v-model="mileage.journey_id" class="form-control input-sm" id="journey_id" name="journey_id" required>-->
+                                <!--<option v-for="journey in journeys" :value="journey.id">JRNY-{{ journey.id }}</option>-->
+                            <!--</select>-->
                         </div>
 
                         <div class="form-group">
                             <label>Trailer Make</label>
-                            <h5>{{ journey.truck.trailer.make }}</h5>
+                            <h5>{{ journey.truck.trailer.model.make.id }}</h5>
                         </div>
                     </div>
 
@@ -36,7 +41,7 @@
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label>Trailer Attached</label>
-                            <h5>{{ journey.truck.trailer.trailer_number }}</h5>
+                            <h5>{{ journey.truck.trailer.plate_number }}</h5>
                         </div>
 
                         <div class="form-group">
@@ -98,13 +103,6 @@
                         </div>
                     </div>
                 </div>
-
-                <hr>
-
-                <div class="form-group">
-                    <router-link to="/mileage" class="btn btn-danger">Back</router-link>
-                    <button type="button" name="button" v-if="mileage.status == 'Pending Approval'" class="btn btn-success" @click="approveMileage(mileage.id)">Approve</button>
-                </div>
             </form>
 
         </div>
@@ -115,7 +113,17 @@
     export default {
         data() {
             return {
-                journeys: [],
+                journey: {
+                    driver: {},
+                    truck: {
+                        trailer: {
+                            model: {
+                                make: {}
+                            }
+                        },
+                    },
+                    route: {},
+                },
                 uploads: [],
                 mileage: {
                     id: '',
@@ -134,35 +142,6 @@
             if (this.$route.params.id) {
                 return this.checkState();
             }
-
-            http.get('/api/mileage/create').then((response) => {
-                this.journeys = response.journeys;
-            });
-        },
-
-        mounted() {
-            $('input[type="number"]').on('focus', function () {
-                this.select();
-            });
-        },
-
-
-        computed: {
-            journey() {
-                let journey = this.journeys.filter(e => e.id == this.mileage.journey_id);
-                if (journey.length) {
-                    return journey[0];
-                }
-
-                return {
-                    driver: {},
-                    truck: {
-                        trailer: {},
-                    },
-                    route: {},
-
-                };
-            },
         },
 
         methods: {
@@ -176,7 +155,7 @@
 
             checkState() {
                 http.get('/api/mileage/' + this.$route.params.id).then((response) => {
-                    this.journeys = response.journeys;
+                    this.journey = response.journey;
                     this.mileage = response.mileage;
                 });
             },
@@ -189,28 +168,6 @@
                return parseFloat(number).toLocaleString();
             },
 
-            store() {
-                this.$root.isLoading = true;
-                let request = null;
-                this.mileage.standard_amount = parseInt(this.journey.route.allowance_amount);
-
-                let data = mapToFormData(this.mileage, this.uploads, typeof this.$route.params.id === 'string');
-
-                if (this.$route.params.id) {
-                    request = http.put('/api/mileage/' + this.$route.params.id, data, true);
-                } else {
-                    request = http.post('/api/mileage', data, true);
-                }
-
-                request.then((response) => {
-                    this.$root.isLoading = false;
-                    alert2(this.$root, [response.message], 'success');
-                    window._router.push({ path: '/mileage' });
-                }).catch((error) => {
-                    this.$root.isLoading = false;
-                    alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
-                });
-            },
             approveMileage(id) {
                 http.get('/api/approve_mileage/' + id)
                     .then(response => {
@@ -223,7 +180,7 @@
                         this.fuel = response.fuel;
                         this.$root.isLoading = false;
                         alert2(this.$root, [response.message], 'success');
-                        this.$router.push('/mileage');
+                        this.$router.push('/mileage/completed');
                     }).catch((error) => {
                         this.$root.isLoading = false;
                         alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');

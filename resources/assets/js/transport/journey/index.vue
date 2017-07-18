@@ -36,7 +36,7 @@
                                     <td>{{ journey.truck.plate_number }}</td>
                                     <td>{{ journey.contract.name }} {{ journey.contract.client.Name }}</td>
                                     <td>{{ date2(journey.job_date) }}</td>
-                                    <td>{{ journey.truck.driver.first_name}} {{ journey.truck.driver.last_name}}</td>
+                                    <td>{{ journey.driver ? journey.driver.first_name : 'No' }} {{ journey.driver ? journey.driver.last_name : 'Driver' }}</td>
                                     <td class="text-center">
                                         <span v-if="(journey.status != 'Closed') && $root.can('edit-journey')" @click="edit(journey)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
                                         <button data-toggle="popover" v-if="$root.can('delete-journey')" :data-item="journey.id" class="btn btn-xs btn-danger btn-destroy">

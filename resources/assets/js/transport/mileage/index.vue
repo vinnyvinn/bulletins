@@ -5,7 +5,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>Mileage Allocation</strong>
-                        <router-link v-if="$root.can('create-mileage')" to="/mileage/create" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i> Add New</router-link>
+                        <!--<router-link v-if="$root.can('create-mileage')" to="/mileage/create" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i> Add New</router-link>-->
                     </div>
                     <div class="panel-body">
                         <div class="table-responsive">
@@ -13,6 +13,7 @@
                                 <thead>
                                 <tr>
                                     <th>Mileage #</th>
+                                    <th>Status</th>
                                     <th>Journey #</th>
                                     <th>Mileage Type</th>
                                     <th class="text-right">Std Amount</th>
@@ -28,6 +29,10 @@
                                         <span v-else>MLG-{{ mileage.id }}</span>
                                     </td>
                                     <td>
+                                        <span v-if="mileage.status == 'Approved'" class="label label-success">Approved</span>
+                                        <span v-else class="label label-info">Pending</span>
+                                    </td>
+                                    <td>
                                         <router-link v-if="$root.can('create-journey')" :to="'/journey/' + mileage.journey_id">JRNY-{{ mileage.journey_id }}</router-link>
                                         <span v-else>JRNY-{{ mileage.journey_id }}</span>
                                     </td>
@@ -35,7 +40,10 @@
                                     <td class="text-right">{{ formatNumber(mileage.standard_amount) }}</td>
                                     <td class="text-right">{{ formatNumber(mileage.requested_amount) }}</td>
                                     <td class="text-right">{{ formatNumber(mileage.approved_amount) }}</td>
-                                    <td class="text-center">
+                                    <td class="text-right">
+                                        <router-link  class="btn btn-success btn-xs" :to="'/mileage/create/'+ mileage.journey_id" v-if="$root.can('create-mileage') && (mileage.journey.status != 'Closed')">
+                                          ADD MILEAGE
+                                        </router-link>
                                         <span @click="edit(mileage)" v-if="$root.can('edit-mileage')" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
                                         <button v-if="$root.can('delete-mileage')" data-toggle="popover" :data-item="mileage.id" class="btn btn-xs btn-danger btn-destroy">
                                             <i class="fa fa-trash"></i>
@@ -47,6 +55,7 @@
                                 <tfoot>
                                 <tr>
                                     <th>Mileage #</th>
+                                    <th>Status</th>
                                     <th>Journey #</th>
                                     <th>Mileage Type</th>
                                     <th class="text-right">Std Amount</th>
@@ -109,7 +118,7 @@
             destroy(id) {
                 this.$root.isLoading = true;
 
-                http.destroy('api/mileage/' + id + '/?s=' + window.Laravel.station_id).then(response => {
+                http.destroy('/api/mileage/' + id + '/?s=' + window.Laravel.station_id).then(response => {
                     if (response.status != 'success') {
                         this.$root.isLoading = false;
                         alert2(this.$root, [response.message], 'danger');

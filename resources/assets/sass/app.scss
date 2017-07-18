@@ -118,6 +118,9 @@ a.active:not(.btn) {
 }
 
 @media print {
+  .pm50 {
+    margin-top: -50px;
+  }
   .page-break {
     page-break-after: always;
   }
