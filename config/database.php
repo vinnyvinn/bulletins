@@ -71,7 +71,7 @@ return [
         'sqlsrv' => [
             'driver' => 'sqlsrv',
             'host' => env('DB_HOST', 'localhost'),
-            'database' => env('DB_DATABASE', 'rkkb'),
+            'database' => env('DB_DATABASE', 'RK SANGHANI'),
             'username' => env('DB_USERNAME', 'SA'),
             'password' => env('DB_PASSWORD', '$$Gaitara254$$'),
             'charset' => 'utf8',
