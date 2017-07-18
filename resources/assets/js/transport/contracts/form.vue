@@ -124,6 +124,15 @@
                         </div>
 
                         <div class="form-group">
+                            <label>Route Change</label>
+                            <div class="checkbox">
+                                <label>
+                                    <input v-model="contract.allow_route_change" type="checkbox"> Allow route to be changed on journey?
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <label for="trucks_allocated">Trucks Allocated</label>
                             <input v-model="contract.trucks_allocated" min="0" type="number" class="form-control input-sm" id="trucks_allocated" name="trucks_allocated">
                         </div>
@@ -564,7 +573,7 @@
                 let keys = [
                     'capture_loading_weights', 'capture_offloading_weights', 'packages_captured', 'ls_loading_weights',
                     'ls_offloading_weights', 'lh_offloading_weights', 'lh_loading_weights', 'subcontracted',
-                    'ignore_delivery_note'
+                    'ignore_delivery_note', 'allow_route_change'
                 ];
 
                 keys.forEach(item => this.setBoolState(item));

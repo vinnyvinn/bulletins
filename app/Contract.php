@@ -26,7 +26,7 @@ class Contract extends Model
         'no_of_shifts', 'stock_item_id', 'client_id', 'route_id', 'name', 'rate', 'amount', 'start_date',
         'end_date', 'quantity', 'status', 'subcontracted', 'sub_company_name', 'sub_address_1', 'sub_address_2',
         'sub_address_3', 'sub_address_4', 'sub_delivery_to', 'sub_delivery_address','sub_delivery_address_2',
-        'sub_delivery_address_3','sub_delivery_address_4','user_id', 'ignore_delivery_note'
+        'sub_delivery_address_3','sub_delivery_address_4','user_id', 'ignore_delivery_note', 'allow_route_change'
     ];
 
 
