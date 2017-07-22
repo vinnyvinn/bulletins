@@ -335,6 +335,23 @@ class ContractController extends Controller
       ]);
     }
 
+    public function allocateEmployee(Request $request)
+    {
+      $data = $request->all();
+      $contract = Contract::findOrFail($data['contract_id']);
+
+      foreach($data['allocatedEmployees'] as $employee) {
+        $employee = Vehicle::findOrFail($employee['id']);
+        $contract->vehicles()->save($employee);
+      }
+
+      return Response::json([
+        'status' => 'success',
+        'message' => 'Trucks Successfully Allocated',
+        'allocated_trucks' => $contract->vehicles
+      ]);
+    }
+
     public function lscontracts ()
     {
       return Response::json([
@@ -349,5 +366,19 @@ class ContractController extends Controller
         ->with(['vehicles', 'client'])
         ->first()
       ]);
+    }
+
+    public function contractTrucks ($id)
+    {
+      return Response::json([
+        'contract_trucks' => Contract::select('trucks_allocated')->findOrFail($id)
+      ]);
+    }
+
+    public function contractEmployees()
+    {
+      //Should use Contract & Employee Model to persist records
+
+      
     }
 }

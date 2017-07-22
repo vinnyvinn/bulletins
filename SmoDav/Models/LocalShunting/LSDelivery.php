@@ -4,6 +4,7 @@ namespace SmoDav\Models\LocalShunting;
 
 use Illuminate\Database\Eloquent\Model;
 use SmoDav\Models\Journey;
+use SmoDav\Models\Vehicle;
 use App\RouteCard;
 use App\User;
 
@@ -38,5 +39,10 @@ class LSDelivery extends Model
     public function user()
     {
       return $this->belongsTo(User::class);
+    }
+
+    public function vehicle()
+    {
+      return $this->belongsTo(Vehicle::class);
     }
 }

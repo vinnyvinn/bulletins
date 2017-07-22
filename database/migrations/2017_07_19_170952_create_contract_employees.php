@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateGatePassesTable extends Migration
+class CreateContractEmployees extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateGatePassesTable extends Migration
      */
     public function up()
     {
-        Schema::create('gate_passes', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('vehicle_id');
-            $table->integer('user_id');
-            $table->timestamps();
-        });
+      Schema::create('ls_contract_employees', function (Blueprint $table) {
+          $table->increments('id');
+          $table->integer('contract_id');
+          $table->integer('employee_id');
+          $table->integer('user_id');
+          $table->timestamps();
+      });
     }
 
     /**
@@ -28,6 +29,6 @@ class CreateGatePassesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('gate_passes');
+        //
     }
 }

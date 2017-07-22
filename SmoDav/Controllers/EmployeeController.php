@@ -200,6 +200,10 @@ class EmployeeController extends Controller
                             WorkshopEmployee::create($employee);
                             continue;
                             break;
+                        case $supervisor:
+                            Supervisor::create($employee);
+                            continue;
+                            break;
                         default:
                             break;
                     }

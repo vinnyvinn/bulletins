@@ -2,14 +2,17 @@
 
 namespace SmoDav\Controllers\API\LocalShunting;
 
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use SmoDav\Models\LocalShunting\LSGatePass;
-use SmoDav\Models\Vehicle;
+use SmoDav\Models\LocalShunting\LSMileage;
+use SmoDav\Models\LocalShunting\LSDelivery;
 use Auth;
 use Response;
+use SmoDav\Models\Vehicle;
+use App\Contract;
 
-class GatePassController extends Controller
+class LSMileageController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,9 +21,9 @@ class GatePassController extends Controller
      */
     public function index()
     {
-      return Response::json([
-        'gatepasses' => LSGatePass::with('vehicle','vehicle.driver','user')->get()
-      ]);
+        return Response::json([
+          'vehicles' => Vehicle::where('contract_id',1)->with('driver')->get()
+        ]);
     }
 
     /**
@@ -30,10 +33,26 @@ class GatePassController extends Controller
      */
     public function create()
     {
-      return Response::json([
-        'vehicles' => Vehicle::has('contract')->get(),
-        'gatepasses' => LSGatePass::with('vehicle','user')->get()
-      ]);
+
+    }
+
+    public function createMileage($truck, $contract)
+    {
+      if($truck && $contract) {
+        return Response::json([
+          'deliveries' => LSDelivery::where('contract_id', $contract)
+              ->where('vehicle_id',$truck)
+              ->with('vehicle','user')
+              ->get(),
+          'mileages' => LSMileage::where('contract_id', $contract)
+              ->where('vehicle_id',$truck)
+              ->with('user')
+              ->get(),
+          'vehicle' =>Vehicle::where('id', $truck)
+              ->with('trailer','driver')
+              ->first()
+        ]);
+      }
     }
 
     /**
@@ -46,14 +65,16 @@ class GatePassController extends Controller
     {
         $data = $request->all();
         $data['user_id'] = Auth::id();
-
-        $gatepass = LSGatePass::create($data);
-
+        $lsmileage = LSMileage::create($data);
         return Response::json([
+          'lsmileages' => LSMileage::where('contract_id', $request->contract_id)
+            ->where('vehicle_id', $request->vehicle_id)
+            ->with('user')
+            ->get(),
           'status' => 'success',
-          'message' => 'Successfully created gatepass inwards',
-          'gatepasses' => LSGatePass::with('vehicle','user')->get()
+          'message' => 'Mileage successfully allocated'
         ]);
+
     }
 
     /**

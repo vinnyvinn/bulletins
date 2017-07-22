@@ -1,172 +1,146 @@
 <template>
     <div class="panel panel-default">
         <div class="panel-heading">
-            <strong>Mileage Allocation</strong>
+            <strong>Delivery Note</strong>
         </div>
 
         <div class="panel-body">
-            <form action="#" role="form" @submit.prevent="store">
                 <div class="row">
-                    <div class="col-sm-4">
-                      <fieldset class="wizag-fieldset-border">
-                        <legend class="wizag-fieldset-border">Journey Details</legend>
+                    <div class="col-sm-3">
                         <div class="form-group">
-                            <label for="journey_id" class="col-sm-6">Journey Number</label>
-                            <div class="col-sm-6">
-                              <select v-model="mileage.journey_id" class="form-control input-sm" id="journey_id" name="journey_id" required>
-                                  <option v-for="journey in journeys" :value="journey.id">JRNY-{{ journey.id }}</option>
-                              </select>
-                            </div>
+                            <label>Vehicle Number</label>
+                            <h5>{{ vehicle.plate_number }}</h5>
                         </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-6">Document Date</label>
-                            <div class="col-sm-6">
-                                <h5>{{ new Date().toLocaleDateString('en-GB') }}</h5>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="mileage_type" class="col-sm-6">Mileage Type</label>
-                            <div class="col-sm-6">
-                              <select v-model="mileage.mileage_type" class="form-control input-sm" id="mileage_type" name="mileage_type" required>
-                                  <option value="Fixed Mileage">Fixed Mileage</option>
-                              </select>
-                            </div>
-                        </div>
-                      </fieldset>
                     </div>
-
-                    <div class="col-sm-4">
-                      <fieldset class="wizag-fieldset-border">
-                      <legend class="wizag-fieldset-border">Vehicle Details</legend>
+                    <div class="col-sm-3">
                         <div class="form-group">
-                            <label class="col-sm-6">Vehicle Number</label>
-                            <div class="col-sm-6">
-                              <h5>{{ journey.truck.plate_number }}</h5>
-                            </div>
+                            <label>Trailer Type</label>
+                            <h5 v-if="vehicle.trailer">{{ vehicle.trailer.type }}</h5>
                         </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-6">Trailer Attached</label>
-                            <div class="col-sm-6">
-                              <h5>{{ journey.truck.trailer.trailer_number }}</h5>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-6">Trailer Type</label>
-                            <div class="col-sm-6">
-                              <h5>{{ journey.truck.trailer.type }}</h5>
-                            </div>
-                        </div>
-                      </fieldset>
                     </div>
-
-                    <div class="col-sm-4">
-                      <fieldset class="wizag-fieldset-border">
-                        <legend class="wizag-fieldset-border">Driver Details</legend>
-                        <div class="col-sm-3">
-                          <div class="form-group">
-                              <img :src="getSource()" class="img-responsive">
-                          </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label>Trailer Attached</label>
+                            <h5 v-if="vehicle.trailer">{{ vehicle.trailer.trailer_number }}</h5>
                         </div>
-                        <div class="col-sm-9">
-                          <div class="form-group">
-                              <label class="col-sm-6">Full Name</label>
-                              <h5 class="col-sm-6">{{ journey.driver.first_name }} {{ journey.driver.last_name }}</h5><br>
-                          </div>
-                          <div class="form-group">
-                              <label class="col-sm-6">License #:</label><br>
-                              <h5 class="col-sm-6">{{ journey.driver.dl_number }}</h5><br>
-                          </div>
-                          <div class="form-group">
-                              <label class="col-sm-6">National ID:</label>
-                              <h5 class="col-sm-6">{{ journey.driver.identification_number }}</h5><br>
-                          </div>
-                        </div>
-                        </fieldset>
                     </div>
-
-
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label>Driver Name</label>
+                            <h5 v-if="vehicle.driver">{{ vehicle.driver.first_name }} {{ vehicle.driver.last_name }}</h5>
+                        </div>
+                    </div>
                 </div>
-
-
-
-                <div class="row">
-                  <div class="col-sm-6">
-                    <fieldset class="wizag-fieldset-border">
-                      <legend class="wizag-fieldset-border">Payment Details</legend>
-                        <div class="form-group">
-                            <label class="col-sm-6">Standard Mileage Amount</label>
-                            <h5 class="col-sm-6"><strong>{{ formatNumber(journey.route.allowance_amount) }}</strong></h5>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-6">Amount Requested</label>
-                            <div class="col-sm-6">
-                              <input min="0" v-model="mileage.requested_amount"
-                              @change="validateRequestedAmount" type="number" class="form-control input-sm"
-                              id="requested_amount" name="requested_amount">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                          <label class="col-sm-6">Top Up?</label>
-                          <div class="col-sm-6">
-                            <input type="checkbox" name="top_up" id="top_up" v-model="mileage.top_up" @change="!mileage.top_up">
-                          </div>
-                        </div>
-
-                        <div class="form-group" v-if="mileage.top_up">
-                          <label class="col-sm-6">Top Up Amount:</label>
-                          <div class="col-sm-6">
-                            <input type="number" name="top_up_amount" id="top_up_amount" v-model="mileage.top_up_amount">
-                          </div>
-                        </div>
-
-                        <div class="form-group" v-if="mileage.top_up">
-                          <label class="col-sm-6">Top up reason</label>
-                          <div class="col-sm-6">
-                            <textarea name="top_up_reason" id="top_up_reason" class="form-control input-sm" v-model="mileage.top_up_reason"></textarea>
-                          </div>
-                        </div>
-
-                        <div class="form-group">
-                          <label class="col-sm-6">Total Request Amount</label>
-                          <div class="col-sm-6">
-                            {{ parseInt(mileage.requested_amount) + parseInt(mileage.top_up_amount) }}
-                          </div>
-                        </div>
-
-                        <div class="form-group" v-if="$route.params.id">
-                            <label class="col-sm-6">Approved Amount</label>
-                            <div class="col-sm-6">
-                              <input min="0" v-model="mileage.approved_amount" type="number" class="form-control input-sm" id="approved_amount" name="approved_amount">
-                            </div>
-                        </div>
-                    </fieldset>
-
-                    </div>
-
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                          <div class="col-sm-10">
-                              <label>Narration</label>
-                              <textarea v-model="mileage.narration" name="narration" id="narration" rows="5" class="form-control input-sm"></textarea>
-                          </div>
-                      </div>
-                    </div>
-                  </div>
 
                 <hr>
+                <div class="row">
+                  <div class="col-sm-6">
+                    Deliveries Done
+                    <table class="table no-wrap">
+                      <caption>Total Deliveries: </caption>
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Delivery #</th>
+                          <th>When</th>
+                          <th>Created By</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(delivery, index) in deliveries">
+                          <td>{{ index + 1 }}</td>
+                          <td>DL - {{ delivery.id}}</td>
+                          <td>{{ delivery.created_at }}</td>
+                          <td>{{ delivery.user.first_name}}</td>
+                        </tr>
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <th>#</th>
+                          <th>Delivery #</th>
+                          <th>When</th>
+                          <th>Created By</th>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
 
+                  <div class="col-sm-6">
+                    Paid out Mileages
+                    <table class="table no-wrap">
+                      <caption>Total Amount Paid: </caption>
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Delivery #</th>
+                          <th>When</th>
+                          <th>Advance</th>
+                          <th>Amount</th>
+                          <th>Paid By</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(mileage, index) in mileages">
+                          <td>{{ index + 1 }}</td>
+                          <td>ML - {{ mileage.id }}</td>
+                          <td>{{ mileage.created_at }}</td>
+                          <td v-if="mileage.is_advance == 1"><span class="label label-success">Yes</span></td>
+                          <td v-if="mileage.is_advance == 0"></td>
+                          <td>{{ mileage.amount }}</td>
+                          <td>{{ mileage.user.first_name}}</td>
+                        </tr>
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <th>#</th>
+                          <th>Delivery #</th>
+                          <th>When</th>
+                          <th>Advance</th>
+                          <th>Amount</th>
+                          <th>Paid By</th>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+                </div>
+
+                <form action="#" role="form" @submit.prevent="store">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                          <label for="amount">Amount</label><br>
+                          <input type="number" min=0 id="amount" v-model="mileage.amount"><br>
+                          <label for="is_advance"><input type="checkbox" id="is_advance" v-model="mileage.is_advance"> Is Advance?</label>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="narration">Narration</label>
+                            <textarea name="narration" id="narration" class="form-control input-sm" v-model="mileage.narration"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                      <div class="form-group">
+                        <label for="rate_per_trip">Rate per trip (Ksh)</label>
+                        <input type="number" id="rate_per_trip" v-model="rate_per_trip" @keyup="calculateMileageBalance()">
+                      </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                      <h5>Mileage: {{ deliveries.length }} trips * {{ rate_per_trip }}: Ksh. {{ mileage_total }}</h5>
+                      <h5>Advanced Mileage: {{ advanced_mileage }}</h5>
+                      <h5>Mileage Paid: {{ mileage_paid }}</h5>
+                      <hr>
+                      <h2>Balance: Ksh. <strong>{{ mileage_total - advanced_mileage - mileage_paid }}</strong></h2>
+                    </div>
+                </div>
                 <div class="form-group">
                     <button class="btn btn-success">Process</button>
-                    <router-link to="/mileage" class="btn btn-danger">Back</router-link>
+                    <router-link to="/delivery" class="btn btn-danger">Back</router-link>
                 </div>
             </form>
-
         </div>
     </div>
 </template>
@@ -175,52 +149,40 @@
     export default {
         data() {
             return {
-                journeys: [],
-                uploads: [],
+                rate_per_trip: 0,
+                mileage_total: 0,
+                advanced_mileage: 0,
+                mileage_paid: 0,
+                vehicle: {
+                  driver: {}
+                },
+                mileages: [],
+                deliveries: [],
                 mileage: {
-                    station_id: window.Laravel.station_id,
-                    journey_id: '',
-                    mileage_type: 'Fixed Mileage',
-                    standard_amount: 0,
-                    requested_amount: 0,
-                    approved_amount: '',
-                    balance_amount: '',
-                    narration: '',
-                    top_up: false,
-                    top_up_amount: 0,
-                    top_up_reason: ''
-                }
+                  contract_id: '',
+                  vehicle_id: '',
+                  amount: 0,
+                  is_advance: false,
+                  narration: ''
+                },
             };
         },
 
         created() {
-            if (! this.$route.params.id && ! this.$route.params.unload &&  ! this.$root.can('create-mileage')) {
-                this.$router.push('/403');
-                return false;
-            }
+            this.$root.isLoading = true;
+            http.get('/api/lsmileage/create/' + this.$route.params.truck + '/' + this.$route.params.contract).then((response) => {
+                this.mileage.contract_id = this.$route.params.contract;
+                this.mileage.vehicle_id = this.$route.params.truck;
+                this.vehicle = response.vehicle;
+                this.mileages = response.mileages;
+                this.deliveries = response.deliveries;
 
-            if (this.$route.params.id && ! this.$root.can('edit-mileage')) {
-                this.$router.push('/403');
-                return false;
-            }
-
-            if (this.$route.params.approve && ! this.$root.can('approve-mileage')) {
-                this.$router.push('/403');
-                return false;
-            }
-
-          this.$root.isLoading = true;
-            http.get('/api/mileage/create?s=' + window.Laravel.station_id).then((response) => {
-                this.journeys = response.journeys;
-            }).then(() => {
-              this.checkState();
-            }).then(() => {
-              this.$root.isLoading = false;
+                this.calculateMileageBalance();
+                this.$root.isLoading = false;
             });
         },
 
         mounted() {
-
             $('input[type="number"]').on('focus', function () {
                 this.select();
             });
@@ -228,104 +190,62 @@
 
 
         computed: {
-            journey() {
-                let journey = this.journeys.filter(e => e.id == this.mileage.journey_id);
-                if (journey.length) {
-                    return journey[0];
-                }
 
-                return {
-                    driver: {},
-                    truck: {
-                        trailer: {},
-                    },
-                    route: {},
-
-                };
-            },
         },
 
         methods: {
-
-          toggleTop_Up(){
-            this.mileage.top_up = !this.mileage.top_up;
-            return this.mileage.top_up_amount = 0;
-          },
-            validateRequestedAmount() {
-              if(parseInt(this.mileage.requested_amount) > parseInt(this.journey.route.allowance_amount)){
-                this.mileage.requested_amount = 0;
-                return alert2(this.$root, ['Requested amount cannot be more than standard allowance'], 'danger');
+            updateNote() {
+              if(parseFloat(this.deliveryNote.loading_gross_weight) >= parseFloat(this.deliveryNote.loading_tare_weight)) {
+                this.deliveryNote.loading_net_weight = parseFloat(this.deliveryNote.loading_gross_weight) - parseFloat(this.deliveryNote.loading_tare_weight);
+                this.deliveryNote.offloading_net_weight = parseFloat(this.deliveryNote.offloading_gross_weight) - parseFloat(this.deliveryNote.offloading_tare_weight);
+              } else {
+                alert2(this.$root, ['Tare Weight cannot be more than the gross weight'], 'danger');
+                this.deliveryNote.loading_tare_weight = 0;
               }
-            },
-            getSource() {
-                if(this.journey.driver.avatar){
-                    return this.journey.driver.avatar;
-                }
 
-                return '/images/default_avatar.png';
             },
 
             checkState() {
-                if (this.$route.params.id || this.$route.params.approve) {
-                    let id = this.$route.params.approve ? this.$route.params.approve : this.$route.params.id;
-                    http.get('/api/mileage/' + id + '/?s=' + window.Laravel.station_id).then((response) => {
-                        this.mileage = response.mileage;
-                        this.$root.isLoading = false;
-                    });
-                }
-            },
-
-            formatNumber(number) {
-               if (! number) {
-                   return '';
-               }
-
-               return parseFloat(number).toLocaleString();
-            },
-
-            store() {
                 this.$root.isLoading = true;
-                let request = null;
-                this.mileage.standard_amount = parseInt(this.journey.route.allowance_amount);
+                let id = this.$route.params.unload ? this.$route.params.unload : this.$route.params.id;
 
-                let data = mapToFormData(this.mileage, this.uploads, typeof this.$route.params.id === 'string' || typeof this.$route.params.approve === 'string');
-
-                if (this.$route.params.id) {
-                    request = http.put('/api/mileage/' + this.$route.params.id, data, true);
-                } else if (this.$route.params.approve) {
-                    request = http.put('/api/mileage/' + this.$route.params.approve, data, true);
-                } else {
-                    request = http.post('/api/mileage', data, true);
-                }
-
-                request.then((response) => {
+                return http.get('/api/delivery/' + id).then((response) => {
+                    this.deliveryNote = response.delivery;
+                    this.journeys = response.journeys;
                     this.$root.isLoading = false;
-                    alert2(this.$root, [response.message], 'success');
-                    window._router.push({ path: '/mileage' });
-                }).catch((error) => {
-                    this.$root.isLoading = false;
-                    alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                 });
             },
+            store() {
+                this.$root.isLoading = true;
+
+                http.post('/api/lsmileage', this.mileage).then((response) => {
+                  this.mileages = response.lsmileages;
+                  this.calculateMileageBalance();
+                  this.$root.isLoading = false;
+                  alert2(this.$root, [response.message], 'success');
+                }).catch((error) => {
+                  this.$root.isLoading = false;
+                  alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
+                });
+
+            },
+
+            calculateMileageBalance () {
+              this.advanced_mileage = 0;
+              this.mileage_paid = 0;
+              this.mileage_total = this.rate_per_trip * this.deliveries.length;
+              for(let i = 0; i<this.mileages.length; i++) {
+                if(this.mileages[i].is_advance == 1) {
+                  this.advanced_mileage = parseInt(this.advanced_mileage) + parseInt(this.mileages[i].amount);
+                }
+              }
+
+              for(let i = 0; i<this.mileages.length; i++) {
+                if(this.mileages[i].is_advance == 0) {
+                  this.mileage_paid = parseInt(this.mileage_paid) + parseInt(this.mileages[i].amount);
+                }
+              }
+            }
         }
     }
 </script>
-
-<style media="screen" scoped>
-fieldset.wizag-fieldset-border {
-  border: 1px groove #ddd !important;
-  padding: 0 1.4em 1.4em 1.4em !important;
-  margin: 0 0 1.5em 0 !important;
-  -webkit-box-shadow:  0px 0px 0px 0px #000;
-          box-shadow:  0px 0px 0px 0px #000;
-}
-
-  legend.wizag-fieldset-border {
-      font-size: 1.2em !important;
-      font-weight: bold !important;
-      text-align: left !important;
-      width:auto;
-      padding:0 10px;
-      border-bottom:none;
-  }
-</style>

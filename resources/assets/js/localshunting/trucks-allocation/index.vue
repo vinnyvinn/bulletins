@@ -26,7 +26,7 @@
                                     <td>Progress</td>
                                     <td>
                                       <router-link :to="'/ls/trucks-allocation/create/'+ contract.id">
-                                        <span class="btn btn-xs btn-success">Allocate Trucks</span>
+                                        <span class="btn btn-xs btn-success">Allocate Trucks/Employees</span>
                                       </router-link>
                                     </td>
                                 </tr>

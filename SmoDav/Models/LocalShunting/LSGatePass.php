@@ -3,11 +3,11 @@
 namespace SmoDav\Models\LocalShunting;
 
 use Illuminate\Database\Eloquent\Model;
-use SmoDav\Models\LocalShunting\GatePass;
+use SmoDav\Models\LocalShunting\LSGatePass;
 use SmoDav\Models\Vehicle;
 use App\User;
 
-class GatePass extends Model
+class LSGatePass extends Model
 {
     protected $fillable = ['vehicle_id','user_id'];
 
