@@ -23,9 +23,9 @@
                             </select>
                         </div>
 
-                        <div class="form-group" v-if="journey.is_contract_related == '0'">
+                        <div class="form-group" v-if="journey.is_contract_related == '0' || contract.allow_route_change == 'true'">
                             <label for="route_id">Route</label>
-                            <select :disabled="journey.is_contract_related == '1'" name="route_id" id="route_id" v-model="journey.route_id" class="form-control input-sm select2" required>
+                            <select :disabled="journey.is_contract_related == '1' && contract.allow_route_change == 'false'" name="route_id" id="route_id" v-model="journey.route_id" class="form-control input-sm select2" required>
                                 <option v-for="route in routes" :value="route.id">{{ route.source }} - {{ route.destination }} ({{ route.distance }} KM)</option>
                             </select>
                         </div>
@@ -433,16 +433,20 @@
             },
 
             updateFields() {
+                this.$root.isLoading = true;
                 $('#route_id').select2('destroy');
+
                 setTimeout(() => {
-                  http.get('/api/trucks_already_allocated/' + this.journey.contract_id).then((response) => {
-                    this.trucks_already_allocated = response.trucks_already_allocated;
-                  });
+                    http.get('/api/trucks_already_allocated/' + this.journey.contract_id).then((response) => {
+                        this.trucks_already_allocated = response.trucks_already_allocated;
+                    });
                     this.journey.route_id = this.contract.route_id;
                     this.journey.job_description = this.contract.job_description;
                     this.journey.enquiry_from = this.contract.enquiry_from == 'null' ? '' : this.contract.enquiry_from;
-                    $('#route_id').select2().on('change', e => this.journey.route_id = e.target.value);
-                }, 5000);
+                    this.journey.route_id = this.contract.route_id;
+                    this.$root.isLoading = false;
+                    setTimeout(() => $('#route_id').select2().on('change', e => this.journey.route_id = e.target.value), 500);
+                }, 500);
 
             },
 

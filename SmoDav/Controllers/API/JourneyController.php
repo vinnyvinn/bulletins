@@ -59,7 +59,7 @@ class JourneyController extends Controller
             $contracts = Contract::open()
                 ->whereRaw("(select count(*) from journeys where contracts.id = journeys.contract_id and status = 'Approved') < contracts.trucks_allocated")
                 ->with('client')
-                ->get(['id', 'raw', 'name', 'client_id', 'ignore_delivery_note']);
+                ->get(['id', 'raw', 'name', 'client_id', 'ignore_delivery_note', 'allow_route_change']);
 
             return Response::json([
                 'contracts' => $contracts,
