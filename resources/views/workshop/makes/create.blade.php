@@ -33,14 +33,7 @@
                         <div class="form-group {{ $errors->has('make_id')? 'has-error' : '' }}">
                             <label class="control-label col-sm-3" for="make_id">Make *</label>
 
-                            <div class="col-sm-7">
-                                <select name="make_id" class="form-control" id="make_id" required>
-                                    @foreach($makes as $make)
-                                        <option value="{{ $make->id }}">{{ $make->name }}</option>
-                                    @endforeach
-                                </select>
-                                {!! $errors->has('name')? '<p class="help-block"> '.$errors->first('make_id').' </p>':'' !!}
-                            </div>
+                          
                         </div>
 
                         <div class="form-group {{ $errors->has('name')? 'has-error' : '' }}">

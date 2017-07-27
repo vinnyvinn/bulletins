@@ -73,11 +73,7 @@ class JourneyController extends Controller
             })
             ->toArray();
 
-        $ls = \DB::table('contract_truck')->get(['vehicle_id'])
-            ->map(function ($item) {
-                return $item->vehicle_id;
-            })
-            ->toArray();
+        $ls = Vehicle::whereNotNull('contract_id')->get(['id']);
 
 
         $trucks = Vehicle::typeTruck()
@@ -86,10 +82,11 @@ class JourneyController extends Controller
                 'driver' => function ($builder) {
                     return $builder->select(['id', 'first_name', 'last_name', 'mobile_phone']);
                 },
+                'trailer'
             ])
             ->whereNotIn('id', $journeys)
             ->whereNotIn('id', $ls)
-            ->get(['driver_id', 'id', 'plate_number']);
+            ->get(['driver_id', 'id', 'plate_number', 'trailer_id']);
 
         $last_journey_id = Journey::orderBy('created_at', 'desc')->first(['id']);
         $drivers = Driver::whereDoesntHave('journey', function ($builder) {
@@ -189,7 +186,7 @@ class JourneyController extends Controller
             ->whereRaw("(select count(*) from journeys where contracts.id = journeys.contract_id and status = 'Approved') < contracts.trucks_allocated")
             ->with('client')
             ->get(['id', 'raw', 'name', 'client_id', 'ignore_delivery_note']);
-            
+
 
         return Response::json([
             'routes' => Route::all(['id', 'source', 'destination', 'distance']),
