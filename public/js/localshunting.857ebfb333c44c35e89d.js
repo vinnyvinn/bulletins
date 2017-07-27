@@ -104141,7 +104141,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = {
     created: function created() {
@@ -107555,6 +107554,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   created: function created() {
     var _this = this;
 
+    this.$root.isLoading = true;
     http.get('/api/journey/create').then(function (response) {
       _this.allocation.contract_id = _this.$route.params.id;
       _this.trucks = response.trucks;
@@ -107565,6 +107565,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     });
     http.get('/api/contract-trucks/' + this.$route.params.id).then(function (response) {
       _this.contract_trucks = response.contract_trucks;
+      _this.employeeAllocation.allocatedEmployees = response.contract_employees;
+      _this.allocation.allocatedtrucks = response.allocated_trucks;
+      _this.$root.isLoading = false;
     });
   },
   mounted: function mounted() {
@@ -107579,7 +107582,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   methods: {
     allocate: function allocate(truck) {
-      if (this.allocation.allocatedtrucks >= this.contract_trucks) {
+      console.log(this.allocation.allocatedtrucks.length);
+      if (parseInt(this.allocation.allocatedtrucks.length) >= parseInt(this.contract_trucks.trucks_allocated)) {
         alert2(this.$root, ['Maximum Trucks for contract reached. Remove an existing truck to allow further allocation'], 'danger');
         return;
       } else {
@@ -107610,7 +107614,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     removeEmployee: function removeEmployee(allocatedEmployee) {
       for (var i = 0; i < this.employeeAllocation.allocatedEmployees.length; i++) {
         if (this.employeeAllocation.allocatedEmployees[i].id == allocatedEmployee.id) {
-          this.allocation.allocatedEmployees.splice(i, 1);
+          this.employeeAllocation.allocatedEmployees.splice(i, 1);
         }
       }
       this.employees.push(allocatedEmployee);
@@ -108950,7 +108954,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('table', {
     staticClass: "table no-wrap"
   }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.trucks), function(truck) {
-    return _c('tr', [_c('td', [_vm._v(_vm._s(truck.plate_number))]), _vm._v(" "), (truck.trailer) ? _c('td', [_vm._v(_vm._s(truck.trailer.trailer_number))]) : _vm._e(), _vm._v(" "), (!truck.trailer) ? _c('td', [_vm._v(" - ")]) : _vm._e(), _vm._v(" "), (truck.driver) ? _c('td', [_vm._v(_vm._s(truck.driver.first_name))]) : _vm._e(), _vm._v(" "), _c('td', [_c('button', {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(truck.plate_number))]), _vm._v(" "), (truck.trailer) ? _c('td', [_vm._v(_vm._s(truck.trailer.plate_number))]) : _vm._e(), _vm._v(" "), (!truck.trailer) ? _c('td', [_vm._v(" - ")]) : _vm._e(), _vm._v(" "), (truck.driver) ? _c('td', [_vm._v(_vm._s(truck.driver.first_name))]) : _vm._e(), _vm._v(" "), _c('td', [_c('button', {
       staticClass: "btn btn-sm btn-success",
       attrs: {
         "type": "button",
@@ -108984,7 +108988,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('table', {
     staticClass: "table no-wrap"
   }, [_vm._m(2), _vm._v(" "), _c('tbody', _vm._l((_vm.allocation.allocatedtrucks), function(allocatedtruck) {
-    return _c('tr', [_c('td', [_vm._v(_vm._s(allocatedtruck.plate_number))]), _vm._v(" "), (allocatedtruck.trailer) ? _c('td', [_vm._v(_vm._s(allocatedtruck.trailer.trailer_number))]) : _vm._e(), _vm._v(" "), (!allocatedtruck.trailer) ? _c('td', [_vm._v(" - ")]) : _vm._e(), _vm._v(" "), (allocatedtruck.driver) ? _c('td', [_vm._v(_vm._s(allocatedtruck.driver.first_name))]) : _vm._e(), _vm._v(" "), _c('td', [_c('button', {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(allocatedtruck.plate_number))]), _vm._v(" "), (allocatedtruck.trailer) ? _c('td', [_vm._v(_vm._s(allocatedtruck.trailer.plate_number))]) : _vm._e(), _vm._v(" "), (!allocatedtruck.trailer) ? _c('td', [_vm._v(" - ")]) : _vm._e(), _vm._v(" "), (allocatedtruck.driver) ? _c('td', [_vm._v(_vm._s(allocatedtruck.driver.first_name))]) : _vm._e(), _vm._v(" "), _c('td', [_c('button', {
       staticClass: "btn btn-sm btn-danger",
       attrs: {
         "type": "button",
@@ -113246,7 +113250,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "panel-heading"
   }, [_vm._v("\n          Local Shunting\n        ")]), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
-  })])])])
+  }, [_c('h1', [_vm._v("Local Shunting Dashboard Content goes here")])])])])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
