@@ -20,6 +20,7 @@ use SmoDav\Models\Vehicle;
 use function str_replace;
 use Auth;
 use SmoDav\Models\Journey;
+use App\Employee;
 
 class ContractController extends Controller
 {
@@ -323,6 +324,13 @@ class ContractController extends Controller
       $data = $request->all();
       $contract = Contract::findOrFail($data['contract_id']);
 
+      $currently_allocated_trucks = $contract->vehicles;
+
+      foreach($currently_allocated_trucks as $currently_allocated_truck) {
+        $currently_allocated_truck->contract_id = null;
+        $currently_allocated_truck->update();
+      }
+
       foreach($data['allocatedtrucks'] as $truck) {
         $truck = Vehicle::findOrFail($truck['id']);
         $contract->vehicles()->save($truck);
@@ -335,22 +343,6 @@ class ContractController extends Controller
       ]);
     }
 
-    public function allocateEmployee(Request $request)
-    {
-      $data = $request->all();
-      $contract = Contract::findOrFail($data['contract_id']);
-
-      foreach($data['allocatedEmployees'] as $employee) {
-        $employee = Vehicle::findOrFail($employee['id']);
-        $contract->vehicles()->save($employee);
-      }
-
-      return Response::json([
-        'status' => 'success',
-        'message' => 'Trucks Successfully Allocated',
-        'allocated_trucks' => $contract->vehicles
-      ]);
-    }
 
     public function lscontracts ()
     {
@@ -371,14 +363,10 @@ class ContractController extends Controller
     public function contractTrucks ($id)
     {
       return Response::json([
-        'contract_trucks' => Contract::select('trucks_allocated')->findOrFail($id)
+        'contract_trucks' => Contract::select('trucks_allocated')->findOrFail($id),
+        'contract_employees' => Employee::where('contract_id', $id)->get(),
+        'allocated_trucks' => Vehicle::where('contract_id', $id)->with('trailer')->get()
       ]);
     }
 
-    public function contractEmployees()
-    {
-      //Should use Contract & Employee Model to persist records
-
-      
-    }
 }

@@ -97,7 +97,7 @@ class RKEmployeeController extends Controller
     public function unallocatedEmployees ()
     {
       return Response::json([
-        'employees' => Employee::whereNull('contract_id','')->get()
+        'employees' => Employee::whereNull('contract_id')->get()
       ]);
     }
 
@@ -105,6 +105,13 @@ class RKEmployeeController extends Controller
     {
       $data = $request->all();
       $allocatedEmployees = $data['allocatedEmployees'];
+
+      $currently_allocated_employees = Employee::where('contract_id', $data['contract_id'])->get();
+
+      foreach($currently_allocated_employees as $currently_allocated_employee) {
+        $currently_allocated_employee->contract_id = null;
+        $currently_allocated_employee->update();
+      }
 
       foreach($allocatedEmployees as $allocatedEmployee) {
         $employee = Employee::findOrFail($allocatedEmployee['id']);

@@ -32,7 +32,7 @@
                                 <tbody>
                                 <tr v-for="truck in trucks">
                                     <td>{{ truck.plate_number }}</td>
-                                    <td v-if="truck.trailer">{{ truck.trailer.trailer_number }}</td>
+                                    <td v-if="truck.trailer">{{ truck.trailer.plate_number }}</td>
                                     <td v-if="!truck.trailer"> - </td>
                                     <td v-if="truck.driver">{{ truck.driver.first_name }}</td>
                                     <td><button type="button" @click="allocate(truck)" name="button" class="btn btn-sm btn-success">Add</button></td>
@@ -73,7 +73,7 @@
                                 <tbody>
                                 <tr v-for="allocatedtruck in allocation.allocatedtrucks">
                                     <td>{{ allocatedtruck.plate_number }}</td>
-                                    <td v-if="allocatedtruck.trailer">{{ allocatedtruck.trailer.trailer_number}}</td>
+                                    <td v-if="allocatedtruck.trailer">{{ allocatedtruck.trailer.plate_number}}</td>
                                     <td v-if="!allocatedtruck.trailer"> - </td>
                                     <td v-if="allocatedtruck.driver">{{ allocatedtruck.driver.first_name }}</td>
                                     <td><button type="button" @click="remove(allocatedtruck)" name="button" class="btn btn-sm btn-danger">Remove</button></td>
@@ -204,6 +204,7 @@
             };
         },
         created() {
+          this.$root.isLoading = true;
           http.get('/api/journey/create').then( response => {
             this.allocation.contract_id = this.$route.params.id;
             this.trucks = response.trucks;
@@ -214,6 +215,9 @@
           });
           http.get('/api/contract-trucks/' + this.$route.params.id).then( response => {
             this.contract_trucks = response.contract_trucks;
+            this.employeeAllocation.allocatedEmployees = response.contract_employees;
+            this.allocation.allocatedtrucks = response.allocated_trucks;
+            this.$root.isLoading = false;
           });
         },
         mounted () {
@@ -223,7 +227,8 @@
         },
         methods: {
             allocate (truck) {
-              if(this.allocation.allocatedtrucks >= this.contract_trucks) {
+              console.log(this.allocation.allocatedtrucks.length);
+              if(parseInt(this.allocation.allocatedtrucks.length) >= parseInt(this.contract_trucks.trucks_allocated)) {
                 alert2(this.$root, ['Maximum Trucks for contract reached. Remove an existing truck to allow further allocation'], 'danger');
                 return;
               } else {
@@ -261,7 +266,7 @@
               for(var i=0; i < this.employeeAllocation.allocatedEmployees.length; i++) {
                  if(this.employeeAllocation.allocatedEmployees[i].id == allocatedEmployee.id)
                  {
-                    this.allocation.allocatedEmployees.splice(i,1);
+                    this.employeeAllocation.allocatedEmployees.splice(i,1);
                  }
               }
               this.employees.push(allocatedEmployee);

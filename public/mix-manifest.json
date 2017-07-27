@@ -1,6 +1,12 @@
 {
+<<<<<<< HEAD
   "/js/app.js": "/js/app.206cfe6aa6b2268ccd75.js",
   "/css/app.css": "/css/app.0bf4aa37463a567bc5ee.css",
   "/js/localshunting.js": "/js/localshunting.fa92fd68d5cb01af3172.js",
+=======
+  "/js/app.js": "/js/app.98482927886f3c49611c.js",
+  "/css/app.css": "/css/app.f23d8f4103454667703b.css",
+  "/js/localshunting.js": "/js/localshunting.857ebfb333c44c35e89d.js",
+>>>>>>> sam
   "/js/plain.js": "/js/plain.799930b801c746011e7f.js"
 }
