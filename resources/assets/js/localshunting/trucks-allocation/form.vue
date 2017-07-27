@@ -102,9 +102,9 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="employee in employees" v-if="employee.designation == 'supervisor'">
+                    <tr v-for="employee in employees" v-if="employee.category == 'supervisor'">
                       <td>{{ employee.id }}</td>
-                      <td>{{ employee.name }}</td>
+                      <td>{{ employee.first_name }} {{ employee.last_name}}</td>
                       <td><button type="button" @click="allocateEmployee(employee)" name="button" class="btn btn-sm btn-success">Add</button></td>
                       <td></td>
                     </tr>
@@ -121,9 +121,9 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="employee in employees" v-if="employee.designation == 'casual'">
+                    <tr v-for="employee in employees" v-if="employee.category == 'casual'">
                       <td>{{ employee.id }}</td>
-                      <td>{{ employee.name }}</td>
+                      <td>{{ employee.first_name }} {{ employee.last_name}}</td>
                       <td><button type="button" @click="allocateEmployee(employee)" name="button" class="btn btn-sm btn-success">Add</button></td>
                       <td></td>
                     </tr>
@@ -135,7 +135,8 @@
           <div class="col-md-6">
             <div class="panel panel-default">
               <div class="panel-heading">
-                Allocated Employees
+                <strong>Allocated Employees</strong>
+                <button type="button" name="button" class="btn btn-success btn-sm pull-right" @click="storeEmployee">Save Allocation</button>
               </div>
               <div class="panel-body">
                 <div class="table-responsive">
@@ -149,9 +150,9 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="allocatedEmployee in employeeAllocation.allocatedEmployees" v-if="allocatedEmployee.designation == 'supervisor'">
+                        <tr v-for="allocatedEmployee in employeeAllocation.allocatedEmployees" v-if="allocatedEmployee.category == 'supervisor'">
                             <td>{{ allocatedEmployee.id }}</td>
-                            <td>{{ allocatedEmployee.name }}</td>
+                            <td>{{ allocatedEmployee.first_name }} {{ allocatedEmployee.last_name }}</td>
                             <td><button type="button" @click="removeEmployee(allocatedEmployee)" name="button" class="btn btn-sm btn-danger">Remove</button></td>
                         </tr>
                         </tbody>
@@ -169,9 +170,9 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="allocatedEmployee in employeeAllocation.allocatedEmployees" v-if="allocatedEmployee.designation == 'casual'">
+                        <tr v-for="allocatedEmployee in employeeAllocation.allocatedEmployees" v-if="allocatedEmployee.category == 'casual'">
                             <td>{{ allocatedEmployee.id }}</td>
-                            <td>{{ allocatedEmployee.name }}</td>
+                            <td>{{ allocatedEmployee.first_name }} {{ allocatedEmployee.last_name }}</td>
                             <td><button type="button" @click="removeEmployee(allocatedEmployee)" name="button" class="btn btn-sm btn-danger">Remove</button></td>
                         </tr>
                         </tbody>
@@ -195,34 +196,9 @@
                   allocatedtrucks: [],
                   contract_id: ''
                 },
-                employees: [
-                  {
-                    id: 1,
-                    name: 'Frodo Baggins',
-                    designation: 'supervisor'
-                  },
-                  {
-                    id: 2,
-                    name: 'Luke Skywalker',
-                    designation: 'supervisor'
-                  },
-                  {
-                    id: 3,
-                    name: 'Darth Vader',
-                    designation: 'casual'
-                  },
-                  {
-                    id: 4,
-                    name: 'Kylo Ren',
-                    designation: 'casual'
-                  },
-                  {
-                    id: 5,
-                    name: 'Clone Trooper',
-                    designation: 'casual'
-                  }
-                ],
+                employees: [],
                 employeeAllocation: {
+                  contract_id: '',
                   allocatedEmployees: []
                 }
             };
@@ -231,7 +207,10 @@
           http.get('/api/journey/create').then( response => {
             this.allocation.contract_id = this.$route.params.id;
             this.trucks = response.trucks;
-            // this.employees = response.employees;
+          });
+          http.get('/api/unallocated_employees').then( response => {
+            this.employeeAllocation.contract_id = this.$route.params.id;
+            this.employees = response.employees;
           });
           http.get('/api/contract-trucks/' + this.$route.params.id).then( response => {
             this.contract_trucks = response.contract_trucks;
@@ -290,6 +269,18 @@
 
             store () {
               http.post('/api/allocate_truck', this.allocation).then( response => {
+                if(response.status == 'error'){
+                  alert2(this.$root, [response.message], 'danger');
+                } else {
+                  alert2(this.$root, [response.message], 'success');
+                }
+                this.$router.push('/ls/trucks-allocation/' + this.allocation.contract_id);
+              });
+
+            },
+
+            storeEmployee () {
+              http.post('/api/allocate_employee', this.employeeAllocation).then( response => {
                 alert2(this.$root, [response.message], 'success');
                 this.$router.push('/ls/trucks-allocation/' + this.allocation.contract_id);
               });

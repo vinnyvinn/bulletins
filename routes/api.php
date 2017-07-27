@@ -96,4 +96,12 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('gatepass/awaiting', '\SmoDav\Controllers\API\GatePassController@awaiting');
     Route::resource('gatepass', '\SmoDav\Controllers\API\GatePassController');
 
+    Route::resource('employee', 'RKEmployeeController');
+    Route::get('unallocated_employees', 'RKEmployeeController@unallocatedEmployees');
+    Route::post('allocate_employee', 'RKEmployeeController@allocateEmployee');
+    Route::get('ls_mileage_employees/{id}', '\SmoDav\Controllers\API\LocalShunting\LSMileageController@lsemployeeMileage');
+
+    Route::resource('ls_employee_mileage', '\SmoDav\Controllers\API\LocalShunting\LSEmployeeMileageController');
+    Route::get('create_employee_mileage/{employee}/{contract}', 'RKEmployeeController@create_employee_mileage');
+
 });

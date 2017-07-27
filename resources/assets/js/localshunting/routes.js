@@ -16,6 +16,7 @@ function authMiddleware(to, from, next) {
 
 module.exports = [
     { path: '/', redirect: '/login', beforeEnter: authMiddleware },
+    { path: '/ls', component: require('./dashboard/index.vue'), beforeEnter: authMiddleware },
     { path: '/ls/dashboard', component: require('./dashboard/index.vue'), beforeEnter: authMiddleware },
 
     { path: '/progress', component: require('../components/truck-progress/index.vue'), beforeEnter: authMiddleware },
@@ -59,12 +60,14 @@ module.exports = [
 
     { path: '/ls/gatepass', component: require('./gatepass/form.vue'), beforeEnter: authMiddleware },
 
-    { path: '/ls/mileage', component: require('./mileage/index.vue'), beforeEnter: authMiddleware },
+    { path: '/ls/mileage', component: require('./mileage/contractsindex.vue'), beforeEnter: authMiddleware },
+    { path: '/ls/mileage/:contract', component: require('./mileage/index.vue'), beforeEnter: authMiddleware },
     { path: '/ls/mileage/create', component: require('./mileage/form.vue'), beforeEnter: authMiddleware },
     { path: '/ls/mileage/:id', component: require('./mileage/view.vue'), beforeEnter: authMiddleware },
     { path: '/ls/mileage/:approve/approve', component: require('./mileage/form.vue'), beforeEnter: authMiddleware },
     { path: '/ls/mileage/:id/edit', component: require('./mileage/form.vue'), beforeEnter: authMiddleware },
     { path: '/ls/mileage/create/:truck/:contract', component: require('./mileage/form.vue'), beforeEnter: authMiddleware },
+    { path: '/ls/mileage/employee/:employee/:contract', component: require('./mileage/employeeform.vue'), beforeEnter: authMiddleware },
 
     // { path: '/route-card', component: require('./transport/routecard/index.vue'), beforeEnter: authMiddleware },
     // { path: '/route-card/create', component: require('../transport/routecard/form.vue'), beforeEnter: authMiddleware },
