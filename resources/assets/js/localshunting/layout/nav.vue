@@ -22,7 +22,7 @@ $root.can('create-contract-template') || $root.can('view-contract-template') || 
 
             <router-link to="/ls/trucks-allocation" class="nav-items" v-if="$root.can('create-journey') || $root.can('view-journey') || $root.can('edit-journey') || $root.can('approve-journey') || $root.can('delete-journey')">
                 <img src="/images/journey.png" alt="journey" class="img-responsive">
-                <div class="caption">Truck Allocation</div>
+                <div class="caption">Allocation</div>
             </router-link>
 
             <router-link to="/ls/fuel" class="nav-items" v-if="$root.can('create-fuel') || $root.can('view-fuel') || $root.can('edit-fuel') || $root.can('approve-fuel') || $root.can('delete-fuel')">

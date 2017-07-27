@@ -2,18 +2,14 @@
 
 namespace SmoDav\Controllers\API\LocalShunting;
 
-
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use SmoDav\Models\LocalShunting\LSMileage;
-use SmoDav\Models\LocalShunting\LSDelivery;
+use App\Http\Controllers\Controller;
 use Auth;
 use Response;
-use SmoDav\Models\Vehicle;
-use App\Contract;
-use App\Employee;
+use SmoDav\Models\LocalShunting\LSEmployeeMileage;
 
-class LSMileageController extends Controller
+
+class LSEmployeeMileageController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,7 +18,9 @@ class LSMileageController extends Controller
      */
     public function index()
     {
-
+        return Response::json([
+          'employees_mileages' => LSEmployeeMileage::all()
+        ]);
     }
 
     /**
@@ -32,26 +30,7 @@ class LSMileageController extends Controller
      */
     public function create()
     {
-
-    }
-
-    public function createMileage($truck, $contract)
-    {
-      if($truck && $contract) {
-        return Response::json([
-          'deliveries' => LSDelivery::where('contract_id', $contract)
-              ->where('vehicle_id',$truck)
-              ->with('vehicle','user')
-              ->get(),
-          'mileages' => LSMileage::where('contract_id', $contract)
-              ->where('vehicle_id',$truck)
-              ->with('user')
-              ->get(),
-          'vehicle' =>Vehicle::where('id', $truck)
-              ->with('trailer','driver')
-              ->first()
-        ]);
-      }
+        //
     }
 
     /**
@@ -64,16 +43,16 @@ class LSMileageController extends Controller
     {
         $data = $request->all();
         $data['user_id'] = Auth::id();
-        $lsmileage = LSMileage::create($data);
-        return Response::json([
-          'lsmileages' => LSMileage::where('contract_id', $request->contract_id)
-            ->where('vehicle_id', $request->vehicle_id)
-            ->with('user')
-            ->get(),
-          'status' => 'success',
-          'message' => 'Mileage successfully allocated'
-        ]);
+        $employee_mileage = LSEmployeeMileage::create($data);
 
+        return Response::json([
+          'status' => 'success',
+          'message' => 'Employee Mileage successfully allocated',
+          'mileages' => LSEmployeeMileage::where('employee_id', $data['employee_id'])
+                  ->where('contract_id', $data['contract_id'])
+                  ->with('user')
+                  ->get()
+        ]);
     }
 
     /**
@@ -84,7 +63,7 @@ class LSMileageController extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
 
     /**
@@ -119,13 +98,5 @@ class LSMileageController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function lsemployeeMileage ($id)
-    {
-      return Response::json([
-        'vehicles' => Vehicle::where('contract_id', $id)->with('driver')->get(),
-        'employees' => Employee::where('contract_id', $id)->get()
-      ]);
     }
 }

@@ -4,7 +4,7 @@
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <strong>Driver Details</strong>
+                        <strong>Employee Details</strong>
                     </div>
 
                     <div class="panel-body">
@@ -12,38 +12,39 @@
 
                             <div class="form-group">
                                 <label for="first_name">First Name</label>
-                                <input v-model="driver.first_name" type="text" class="form-control" id="first_name" name="first_name" required>
+                                <input v-model="employee.first_name" type="text" class="form-control" id="first_name" name="first_name" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="last_name">Last Name</label>
-                                <input v-model="driver.last_name" type="text" class="form-control" id="last_name" name="last_name" required>
+                                <input v-model="employee.last_name" type="text" class="form-control" id="last_name" name="last_name" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="identification_type">Identification Type</label>
-                                <select v-model="driver.identification_type" class="form-control" id="identification_type" name="identification_type" required>
+                                <select v-model="employee.identification_type" class="form-control" id="identification_type" name="identification_type" required>
                                     <option value="National ID">National ID</option>
                                     <option value="Passport">Passport</option>
                                 </select>
                             </div>
 
                             <div class="form-group">
-                                <label for="identification_number">National ID</label>
-                                <input v-model="driver.identification_number" type="text" class="form-control" id="identification_number" name="identification_number" required>
+                                <label for="identification_type">Employee Category</label>
+                                <select v-model="employee.category" class="form-control" id="category" name="category" required>
+                                    <option value="casual">Casual</option>
+                                    <option value="supervisor">Supervisor</option>
+                                </select>
                             </div>
 
                             <div class="form-group">
-                                <label for="dl_number">Drivers License Number</label>
-                                <input v-model="driver.dl_number" type="text" class="form-control text-uppercase" id="dl_number" name="dl_number">
+                                <label for="identification_number">National ID</label>
+                                <input v-model="employee.identification_number" type="text" class="form-control" id="identification_number" name="identification_number" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="mobile_phone">Mobile Number</label>
-                                <input v-model="driver.mobile_phone" type="text" class="form-control" id="mobile_phone" name="mobile_phone">
+                                <input v-model="employee.mobile_phone" type="text" class="form-control" id="mobile_phone" name="mobile_phone">
                             </div>
-
-                            <udf module="Drivers" :state="driver" :uploads="uploads"></udf>
 
                             <div class="form-group">
                                 <button class="btn btn-success">Save</button>
@@ -67,7 +68,7 @@
             return {
                 sharedState: window._mainState,
                 uploads: [],
-                driver: {
+                employee: {
                     _token: window.Laravel.csrfToken,
                     _method: 'POST',
                     payroll_number: '',
@@ -96,24 +97,9 @@
             },
 
             store() {
-                this.$root.isLoading = true;
-                let request = null;
-                let data = mapToFormData(this.driver, this.uploads, typeof this.$route.params.id === 'string');
-
-                if (this.$route.params.id) {
-                    request = http.put('/api/driver/' + this.$route.params.id, data, true);
-                } else {
-                    request = http.post('/api/driver', data, true);
-                }
-
-                request.then((response) => {
-                    this.$root.isLoading = false;
-                    alert2(this.$root, [response.message], 'success');
-                    window._router.push({ path: '/drivers' });
-                }).catch((error) => {
-                    this.$root.isLoading = false;
-                    alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
-                });
+              http.post('/api/employee', this.employee).then((response) => {
+                alert2(this.$root,[response.message], 'success');
+              });
             },
         }
     }

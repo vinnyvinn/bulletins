@@ -22,7 +22,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="journey in journeys">
+                                <tr v-for="journey in journeys" v-if="journey.status != 'Closed'">
                                     <td>
                                         <router-link v-if="$root.can('view-journey')" :to="'/journey/' + journey.id">JRNY-{{ journey.id }}</router-link>
                                         <span v-else>JRNY-{{ journey.id }}</span>
