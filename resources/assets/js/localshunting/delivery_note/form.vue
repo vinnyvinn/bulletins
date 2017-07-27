@@ -95,7 +95,7 @@
                 </div>
                 <div class="form-group">
                     <button class="btn btn-success">Process</button>
-                    <router-link to="/delivery" class="btn btn-danger">Back</router-link>
+                    <router-link to="/ls/delivery" class="btn btn-danger">Back</router-link>
                 </div>
             </form>
 

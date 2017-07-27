@@ -250,6 +250,11 @@
                 if (this.$route.params.id) {
                     request = http.put('/api/delivery/' + this.$route.params.id, data, true);
                 } else if (this.$route.params.unload) {
+                  if(this.journey.contract.capture_offloading_weights && this.deliveryNote.offloading_net_weight == 0) {
+                    alert2(this.$root, ['This delivery requires capture of offloading weight'], 'danger');
+                    this.$root.isLoading = false;
+                    return;
+                  }
                     request = http.put('/api/delivery/' + this.$route.params.unload, data, true);
                 } else {
                     request = http.post('/api/delivery', data, true);
