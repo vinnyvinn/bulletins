@@ -204,6 +204,11 @@
             };
         },
         created() {
+          if (! this.$route.params.id && ! this.$root.can('create-allocation')) {
+              this.$router.push('/403');
+              return false;
+          }
+
           this.$root.isLoading = true;
           http.get('/api/journey/create').then( response => {
             this.allocation.contract_id = this.$route.params.id;

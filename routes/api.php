@@ -104,4 +104,5 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('ls_employee_mileage', '\SmoDav\Controllers\API\LocalShunting\LSEmployeeMileageController');
     Route::get('create_employee_mileage/{employee}/{contract}', 'RKEmployeeController@create_employee_mileage');
 
+    Route::resource('employee_category', 'EmployeeCategoryController');
 });

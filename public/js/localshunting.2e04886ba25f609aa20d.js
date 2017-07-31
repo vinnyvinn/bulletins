@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "./";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 516);
+/******/ 	return __webpack_require__(__webpack_require__.s = 521);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -72801,9 +72801,9 @@ module.exports = Vue$3;
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(295),
+  __webpack_require__(296),
   /* template */
-  __webpack_require__(479),
+  __webpack_require__(483),
   /* scopeId */
   null,
   /* cssModules */
@@ -91903,9 +91903,9 @@ module.exports = Component.exports
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(285),
+  __webpack_require__(286),
   /* template */
-  __webpack_require__(493),
+  __webpack_require__(497),
   /* scopeId */
   null,
   /* cssModules */
@@ -103999,9 +103999,9 @@ if(false) {
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(284),
+  __webpack_require__(285),
   /* template */
-  __webpack_require__(496),
+  __webpack_require__(500),
   /* scopeId */
   null,
   /* cssModules */
@@ -104033,9 +104033,9 @@ module.exports = Component.exports
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(288),
+  __webpack_require__(289),
   /* template */
-  __webpack_require__(458),
+  __webpack_require__(462),
   /* scopeId */
   null,
   /* cssModules */
@@ -104067,9 +104067,9 @@ module.exports = Component.exports
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(301),
+  __webpack_require__(302),
   /* template */
-  __webpack_require__(434),
+  __webpack_require__(437),
   /* scopeId */
   null,
   /* cssModules */
@@ -104108,7 +104108,7 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__vuerouter__ = __webpack_require__(345);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__vuerouter__ = __webpack_require__(346);
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -104128,7 +104128,7 @@ Vue.component('alert', __webpack_require__(204));
 Vue.component('loader', __webpack_require__(205));
 Vue.component('core-nav', __webpack_require__(206));
 
-Vue.component('ls-nav', __webpack_require__(382));
+Vue.component('ls-nav', __webpack_require__(385));
 
 var app = new __WEBPACK_IMPORTED_MODULE_0__vuerouter__["a" /* RouterSingleton */].getRouter();
 
@@ -104148,7 +104148,8 @@ var app = new __WEBPACK_IMPORTED_MODULE_0__vuerouter__["a" /* RouterSingleton */
 /* 280 */,
 /* 281 */,
 /* 282 */,
-/* 283 */
+/* 283 */,
+/* 284 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -104163,7 +104164,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = {};
 
 /***/ }),
-/* 284 */
+/* 285 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -104245,7 +104246,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 };
 
 /***/ }),
-/* 285 */
+/* 286 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -104466,7 +104467,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
 
 /***/ }),
-/* 286 */
+/* 287 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -104537,7 +104538,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 };
 
 /***/ }),
-/* 287 */
+/* 288 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -104819,7 +104820,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
 
 /***/ }),
-/* 288 */
+/* 289 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -105074,7 +105075,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
 
 /***/ }),
-/* 289 */
+/* 290 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -105190,7 +105191,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
 
 /***/ }),
-/* 290 */
+/* 291 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -105443,7 +105444,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 };
 
 /***/ }),
-/* 291 */
+/* 292 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -105557,7 +105558,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
 
 /***/ }),
-/* 292 */
+/* 293 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -105664,7 +105665,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 };
 
 /***/ }),
-/* 293 */
+/* 294 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -105745,7 +105746,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 };
 
 /***/ }),
-/* 294 */
+/* 295 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -105922,7 +105923,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 };
 
 /***/ }),
-/* 295 */
+/* 296 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -106178,7 +106179,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
 
 /***/ }),
-/* 296 */
+/* 297 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -106302,7 +106303,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 };
 
 /***/ }),
-/* 297 */
+/* 298 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -106584,7 +106585,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
 
 /***/ }),
-/* 298 */
+/* 299 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -106696,7 +106697,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
 
 /***/ }),
-/* 299 */
+/* 300 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -107340,7 +107341,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 };
 
 /***/ }),
-/* 300 */
+/* 301 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -107385,7 +107386,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = {};
 
 /***/ }),
-/* 301 */
+/* 302 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -107598,6 +107599,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   created: function created() {
     var _this = this;
 
+    if (!this.$route.params.id && !this.$root.can('create-allocation')) {
+      this.$router.push('/403');
+      return false;
+    }
+
     this.$root.isLoading = true;
     http.get('/api/journey/create').then(function (response) {
       _this.allocation.contract_id = _this.$route.params.id;
@@ -107720,7 +107726,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
 
 /***/ }),
-/* 302 */
+/* 303 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -107801,7 +107807,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 };
 
 /***/ }),
-/* 303 */
+/* 304 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -107914,7 +107920,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
 
 /***/ }),
-/* 304 */,
 /* 305 */,
 /* 306 */,
 /* 307 */,
@@ -107954,7 +107959,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* 341 */,
 /* 342 */,
 /* 343 */,
-/* 344 */
+/* 344 */,
+/* 345 */
 /***/ (function(module, exports, __webpack_require__) {
 
 function authMiddleware(to, from, next) {
@@ -107973,12 +107979,12 @@ function authMiddleware(to, from, next) {
     return next();
 }
 
-module.exports = [{ path: '/', redirect: '/login', beforeEnter: authMiddleware }, { path: '/ls', component: __webpack_require__(257), beforeEnter: authMiddleware }, { path: '/ls/dashboard', component: __webpack_require__(257), beforeEnter: authMiddleware }, { path: '/progress', component: __webpack_require__(208), beforeEnter: authMiddleware }, { path: '/progress/pre-loading', component: __webpack_require__(215), beforeEnter: authMiddleware }, { path: '/progress/pre-loading/:id', component: __webpack_require__(210), beforeEnter: authMiddleware }, { path: '/progress/loading', component: __webpack_require__(213), beforeEnter: authMiddleware }, { path: '/progress/loading/:id', component: __webpack_require__(209), beforeEnter: authMiddleware }, { path: '/progress/enroute', component: __webpack_require__(211), beforeEnter: authMiddleware }, { path: '/progress/enroute/:id', component: __webpack_require__(207), beforeEnter: authMiddleware }, { path: '/progress/offloading', component: __webpack_require__(214), beforeEnter: authMiddleware }, { path: '/progress/in-yard', component: __webpack_require__(212), beforeEnter: authMiddleware }, { path: '/users', component: __webpack_require__(217), beforeEnter: authMiddleware }, { path: '/users/create', component: __webpack_require__(216), beforeEnter: authMiddleware }, { path: '/ls/contracts', component: __webpack_require__(158), beforeEnter: authMiddleware }, { path: '/ls/contracts/r/:print', component: __webpack_require__(158), beforeEnter: authMiddleware }, { path: '/ls/contracts/create', component: __webpack_require__(133), beforeEnter: authMiddleware }, { path: '/ls/contracts/create/:templateId', component: __webpack_require__(133), beforeEnter: authMiddleware }, { path: '/ls/contracts/:id', component: __webpack_require__(222), beforeEnter: authMiddleware }, { path: '/ls/contracts/:id/edit', component: __webpack_require__(133), beforeEnter: authMiddleware }, { path: '/ls/contract-templates', component: __webpack_require__(220), beforeEnter: authMiddleware }, { path: '/ls/contract-templates/create', component: __webpack_require__(157), beforeEnter: authMiddleware }, { path: '/ls/contract-templates/:id', component: __webpack_require__(221), beforeEnter: authMiddleware }, { path: '/ls/contract-templates/:id/edit', component: __webpack_require__(157), beforeEnter: authMiddleware }, { path: '/ls/trucks-allocation', component: __webpack_require__(390), beforeEnter: authMiddleware }, { path: '/ls/trucks-allocation/create/:id', component: __webpack_require__(259), beforeEnter: authMiddleware }, { path: '/ls/trucks-allocation/:id', component: __webpack_require__(391), beforeEnter: authMiddleware }, { path: '/ls/trucks-allocation/:id/edit', component: __webpack_require__(259), beforeEnter: authMiddleware }, { path: '/ls/fuel', component: __webpack_require__(379), beforeEnter: authMiddleware }, { path: '/ls/fuel/create/:id/:contract', component: __webpack_require__(258), beforeEnter: authMiddleware }, { path: '/ls/fuel/:id', component: __webpack_require__(380), beforeEnter: authMiddleware }, { path: '/ls/fuel/:id/edit', component: __webpack_require__(258), beforeEnter: authMiddleware }, { path: '/ls/gatepass', component: __webpack_require__(381), beforeEnter: authMiddleware }, { path: '/ls/mileage', component: __webpack_require__(383), beforeEnter: authMiddleware }, { path: '/ls/mileage/:contract', component: __webpack_require__(385), beforeEnter: authMiddleware }, { path: '/ls/mileage/create', component: __webpack_require__(163), beforeEnter: authMiddleware }, { path: '/ls/mileage/:id', component: __webpack_require__(386), beforeEnter: authMiddleware }, { path: '/ls/mileage/:approve/approve', component: __webpack_require__(163), beforeEnter: authMiddleware }, { path: '/ls/mileage/:id/edit', component: __webpack_require__(163), beforeEnter: authMiddleware }, { path: '/ls/mileage/create/:truck/:contract', component: __webpack_require__(163), beforeEnter: authMiddleware }, { path: '/ls/mileage/employee/:employee/:contract', component: __webpack_require__(384), beforeEnter: authMiddleware },
+module.exports = [{ path: '/', redirect: '/login', beforeEnter: authMiddleware }, { path: '/ls', component: __webpack_require__(257), beforeEnter: authMiddleware }, { path: '/ls/dashboard', component: __webpack_require__(257), beforeEnter: authMiddleware }, { path: '/progress', component: __webpack_require__(208), beforeEnter: authMiddleware }, { path: '/progress/pre-loading', component: __webpack_require__(215), beforeEnter: authMiddleware }, { path: '/progress/pre-loading/:id', component: __webpack_require__(210), beforeEnter: authMiddleware }, { path: '/progress/loading', component: __webpack_require__(213), beforeEnter: authMiddleware }, { path: '/progress/loading/:id', component: __webpack_require__(209), beforeEnter: authMiddleware }, { path: '/progress/enroute', component: __webpack_require__(211), beforeEnter: authMiddleware }, { path: '/progress/enroute/:id', component: __webpack_require__(207), beforeEnter: authMiddleware }, { path: '/progress/offloading', component: __webpack_require__(214), beforeEnter: authMiddleware }, { path: '/progress/in-yard', component: __webpack_require__(212), beforeEnter: authMiddleware }, { path: '/users', component: __webpack_require__(217), beforeEnter: authMiddleware }, { path: '/users/create', component: __webpack_require__(216), beforeEnter: authMiddleware }, { path: '/ls/contracts', component: __webpack_require__(158), beforeEnter: authMiddleware }, { path: '/ls/contracts/r/:print', component: __webpack_require__(158), beforeEnter: authMiddleware }, { path: '/ls/contracts/create', component: __webpack_require__(133), beforeEnter: authMiddleware }, { path: '/ls/contracts/create/:templateId', component: __webpack_require__(133), beforeEnter: authMiddleware }, { path: '/ls/contracts/:id', component: __webpack_require__(222), beforeEnter: authMiddleware }, { path: '/ls/contracts/:id/edit', component: __webpack_require__(133), beforeEnter: authMiddleware }, { path: '/ls/contract-templates', component: __webpack_require__(220), beforeEnter: authMiddleware }, { path: '/ls/contract-templates/create', component: __webpack_require__(157), beforeEnter: authMiddleware }, { path: '/ls/contract-templates/:id', component: __webpack_require__(221), beforeEnter: authMiddleware }, { path: '/ls/contract-templates/:id/edit', component: __webpack_require__(157), beforeEnter: authMiddleware }, { path: '/ls/trucks-allocation', component: __webpack_require__(393), beforeEnter: authMiddleware }, { path: '/ls/trucks-allocation/create/:id', component: __webpack_require__(259), beforeEnter: authMiddleware }, { path: '/ls/trucks-allocation/:id', component: __webpack_require__(394), beforeEnter: authMiddleware }, { path: '/ls/trucks-allocation/:id/edit', component: __webpack_require__(259), beforeEnter: authMiddleware }, { path: '/ls/fuel', component: __webpack_require__(382), beforeEnter: authMiddleware }, { path: '/ls/fuel/create/:id/:contract', component: __webpack_require__(258), beforeEnter: authMiddleware }, { path: '/ls/fuel/:id', component: __webpack_require__(383), beforeEnter: authMiddleware }, { path: '/ls/fuel/:id/edit', component: __webpack_require__(258), beforeEnter: authMiddleware }, { path: '/ls/gatepass', component: __webpack_require__(384), beforeEnter: authMiddleware }, { path: '/ls/mileage', component: __webpack_require__(386), beforeEnter: authMiddleware }, { path: '/ls/mileage/:contract', component: __webpack_require__(388), beforeEnter: authMiddleware }, { path: '/ls/mileage/create', component: __webpack_require__(163), beforeEnter: authMiddleware }, { path: '/ls/mileage/:id', component: __webpack_require__(389), beforeEnter: authMiddleware }, { path: '/ls/mileage/:approve/approve', component: __webpack_require__(163), beforeEnter: authMiddleware }, { path: '/ls/mileage/:id/edit', component: __webpack_require__(163), beforeEnter: authMiddleware }, { path: '/ls/mileage/create/:truck/:contract', component: __webpack_require__(163), beforeEnter: authMiddleware }, { path: '/ls/mileage/employee/:employee/:contract', component: __webpack_require__(387), beforeEnter: authMiddleware },
 
 // { path: '/route-card', component: require('./transport/routecard/index.vue'), beforeEnter: authMiddleware },
 // { path: '/route-card/create', component: require('../transport/routecard/form.vue'), beforeEnter: authMiddleware },
 
-{ path: '/ls/delivery', component: __webpack_require__(377), beforeEnter: authMiddleware }, { path: '/ls/delivery/create/:new', component: __webpack_require__(218), beforeEnter: authMiddleware }, { path: '/ls/delivery/:id', component: __webpack_require__(378), beforeEnter: authMiddleware }, { path: '/ls/delivery/:unload/unload', component: __webpack_require__(218), beforeEnter: authMiddleware }, { path: '/ls/delivery/:id/edit', component: __webpack_require__(218), beforeEnter: authMiddleware }, { path: '/allocation', component: __webpack_require__(202), beforeEnter: authMiddleware }, { path: '/allocation/create', component: __webpack_require__(155), beforeEnter: authMiddleware }, { path: '/allocation/:id/edit', component: __webpack_require__(155), beforeEnter: authMiddleware }, { path: '/reports', component: __webpack_require__(387), beforeEnter: authMiddleware }, { path: '/reports/{details}', component: __webpack_require__(388), beforeEnter: authMiddleware }, { path: '/station-selection', component: __webpack_require__(389), beforeEnter: authMiddleware }, { path: '/403', component: __webpack_require__(219), beforeEnter: authMiddleware }, { path: '/login',
+{ path: '/ls/delivery', component: __webpack_require__(380), beforeEnter: authMiddleware }, { path: '/ls/delivery/create/:new', component: __webpack_require__(218), beforeEnter: authMiddleware }, { path: '/ls/delivery/:id', component: __webpack_require__(381), beforeEnter: authMiddleware }, { path: '/ls/delivery/:unload/unload', component: __webpack_require__(218), beforeEnter: authMiddleware }, { path: '/ls/delivery/:id/edit', component: __webpack_require__(218), beforeEnter: authMiddleware }, { path: '/allocation', component: __webpack_require__(202), beforeEnter: authMiddleware }, { path: '/allocation/create', component: __webpack_require__(155), beforeEnter: authMiddleware }, { path: '/allocation/:id/edit', component: __webpack_require__(155), beforeEnter: authMiddleware }, { path: '/reports', component: __webpack_require__(390), beforeEnter: authMiddleware }, { path: '/reports/{details}', component: __webpack_require__(391), beforeEnter: authMiddleware }, { path: '/station-selection', component: __webpack_require__(392), beforeEnter: authMiddleware }, { path: '/403', component: __webpack_require__(219), beforeEnter: authMiddleware }, { path: '/login',
     component: __webpack_require__(203),
     beforeEnter: function beforeEnter(to, from, next) {
         if (localStorage.getItem('foeiwafwfuwe')) {
@@ -107991,10 +107997,10 @@ module.exports = [{ path: '/', redirect: '/login', beforeEnter: authMiddleware }
 
         return next();
     }
-}, { path: '*', component: __webpack_require__(376), beforeEnter: authMiddleware }];
+}, { path: '*', component: __webpack_require__(379), beforeEnter: authMiddleware }];
 
 /***/ }),
-/* 345 */
+/* 346 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -108061,7 +108067,7 @@ var MainRouter = function () {
     }, {
         key: 'setup',
         value: function setup() {
-            var routes = __webpack_require__(344);
+            var routes = __webpack_require__(345);
             var router = new VueRouter({
                 mode: 'history',
                 linkActiveClass: 'active',
@@ -108103,43 +108109,42 @@ var MainRouter = function () {
 }();
 
 /***/ }),
-/* 346 */,
 /* 347 */,
 /* 348 */,
 /* 349 */,
-/* 350 */
+/* 350 */,
+/* 351 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)();
 exports.push([module.i, "\n.payment-box[data-v-074b448a] {\n  background-color: #efefef;\n}\n", ""]);
 
 /***/ }),
-/* 351 */,
 /* 352 */,
 /* 353 */,
 /* 354 */,
 /* 355 */,
 /* 356 */,
 /* 357 */,
-/* 358 */
+/* 358 */,
+/* 359 */,
+/* 360 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)();
 exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
-/* 359 */,
-/* 360 */,
 /* 361 */,
-/* 362 */
+/* 362 */,
+/* 363 */,
+/* 364 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)();
 exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
-/* 363 */,
-/* 364 */,
 /* 365 */,
 /* 366 */,
 /* 367 */,
@@ -108151,14 +108156,17 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /* 373 */,
 /* 374 */,
 /* 375 */,
-/* 376 */
+/* 376 */,
+/* 377 */,
+/* 378 */,
+/* 379 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(283),
+  __webpack_require__(284),
   /* template */
-  __webpack_require__(472),
+  __webpack_require__(476),
   /* scopeId */
   null,
   /* cssModules */
@@ -108185,18 +108193,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 377 */
+/* 380 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(512)
+__webpack_require__(517)
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(286),
+  __webpack_require__(287),
   /* template */
-  __webpack_require__(492),
+  __webpack_require__(496),
   /* scopeId */
   null,
   /* cssModules */
@@ -108223,14 +108231,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 378 */
+/* 381 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(287),
+  __webpack_require__(288),
   /* template */
-  __webpack_require__(483),
+  __webpack_require__(487),
   /* scopeId */
   null,
   /* cssModules */
@@ -108257,14 +108265,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 379 */
+/* 382 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(289),
+  __webpack_require__(290),
   /* template */
-  __webpack_require__(497),
+  __webpack_require__(501),
   /* scopeId */
   null,
   /* cssModules */
@@ -108291,14 +108299,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 380 */
+/* 383 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(290),
+  __webpack_require__(291),
   /* template */
-  __webpack_require__(477),
+  __webpack_require__(481),
   /* scopeId */
   null,
   /* cssModules */
@@ -108325,14 +108333,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 381 */
+/* 384 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(291),
+  __webpack_require__(292),
   /* template */
-  __webpack_require__(474),
+  __webpack_require__(478),
   /* scopeId */
   null,
   /* cssModules */
@@ -108359,14 +108367,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 382 */
+/* 385 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(292),
+  __webpack_require__(293),
   /* template */
-  __webpack_require__(437),
+  __webpack_require__(440),
   /* scopeId */
   null,
   /* cssModules */
@@ -108393,14 +108401,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 383 */
+/* 386 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(293),
+  __webpack_require__(294),
   /* template */
-  __webpack_require__(446),
+  __webpack_require__(450),
   /* scopeId */
   null,
   /* cssModules */
@@ -108427,18 +108435,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 384 */
+/* 387 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(500)
+__webpack_require__(504)
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(294),
+  __webpack_require__(295),
   /* template */
-  __webpack_require__(426),
+  __webpack_require__(429),
   /* scopeId */
   "data-v-074b448a",
   /* cssModules */
@@ -108465,18 +108473,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 385 */
+/* 388 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(508)
+__webpack_require__(513)
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(296),
+  __webpack_require__(297),
   /* template */
-  __webpack_require__(449),
+  __webpack_require__(453),
   /* scopeId */
   null,
   /* cssModules */
@@ -108503,14 +108511,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 386 */
+/* 389 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(297),
+  __webpack_require__(298),
   /* template */
-  __webpack_require__(442),
+  __webpack_require__(445),
   /* scopeId */
   null,
   /* cssModules */
@@ -108537,14 +108545,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 387 */
+/* 390 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(298),
+  __webpack_require__(299),
   /* template */
-  __webpack_require__(444),
+  __webpack_require__(447),
   /* scopeId */
   null,
   /* cssModules */
@@ -108571,14 +108579,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 388 */
+/* 391 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(299),
+  __webpack_require__(300),
   /* template */
-  __webpack_require__(440),
+  __webpack_require__(443),
   /* scopeId */
   null,
   /* cssModules */
@@ -108605,14 +108613,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 389 */
+/* 392 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(300),
+  __webpack_require__(301),
   /* template */
-  __webpack_require__(461),
+  __webpack_require__(465),
   /* scopeId */
   null,
   /* cssModules */
@@ -108639,14 +108647,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 390 */
+/* 393 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(302),
+  __webpack_require__(303),
   /* template */
-  __webpack_require__(481),
+  __webpack_require__(485),
   /* scopeId */
   null,
   /* cssModules */
@@ -108673,14 +108681,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 391 */
+/* 394 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(303),
+  __webpack_require__(304),
   /* template */
-  __webpack_require__(456),
+  __webpack_require__(460),
   /* scopeId */
   null,
   /* cssModules */
@@ -108707,9 +108715,6 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 392 */,
-/* 393 */,
-/* 394 */,
 /* 395 */,
 /* 396 */,
 /* 397 */,
@@ -108741,7 +108746,10 @@ module.exports = Component.exports
 /* 423 */,
 /* 424 */,
 /* 425 */,
-/* 426 */
+/* 426 */,
+/* 427 */,
+/* 428 */,
+/* 429 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -108942,14 +108950,14 @@ if (false) {
 }
 
 /***/ }),
-/* 427 */,
-/* 428 */,
-/* 429 */,
 /* 430 */,
 /* 431 */,
 /* 432 */,
 /* 433 */,
-/* 434 */
+/* 434 */,
+/* 435 */,
+/* 436 */,
+/* 437 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -109162,9 +109170,9 @@ if (false) {
 }
 
 /***/ }),
-/* 435 */,
-/* 436 */,
-/* 437 */
+/* 438 */,
+/* 439 */,
+/* 440 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -109302,9 +109310,9 @@ if (false) {
 }
 
 /***/ }),
-/* 438 */,
-/* 439 */,
-/* 440 */
+/* 441 */,
+/* 442 */,
+/* 443 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -110839,8 +110847,8 @@ if (false) {
 }
 
 /***/ }),
-/* 441 */,
-/* 442 */
+/* 444 */,
+/* 445 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -111309,8 +111317,8 @@ if (false) {
 }
 
 /***/ }),
-/* 443 */,
-/* 444 */
+/* 446 */,
+/* 447 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -111345,8 +111353,9 @@ if (false) {
 }
 
 /***/ }),
-/* 445 */,
-/* 446 */
+/* 448 */,
+/* 449 */,
+/* 450 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -111389,9 +111398,9 @@ if (false) {
 }
 
 /***/ }),
-/* 447 */,
-/* 448 */,
-/* 449 */
+/* 451 */,
+/* 452 */,
+/* 453 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -111489,13 +111498,13 @@ if (false) {
 }
 
 /***/ }),
-/* 450 */,
-/* 451 */,
-/* 452 */,
-/* 453 */,
 /* 454 */,
 /* 455 */,
-/* 456 */
+/* 456 */,
+/* 457 */,
+/* 458 */,
+/* 459 */,
+/* 460 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -111541,8 +111550,8 @@ if (false) {
 }
 
 /***/ }),
-/* 457 */,
-/* 458 */
+/* 461 */,
+/* 462 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -111817,9 +111826,9 @@ if (false) {
 }
 
 /***/ }),
-/* 459 */,
-/* 460 */,
-/* 461 */
+/* 463 */,
+/* 464 */,
+/* 465 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -111893,17 +111902,17 @@ if (false) {
 }
 
 /***/ }),
-/* 462 */,
-/* 463 */,
-/* 464 */,
-/* 465 */,
 /* 466 */,
 /* 467 */,
 /* 468 */,
 /* 469 */,
 /* 470 */,
 /* 471 */,
-/* 472 */
+/* 472 */,
+/* 473 */,
+/* 474 */,
+/* 475 */,
+/* 476 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -111924,8 +111933,8 @@ if (false) {
 }
 
 /***/ }),
-/* 473 */,
-/* 474 */
+/* 477 */,
+/* 478 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -112008,9 +112017,9 @@ if (false) {
 }
 
 /***/ }),
-/* 475 */,
-/* 476 */,
-/* 477 */
+/* 479 */,
+/* 480 */,
+/* 481 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -112108,8 +112117,8 @@ if (false) {
 }
 
 /***/ }),
-/* 478 */,
-/* 479 */
+/* 482 */,
+/* 483 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -112325,8 +112334,8 @@ if (false) {
 }
 
 /***/ }),
-/* 480 */,
-/* 481 */
+/* 484 */,
+/* 485 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -112343,7 +112352,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "table-responsive"
   }, [_c('table', {
-    staticClass: "table no-wrap"
+    staticClass: "table datatable no-wrap"
   }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.contracts), function(contract) {
     return _c('tr', [_c('td', [_vm._v(_vm._s(contract.id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(contract.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(contract.client.Name))]), _vm._v(" "), _c('td', [_vm._v("Progress")]), _vm._v(" "), _c('td', [_c('router-link', {
       attrs: {
@@ -112369,8 +112378,8 @@ if (false) {
 }
 
 /***/ }),
-/* 482 */,
-/* 483 */
+/* 486 */,
+/* 487 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -112839,15 +112848,15 @@ if (false) {
 }
 
 /***/ }),
-/* 484 */,
-/* 485 */,
-/* 486 */,
-/* 487 */,
 /* 488 */,
 /* 489 */,
 /* 490 */,
 /* 491 */,
-/* 492 */
+/* 492 */,
+/* 493 */,
+/* 494 */,
+/* 495 */,
+/* 496 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -112887,7 +112896,7 @@ if (false) {
 }
 
 /***/ }),
-/* 493 */
+/* 497 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -113276,9 +113285,9 @@ if (false) {
 }
 
 /***/ }),
-/* 494 */,
-/* 495 */,
-/* 496 */
+/* 498 */,
+/* 499 */,
+/* 500 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -113305,7 +113314,7 @@ if (false) {
 }
 
 /***/ }),
-/* 497 */
+/* 501 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -113353,15 +113362,15 @@ if (false) {
 }
 
 /***/ }),
-/* 498 */,
-/* 499 */,
-/* 500 */
+/* 502 */,
+/* 503 */,
+/* 504 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(350);
+var content = __webpack_require__(351);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -113381,20 +113390,21 @@ if(false) {
 }
 
 /***/ }),
-/* 501 */,
-/* 502 */,
-/* 503 */,
-/* 504 */,
 /* 505 */,
 /* 506 */,
 /* 507 */,
-/* 508 */
+/* 508 */,
+/* 509 */,
+/* 510 */,
+/* 511 */,
+/* 512 */,
+/* 513 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(358);
+var content = __webpack_require__(360);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -113414,16 +113424,16 @@ if(false) {
 }
 
 /***/ }),
-/* 509 */,
-/* 510 */,
-/* 511 */,
-/* 512 */
+/* 514 */,
+/* 515 */,
+/* 516 */,
+/* 517 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(362);
+var content = __webpack_require__(364);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -113443,10 +113453,10 @@ if(false) {
 }
 
 /***/ }),
-/* 513 */,
-/* 514 */,
-/* 515 */,
-/* 516 */
+/* 518 */,
+/* 519 */,
+/* 520 */,
+/* 521 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(267);

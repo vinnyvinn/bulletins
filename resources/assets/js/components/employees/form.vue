@@ -5,6 +5,9 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>Employee Details</strong>
+                        <div class="pull-right">
+                          <router-link to="/employee_category/create" class="btn btn-danger">New Category</router-link>
+                        </div>
                     </div>
 
                     <div class="panel-body">
@@ -31,8 +34,7 @@
                             <div class="form-group">
                                 <label for="identification_type">Employee Category</label>
                                 <select v-model="employee.category" class="form-control" id="category" name="category" required>
-                                    <option value="casual">Casual</option>
-                                    <option value="supervisor">Supervisor</option>
+                                    <option value="category.category" v-for="category in employee_categories">{{ category.category }}</option>
                                 </select>
                             </div>
 
@@ -61,9 +63,7 @@
 <script>
     import axios from 'axios';
     export default {
-        mounted() {
-            this.checkState();
-        },
+
         data() {
             return {
                 sharedState: window._mainState,
@@ -80,10 +80,21 @@
                     dl_number: '',
                     mobile_phone: ''
                 },
+                employee_categories: [],
                 errors: [],
                 level: 'danger',
                 showError: false
             };
+        },
+
+        created() {
+          http.get('/api/employee_category'). then((response) => {
+            this.employee_categories = response.employee_categories;
+          });
+        },
+
+        mounted() {
+            this.checkState();
         },
 
         methods: {

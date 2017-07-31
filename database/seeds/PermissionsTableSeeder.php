@@ -17,6 +17,10 @@ class PermissionsTableSeeder extends Seeder
             'gatepass'
         ];
 
+        $localShuntingModules = [
+            'allocation', 'fuel', 'gatepass', 'delivery', 'mileage',
+        ];
+
         $commonModules = [
             'users'
         ];
@@ -35,6 +39,7 @@ class PermissionsTableSeeder extends Seeder
         $permission = $this->mapDefaultModules($permission);
         $permission = $this->mapTransportModules($transportModules, $permission, $hasApproval);
         $permission = $this->mapWorkshopModules($workshopModules, $permission, $hasApproval);
+        $permission = $this->mapLocalShuntingModules($localShuntingModules, $permission, $hasApproval);
 
         Permission::insert($permission);
     }
@@ -193,6 +198,52 @@ class PermissionsTableSeeder extends Seeder
                 $permission [] = [
                     'name'        => 'Approve ' . $title,
                     'group'       => 'transport',
+                    'slug'        => 'approve-' . $module,
+                    'description' => 'Allow the user to approve the ' . $module
+                ];
+            }
+        }
+
+        return $permission;
+    }
+
+    private function mapLocalShuntingModules($localShuntingModules, $permission, $hasApproval): array
+    {
+        foreach ($localShuntingModules as $module) {
+            $title = ucwords(str_replace('-', ' ', $module));
+
+            $permission[] = [
+                'name'        => 'Create ' . $title,
+                'group'       => 'localshunting',
+                'slug'        => 'create-' . $module,
+                'description' => 'Allow the user to create the ' . $title
+            ];
+
+            $permission[] = [
+                'name'        => 'View ' . $title,
+                'group'       => 'localshunting',
+                'slug'        => 'view-' . $module,
+                'description' => 'Allow the user to view the ' . $title
+            ];
+
+            $permission[] = [
+                'name'        => 'Edit ' . $title,
+                'group'       => 'localshunting',
+                'slug'        => 'edit-' . $module,
+                'description' => 'Allow the user to edit the ' . $title
+            ];
+
+            $permission[] = [
+                'name'        => 'Delete ' . $title,
+                'group'       => 'localshunting',
+                'slug'        => 'delete-' . $module,
+                'description' => 'Allow the user to delete the ' . $title
+            ];
+
+            if (in_array($module, $hasApproval)) {
+                $permission [] = [
+                    'name'        => 'Approve ' . $title,
+                    'group'       => 'localshunting',
                     'slug'        => 'approve-' . $module,
                     'description' => 'Allow the user to approve the ' . $module
                 ];

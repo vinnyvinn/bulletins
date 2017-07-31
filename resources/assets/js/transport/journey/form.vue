@@ -1,4 +1,4 @@
-<template>
+l <template>
     <div class="panel panel-default">
         <div class="panel-heading">
             <strong>Journey Details:  [Journey Id: {{ parseInt(last_journey_id.id) +1 }}]</strong>
@@ -104,7 +104,7 @@
 
 
 
-<!-- 
+<!--
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label for="ref_no">Ref No</label>

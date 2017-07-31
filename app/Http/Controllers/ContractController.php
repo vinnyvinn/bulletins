@@ -301,6 +301,19 @@ class ContractController extends Controller
             'status' => Constants::STATUS_CLOSED
         ]);
 
+        $contract_vehicles = Vehicle::where('contract_id', $id)->get();
+        foreach($contract_vehicles as $contract_vehicle) {
+          $contract_vehicle->contract_id = null;
+          $contract_vehicle->update();
+        }
+
+        $contract_employees = Employee::where('contract_id', $id)->get();
+
+        foreach($contract_employees as $contract_employee) {
+          $contract_employee->contract_id = null;
+          $contract_employee->update();
+        }
+
         return Response::json([
             'status' => 'success',
             'message' => 'Successfully closed contract.',
@@ -347,7 +360,7 @@ class ContractController extends Controller
     public function lscontracts ()
     {
       return Response::json([
-        'contracts' => Contract::with('client')->get()
+        'contracts' => Contract::where('status', Constants::STATUS_APPROVED)->with('client')->get()
       ]);
     }
 
