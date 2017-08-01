@@ -95,4 +95,9 @@ class Contract extends Model
     {
       return $this->hasMany(Vehicle::class);
     }
+
+    public function contractConfig()
+    {
+      return $this->hasOne(contractConfig::class);
+    }
 }
