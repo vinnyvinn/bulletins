@@ -107728,7 +107728,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = {
   data: function data() {
     return {
-      activeTruck: '',
+      activeTruck: {
+        id: '',
+        contract_end_fuel: '',
+        contract_end_mileage: ''
+      },
       showModal: false,
       contract_trucks: {},
       showTrucks: true,
@@ -107802,8 +107806,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.employeeAllocation.allocatedEmployees.push(employee);
     },
     remove: function remove(allocatedtruck) {
+      if (allocatedtruck.lsdelivery.length) {
+        alert2(this.$root, ['This Truck has a delivery in progress. End delivery before un-allocating a truck'], 'danger');
+        this.showModal = false;
+        return;
+      }
       this.activeTruck = allocatedtruck;
       this.showModal = true;
+
       for (var i = 0; i < this.allocation.allocatedtrucks.length; i++) {
         if (this.allocation.allocatedtrucks[i].id == allocatedtruck.id) {
           this.allocation.allocatedtrucks.splice(i, 1);
@@ -107869,6 +107879,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }).catch(function (error) {
         _this6.$root.isLoading = false;
         alert2(_this6.$root, Object.values(JSON.parse(error.message)), 'danger');
+      });
+    },
+    unallocate: function unallocate() {
+      var _this7 = this;
+
+      this.$root.isLoading = true;
+      this.showModal = false;
+      http.post('/api/unallocate', this.activeTruck).then(function (response) {
+        alert2(_this7.$root, ['response.message'], 'success');
       });
     }
   }
@@ -107938,8 +107957,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     created: function created() {
         var _this = this;
 
+        this.$root.isLoading = true;
         http.get('/api/lscontracts').then(function (response) {
             _this.contracts = response.contracts;
+            _this.$root.isLoading = false;
         });
     },
     data: function data() {
@@ -109248,22 +109269,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "table no-wrap"
   }, [_vm._m(2), _vm._v(" "), _c('tbody', _vm._l((_vm.allocation.allocatedtrucks), function(allocatedtruck) {
     return _c('tr', [_c('td', [_vm._v(_vm._s(allocatedtruck.plate_number))]), _vm._v(" "), (allocatedtruck.trailer) ? _c('td', [_vm._v(_vm._s(allocatedtruck.trailer.plate_number))]) : _vm._e(), _vm._v(" "), (!allocatedtruck.trailer) ? _c('td', [_vm._v(" - ")]) : _vm._e(), _vm._v(" "), (allocatedtruck.driver) ? _c('td', [_vm._v(_vm._s(allocatedtruck.driver.first_name))]) : _vm._e(), _vm._v(" "), _c('td', [_c('button', {
-      staticClass: "btn btn-info btn-sm",
+      staticClass: "btn btn-sm btn-danger",
       attrs: {
         "type": "button",
         "data-toggle": "modal",
         "data-target": "#myModal"
-      },
-      on: {
-        "click": function($event) {
-          _vm.remove(allocatedtruck)
-        }
-      }
-    }, [_vm._v("Open Modal")]), _vm._v(" "), _c('button', {
-      staticClass: "btn btn-sm btn-danger",
-      attrs: {
-        "type": "button",
-        "name": "button"
       },
       on: {
         "click": function($event) {
@@ -109369,7 +109379,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }, [_vm._v("Remove")])])]) : _vm._e()
-  }))])])])])])]) : _vm._e(), _vm._v(" "), _c('div', {
+  }))])])])])])]) : _vm._e(), _vm._v(" "), (_vm.showModal) ? _c('div', {
     staticClass: "modal fade",
     attrs: {
       "id": "myModal",
@@ -109379,7 +109389,79 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "modal-dialog"
   }, [_c('div', {
     staticClass: "modal-content"
-  }, [_vm._m(7), _vm._v(" "), _vm._m(8), _vm._v(" "), _c('div', {
+  }, [_c('div', {
+    staticClass: "modal-header"
+  }, [_c('button', {
+    staticClass: "close",
+    attrs: {
+      "type": "button",
+      "data-dismiss": "modal"
+    }
+  }, [_vm._v("×")]), _vm._v(" "), _c('h4', {
+    staticClass: "modal-title"
+  }, [_vm._v("Unallocate Truck ( "), _c('strong', [_vm._v(_vm._s(_vm.activeTruck.plate_number) + " ")]), _vm._v(")")])]), _vm._v(" "), _c('div', {
+    staticClass: "modal-body"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('form', {
+    attrs: {
+      "action": "#"
+    }
+  }, [_c('div', {
+    staticClass: "form-group col-sm-6"
+  }, [_c('label', {
+    attrs: {
+      "for": "fuel_reading"
+    }
+  }, [_vm._v("Fuel Reading")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.activeTruck.contract_end_fuel),
+      expression: "activeTruck.contract_end_fuel"
+    }],
+    staticClass: "form-control input-sm",
+    attrs: {
+      "type": "text",
+      "id": "fuel_reading"
+    },
+    domProps: {
+      "value": (_vm.activeTruck.contract_end_fuel)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.activeTruck.contract_end_fuel = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "form-group col-sm-6"
+  }, [_c('label', {
+    attrs: {
+      "for": "mileage_reading"
+    }
+  }, [_vm._v("Truck Mileage Reading(Kms)")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.activeTruck.contract_end_mileage),
+      expression: "activeTruck.contract_end_mileage"
+    }],
+    staticClass: "form-control input-sm",
+    attrs: {
+      "type": "text",
+      "id": "mileage_reading"
+    },
+    domProps: {
+      "value": (_vm.activeTruck.contract_end_mileage)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.activeTruck.contract_end_mileage = $event.target.value
+      }
+    }
+  })])])])]), _vm._v(" "), _c('div', {
     staticClass: "modal-footer"
   }, [_c('button', {
     staticClass: "btn btn-default",
@@ -109387,7 +109469,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "type": "button",
       "data-dismiss": "modal"
     }
-  }, [_vm._v("Close")]), _vm._v(" "), _c('button', {
+  }, [_vm._v("Cancel")]), _vm._v(" "), _c('button', {
     staticClass: "btn btn-sm btn-danger",
     attrs: {
       "type": "button",
@@ -109395,10 +109477,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     },
     on: {
       "click": function($event) {
-        _vm.remove()
+        _vm.unallocate()
       }
     }
-  }, [_vm._v("Remove")])])])])])])
+  }, [_vm._v("Remove Truck")])])])])]) : _vm._e()])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "panel-heading"
@@ -109415,52 +109497,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('thead', [_c('tr', [_c('th', [_vm._v("#")]), _vm._v(" "), _c('th', [_vm._v("Employee")]), _vm._v(" "), _c('th', [_vm._v("Action")])])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('thead', [_c('tr', [_c('th', [_vm._v("#")]), _vm._v(" "), _c('th', [_vm._v("Employee")]), _vm._v(" "), _c('th', [_vm._v("Action")])])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "modal-header"
-  }, [_c('button', {
-    staticClass: "close",
-    attrs: {
-      "type": "button",
-      "data-dismiss": "modal"
-    }
-  }, [_vm._v("×")]), _vm._v(" "), _c('h4', {
-    staticClass: "modal-title"
-  }, [_vm._v("Unallocate Truck")])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "modal-body"
-  }, [_c('div', {
-    staticClass: "row"
-  }, [_c('form', {
-    attrs: {
-      "action": "#"
-    }
-  }, [_c('div', {
-    staticClass: "form-group col-sm-6"
-  }, [_c('label', {
-    attrs: {
-      "for": "fuel_reading"
-    }
-  }, [_vm._v("Fuel Reading")]), _vm._v(" "), _c('input', {
-    staticClass: "form-control input-sm",
-    attrs: {
-      "type": "text",
-      "id": "fuel_reading"
-    }
-  })]), _vm._v(" "), _c('div', {
-    staticClass: "form-group col-sm-6"
-  }, [_c('label', {
-    attrs: {
-      "for": "mileage_reading"
-    }
-  }, [_vm._v("Truck Mileage Reading(Kms)")]), _vm._v(" "), _c('input', {
-    staticClass: "form-control input-sm",
-    attrs: {
-      "type": "text",
-      "id": "mileage_reading"
-    }
-  })])])])])
 }]}
 module.exports.render._withStripped = true
 if (false) {

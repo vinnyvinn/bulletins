@@ -77,8 +77,8 @@
                                     <td v-if="!allocatedtruck.trailer"> - </td>
                                     <td v-if="allocatedtruck.driver">{{ allocatedtruck.driver.first_name }}</td>
                                     <td>
-                                      <button type="button" @click="remove(allocatedtruck)"  class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">Open Modal</button>
-                                      <button type="button" @click="remove(allocatedtruck)" name="button" class="btn btn-sm btn-danger">Remove</button></td>
+                                      <button type="button" @click="remove(allocatedtruck)"  data-toggle="modal" data-target="#myModal"  class="btn btn-sm btn-danger" >Remove</button>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -188,14 +188,14 @@
           </div>
         </div>
         <!-- Trigger the modal with a button -->
-        <div id="myModal" class="modal fade" role="dialog">
+        <div id="myModal" class="modal fade" role="dialog" v-if="showModal">
           <div class="modal-dialog">
 
             <!-- Modal content-->
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Unallocate Truck</h4>
+                <h4 class="modal-title">Unallocate Truck ( <strong>{{ activeTruck.plate_number}} </strong>)</h4>
               </div>
               <div class="modal-body">
                 <div class="row">
@@ -203,11 +203,11 @@
                   <form class="" action="#">
                     <div class="form-group col-sm-6">
                       <label for="fuel_reading">Fuel Reading</label>
-                      <input type="text" id="fuel_reading" class="form-control input-sm">
+                      <input type="text" id="fuel_reading" class="form-control input-sm" v-model="activeTruck.contract_end_fuel">
                     </div>
                     <div class="form-group col-sm-6">
                       <label for="mileage_reading">Truck Mileage Reading(Kms)</label>
-                      <input type="text" id="mileage_reading" class="form-control input-sm">
+                      <input type="text" id="mileage_reading" class="form-control input-sm" v-model="activeTruck.contract_end_mileage">
                     </div>
 
                   </form>
@@ -216,8 +216,8 @@
 
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" @click="remove()" name="button" class="btn btn-sm btn-danger">Remove</button></td>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" @click="unallocate()" name="button" class="btn btn-sm btn-danger">Remove Truck</button></td>
               </div>
             </div>
 
@@ -230,7 +230,11 @@
     export default {
         data() {
             return {
-                activeTruck: '',
+                activeTruck: {
+                  id: '',
+                  contract_end_fuel: '',
+                  contract_end_mileage: '',
+                },
                 showModal: false,
                 contract_trucks: {},
                 showTrucks: true,
@@ -301,8 +305,14 @@
             },
 
             remove (allocatedtruck) {
+              if(allocatedtruck.lsdelivery.length) {
+                alert2(this.$root, ['This Truck has a delivery in progress. End delivery before un-allocating a truck'], 'danger');
+                this.showModal = false;
+                return;
+              }
               this.activeTruck = allocatedtruck;
               this.showModal = true;
+
               for(var i=0; i < this.allocation.allocatedtrucks.length; i++) {
                  if(this.allocation.allocatedtrucks[i].id == allocatedtruck.id)
                  {
@@ -373,6 +383,14 @@
                     this.$root.isLoading = false;
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                 });
+            },
+
+            unallocate() {
+              this.$root.isLoading = true;
+              this.showModal = false;
+              http.post('/api/unallocate', this.activeTruck).then((response) => {
+                alert2(this.$root, ['response.message'], 'success');
+              });
             }
         }
     }
