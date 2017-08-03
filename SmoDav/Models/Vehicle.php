@@ -7,8 +7,11 @@ use App\Support\Core;
 use App\Truck;
 use Illuminate\Database\Eloquent\Model;
 use App\Contract;
-use SmoDav\Models\LocalShunting\GatePass;
+use SmoDav\Models\GatePass;
+use SmoDav\Models\LocalShunting\LSGatePass;
 use SmoDav\Models\Model as VehicleModel;
+use SmoDav\Models\LocalShunting\LSDelivery;
+
 
 
 class Vehicle extends Model
@@ -61,6 +64,16 @@ class Vehicle extends Model
     public function gatepass()
     {
       return $this->hasOne(GatePass::class);
+    }
+
+    public function lsgatepass()
+    {
+      return $this->hasOne(LSGatePass::class);
+    }
+
+    public function lsdelivery()
+    {
+      return $this->hasMany(LSDelivery::class);
     }
 
     public function make()

@@ -31,7 +31,10 @@ class GatePassController extends Controller
     public function create()
     {
       return Response::json([
-        'vehicles' => Vehicle::has('contract')->get(),
+        'vehicles' => Vehicle::has('contract')
+                  ->doesntHave('lsgatepass')
+                  ->doesntHave('lsdelivery')
+                  ->get(),
         'gatepasses' => LSGatePass::with('vehicle','user')->get()
       ]);
     }
