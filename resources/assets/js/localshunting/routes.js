@@ -89,6 +89,8 @@ module.exports = [
 
     { path: '/station-selection', component: require('./station.vue'), beforeEnter: authMiddleware },
 
+    { path: '/ls/offloading', component: require('./delivery_note/offloading.vue'), beforeEnter: authMiddleware },
+
     { path: '/403', component: require('../transport/403.vue'), beforeEnter: authMiddleware },
 
 

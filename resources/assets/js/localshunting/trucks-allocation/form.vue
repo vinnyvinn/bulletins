@@ -76,7 +76,9 @@
                                     <td v-if="allocatedtruck.trailer">{{ allocatedtruck.trailer.plate_number}}</td>
                                     <td v-if="!allocatedtruck.trailer"> - </td>
                                     <td v-if="allocatedtruck.driver">{{ allocatedtruck.driver.first_name }}</td>
-                                    <td><button type="button" @click="remove(allocatedtruck)" name="button" class="btn btn-sm btn-danger">Remove</button></td>
+                                    <td>
+                                      <button type="button" @click="remove(allocatedtruck)"  data-toggle="modal" data-target="#myModal"  class="btn btn-sm btn-danger" >Remove</button>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -173,7 +175,10 @@
                         <tr v-for="allocatedEmployee in employeeAllocation.allocatedEmployees" v-if="allocatedEmployee.category == 'casual'">
                             <td>{{ allocatedEmployee.id }}</td>
                             <td>{{ allocatedEmployee.first_name }} {{ allocatedEmployee.last_name }}</td>
-                            <td><button type="button" @click="removeEmployee(allocatedEmployee)" name="button" class="btn btn-sm btn-danger">Remove</button></td>
+                            <td>
+                              <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+                              <button type="button" @click="removeEmployee(allocatedEmployee)" name="button" class="btn btn-sm btn-danger">Remove</button>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -182,6 +187,42 @@
             </div>
           </div>
         </div>
+        <!-- Trigger the modal with a button -->
+        <div id="myModal" class="modal fade" role="dialog" v-if="showModal">
+          <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Unallocate Truck ( <strong>{{ activeTruck.plate_number}} </strong>)</h4>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+
+                  <form class="" action="#">
+                    <div class="form-group col-sm-6">
+                      <label for="fuel_reading">Fuel Reading</label>
+                      <input type="text" id="fuel_reading" class="form-control input-sm" v-model="activeTruck.contract_end_fuel">
+                    </div>
+                    <div class="form-group col-sm-6">
+                      <label for="mileage_reading">Truck Mileage Reading(Kms)</label>
+                      <input type="text" id="mileage_reading" class="form-control input-sm" v-model="activeTruck.contract_end_mileage">
+                    </div>
+
+                  </form>
+                </div>
+
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" @click="unallocate()" name="button" class="btn btn-sm btn-danger">Remove Truck</button></td>
+              </div>
+            </div>
+
+        </div>
+      </div>
     </div>
 </template>
 
@@ -189,6 +230,12 @@
     export default {
         data() {
             return {
+                activeTruck: {
+                  id: '',
+                  contract_end_fuel: '',
+                  contract_end_mileage: '',
+                },
+                showModal: false,
                 contract_trucks: {},
                 showTrucks: true,
                 trucks: [],
@@ -258,6 +305,14 @@
             },
 
             remove (allocatedtruck) {
+              if(allocatedtruck.lsdelivery.length) {
+                alert2(this.$root, ['This Truck has a delivery in progress. End delivery before un-allocating a truck'], 'danger');
+                this.showModal = false;
+                return;
+              }
+              this.activeTruck = allocatedtruck;
+              this.showModal = true;
+
               for(var i=0; i < this.allocation.allocatedtrucks.length; i++) {
                  if(this.allocation.allocatedtrucks[i].id == allocatedtruck.id)
                  {
@@ -328,7 +383,85 @@
                     this.$root.isLoading = false;
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                 });
+            },
+
+            unallocate() {
+              this.$root.isLoading = true;
+              this.showModal = false;
+              http.post('/api/unallocate', this.activeTruck).then((response) => {
+                alert2(this.$root, ['response.message'], 'success');
+              });
             }
         }
     }
 </script>
+
+<style media="screen" scoped>
+
+.modal-content {
+  margin-top: 100px;
+}
+.modal-mask {
+position: fixed;
+z-index: 9998;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, .5);
+display: table;
+transition: opacity .3s ease;
+}
+
+.modal-wrapper {
+display: table-cell;
+vertical-align: middle;
+}
+
+.modal-container {
+width: 300px;
+margin: 0px auto;
+padding: 20px 30px;
+background-color: #fff;
+border-radius: 2px;
+box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
+transition: all .3s ease;
+font-family: Helvetica, Arial, sans-serif;
+}
+
+.modal-header h3 {
+margin-top: 0;
+color: #42b983;
+}
+
+.modal-body {
+margin: 20px 0;
+}
+
+.modal-default-button {
+float: right;
+}
+
+/*
+* The following styles are auto-applied to elements with
+* transition="modal" when their visibility is toggled
+* by Vue.js.
+*
+* You can easily play with the modal transition by editing
+* these styles.
+*/
+
+.modal-enter {
+opacity: 0;
+}
+
+.modal-leave-active {
+opacity: 0;
+}
+
+.modal-enter .modal-container,
+.modal-leave-active .modal-container {
+-webkit-transform: scale(1.1);
+transform: scale(1.1);
+}
+</style>

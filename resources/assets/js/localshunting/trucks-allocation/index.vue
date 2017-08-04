@@ -53,8 +53,10 @@
 <script>
     export default {
         created() {
+          this.$root.isLoading = true;
           http.get('/api/lscontracts').then( response => {
             this.contracts = response.contracts;
+            this.$root.isLoading = false;
           });
         },
 

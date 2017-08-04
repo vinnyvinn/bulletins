@@ -2,28 +2,28 @@
   <div class="container">
     <div class="panel panel-default">
       <div class="panel-heading">
-          Trucks Awaiting Loading
-          <button type="button" class="btn btn-success btn-xs pull-right" name="button" @click="offload">Offloading</button>
+          Trucks Awaiting Off-loading
+          <button type="button" class="btn btn-success btn-xs pull-right" name="button" @click="load">Loading</button>
       </div>
       <div class="panel-body">
         <table class="table no-wrap">
           <thead>
             <tr>
               <th>#</th>
-              <th>Plate #</th>
-              <th>Gate Pass #</th>
+              <th>Delivery #</th>
+              <th>Vehicle</th>
               <th>Driver</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(gatepass, index) in gatepasses">
+            <tr v-for="(delivery, index) in deliveries">
               <td>{{ index + 1 }}</td>
-              <td>{{ gatepass.vehicle.plate_number }}</td>
-              <td>GP - {{ gatepass.id}}</td>
-              <td v-if="gatepass.vehicle.driver">{{ gatepass.vehicle.driver.first_name }} {{ gatepass.vehicle.driver.last_name }}</td>
-              <td v-if="!gatepass.vehicle.driver"> -- </td>
-              <td><button type="button" @click="createDelivery(gatepass.vehicle.id)" name="button" class="btn btn-sm btn-success">Create Delivery Note</button></td>
+              <td>DN - {{ delivery.id }}</td>
+              <td>{{ delivery.vehicle.plate_number }}</td>
+              <td v-if="delivery.vehicle.driver">{{ delivery.vehicle.driver.first_name }} {{ delivery.vehicle.driver.last_name }}</td>
+              <td v-if="!delivery.vehicle"> -- </td>
+              <td><button type="button" @click="createDelivery(delivery.id)" name="button" class="btn btn-sm btn-success">Offload</button></td>
             </tr>
           </tbody>
           <tfoot>
@@ -46,13 +46,13 @@
 export default {
   data () {
     return {
-      gatepasses: []
+      deliveries: []
     }
   },
   created () {
     this.$root.isLoading = true;
-    http.get('/api/lsgatepass').then((response) => {
-      this.gatepasses = response.gatepasses;
+    http.get('/api/lsdelivery').then((response) => {
+      this.deliveries = response.deliveries;
       this.$root.isLoading = false;
     })
   },
@@ -60,8 +60,9 @@ export default {
     createDelivery(id) {
       this.$router.push('/ls/delivery/create/' + id);
     },
-    offload () {
-      this.$router.push('/ls/offloading');
+
+    load() {
+      this.$router.push('/ls/delivery');
     }
   }
 }

@@ -32,6 +32,8 @@
                             <div class="col-sm-4">
                                 <router-link v-if="$root.can('create-contract')" to="/contracts/create" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i> New Contract</router-link>
                                 <router-link v-if="$root.can('create-contract-template')" to="/contract-templates" class="btn btn-warning btn-xs pull-right"><i class="fa fa-eye"></i> Templates</router-link>
+                                <router-link to="/config_fields/create" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i> Contract Settings</router-link>
+
                             </div>
                         </div>
                     </div>

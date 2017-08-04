@@ -9,6 +9,7 @@ use Auth;
 use Response;
 use SmoDav\Models\Vehicle;
 use \Carbon\Carbon;
+use SmoDav\Models\LocalShunting\LSGatePass;
 
 class LSDeliveryController extends Controller
 {
@@ -19,7 +20,9 @@ class LSDeliveryController extends Controller
      */
     public function index()
     {
-        //
+        return Response::json([
+          'deliveries' => LSDelivery::with('vehicle', 'vehicle.driver')->get()
+        ]);
     }
 
     /**
@@ -46,9 +49,15 @@ class LSDeliveryController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'loading_weighbridge_number' => 'bail|required|unique:l_s_deliveries',             
+            'loading_weighbridge_number' => 'bail|required|unique:l_s_deliveries',
          ]);
         $data = $request->all();
+
+        //Detach vehicle from gatepass
+        $vehicle = Vehicle::findOrFail($data['vehicle_id']);
+        $lsgatepass = LSGatepass::where('vehicle_id',$data['vehicle_id'])->first();
+        $lsgatepass->delete();
+
         $data['user_id'] = Auth::id();
         $data['loading_time'] = Carbon::now();
         $lsdelivery = LSDelivery::create($data);

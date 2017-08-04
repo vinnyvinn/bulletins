@@ -151,7 +151,11 @@ module.exports = [
     { path: '/station-selection', component: require('./transport/station.vue'), beforeEnter: authMiddleware },
     { path: '/employees', component: require('./components/employees/index.vue'), beforeEnter: authMiddleware },
     { path: '/employees/create', component: require('./components/employees/form.vue'), beforeEnter: authMiddleware },
+
     { path: '/employee_category/create', component: require('./components/employeecategory/form.vue'), beforeEnter: authMiddleware },
+
+    { path: '/config_fields/create', component: require('./components/contractconfig/form.vue'), beforeEnter: authMiddleware },
+    { path: '/contract_setting/create/:contract_id', component: require('./transport/contractsettings/form.vue'), beforeEnter: authMiddleware },
 
 
     { path: '*', component: require('./transport/404.vue'), beforeEnter: authMiddleware },

@@ -388,7 +388,25 @@ class ContractController extends Controller
       return Response::json([
         'contract_trucks' => Contract::select('trucks_allocated')->findOrFail($id),
         'contract_employees' => Employee::where('contract_id', $id)->get(),
-        'allocated_trucks' => Vehicle::where('contract_id', $id)->with('trailer')->get()
+        'allocated_trucks' => Vehicle::where('contract_id', $id)->with('trailer')->with('lsdelivery')->get()
+      ]);
+    }
+
+    public function unallocate(Request $request)
+    {
+      $data = $request->all();
+
+      $vehicle = Vehicle::findOrFail($data['id']);
+
+      $vehicle->current_fuel = $data['contract_end_fuel'];
+      $vehicle->current_km = $data['contract_end_mileage'];
+      $vehicle->save();
+
+      $vehicle->contract->detach($vehicle);
+
+      return Response::json([
+        'status' => 'success',
+        'message' => 'Vehicle Successfully removed from contract'
       ]);
     }
 

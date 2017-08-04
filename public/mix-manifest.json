@@ -1,6 +1,13 @@
 {
+<<<<<<< HEAD
   "/js/app.js": "/js/app.6d9f703925f8074c365e.js",
   "/css/app.css": "/css/app.d8307712dc99518652a8.css",
   "/js/localshunting.js": "/js/localshunting.7c96f6d6834c5193cc71.js",
   "/js/plain.js": "/js/plain.a95754c318b148b27c2d.js"
+=======
+  "/js/app.js": "/js/app.c4ae674068a1dca58a70.js",
+  "/css/app.css": "/css/app.8fb3fc0c1a8699be34c4.css",
+  "/js/localshunting.js": "/js/localshunting.613d06a7db653ae2068d.js",
+  "/js/plain.js": "/js/plain.799930b801c746011e7f.js"
+>>>>>>> 883e5b0c678dbe0dc6fe5d2de921f8049663f180
 }

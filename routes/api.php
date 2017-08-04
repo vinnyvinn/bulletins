@@ -105,4 +105,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('create_employee_mileage/{employee}/{contract}', 'RKEmployeeController@create_employee_mileage');
 
     Route::resource('employee_category', 'EmployeeCategoryController');
+    Route::resource('contract_config', 'ContractConfigController');
+    Route::post('config_field', 'ContractConfigController@addConfigField');
+    Route::get('config_field', 'ContractConfigController@getTableFields');
+
+    Route::post('unallocate', 'ContractController@allocateTruck@unallocate');
 });
