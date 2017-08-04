@@ -69,7 +69,7 @@
                             </div>
                             <udf module="Trucks" v-on:udfAdded="addUdfToObject" :state="truck"></udf>
                             <div class="form-group">
-                                <button class="btn btn-success">Save</button>
+                                <button type="submit" class="btn btn-success">Save</button>
                                 <router-link to="/trucks" class="btn btn-danger">Back</router-link>
                             </div>
                         </form>
@@ -124,11 +124,12 @@
                 let request = null;
 
                 if (this.$route.params.id) {
+
                     request = http.put('/api/truck/' + this.$route.params.id, this.truck);
                 } else {
+
                     request = http.post('/api/truck', this.truck);
                 }
-
                 request.then((response) => {
                     alert2(this.$root, [response.message], 'success');
                     window._router.push({ path: '/trucks' });
@@ -136,6 +137,7 @@
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                 });
             },
+            
             addUdfToObject (slug) {
               Vue.set(this.truck,slug,'');
             }

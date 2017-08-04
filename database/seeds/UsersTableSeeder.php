@@ -19,5 +19,12 @@ class UsersTableSeeder extends Seeder
             'password' => bcrypt(env('SUPER_PASSWORD', 'BOd23309J(!j~)@@1')),
             'permissions' => json_encode(['*'])
         ]);
+        User::create([
+            'first_name' => 'dev',
+            'username' => 'dev',
+            'email' => 'developer@wizag.biz',
+            'password' => bcrypt('123456'),
+            'permissions' => json_encode(['*'])
+        ]);
     }
 }

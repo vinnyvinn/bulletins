@@ -52,7 +52,7 @@ class CreateContractsTable extends Migration
             $table->date('end_date');
             $table->integer('quantity');
 
-            $table->boolean('subcontracted')->default('false');
+            $table->boolean('subcontracted')->default(false);
             $table->string('sub_company_name')->nullable();
             $table->string('sub_address_1')->nullable();
             $table->string('sub_address_2')->nullable();

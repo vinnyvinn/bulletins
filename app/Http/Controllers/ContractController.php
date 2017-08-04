@@ -120,7 +120,17 @@ class ContractController extends Controller
         $data['shifts'] = json_encode($data['shifts']);
         $data['unloading_points'] = json_encode($data['unloading_points']);
         $data['user_id'] = Auth::id();
-
+        $data['ignore_delivery_note'] = 0;
+        $data['capture_loading_weights'] = 0;
+        $data['capture_offloading_weights'] = 0;
+        $data['ls_loading_weights'] = 0;
+        $data['ls_offloading_weights'] = 0;
+        $data['lh_loading_weights'] = 0;
+        $data['lh_offloading_weights'] = 0;
+        $data['packages_captured'] = 0;
+        $data['subcontracted'] = 0;
+        $data['allow_route_change'] = 0;
+        $data['client_id'] = 1;
 
         unset($data['_token'], $data['_method']);
 

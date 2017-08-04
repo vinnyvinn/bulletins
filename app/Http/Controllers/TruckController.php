@@ -187,7 +187,7 @@ class TruckController extends Controller
         $trucks = TruckFactory::withTrash(['plate_number'])->map(function ($truck) {
             return $truck->plate_number;
         })->toArray();
-
+        
         $rows = Excel::prepare($file)
             ->usingHeaders([
                 'plate_number', 'make', 'model', 'max_load'
@@ -293,7 +293,6 @@ class TruckController extends Controller
           array_push($activities,$activity);
         }
 
-
       }
 
       return Response::json([
@@ -302,5 +301,5 @@ class TruckController extends Controller
       ]);
     }
 
-    
+
 }

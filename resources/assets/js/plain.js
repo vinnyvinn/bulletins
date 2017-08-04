@@ -14,7 +14,6 @@ window._ = require('lodash');
 const Vue = require('vue');
 window.Vue = Vue;
 
-
 Vue.component('udf', require('./components/udfs/udf.vue'));
 Vue.component('udf-create', require('./components/udfs/form.vue'));
 Vue.component('show-udfs', require('./components/udfs/show.vue'));

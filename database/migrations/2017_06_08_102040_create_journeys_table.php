@@ -19,7 +19,7 @@ class CreateJourneysTable extends Migration
             $table->integer('station_id')->index()->unsigned()->nullable();
             $table->text('raw');
             $table->string('status')->default(Constants::STATUS_PENDING);
-            $table->boolean('is_contract_related')->default('false');
+            $table->boolean('is_contract_related')->default(false);
             $table->bigInteger('contract_id')->nullable()->index()->unsigned();
             $table->string('journey_type');
             $table->date('job_date');
@@ -29,7 +29,7 @@ class CreateJourneysTable extends Migration
             $table->integer('route_id')->index()->unsigned()->nullable();
             $table->text('job_description')->nullable();
             $table->string('enquiry_from')->nullable();
-            $table->boolean('subcontracted')->default('false');
+            $table->boolean('subcontracted')->default(false);
             $table->string('sub_company_name')->nullable();
             $table->string('sub_address_1')->nullable();
             $table->string('sub_address_2')->nullable();

@@ -15,8 +15,8 @@ class ContractTruck extends Migration
     {
       Schema::create('contract_truck', function (Blueprint $table) {
           $table->bigIncrements('id');
-          $table->bigInteger('contract_id');
-          $table->integer('vehicle_id');
+          $table->bigInteger('contract_id')->unsigned()->nullable();
+          $table->integer('vehicle_id')->unsigned()->nullable();
           $table->timestamps();
           $table->foreign('contract_id')->references('id')->on('contracts')->onDelete('cascade');
           $table->foreign('vehicle_id')->references('id')->on('trucks')->onDelete('cascade');

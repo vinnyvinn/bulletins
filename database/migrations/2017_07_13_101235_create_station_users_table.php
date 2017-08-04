@@ -14,8 +14,8 @@ class CreateStationUsersTable extends Migration
     public function up()
     {
         Schema::create('station_user', function (Blueprint $table) {
-            $table->integer('station_id');
-            $table->integer('user_id');
+            $table->integer('station_id')->unsigned();
+            $table->integer('user_id')->unsigned();
 
             $table->foreign('station_id')->references('id')->on('stations')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

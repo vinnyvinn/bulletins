@@ -174,9 +174,11 @@
                 let request = null;
 
                 if (this.$route.params.id) {
+                    console.log("hello world ---not me");
                     request = http.put('/api/truck/' + this.$route.params.id, this.truck);
                 } else {
-                    request = http.post('/api/truck', this.truck);
+                    console.log("hello world --- me");
+                    request = http.post('/api/truck/', this.truck);
                 }
 
                 request.then((response) => {

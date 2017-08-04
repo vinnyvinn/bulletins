@@ -14,12 +14,12 @@
 Route::middleware('auth:api')->get('/user', 'HomeController@user');
 
 Route::group(['middleware' => 'auth:api'], function () {
-    Route::resource('driver', 'DriverController');
     Route::post('driver/import', 'DriverController@importDrivers')->name('driver.import');
-    Route::resource('route', 'RouteController');
-    Route::post('route/import', 'RouteController@importDrivers')->name('route.import');
+    Route::resource('driver', 'DriverController');
     Route::resource('truck', '\SmoDav\Controllers\API\VehicleController');
     Route::post('truck/import', '\SmoDav\Controllers\API\VehicleController@import')->name('truck.import');
+    Route::post('route/import', 'RouteController@importDrivers')->name('route.import');
+    Route::resource('route', 'RouteController');
     Route::resource('trailer', 'TrailerController');
     Route::post('trailer/import', 'TrailerController@import')->name('trailer.import');
     Route::resource('allocation', 'AllocationController');
