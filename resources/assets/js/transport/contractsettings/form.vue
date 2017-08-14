@@ -1,51 +1,18 @@
 <template lang="html">
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-6 col-md-offset-3">
       <div class="panel panel-default">
         <div class="panel-heading">
-          New Contract Setting
+          Contract Settings
         </div>
         <div class="panel-body">
           <form action="#">
-
-            <div class="form-group" v-for="(field, index) in fields" v-if="field != 'contract_id'">
-              <label>{{ field }}</label>
-              <input type="text" class="input-group" v-model="setting[field]">
+            <div class="form-group c0l-sm-12" v-for="(field, index) in fields" v-if="field != 'contract_id'">
+              <label for="setting">{{ field }}</label>
+              <input type="text" class="form-control" v-model="setting[field]" id="setting">
             </div>
-
             <button class="btn btn-success" type="button" @click="save()">Save</button>
-
-
           </form>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-sm-6">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          Configuration Fields
-        </div>
-        <div class="panel-body">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(field, index) in fields">
-                <td>{{ index + 1}}</td>
-                <td>{{ setting[index] }}</td>
-                <td>
-                  <span @click="edit(setting)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
-                  <span @click="deleteCategory(setting.id)" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
         </div>
       </div>
     </div>
@@ -67,46 +34,68 @@ export default {
   created() {
     this.fetchFields();
     this.fetchSettings();
+    this.fetchContractSettings();
   },
 
   methods: {
+    fetchContractSettings () {
+      this.$root.isLoading = true;
+      http.get('/api/contract_config/' + this.$route.params.contract_id).then( (response) => {
+        if(response.setting) {
+          this.setting = response.setting;
+          this.isEditing = true;
+        } else {
+          this.isEditing = false;
+        }
+        this.$root.isLoading = false;
+      });
+    },
+
     fetchFields () {
       http.get('/api/config_field'). then((response) => {
+        this.$root.isLoading = true;
         this.fields = response.fields;
 
         this.fields = Object.keys(this.fields).map(function (key) { return key; });
         for(var i = 0; i < this.fields.length; i++) {
           var field = this.fields[i];
-          if(!(field == 'id' | field == 'created_at' | field == 'updated_at' | field == 'contract_id')) {
+          if(!(field == 'id' || field == 'created_at' || field == 'updated_at' || field == 'contract_id')) {
             this.setting[field] = '';
           } else {
             this.fields.splice(i, 1);
           }
         }
         this.setting.contract_id = this.$route.params.contract_id;
+        this.$root.isLoading = false;
       });
     },
     fetchSettings () {
+      this.$root.isLoading = true;
       http.get('/api/contract_config'). then((response) => {
         this.contract_settings = response.contract_settings;
+        this.$root.isLoading = false;
       });
     },
     save() {
+
       this.$root.isLoading = true;
       if(this.isEditing) {
-        http.put('/api/contract_config/' +this.setting.id, this.setting).then((response) => {
+        http.put('/api/contract_config/' + this.setting.id, this.setting).then((response) => {
           this.fetchSettings();
+          this.fetchContractSettings();
           alert2(this.$root, [response.message], 'success');
           this.isEditing = false;
           this.setting = {};
           this.$root.isLoading = false;
         });
       } else {
+
         http.post('/api/contract_config', this.setting).then((response) => {
           this.setting = {};
           this.fetchSettings();
+          this.fetchContractSettings();
           alert2(this.$root, [response.message], 'success');
-          this.$root.isLoading = false;
+
         });
       }
 

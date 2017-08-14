@@ -12,6 +12,7 @@ use Response;
 use SmoDav\Models\Vehicle;
 use App\Contract;
 use App\Employee;
+use App\ContractConfig;
 
 class LSMileageController extends Controller
 {
@@ -49,7 +50,8 @@ class LSMileageController extends Controller
               ->get(),
           'vehicle' =>Vehicle::where('id', $truck)
               ->with('trailer','driver')
-              ->first()
+              ->first(),
+          'rate' => ContractConfig::where('contract_id', $contract)->first(['rate'])
         ]);
       }
     }

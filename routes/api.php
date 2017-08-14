@@ -108,6 +108,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('contract_config', 'ContractConfigController');
     Route::post('config_field', 'ContractConfigController@addConfigField');
     Route::get('config_field', 'ContractConfigController@getTableFields');
+    Route::get('config_delete/{field}', 'ContractConfigController@deleteField');
 
     Route::post('unallocate', 'ContractController@allocateTruck@unallocate');
 });

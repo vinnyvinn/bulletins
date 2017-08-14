@@ -14,7 +14,7 @@
                 <div class="caption">Home</div>
             </router-link>
 
-            <router-link to="/ls/contracts" class="nav-items" v-if="$root.can('create-contract') || $root.can('view-contract') || $root.can('edit-contract') || $root.can('approve-contract') || $root.can('delete-contract') ||
+            <router-link to="/contracts" class="nav-items" v-if="$root.can('create-contract') || $root.can('view-contract') || $root.can('edit-contract') || $root.can('approve-contract') || $root.can('delete-contract') ||
 $root.can('create-contract-template') || $root.can('view-contract-template') || $root.can('edit-contract-template') || $root.can('delete-contract-template')">
                 <img src="/images/contract.png" alt="contract" class="img-responsive">
                 <div class="caption">Contracts</div>

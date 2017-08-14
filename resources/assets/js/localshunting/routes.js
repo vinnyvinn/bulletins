@@ -35,7 +35,7 @@ module.exports = [
     { path: '/users', component: require('../components/users/index.vue'), beforeEnter: authMiddleware },
     { path: '/users/create', component: require('../components/users/form.vue'), beforeEnter: authMiddleware },
 
-    { path: '/ls/contracts', component: require('../transport/contracts/index.vue'), beforeEnter: authMiddleware },
+    { path: '/contracts', component: require('../transport/contracts/index.vue'), beforeEnter: authMiddleware },
     { path: '/ls/contracts/r/:print', component: require('../transport/contracts/index.vue'), beforeEnter: authMiddleware },
     { path: '/ls/contracts/create', component: require('../transport/contracts/form.vue'), beforeEnter: authMiddleware },
     { path: '/ls/contracts/create/:templateId', component: require('../transport/contracts/form.vue'), beforeEnter: authMiddleware },

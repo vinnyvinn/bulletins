@@ -124,7 +124,7 @@
                     <div class="col-sm-3">
                       <div class="form-group">
                         <label for="rate_per_trip">Rate per trip (Ksh)</label>
-                        <input type="number" id="rate_per_trip" v-model="rate_per_trip" @keyup="calculateMileageBalance()">
+                        <input type="number" id="rate_per_trip" v-model="rate_per_trip" @keyup="calculateMileageBalance()" disabled>
                       </div>
                     </div>
 
@@ -176,6 +176,7 @@
                 this.vehicle = response.vehicle;
                 this.mileages = response.mileages;
                 this.deliveries = response.deliveries;
+                this.rate_per_trip = response.rate.rate;
 
                 this.calculateMileageBalance();
                 this.$root.isLoading = false;

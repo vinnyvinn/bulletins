@@ -23,7 +23,7 @@
               <td>{{ delivery.vehicle.plate_number }}</td>
               <td v-if="delivery.vehicle.driver">{{ delivery.vehicle.driver.first_name }} {{ delivery.vehicle.driver.last_name }}</td>
               <td v-if="!delivery.vehicle"> -- </td>
-              <td><button type="button" @click="createDelivery(delivery.id)" name="button" class="btn btn-sm btn-success">Offload</button></td>
+              <td><button type="button" @click="unload(delivery.id)" name="button" class="btn btn-sm btn-success">Offload</button></td>
             </tr>
           </tbody>
           <tfoot>
@@ -60,6 +60,11 @@ export default {
     createDelivery(id) {
       this.$router.push('/ls/delivery/create/' + id);
     },
+
+    unload(delivery) {
+        window._router.push({path: '/ls/delivery/' + delivery + '/unload'})
+    },
+
 
     load() {
       this.$router.push('/ls/delivery');
