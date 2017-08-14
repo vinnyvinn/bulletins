@@ -222,6 +222,16 @@ class ContractController extends Controller
                 unset($data[$key]);
             }
         }
+        $data['capture_loading_weights'] = 0;
+        $data['capture_offloading_weights'] = 0;
+        $data['ls_loading_weights'] = 0;
+        $data['ls_offloading_weights'] = 0;
+        $data['lh_loading_weights'] = 0;
+        $data['lh_offloading_weights'] = 0;
+        $data['packages_captured'] = 1;
+        $data['subcontracted'] = 0;
+        $data['ignore_delivery_note'] = 0;
+        $data['allow_route_change'] = 0;
         $data['start_date'] = Carbon::parse(str_replace('/', '-', $data['start_date']))->format('Y-m-d');
         $data['end_date'] = Carbon::parse(str_replace('/', '-', $data['start_date']))
             ->addDays($data['estimated_days'])

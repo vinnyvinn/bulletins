@@ -57,7 +57,7 @@ class JourneyController extends Controller
     {
         if (request('contracts')) {
             $contracts = Contract::open()
-                ->whereRaw("(select count(*) from journeys where contracts.id = journeys.contract_id and status = 'Approved') < contracts.trucks_allocated")
+                // ->whereRaw("(select count(*) from journeys where contracts.id = journeys.contract_id and status = 'Approved') < contracts.trucks_allocated")
                 ->with('client')
                 ->get(['id', 'raw', 'name', 'client_id', 'ignore_delivery_note', 'allow_route_change']);
 
@@ -128,6 +128,7 @@ class JourneyController extends Controller
         $data['raw'] = json_encode($data);
         $data['job_date'] = Carbon::parse(str_replace('/', '-', $data['job_date']))->format('Y-m-d');
         $data['user_id'] = Auth::id();
+        $data['subcontracted'] = 0;
 
         foreach ($data as $key => $value) {
             if ($value == 'null') {

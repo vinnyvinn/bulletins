@@ -515,10 +515,10 @@ l <template>
 
                 let truck = this.trucks.filter(e => e.id == this.journey.truck_id)[0];
                 let route = this.routes.filter(e => e.id == this.journey.route_id)[0];
-
+                // console.log(route);
                 this.journey.truck_plate_number = truck.plate_number;
-                this.journey.route_source = route.source;
-                this.journey.route_destination = route.destination;
+                this.journey.route_id = route ? route.id : this.routes[0].id;
+                this.journey.route_destination = route ? route.id : this.routes[0].id;
                 this.journey.ignore_delivery_note = this.contract.ignore_delivery_note;
 
                 let data = mapToFormData(this.journey, this.uploads, typeof this.$route.params.id === 'string');
