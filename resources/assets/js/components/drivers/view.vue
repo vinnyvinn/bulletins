@@ -35,11 +35,12 @@
 
             <show-udfs module="Drivers" :state="driver"></show-udfs>
         </div>
+
       </div>
     </div>
   </div>
-</template>
 
+</template>
 <script>
 export default {
   data() {

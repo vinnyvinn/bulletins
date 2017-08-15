@@ -56,6 +56,7 @@
 <script>
 export default {
   data (){
+
     return {
       truck: {
         driver_id: '',
@@ -81,6 +82,5 @@ export default {
   }
 }
 </script>
-
 <style lang="css">
 </style>

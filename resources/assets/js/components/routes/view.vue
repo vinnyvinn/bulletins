@@ -44,6 +44,7 @@
 export default {
   data (){
     return {
+
       route: {
         source: '',
         destination: '',
@@ -60,11 +61,11 @@ export default {
     getRoute() {
       http.get('/api/route/' + this.$route.params.id).then(response => {
         this.route = response.route;
+
       });
     }
   }
 }
 </script>
-
 <style lang="css">
 </style>

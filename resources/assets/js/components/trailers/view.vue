@@ -33,6 +33,7 @@
 export default {
   data (){
     return {
+
       trailer: {
         trailer_number: '',
         type: '',
@@ -52,6 +53,5 @@ export default {
   }
 }
 </script>
-
 <style lang="css">
 </style>

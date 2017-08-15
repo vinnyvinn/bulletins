@@ -60,8 +60,8 @@ module.exports = [
 
     { path: '/trailers', component: require('./components/trailers/index.vue'), beforeEnter: authMiddleware },
     { path: '/trailers/create', component: require('./components/trailers/form.vue'), beforeEnter: authMiddleware },
-    { path: '/trailers/:id', component: require('./components/trailers/view.vue'), beforeEnter: authMiddleware },
     { path: '/trailers/:id/edit', component: require('./components/trailers/form.vue'), beforeEnter: authMiddleware },
+    { path: '/trailers/:id', component: require('./components/trailers/view.vue'), beforeEnter: authMiddleware },
 
     { path: '/progress', component: require('./components/truck-progress/index.vue'), beforeEnter: authMiddleware },
     { path: '/progress/pre-loading', component: require('./components/truck-progress/stage-preloading.vue'), beforeEnter: authMiddleware },

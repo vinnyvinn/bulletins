@@ -119,6 +119,9 @@
             edit(trailer) {
                 window._router.push({path: '/trailers/' + trailer.id + '/edit'})
             },
+            view(trailer) {
+                window._router.push({path: '/trailers/' + trailer.id})
+            },
 
             view(trailer) {
                 window._router.push({path: '/trailers/' + trailer.id})
