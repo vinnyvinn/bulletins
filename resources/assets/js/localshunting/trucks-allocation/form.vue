@@ -31,11 +31,10 @@
                                 </thead>
                                 <tbody>
                                 <tr v-for="truck in trucks">
-                                    <td>{{ truck.plate_number }}</td>
-                                    <td v-if="truck.trailer">{{ truck.trailer.plate_number }}</td>
-                                    <td v-if="!truck.trailer"> - </td>
-                                    <td v-if="truck.driver">{{ truck.driver.first_name }}</td>
-                                    <td><button type="button" @click="allocate(truck)" name="button" class="btn btn-sm btn-success">Add</button></td>
+                                    <td> {{ truck.plate_number }} </td>
+                                    <td> <span v-if="truck.trailer">{{ truck.trailer.plate_number }}</span></td>
+                                    <td> <span v-if="truck.driver">{{ truck.driver.first_name }}</span></td>
+                                    <td> <button type="button" @click="allocate(truck)" name="button" class="btn btn-sm btn-success">Add</button></td>
                                 </tr>
                                 </tbody>
 
@@ -73,12 +72,20 @@
                                 <tbody>
                                 <tr v-for="allocatedtruck in allocation.allocatedtrucks">
                                     <td>{{ allocatedtruck.plate_number }}</td>
-                                    <td v-if="allocatedtruck.trailer">{{ allocatedtruck.trailer.plate_number}}</td>
-                                    <td v-if="!allocatedtruck.trailer"> - </td>
-                                    <td v-if="allocatedtruck.driver">{{ allocatedtruck.driver.first_name }}</td>
+                                    <td><span v-if="allocatedtruck.trailer"> {{ allocatedtruck.trailer.plate_number}} </span></td>
+                                    <td><span v-if="allocatedtruck.driver"> {{ allocatedtruck.driver.first_name }} </span></td>
                                     <td>
-                                      <button type="button" @click="remove(allocatedtruck)"  data-toggle="modal" data-target="#myModal"  class="btn btn-sm btn-danger" >Remove</button>
+                                      <button type="button" @click="toggleRemoveTruck(allocatedtruck)" class="btn btn-sm btn-danger"><i class="fa fa-minus"></i></button>
                                     </td>
+                                </tr>
+                                <tr v-if="unallocateTruck">
+                                  <td colspan="2" class="text-left">Fuel Balance:</td>
+                                  <td>
+                                    <input type="number" class="form-control input-sm text-right" v-model="activeTruck.contract_end_fuel" min="0" onfocus="this.select()">
+                                  </td>
+                                  <td>
+                                    <button type="button" @click.prevent="remove" class="btn btn-sm btn-success">Remove</button>
+                                  </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -231,11 +238,11 @@
         data() {
             return {
                 activeTruck: {
-                  id: '',
-                  contract_end_fuel: '',
-                  contract_end_mileage: '',
+                  contract_end_fuel: 0,
                 },
                 showModal: false,
+                unallocateTruck: false,
+                fuel_balance:0,
                 contract_trucks: {},
                 showTrucks: true,
                 trucks: [],
@@ -279,8 +286,8 @@
         },
         methods: {
             allocate (truck) {
-              console.log(this.allocation.allocatedtrucks.length);
               if(parseInt(this.allocation.allocatedtrucks.length) >= parseInt(this.contract_trucks.trucks_allocated)) {
+
                 alert2(this.$root, ['Maximum Trucks for contract reached. Remove an existing truck to allow further allocation'], 'danger');
                 return;
               } else {
@@ -293,7 +300,10 @@
                 this.allocation.allocatedtrucks.push(truck);
               }
             },
-
+            toggleRemoveTruck(truck){
+              this.activeTruck = truck;
+              return this.unallocateTruck = !this.unallocateTruck;
+            },
             allocateEmployee (employee) {
               for(var i=0; i < this.employees.length; i++) {
                  if(this.employees[i].id == employee.id)
@@ -304,13 +314,14 @@
               this.employeeAllocation.allocatedEmployees.push(employee);
             },
 
-            remove (allocatedtruck) {
+            remove () {
+              var allocatedtruck = this.activeTruck;
+
               if(allocatedtruck.lsdelivery.length) {
                 alert2(this.$root, ['This Truck has a delivery in progress. End delivery before un-allocating a truck'], 'danger');
                 this.showModal = false;
-                return;
+                return this.unallocateTruck = false;
               }
-              this.activeTruck = allocatedtruck;
               this.showModal = true;
 
               for(var i=0; i < this.allocation.allocatedtrucks.length; i++) {
@@ -319,6 +330,8 @@
                     this.allocation.allocatedtrucks.splice(i,1);
                  }
               }
+               this.unallocateTruck = false;
+              this.unallocate(allocatedtruck, this.currentFuelValue);
               this.trucks.push(allocatedtruck);
             },
 
@@ -341,7 +354,6 @@
                 }
                 this.$router.push('/ls/trucks-allocation/' + this.allocation.contract_id);
               });
-
             },
 
             storeEmployee () {
@@ -352,6 +364,11 @@
 
             },
 
+            updateCurrentFuel(truck, fuelValue){
+              http.post('', {truck: truck, fuelValue: fuelValue}).then(response=>{
+              alert2(this.$root, [response.message], 'success');
+            });
+            },
 
             setupConfirm() {
                 $('.btn-destroy').off();
@@ -359,11 +376,10 @@
                     this.destroy(element.dataset.item);
                 });
             },
+
             date2(value) {
                 return window._date2(value);
             },
-
-
 
             destroy(id) {
                 this.$root.isLoading = true;
@@ -389,7 +405,9 @@
               this.$root.isLoading = true;
               this.showModal = false;
               http.post('/api/unallocate', this.activeTruck).then((response) => {
-                alert2(this.$root, ['response.message'], 'success');
+                this.activeTruck.contract_end_fuel = 0;
+                alert2(this.$root, [response.message], 'success');
+                this.$root.isLoading = false;
               });
             }
         }

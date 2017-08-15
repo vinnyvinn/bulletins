@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 use App\ContractConfig;
 use Response;
 use DB;
@@ -63,9 +64,8 @@ class ContractConfigController extends Controller
 
         $schema = DB::getDoctrineSchemaManager();
         $fields = $schema->listTableColumns('contract_configs');
-
+        $slugcount = 0;
         foreach($fields as $field) {
-          $slugcount = 0;
           if($field == $data['name']) {
             $slugcount = $slugcount + 1;
           }
@@ -78,7 +78,7 @@ class ContractConfigController extends Controller
 
         $data['name'] = $slug;
 
-        Schema::table('contract_configs', function($table) use($data) {
+        Schema::table('contract_configs', function(Blueprint $table) use($data) {
             $table->integer($data['name'])->nullable();
         });
 

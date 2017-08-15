@@ -82,6 +82,13 @@
                             <label for="offloading_weighbridge_number">Weighbridge Ticket Number</label>
                             <input :disabled="(typeof $route.params.unload !== 'string') && (typeof $route.params.id !== 'string')" id="offloading_weighbridge_number" v-model="deliveryNote.offloading_weighbridge_number" type="text" class="form-control input-sm" required>
                         </div>
+                        <div class="form-group">
+                          <label for="temporary_driver">Temporary Driver</label>
+                          <select class="form-control input-sm" v-model="deliveryNote.temporary_driver">
+                            <option value="" disabled> Select A driver</option>
+                            <option v-for="driver in drivers":value="driver.id">{{ driver.first_name }} {{ driver.last_name }}</option>
+                          </select>
+                         </div>
                     </div>
 
                     <div class="col-sm-2">
@@ -126,7 +133,9 @@
                     offloading_tare_weight: 0,
                     offloading_net_weight: 0,
                     offloading_weighbridge_number: '',
-                }
+                    temporary_driver: ''
+                },
+                drivers:[]
             };
         },
 
@@ -150,7 +159,7 @@
                 this.vehicle = response.vehicle;
                 this.deliveryNote.vehicle_id = this.vehicle.id;
                 this.deliveryNote.contract_id = this.vehicle.contract_id;
-
+                this.drivers = response.drivers;
                 this.$root.isLoading = false;
             });
         },

@@ -42,6 +42,7 @@
                         <tr>
                           <th>#</th>
                           <th>Delivery #</th>
+                          <th>Temporary Driver</th>
                           <th>When</th>
                           <th>Created By</th>
                         </tr>
@@ -50,6 +51,9 @@
                         <tr v-for="(delivery, index) in deliveries">
                           <td>{{ index + 1 }}</td>
                           <td>DL - {{ delivery.id}}</td>
+                          <td>
+                            <span v-if="delivery.temporary_driver">{{ delivery.temporary_driver.first_name }}{{delivery.temporary_driver.last_name}}</span>
+                          </td>
                           <td>{{ delivery.created_at }}</td>
                           <td>{{ delivery.user.first_name}}</td>
                         </tr>
@@ -58,6 +62,7 @@
                         <tr>
                           <th>#</th>
                           <th>Delivery #</th>
+                          <th> Temporary Driver </th>
                           <th>When</th>
                           <th>Created By</th>
                         </tr>

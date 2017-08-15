@@ -7,6 +7,7 @@ use SmoDav\Models\Journey;
 use SmoDav\Models\Vehicle;
 use App\RouteCard;
 use App\User;
+use App\Driver;
 
 class LSDelivery extends Model
 {
@@ -26,7 +27,8 @@ class LSDelivery extends Model
         'user_id',
         'station_id',
         'vehicle_id',
-        'contract_id'
+        'contract_id',
+        'temporary_driver'
     ];
 
 
@@ -44,5 +46,9 @@ class LSDelivery extends Model
     public function vehicle()
     {
       return $this->belongsTo(Vehicle::class);
+    }
+    public function temporary_driver()
+    {
+      return $this->belongsTo(Driver::class, 'temporary_driver', 'id');
     }
 }

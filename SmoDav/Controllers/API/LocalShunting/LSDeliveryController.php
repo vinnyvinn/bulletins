@@ -10,6 +10,7 @@ use Response;
 use SmoDav\Models\Vehicle;
 use \Carbon\Carbon;
 use SmoDav\Models\LocalShunting\LSGatePass;
+use App\Driver;
 
 class LSDeliveryController extends Controller
 {
@@ -34,7 +35,8 @@ class LSDeliveryController extends Controller
     {
       if(request('id')) {
         return Response::json([
-          'vehicle' => Vehicle::where('id',request('id'))->with('contract','driver','trailer')->first()
+          'vehicle' => Vehicle::where('id',request('id'))->with('contract','driver','trailer')->first(),
+          'drivers' => Driver::unassigned()->get()
         ]);
       }
 

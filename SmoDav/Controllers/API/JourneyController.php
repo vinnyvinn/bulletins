@@ -82,7 +82,8 @@ class JourneyController extends Controller
                 'driver' => function ($builder) {
                     return $builder->select(['id', 'first_name', 'last_name', 'mobile_phone']);
                 },
-                'trailer'
+                'trailer',
+                'lsdelivery'
             ])
             ->whereNotIn('id', $journeys)
             ->whereNotIn('id', $ls)

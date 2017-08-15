@@ -376,7 +376,6 @@ class ContractController extends Controller
       ]);
     }
 
-
     public function lscontracts ()
     {
       return Response::json([
@@ -398,7 +397,7 @@ class ContractController extends Controller
       return Response::json([
         'contract_trucks' => Contract::select('trucks_allocated')->findOrFail($id),
         'contract_employees' => Employee::where('contract_id', $id)->get(),
-        'allocated_trucks' => Vehicle::where('contract_id', $id)->with('trailer')->with('lsdelivery')->get()
+        'allocated_trucks' => Vehicle::where('contract_id', $id)->with(['trailer','lsdelivery'])->get()
       ]);
     }
 
@@ -409,15 +408,18 @@ class ContractController extends Controller
       $vehicle = Vehicle::findOrFail($data['id']);
 
       $vehicle->current_fuel = $data['contract_end_fuel'];
-      $vehicle->current_km = $data['contract_end_mileage'];
+      $vehicle->contract_id = null;
       $vehicle->save();
 
-      $vehicle->contract->detach($vehicle);
-
       return Response::json([
+        'vehicle' => $vehicle,
         'status' => 'success',
-        'message' => 'Vehicle Successfully removed from contract'
+        'message' => 'Vehicle Successfully removed from contract.'
       ]);
+    }
+    public function updateFuelValue(Request $request)
+    {
+
     }
 
 }

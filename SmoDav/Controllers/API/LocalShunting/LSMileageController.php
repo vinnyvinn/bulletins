@@ -41,7 +41,7 @@ class LSMileageController extends Controller
         return Response::json([
           'deliveries' => LSDelivery::where('contract_id', $contract)
               ->where('vehicle_id',$truck)
-              ->with('vehicle','user')
+              ->with(['vehicle','user', 'temporary_driver'])
               ->get(),
           'mileages' => LSMileage::where('contract_id', $contract)
               ->where('vehicle_id',$truck)
@@ -49,7 +49,7 @@ class LSMileageController extends Controller
               ->get(),
           'vehicle' =>Vehicle::where('id', $truck)
               ->with('trailer','driver')
-              ->first()
+              ->first(),
         ]);
       }
     }

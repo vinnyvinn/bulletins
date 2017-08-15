@@ -79,7 +79,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('approve_mileage/{id}', '\SmoDav\Controllers\API\MileageController@approve');
     Route::get('trucks_already_allocated/{contract_id}', '\SmoDav\Controllers\API\JourneyController@trucksAlreadyAllocated');
     Route::get('truck-report/{id}', '\SmoDav\Controllers\API\VehicleController@report');
-    Route::get('new_inspection/{id}', '\SmoDav\Controllers\API\InspectionController@newInspection');
+    Route::get('new_inspection/{id}', 'd\SmoDav\Controllers\API\InspectionController@newInspection');
 
     Route::post('allocate_truck', 'ContractController@allocateTruck');
     Route::get('lscontracts', 'ContractController@lscontracts');
@@ -109,5 +109,5 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('config_field', 'ContractConfigController@addConfigField');
     Route::get('config_field', 'ContractConfigController@getTableFields');
 
-    Route::post('unallocate', 'ContractController@allocateTruck@unallocate');
+    Route::post('unallocate', 'ContractController@unallocate');
 });

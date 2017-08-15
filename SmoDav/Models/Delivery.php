@@ -25,7 +25,8 @@ class Delivery extends SmoDavModel
         'status',
         'bags_loaded',
         'user_id',
-        'station_id'
+        'station_id',
+        'temporary_driver'
     ];
 
     public function journey()
