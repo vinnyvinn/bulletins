@@ -3,7 +3,7 @@
     <div class="col-md-6">
       <div class="panel panel-default">
         <div class="panel-heading">
-          New Contract Cofiguration Field
+          New Contract Configuration Field
         </div>
         <div class="panel-body">
           <form action="#">
@@ -36,11 +36,10 @@
             </thead>
             <tbody>
               <tr v-for="(field, index) in fields" v-if="index != 'id'">
-                <td>{{ }}</td>
+                <td>{{ field.id }}</td>
                 <td>{{ index }}</td>
                 <td>
-                  <span @click="edit(field)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
-                  <span @click="deleteField(field.id)" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></span>
+                  <span @click="deleteField(index)" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></span>
                 </td>
               </tr>
             </tbody>
@@ -95,7 +94,7 @@ export default {
         });
       } else {
         http.post('/api/config_field', this.field).then((response) => {
-          this.setting.name = '';
+          this.field.name = null;
           this.fetchFields();
           alert2(this.$root, [response.message], 'success');
           this.$root.isLoading = false;
@@ -107,8 +106,8 @@ export default {
       this.setting = setting;
       this.isEditing = true;
     },
-    deleteField(id) {
-      http.destroy('/api/contract_config/' + id).then((response) => {
+    deleteField(index) {
+      http.destroy('/api/config_delete/' + index).then((response) => {
         this.fetchFields();
         alert2(this.$root, [response.message], 'success');
       });

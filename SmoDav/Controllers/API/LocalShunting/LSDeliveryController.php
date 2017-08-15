@@ -11,6 +11,7 @@ use SmoDav\Models\Vehicle;
 use \Carbon\Carbon;
 use SmoDav\Models\LocalShunting\LSGatePass;
 use App\Driver;
+use SmoDav\Support\Constants;
 
 class LSDeliveryController extends Controller
 {
@@ -22,7 +23,7 @@ class LSDeliveryController extends Controller
     public function index()
     {
         return Response::json([
-          'deliveries' => LSDelivery::with('vehicle', 'vehicle.driver')->get()
+          'deliveries' => LSDelivery::with('vehicle', 'vehicle.driver')->where('status', Constants::LOADED)->get()
         ]);
     }
 
@@ -78,7 +79,9 @@ class LSDeliveryController extends Controller
      */
     public function show($id)
     {
-
+      return Response::json([
+        'delivery' => LSDelivery::findOrFail($id)
+      ]);
     }
 
     /**
@@ -101,7 +104,25 @@ class LSDeliveryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      $data = $request->all();
+      unset($data['_token'], $data['_method']);
+      $data['raw'] = json_encode($data);
+
+      foreach ($data as $key => $value) {
+          if ($value == 'null') {
+              unset($data[$key]);
+          }
+      }
+
+      $data['offloading_time'] = Carbon::now();
+      $data['status'] = Constants::OFFLOADED;
+
+      $delivery = LSDelivery::findOrFail($id);
+      $delivery->update($data);
+
+      return Response::json([
+          'message' => 'Successfully offloaded'
+      ]);
     }
 
     /**

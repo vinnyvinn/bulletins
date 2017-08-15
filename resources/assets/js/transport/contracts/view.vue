@@ -7,7 +7,7 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group pull-right" v-if="$root.can('approve-contract')">
-                      <router-link :to="'/contract_setting/create/' + this.$route.params.id" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i> Contract Settings</router-link>
+                      <router-link :to="'/contract_setting/create/' + this.$route.params.id" class="btn btn-primary pull-right"><i class="fa fa-cog"></i> Contract Settings</router-link>
                         <button @click.prevent="approveContract" class="btn btn-success" v-if="status == 'Pending Approval'">Approve Contract</button>
                         <button @click.prevent="closeContract" class="btn btn-danger" v-if="(status == 'Pending Approval') || (status == 'Approved')">Close Contract</button>
                         <button @click.prevent="reopenContract" class="btn btn-primary" v-if="status == 'Closed'">Reopen Contract</button>

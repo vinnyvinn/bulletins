@@ -15,7 +15,7 @@ class CreateContractConfigsTable extends Migration
     {
         Schema::create('contract_configs', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('contract_id')->nullable();
+            $table->integer('contract_id')->unique();
             $table->integer('average_fuel')->nullable();
             $table->integer('supervisors')->nullable();
             $table->integer('casuals')->nullable();

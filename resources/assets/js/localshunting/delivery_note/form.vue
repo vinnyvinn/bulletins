@@ -102,7 +102,7 @@
                 </div>
                 <div class="form-group">
                     <button class="btn btn-success">Process</button>
-                    <router-link to="/ls/delivery" class="btn btn-danger">Back</router-link>
+                    <router-link to="/ls/offloading" class="btn btn-danger">Back</router-link>
                 </div>
             </form>
 
@@ -114,6 +114,7 @@
     export default {
         data() {
             return {
+                unloading: false,
                 vehicle: {
                   trailer: {},
                   driver: {},
@@ -170,11 +171,6 @@
             });
         },
 
-
-        computed: {
-
-        },
-
         methods: {
             updateNote() {
               if(parseFloat(this.deliveryNote.loading_gross_weight) >= parseFloat(this.deliveryNote.loading_tare_weight)) {
@@ -191,9 +187,8 @@
                 this.$root.isLoading = true;
                 let id = this.$route.params.unload ? this.$route.params.unload : this.$route.params.id;
 
-                return http.get('/api/delivery/' + id).then((response) => {
+                return http.get('/api/lsdelivery/' + id).then((response) => {
                     this.deliveryNote = response.delivery;
-                    this.journeys = response.journeys;
                     this.$root.isLoading = false;
                 });
             },
@@ -203,9 +198,9 @@
 
 
                 if (this.$route.params.id) {
-                    request = http.put('/api/lsdelivery/' + this.$route.params.id, data, true);
+                    request = http.put('/api/lsdelivery/' + this.$route.params.id, this.deliveryNote);
                 } else if (this.$route.params.unload) {
-                    request = http.put('/api/lsdelivery/' + this.$route.params.unload, data, true);
+                    request = http.put('/api/lsdelivery/' + this.$route.params.unload, this.deliveryNote);
                 } else {
                     request = http.post('/api/lsdelivery', this.deliveryNote);
                 }

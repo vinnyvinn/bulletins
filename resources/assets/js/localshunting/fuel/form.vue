@@ -2,6 +2,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <strong>Fuel Allocation -- Truck: {{ truck.plate_number }} </strong>
+            <strong class="pull-right">Contract Average Trips: {{ average_trips }}</strong>
         </div>
 
         <div class="panel-body">
@@ -57,6 +58,19 @@
                   </div>
 
                   <div class="col-sm-4">
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label for="fuel_issued">Trips since last refuel</label>
+                        <input readonly type="number" name="fuel_issued" class="form-control input-sm" v-model="trips">
+                      </div>
+                    </div>
+
+                    <div class="col-sm-12" v-if="parseInt(trips) < parseInt(average_trips)">
+                      <div class="form-group">
+                        <label for="reason">Reason</label>
+                        <textarea name="reason" class="form-control input-sm" v-model="fuel.reason" placeholder="Reason why truck has made less trips"></textarea>
+                      </div>
+                    </div>
 
                     <div class="col-sm-12">
                       <div class="form-group">
@@ -101,8 +115,12 @@
           if(this.$route.params.id){
             this.can_save = true;
           }
+            this.$root.isLoading = true;
             http.get('/api/lsfuelcreate/' + this.$route.params.id).then((response) => {
                 this.truck = response.truck;
+                this.average_trips = response.average_trips;
+                this.trips = response.trips;
+                this.fuel.under_trips = parseInt(this.average_trips) - parseInt(this.trips);
                 this.$root.isLoading = false;
             });
         },
@@ -116,6 +134,8 @@
 
         data() {
             return {
+                average_trips: 0,
+                trips: 0,
                 truck: {},
                 fuel_reserve: 25,
                 km_covered: 0,
@@ -134,6 +154,8 @@
                     current_km: 0,
                     tank: '',
                     pump: '',
+                    under_trips: 0,
+                    reason: ''
                 },
                 can_save: false,
                 below_reserve: false,

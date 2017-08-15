@@ -24,6 +24,8 @@ use SmoDav\Support\Excel;
 use function str_replace;
 use SmoDav\Models\Journey;
 use App\Fuel;
+use SmoDav\Models\LocalShunting\LSFuel;
+use SmoDav\Models\LocalShunting\LSDelivery;
 
 class VehicleController extends Controller
 {
@@ -311,8 +313,19 @@ class VehicleController extends Controller
 
     public function lsfuelcreate($id)
     {
+      $vehicle_ls_fuel = LSFuel::where('vehicle_id', $id)->orderBy('created_at', 'desc')->first();
+      if($vehicle_ls_fuel) {
+        $last_refuel_time = $vehicle_ls_fuel->created_at;
+        $deliveries_since_refuel = count(LSDelivery::where('vehicle_id', $id)->where('created_at','>',$last_refuel_time)->get());
+      } else {
+        $deliveries_since_refuel = 0;
+      }
+
       return Response::json([
-      'truck' => Vehicle::findOrFail($id)
+      'truck' => Vehicle::findOrFail($id),
+      'average_trips' => Vehicle::findOrFail($id)->contract->contractConfig->trips,
+      'trips' => $deliveries_since_refuel,
+      'fuels' => LSFuel::all()
       ]);
     }
 }

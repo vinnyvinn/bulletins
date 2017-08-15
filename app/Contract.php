@@ -11,6 +11,7 @@ use SmoDav\Models\Delivery;
 use SmoDav\Support\Constants;
 use SmoDav\Models\Journey;
 use SmoDav\Models\Vehicle;
+use App\ContractConfig;
 
 class Contract extends Model
 {

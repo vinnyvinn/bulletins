@@ -95,7 +95,11 @@ class ContractConfigController extends Controller
      */
     public function show($id)
     {
-        //
+        return Response::json([
+          'status' => 'success',
+          'message' => 'successful',
+          'setting' => ContractConfig::where('contract_id', $id)->first()
+        ]);
     }
 
     /**
@@ -118,7 +122,21 @@ class ContractConfigController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      $fields = $request->all();
+
+      $contract_setting = ContractConfig::findOrFail($id);
+
+      foreach($fields as $key => $field) {
+        if(!($key == '_method' || $key == '_token')) {
+          $contract_setting->$key = $field;
+        }
+      }
+      $contract_setting->save();
+
+      return Response::json([
+        'status' => 'success',
+        'message' => 'Settings Successfully saved'
+      ]);
     }
 
     /**
@@ -127,18 +145,29 @@ class ContractConfigController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function deleteField($field)
     {
-        //
+      Schema::table('contract_configs', function($table) {
+             $table->dropColumn($field);
+      });
+      return Response::json([
+        'message' => 'Field removed successfully'
+      ]);
     }
 
     public function getTableFields()
     {
+
       $schema = DB::getDoctrineSchemaManager();
       $fields = $schema->listTableColumns('contract_configs');
 
       return Response::json([
         'fields' => $fields
       ]);
+    }
+
+    public function checkConfigPresence($id)
+    {
+
     }
 }
