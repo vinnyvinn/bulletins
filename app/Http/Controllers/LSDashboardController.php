@@ -15,7 +15,7 @@ class LSDashboardController extends Controller
     public function dashboard()
     {
       return Response::json([
-        'contracts'   => Contract::all(),
+        'contracts'   => Contract::with('lsfuels','lsgatepasses','lsdeliveries','lsmileages')->get(),
         'deliveries'  => LSDelivery::all(),
         'fuels'       => LSFuel::all(),
         'gatepasses'  => LSGatePass::all(),

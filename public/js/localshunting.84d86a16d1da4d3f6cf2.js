@@ -104267,35 +104267,92 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
-    data: function data() {
-        return {
-            contracts: [],
-            allocations: [],
-            fuels: [],
-            gatepasses: [],
-            deliveries: [],
-            mileages: []
-        };
+  data: function data() {
+    return {
+      pending_approval: 0,
+      approved: 0,
+      closed: 0,
+      contracts: [],
+      allocations: [],
+      fuels: [],
+      gatepasses: [],
+      deliveries: [],
+      mileages: []
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    this.$root.isLoading = true;
+    http.get('/api/lsdashboard').then(function (response) {
+      _this.contracts = response.contracts;
+      _this.fuels = response.fuels;
+      _this.gatepasses = response.gatepasses;
+      _this.deliveries = response.deliveries;
+      _this.mileages = response.mileages;
+
+      _this.contractSummary();
+
+      _this.$root.isLoading = false;
+    });
+  },
+
+  computed: {},
+
+  methods: {
+    contractSummary: function contractSummary() {
+      var i = 0;
+
+      for (i; i < this.contracts.length; i++) {
+        if (this.contracts[i].status == 'Pending Approval') {
+          this.pending_approval += 1;
+        } else if (this.contracts[i].status == 'Approved') {
+          this.approved += 1;
+        } else if (this.contracts[i].status == 'Closed') {
+          this.closed += 1;
+        }
+      }
     },
-    created: function created() {
-        var _this = this;
+    contractFuel: function (_contractFuel) {
+      function contractFuel(_x) {
+        return _contractFuel.apply(this, arguments);
+      }
 
-        this.$root.isLoading = true;
-        http.get('/api/lsdashboard').then(function (response) {
-            _this.contracts = response.contracts;
-            _this.fuels = response.fuels;
-            _this.gatepasses = response.gatepasses;
-            _this.deliveries = response.deliveries;
-            _this.mileages = response.mileages;
+      contractFuel.toString = function () {
+        return _contractFuel.toString();
+      };
 
-            _this.$root.isLoading = false;
-        });
-    },
-
-
-    methods: {}
+      return contractFuel;
+    }(function (contract) {
+      contractFuel = 0;
+      for (var i = 0; i < contract.lsfuel.length; i++) {
+        contractFuel += contract.lsfuel.fuel_issued;
+      }
+      return contractFuel;
+    })
+  }
 };
 
 /***/ }),
@@ -113925,24 +113982,26 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "row"
   }, [_c('div', {
-    staticClass: "col-sm-6"
+    staticClass: "col-sm-12"
   }, [_c('div', {
     staticClass: "panel panel-default"
   }, [_c('div', {
     staticClass: "panel-heading"
   }, [_vm._v("\n            Contracts\n          ")]), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
-  }, [_vm._v("\n            Contracts: " + _vm._s(_vm.contracts.length) + "\n          ")])])]), _vm._v(" "), _vm._m(0)]), _vm._v(" "), _vm._m(1), _vm._v(" "), _vm._m(2)])
+  }, [_vm._v("\n            Contracts: " + _vm._s(_vm.contracts.length)), _c('br'), _vm._v(" "), _c('span', {
+    staticClass: "label label-warning"
+  }, [_vm._v("Pending Approval: " + _vm._s(_vm.pending_approval))]), _vm._v(" "), _c('span', {
+    staticClass: "label label-success"
+  }, [_vm._v("Approved: " + _vm._s(_vm.approved))]), _vm._v(" "), _c('span', {
+    staticClass: "label label-default"
+  }, [_vm._v("Closed: " + _vm._s(_vm.closed))]), _vm._v(" "), _c('table', {
+    staticClass: "table"
+  }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.contracts), function(contract) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(contract.id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s())]), _vm._v(" "), _c('td', [_vm._v(_vm._s())]), _vm._v(" "), _c('td', [_vm._v(_vm._s(contract.lsfuels.length))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(contract.lsgatepasses.length))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(contract.lsdeliveries.length))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(contract.lsmileages.length))])])
+  }))])])])])]), _vm._v(" "), _vm._m(1), _vm._v(" "), _vm._m(2)])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "col-sm-6"
-  }, [_c('div', {
-    staticClass: "panel panel-default"
-  }, [_c('div', {
-    staticClass: "panel-heading"
-  }, [_vm._v("\n            Allocation\n          ")]), _vm._v(" "), _c('div', {
-    staticClass: "panel-body"
-  })])])
+  return _c('thead', [_c('tr', [_c('th', [_vm._v("Contract")]), _vm._v(" "), _c('th', [_vm._v("Supervisors")]), _vm._v(" "), _c('th', [_vm._v("Casuals")]), _vm._v(" "), _c('th', [_vm._v("Fuel")]), _vm._v(" "), _c('th', [_vm._v("gatepasses")]), _vm._v(" "), _c('th', [_vm._v("Deliveries")]), _vm._v(" "), _c('th', [_vm._v("Mileages")])])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "row"
@@ -113954,7 +114013,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "panel-heading"
   }, [_vm._v("\n            Fuel\n          ")]), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
-  })])]), _vm._v(" "), _c('div', {
+  }, [_c('ol')])])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
   }, [_c('div', {
     staticClass: "panel panel-default"
@@ -113962,7 +114021,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "panel-heading"
   }, [_vm._v("\n            GatePass\n          ")]), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
-  })])])])
+  }, [_c('ol')])])])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "row"
@@ -113974,7 +114033,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "panel-heading"
   }, [_vm._v("\n            Deliveries\n          ")]), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
-  })])]), _vm._v(" "), _c('div', {
+  }, [_c('ol')])])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
   }, [_c('div', {
     staticClass: "panel panel-default"
