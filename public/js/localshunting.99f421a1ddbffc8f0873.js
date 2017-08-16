@@ -104210,63 +104210,92 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
+    data: function data() {
+        return {
+            contracts: [],
+            allocations: [],
+            fuels: [],
+            gatepasses: [],
+            deliveries: [],
+            mileages: []
+        };
+    },
     created: function created() {
         var _this = this;
 
         this.$root.isLoading = true;
-        http.get('/api/dashboard?s=' + window.Laravel.station_id).then(function (response) {
-            _this.mapFetchedData(response);
+        http.get('/api/lsdashboard').then(function (response) {
+            _this.contracts = response.contracts;
+            _this.fuels = response.fuels;
+            _this.gatepasses = response.gatepasses;
+            _this.deliveries = response.deliveries;
+            _this.mileages = response.mileages;
+
+            _this.$root.isLoading = false;
         });
     },
-    data: function data() {
-        return {
-            open_journeys: [],
-            not_loaded: [],
-            not_fueled: [],
-            not_paid: [],
-            loading: [],
-            offloading: [],
-            delivery_notes: [],
-            months: [],
-            month: ''
-        };
-    },
 
 
-    methods: {
-        date2: function date2(value) {
-            return window._date2(value);
-        },
-        getMonth: function getMonth() {
-            var date = new Date();
-
-            return (parseInt(date.getMonth()) + 1).toString() + '-' + date.getYear();
-        },
-        fetchMonthData: function fetchMonthData() {
-            var _this2 = this;
-
-            this.$root.isLoading = true;
-            http.get('/api/dashboard?month=' + this.month).then(function (response) {
-                _this2.mapFetchedData(response);
-            });
-        },
-        mapFetchedData: function mapFetchedData(response) {
-            var _this3 = this;
-
-            //                $('.datatable').dataTable().fnDestroy();
-            this.open_journeys = response.open_journeys;
-            this.not_fueled = response.not_fueled;
-            this.not_loaded = response.not_loaded;
-            this.not_paid = response.not_paid;
-            this.months = response.months;
-            setTimeout(function () {
-                //                    $('.datatable').dataTable();
-                _this3.$root.isLoading = false;
-            }, 1000);
-        }
-    }
+    methods: {}
 };
 
 /***/ }),
@@ -113891,19 +113920,69 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _vm._m(0)
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "container-fluid"
   }, [_c('div', {
     staticClass: "row"
   }, [_c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('div', {
     staticClass: "panel panel-default"
   }, [_c('div', {
     staticClass: "panel-heading"
-  }, [_vm._v("\n          Local Shunting\n        ")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n            Contracts\n          ")]), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
-  }, [_c('h1', [_vm._v("Local Shunting Dashboard Content goes here")])])])])])
+  }, [_vm._v("\n            Contracts: " + _vm._s(_vm.contracts.length) + "\n          ")])])]), _vm._v(" "), _vm._m(0)]), _vm._v(" "), _vm._m(1), _vm._v(" "), _vm._m(2)])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_vm._v("\n            Allocation\n          ")]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  })])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_vm._v("\n            Fuel\n          ")]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_vm._v("\n            GatePass\n          ")]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  })])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_vm._v("\n            Deliveries\n          ")]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_vm._v("\n            Mileages\n          ")]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  })])])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
