@@ -12,6 +12,10 @@ use SmoDav\Support\Constants;
 use SmoDav\Models\Journey;
 use SmoDav\Models\Vehicle;
 use App\ContractConfig;
+use SmoDav\Models\LocalShunting\LSFuel;
+use SmoDav\Models\LocalShunting\LSGatePass;
+use SmoDav\Models\LocalShunting\LSDelivery;
+use SmoDav\Models\LocalShunting\LSMileage;
 
 class Contract extends Model
 {
@@ -100,5 +104,25 @@ class Contract extends Model
     public function contractConfig()
     {
       return $this->hasOne(contractConfig::class);
+    }
+
+    public function lsfuels()
+    {
+      return $this->hasMany(LSFuel::class);
+    }
+
+    public function lsgatepasses()
+    {
+      return $this->hasManyThrough(LSGatePass::class, Vehicle::class, 'contract_id', 'vehicle_id', 'id');
+    }
+
+    public function lsdeliveries()
+    {
+      return $this->hasMany(LSDelivery::class);
+    }
+
+    public function lsmileages()
+    {
+      return $this->hasMany(LSMileage::class);
     }
 }

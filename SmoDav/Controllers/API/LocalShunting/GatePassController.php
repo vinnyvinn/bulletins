@@ -33,7 +33,9 @@ class GatePassController extends Controller
       return Response::json([
         'vehicles' => Vehicle::has('contract')
                   ->doesntHave('lsgatepass')
-                  ->doesntHave('lsdelivery')
+                  ->whereDoesntHave('lsdelivery', function ($q) {
+                    return $q->where('status','Loaded');
+                  })
                   ->get(),
         'gatepasses' => LSGatePass::with('vehicle','user')->get()
       ]);
