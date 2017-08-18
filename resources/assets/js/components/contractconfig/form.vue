@@ -35,11 +35,11 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(field, index) in fields" v-if="index != 'id'">
-                <td>{{ field.id }}</td>
-                <td>{{ index }}</td>
+              <tr v-for="(field, index) in fields">
+                <td>{{ index + 1 }}</td>
+                <td>{{ field }}</td>
                 <td>
-                  <span @click="deleteField(index)" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></span>
+                  <span @click="deleteField(field)" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></span>
                 </td>
               </tr>
             </tbody>
@@ -59,29 +59,29 @@ export default {
         name: ''
       },
       isEditing: false,
+      mytest: []
     }
   },
   created() {
     this.fetchFields();
   },
 
-  computed: {
-    filteredFields () {
-      for(var i = 0; i < this.fields.length; i++)
-      {
-        if(this.fields[i] == 'id'){
-          this.fields.splice(index, 1);
-        }
-      }
-    }
-  },
-
   methods: {
     fetchFields () {
       http.get('/api/config_field'). then((response) => {
         this.fields = response.fields;
+        this.filterFields();
       });
     },
+
+    filterFields () {
+
+      this.fields = Object.keys(this.fields);
+      this.fields = this.fields.filter( function (field) {
+        return !(field == 'id' | field == 'created_at' | field == 'updated_at' | field == 'contract_id') ;
+      })
+    },
+
     save() {
       this.$root.isLoading = true;
       if(this.isEditing) {

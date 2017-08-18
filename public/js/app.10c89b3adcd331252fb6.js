@@ -102848,7 +102848,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       field: {
         name: ''
       },
-      isEditing: false
+      isEditing: false,
+      mytest: []
     };
   },
   created: function created() {
@@ -102856,22 +102857,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
 
 
-  computed: {
-    filteredFields: function filteredFields() {
-      for (var i = 0; i < this.fields.length; i++) {
-        if (this.fields[i] == 'id') {
-          this.fields.splice(index, 1);
-        }
-      }
-    }
-  },
-
   methods: {
     fetchFields: function fetchFields() {
       var _this = this;
 
       http.get('/api/config_field').then(function (response) {
         _this.fields = response.fields;
+        _this.filterFields();
+      });
+    },
+    filterFields: function filterFields() {
+
+      this.fields = Object.keys(this.fields);
+      this.fields = this.fields.filter(function (field) {
+        return !(field == 'id' | field == 'created_at' | field == 'updated_at' | field == 'contract_id');
       });
     },
     save: function save() {
@@ -122722,7 +122721,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('table', {
     staticClass: "table"
   }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.fields), function(field, index) {
-    return (index != 'id') ? _c('tr', [_c('td', [_vm._v(_vm._s(field.id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(index))]), _vm._v(" "), _c('td', [_c('span', {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(field))]), _vm._v(" "), _c('td', [_c('span', {
       staticClass: "btn btn-xs btn-danger",
       on: {
         "click": function($event) {
@@ -122731,7 +122730,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_c('i', {
       staticClass: "fa fa-trash"
-    })])])]) : _vm._e()
+    })])])])
   }))])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('thead', [_c('tr', [_c('th', [_vm._v("Id")]), _vm._v(" "), _c('th', [_vm._v("Name")]), _vm._v(" "), _c('th', [_vm._v("Action")])])])
