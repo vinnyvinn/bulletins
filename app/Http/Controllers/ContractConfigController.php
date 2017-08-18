@@ -147,9 +147,10 @@ class ContractConfigController extends Controller
      */
     public function deleteField($field)
     {
-      Schema::table('contract_configs', function($table) {
+      Schema::table('contract_configs', function($table) use($field) {
              $table->dropColumn($field);
       });
+
       return Response::json([
         'message' => 'Field removed successfully'
       ]);

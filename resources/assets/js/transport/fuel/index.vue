@@ -24,6 +24,7 @@
                     <th>Current Fuel</th>
                     <th>Fuel Requested</th>
                     <th>Fuel Issued</th>
+                    <th>Issued By</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -46,6 +47,7 @@
                     <td>{{ fuel.current_fuel }}</td>
                     <td>{{ fuel.fuel_requested }}</td>
                     <td>{{ fuel.fuel_issued }}</td>
+                    <td>{{ fuel.user.first_name }} {{ fuel.user.last_name }}</td>
                     <td>
                       <span @click="edit(fuel)" v-if="$root.can('edit-fuel')" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
                       <button v-if="$root.can('delete-fuel')" data-toggle="popover" :data-item="fuel.id" class="btn btn-xs btn-danger btn-destroy">
@@ -56,17 +58,19 @@
                 </tbody>
                 <tfoot>
                   <tr>
+                    <th>Status</th>
+                    <th>Vehicle</th>
+
+                    <th>Fuel No.</th>
                     <th>Journey</th>
                     <th>Date</th>
                     <th>Driver</th>
-                    <th>Vehicle</th>
-                    <th>Source</th>
-                    <th>Destination</th>
+                    <th>Source - Destination</th>
                     <th>Journey Distance</th>
                     <th>Current Fuel</th>
                     <th>Fuel Requested</th>
                     <th>Fuel Issued</th>
-                    <th>Status</th>
+                    <th>Issued By</th>
                     <th>Action</th>
                   </tr>
                 </tfoot>
@@ -138,7 +142,7 @@ export default {
 
           http.get('/api/fuel/?s=' + window.Laravel.station_id).then(response => {
               this.fuels = response.fuel;
-              this.setupConfirm();              
+              this.setupConfirm();
           });
 
           this.$root.isLoading = false;

@@ -153,7 +153,7 @@ class JourneyController extends Controller
      */
     public function show($id)
     {
-        $journey = Journey::with(['contract', 'route', 'driver', 'truck.trailer', 'mileage', 'fuel'])->findOrFail($id);
+        $journey = Journey::with(['contract', 'route', 'driver', 'truck.trailer', 'mileage', 'fuel','delivery'])->findOrFail($id);
         $journey->raw = json_decode($journey->raw);
         $contract = $journey->contract ? json_decode($journey->contract->raw) : new \stdClass();
         $contract->id = $journey->contract ? $journey->contract->id : '';

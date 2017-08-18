@@ -115,10 +115,12 @@
 <script>
     export default {
         created() {
+          this.$root.isLoading = true;
             http.get('/api/contract').then(response => {
                 this.contracts = response.contracts;
                 this.setupConfirm();
                 prepareTable();
+                this.$root.isLoading = false;
             });
             $(document).ready(() => {
                 $('.datepicker').datepicker({

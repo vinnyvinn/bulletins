@@ -14,6 +14,7 @@
                                 <tr>
                                     <th>Del. Note #</th>
                                     <th>Journey #</th>
+                                    <th>Vehicle #</th>
                                     <th>Loading GW</th>
                                     <th>Loading TW</th>
                                     <th>Loading NW</th>
@@ -33,6 +34,7 @@
                                         <router-link v-if="$root.can('view-journey')" :to="'/journey/' + delivery.journey_id">JRNY-{{ delivery.journey_id }}</router-link>
                                         <span v-else>JRNY-{{ delivery.journey_id }}</span>
                                     </td>
+                                    <td>{{ delivery.journey.truck.plate_number }}</td>
                                     <td class="text-right">{{ formatNumber(delivery.loading_gross_weight) }}</td>
                                     <td class="text-right">{{ formatNumber(delivery.loading_tare_weight) }}</td>
                                     <td class="text-right">{{ formatNumber(delivery.loading_net_weight) }}</td>
@@ -53,6 +55,7 @@
                                 <tr>
                                     <th>Del. Note #</th>
                                     <th>Journey #</th>
+                                    <th>Vehicle #</th>
                                     <th>Loading GW</th>
                                     <th>Loading TW</th>
                                     <th>Loading NW</th>

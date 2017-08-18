@@ -13,7 +13,7 @@
                         </button>
                         <!-- <button @click.prevent="closeJourney" class="btn btn-danger" v-if="(status == 'Pending Approval') || (status == 'Approved')">Close Journey</button> -->
                         <button @click.prevent="showModal = true" class="btn btn-danger"
-                                v-if="(status == 'Approved') && journey_close.mileage">Close Journey
+                                v-if="(status == 'Approved') && journey_close.mileage && journey_delivery_status != 'Loaded'">Close Journey
                         </button>
                         <!-- <button @click.prevent="reopenJourney" class="btn btn-primary" v-if="status == 'Closed'">Reopen Journey</button> -->
                     </div>
@@ -426,6 +426,7 @@
 
 
                 this.journey = response.journey.raw;
+                this.journey_delivery_status = response.journey.delivery.status;
 
                 let journey = response.journey;
                 journey.current_km = '';
@@ -516,7 +517,8 @@
                     fuel_reserve: 25,
                     fuel_price: 100,
                     mileage_balance: '',
-                }
+                },
+                journey_delivery_status: ''
             };
         },
 
