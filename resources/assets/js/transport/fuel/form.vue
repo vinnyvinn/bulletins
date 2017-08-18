@@ -23,7 +23,7 @@
                     </div>
                     <div class="col-sm-3">
                         <h5><strong>Vehicle Reg.No:</strong>{{ journey.truck.plate_number }}</h5>
-                        <h5><strong>Model:</strong> {{ journey.truck.model.make.name }} {{ journey.truck.model.name }}
+                        <h5><strong>Model:</strong> {{ journey.truck.model }} {{ journey.truck.make }}
                         </h5>
                         <div v-if="journey.truck.trailer">
                             <h5><strong>Trailer: </strong>{{ journey.truck.trailer.plate_number }}</h5>
@@ -176,6 +176,47 @@
 
 <script>
     export default {
+      data() {
+          return {
+              fuel_reserve: 25,
+              journey: {
+                  driver: {},
+                  truck: {
+                      trailer: {},
+                      model: { make: {} }
+                  },
+                  route: {},
+              },
+              fuelRoute: {},
+              journeys: [],
+              fuelRoutes: [],
+              km_covered: 0,
+              fuel_used: 0,
+              km_per_litre: 0,
+              fuel: {
+                  station_id: window.Laravel.station_id,
+                  journey_id: '',
+                  date: '',
+                  current_fuel: 0,
+                  fuel_requested: 0,
+                  fuel_issued: 0,
+                  fuel_total: 0,
+                  narration: '',
+                  previous_km: 0,
+                  previous_fuel: 0,
+                  current_km: 0,
+                  status: 'Awaiting Approval',
+                  tank: '',
+                  pump: '',
+                  top_up: false,
+                  top_up_reason: '',
+                  top_up_quantity: 0,
+              },
+              can_save: true,
+              below_reserve: false,
+              deficit: ''
+          };
+      },
         created() {
             if (!this.$route.params.id && !this.$route.params.unload && !this.$root.can('create-fuel')) {
                 this.$router.push('/403');
@@ -219,47 +260,7 @@
             });
         },
 
-        data() {
-            return {
-                fuel_reserve: 25,
-                journey: {
-                    driver: {},
-                    truck: {
-                        trailer: {},
-                        model: { make: {} }
-                    },
-                    route: {},
-                },
-                fuelRoute: {},
-                journeys: [],
-                fuelRoutes: [],
-                km_covered: 0,
-                fuel_used: 0,
-                km_per_litre: 0,
-                fuel: {
-                    station_id: window.Laravel.station_id,
-                    journey_id: '',
-                    date: '',
-                    current_fuel: 0,
-                    fuel_requested: 0,
-                    fuel_issued: 0,
-                    fuel_total: 0,
-                    narration: '',
-                    previous_km: 0,
-                    previous_fuel: 0,
-                    current_km: 0,
-                    status: 'Awaiting Approval',
-                    tank: '',
-                    pump: '',
-                    top_up: false,
-                    top_up_reason: '',
-                    top_up_quantity: 0,
-                },
-                can_save: true,
-                below_reserve: false,
-                deficit: ''
-            };
-        },
+
         computed: {
             minimumKm () {
                 return this.fuel.previous_km;

@@ -26,7 +26,7 @@ class FuelController extends Controller
         $fuel = Fuel::when(request('s'), function ($builder) {
             return $builder->where('station_id', request('s'));
         })
-            ->with(['journey', 'journey.driver', 'journey.route', 'journey.truck'])
+            ->with(['journey', 'journey.driver', 'journey.route', 'journey.truck','user'])
             ->get();
 
         return Response::json([
@@ -260,6 +260,6 @@ class FuelController extends Controller
     {
       $data = $request->all();
 
-      
+
     }
 }

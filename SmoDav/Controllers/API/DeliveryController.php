@@ -32,7 +32,9 @@ class DeliveryController extends Controller
         return Response::json([
             'deliveries' => Delivery::when(request('s'), function ($builder) {
                 return $builder->where('station_id', request('s'));
-            })->get()
+            })
+            ->with(['journey','journey.truck'])
+            ->get()
         ]);
     }
 
