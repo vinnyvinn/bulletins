@@ -387,7 +387,7 @@ class ContractController extends Controller
     {
       return Response::json([
         'contract' => Contract::where('id', $id)
-        ->with(['vehicles', 'client'])
+        ->with(['vehicles','vehicles.trailer','vehicles.driver', 'client'])
         ->first()
       ]);
     }

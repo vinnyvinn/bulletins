@@ -113,4 +113,5 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('unallocate', 'ContractController@unallocate');
 
     Route::get('lsdashboard','LSDashboardController@dashboard');
+    Route::resource('lsreport', 'LSReportController');
 });

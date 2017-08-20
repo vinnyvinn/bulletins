@@ -75,7 +75,6 @@ export default {
     },
 
     filterFields () {
-
       this.fields = Object.keys(this.fields);
       this.fields = this.fields.filter( function (field) {
         return !(field == 'id' | field == 'created_at' | field == 'updated_at' | field == 'contract_id') ;

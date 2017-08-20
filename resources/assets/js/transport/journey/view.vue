@@ -426,7 +426,10 @@
 
 
                 this.journey = response.journey.raw;
-                this.journey_delivery_status = response.journey.delivery.status;
+                if(response.journey.delivery) {
+                  this.journey_delivery_status = response.journey.delivery.status;
+                }
+
 
                 let journey = response.journey;
                 journey.current_km = '';

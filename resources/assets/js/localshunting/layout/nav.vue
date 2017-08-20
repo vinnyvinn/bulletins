@@ -45,6 +45,11 @@ $root.can('create-contract-template') || $root.can('view-contract-template') || 
                 <div class="caption">Mileage</div>
             </router-link>
 
+            <router-link to="/ls/reports" class="nav-items" v-if="$root.can('create-gatepass') || $root.can('view-gatepass') || $root.can('edit-gatepass') || $root.can('approve-gatepass') || $root.can('delete-gatepass')">
+              <img src="/images/report.png" alt="fuel" class="img-responsive">
+                <div class="caption">Reports</div>
+            </router-link>
+
 
 
             <!-- <router-link to="/route-card/create" class="nav-items" v-if="$root.can('create-route-card') || $root.can('view-route-card') || $root.can('edit-route-card') || $root.can('approve-route-card') || $root.can('delete-route-card')">

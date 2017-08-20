@@ -23,7 +23,7 @@
                     </div>
                     <div class="col-sm-3">
                         <h5><strong>Vehicle Reg.No:</strong>{{ journey.truck.plate_number }}</h5>
-                        <h5><strong>Model:</strong> {{ journey.truck.model }} {{ journey.truck.make }}
+                        <h5><strong>Model:</strong> {{ journey.truck.model.name }} {{ journey.truck.make.name }}
                         </h5>
                         <div v-if="journey.truck.trailer">
                             <h5><strong>Trailer: </strong>{{ journey.truck.trailer.plate_number }}</h5>
@@ -80,7 +80,7 @@
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label for="fuel_issued">Fuel Issued (Litres)</label>
-                            <input type="number" :max="fuel.fuel_requested" id="fuel_issued" class="form-control input-sm" v-model="fuel.fuel_issued" @keyup="calculateTotal">
+                            <input type="number" min=0 :max="fuel.fuel_requested" id="fuel_issued" class="form-control input-sm" v-model="fuel.fuel_issued" @keyup="calculateTotal">
                         </div>
                     </div>
 
