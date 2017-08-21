@@ -23,7 +23,7 @@
                     </div>
                     <div class="col-sm-3">
                         <h5><strong>Vehicle Reg.No:</strong>{{ journey.truck.plate_number }}</h5>
-                        <h5><strong>Model:</strong> {{ journey.truck.model.name }} 
+                        <h5><strong>Model:</strong> {{ journey.truck.make }} 
                         </h5>
                         <div v-if="journey.truck.trailer">
                             <h5><strong>Trailer: </strong>{{ journey.truck.trailer.plate_number }}</h5>
