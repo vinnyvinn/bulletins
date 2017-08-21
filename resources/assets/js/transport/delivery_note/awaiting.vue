@@ -4,7 +4,7 @@
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <strong>Truck Awaiting Delivery Notes</strong>
+                        <strong>Trucks Awaiting Delivery Notes</strong>
 
                         <router-link v-if="$root.can('view-delivery')" to="/delivery/loaded" class="pull-right">
                           <button type="button" name="button" class="btn btn-success btn-sm">DELIVERY NOTES</button>

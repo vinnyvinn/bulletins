@@ -144,9 +144,9 @@ module.exports = [
     { path: '/udfs/create', component: require('./components/udfs/form.vue'), beforeEnter: authMiddleware },
     { path: '/udfs/:id/edit', component: require('./components/udfs/form.vue'), beforeEnter: authMiddleware },
 
-    { path: '/reports', component: require('./transport/reports/index.vue'), beforeEnter: authMiddleware },
-    { path: '/reports/{details}', component: require('./transport/reports/view.vue'), beforeEnter: authMiddleware },
-
+    { path: '/lhreports', component: require('./transport/reports/index.vue'), beforeEnter: authMiddleware },
+    { path: '/lhreports/{details}', component: require('./transport/reports/view.vue'), beforeEnter: authMiddleware },
+        
     { path: '/403', component: require('./transport/403.vue'), beforeEnter: authMiddleware },
     { path: '/station-selection', component: require('./transport/station.vue'), beforeEnter: authMiddleware },
     { path: '/employees', component: require('./components/employees/index.vue'), beforeEnter: authMiddleware },

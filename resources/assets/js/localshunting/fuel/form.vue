@@ -26,7 +26,7 @@
                     <div class="col-sm-12">
                       <div class="form-group">
                         <label for="current_fuel">Balance in Tank (Litres)</label>
-                        <input type="number" name="current_fuel" class="form-control input-sm" v-model="fuel.current_fuel" @keyup="calculateTotalFuel">
+                        <input type="number" min=0 name="current_fuel" class="form-control input-sm" v-model="fuel.current_fuel" @keyup="calculateTotalFuel">
                       </div>
                     </div>
 
@@ -51,7 +51,7 @@
                     <div class="col-sm-12">
                       <div class="form-group">
                         <label for="fuel_issued">Fuel Approved (Litres)</label>
-                        <input type="number" name="fuel_issued" class="form-control input-sm" v-model="fuel.fuel_issued" @keyup="calculateTotalFuel">
+                        <input type="number" min=0 name="fuel_issued" class="form-control input-sm" v-model="fuel.fuel_issued" @keyup="calculateTotalFuel">
                       </div>
                     </div>
 

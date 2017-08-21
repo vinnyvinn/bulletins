@@ -21,7 +21,7 @@
                                 <tbody>
                                 <tr v-for="truck in contract.vehicles">
                                     <td>{{ truck.plate_number }}</td>
-                                    <td v-if="truck.trailer">{{ truck.trailer.trailer_number }}</td>
+                                    <td v-if="truck.trailer">{{ truck.trailer.plate_number }}</td>
                                     <td v-if="!truck.trailer"> -- </td>
                                     <td v-if="truck.driver">{{ truck.driver.first_name }}</td>
                                     <td v-if="!truck.driver">--</td>

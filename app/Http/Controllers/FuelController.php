@@ -52,7 +52,8 @@ class FuelController extends Controller
 
             return Response::json([
                 'journey' => $journey,
-                'fuelRoute' => $fuelRoute
+                'fuelRoute' => $fuelRoute,
+                'model_id' => $journey->truck->model_id
             ]);
         }
 
@@ -259,7 +260,6 @@ class FuelController extends Controller
     public function lsfuel (Request $request)
     {
       $data = $request->all();
-
 
     }
 }

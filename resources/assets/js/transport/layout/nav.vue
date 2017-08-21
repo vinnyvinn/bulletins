@@ -50,6 +50,8 @@ $root.can('create-contract-template') || $root.can('view-contract-template') || 
                 <div class="caption">Gate Pass</div>
             </router-link>
 
+            
+
             <!--<router-link to="/route-card/create" class="nav-items" v-if="$root.can('create-route-card') || $root.can('view-route-card') || $root.can('edit-route-card') || $root.can('approve-route-card') || $root.can('delete-route-card')">-->
                 <!--<img src="/images/card.png" alt="card" class="img-responsive">-->
                 <!--<div class="caption">Route Card</div>-->

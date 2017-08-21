@@ -32,7 +32,7 @@ require('datatables.net-buttons/js/buttons.flash.js');
 require('datatables.net-buttons/js/buttons.print.js');
 
 require('bootstrap-datepicker');
-require('moment');
+window.moment = require('moment');
 
 $.fn.select2.defaults.set("theme", "bootstrap");
 

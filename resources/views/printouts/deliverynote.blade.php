@@ -96,7 +96,7 @@
                     <strong>Driver's Sign: __________________________________</strong>
                 </h5>
                 <h5>
-                    <strong>Driver: </strong> {{ $trip->driver->first_name }}
+                    <strong>Driver: </strong> @if($trip->temporary_driver){{ $trip->temporary_driver }} @else {{ $trip->driver->first_name }} @endif
                 </h5>
                 <br>
                 <h5>
