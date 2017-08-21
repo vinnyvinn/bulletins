@@ -77302,7 +77302,7 @@ __webpack_require__(197);
 __webpack_require__(199);
 
 __webpack_require__(190);
-__webpack_require__(0);
+window.moment = __webpack_require__(0);
 
 $.fn.select2.defaults.set("theme", "bootstrap");
 

@@ -83,6 +83,7 @@ module.exports = [
     { path: '/allocation/:id/edit', component: require('../components/allocation/form.vue'), beforeEnter: authMiddleware },
 
     { path: '/ls/reports', component: require('./reports/dashboard.vue'), beforeEnter: authMiddleware },
+    { path: '/ls/loadingreports/:id', component: require('./reports/LoadingUnloading.vue'), beforeEnter: authMiddleware },
 
     { path: '/station-selection', component: require('./station.vue'), beforeEnter: authMiddleware },
 

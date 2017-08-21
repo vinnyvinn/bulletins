@@ -76972,7 +76972,7 @@ __webpack_require__(197);
 __webpack_require__(199);
 
 __webpack_require__(190);
-__webpack_require__(0);
+window.moment = __webpack_require__(0);
 
 $.fn.select2.defaults.set("theme", "bootstrap");
 
@@ -104440,12 +104440,49 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 /* harmony default export */ __webpack_exports__["default"] = {
   data: function data() {
     return {
       contracts: [],
-      contract_id: [],
+      contract_id: '',
       contract: {}
     };
   },
@@ -104469,6 +104506,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         _this2.contract = response.contract;
         _this2.$root.isLoading = false;
       });
+    },
+    humanDate: function humanDate(created_at) {
+      return moment(created_at).format('ll');
+    },
+    minsWaiting: function minsWaiting(created_at) {
+      return moment.duration(moment().diff(moment(created_at))).humanize();
+    },
+    myarraySum: function myarraySum(items, prop) {
+      return items.reduce(function (a, b) {
+        var b = parseInt(b[prop]);
+        return a + b;
+      }, 0);
+    },
+    viewProgress: function viewProgress() {
+      this.$router.push('/ls/loadingreports/' + this.contract_id);
     }
   }
 };
@@ -105215,7 +105267,7 @@ module.exports = [{ path: '/', redirect: '/login', beforeEnter: authMiddleware }
 // { path: '/route-card', component: require('./transport/routecard/index.vue'), beforeEnter: authMiddleware },
 // { path: '/route-card/create', component: require('../transport/routecard/form.vue'), beforeEnter: authMiddleware },
 
-{ path: '/ls/delivery', component: __webpack_require__(387), beforeEnter: authMiddleware }, { path: '/ls/delivery/create/:new', component: __webpack_require__(217), beforeEnter: authMiddleware }, { path: '/ls/delivery/:id', component: __webpack_require__(389), beforeEnter: authMiddleware }, { path: '/ls/delivery/:unload/unload', component: __webpack_require__(217), beforeEnter: authMiddleware }, { path: '/ls/delivery/:id/edit', component: __webpack_require__(217), beforeEnter: authMiddleware }, { path: '/allocation', component: __webpack_require__(201), beforeEnter: authMiddleware }, { path: '/allocation/create', component: __webpack_require__(154), beforeEnter: authMiddleware }, { path: '/allocation/:id/edit', component: __webpack_require__(154), beforeEnter: authMiddleware }, { path: '/ls/reports', component: __webpack_require__(398), beforeEnter: authMiddleware }, { path: '/station-selection', component: __webpack_require__(399), beforeEnter: authMiddleware }, { path: '/ls/offloading', component: __webpack_require__(388), beforeEnter: authMiddleware }, { path: '/403', component: __webpack_require__(218), beforeEnter: authMiddleware }, { path: '/login',
+{ path: '/ls/delivery', component: __webpack_require__(387), beforeEnter: authMiddleware }, { path: '/ls/delivery/create/:new', component: __webpack_require__(217), beforeEnter: authMiddleware }, { path: '/ls/delivery/:id', component: __webpack_require__(389), beforeEnter: authMiddleware }, { path: '/ls/delivery/:unload/unload', component: __webpack_require__(217), beforeEnter: authMiddleware }, { path: '/ls/delivery/:id/edit', component: __webpack_require__(217), beforeEnter: authMiddleware }, { path: '/allocation', component: __webpack_require__(201), beforeEnter: authMiddleware }, { path: '/allocation/create', component: __webpack_require__(154), beforeEnter: authMiddleware }, { path: '/allocation/:id/edit', component: __webpack_require__(154), beforeEnter: authMiddleware }, { path: '/ls/reports', component: __webpack_require__(398), beforeEnter: authMiddleware }, { path: '/ls/loadingreports/:id', component: __webpack_require__(553), beforeEnter: authMiddleware }, { path: '/station-selection', component: __webpack_require__(399), beforeEnter: authMiddleware }, { path: '/ls/offloading', component: __webpack_require__(388), beforeEnter: authMiddleware }, { path: '/403', component: __webpack_require__(218), beforeEnter: authMiddleware }, { path: '/login',
     component: __webpack_require__(202),
     beforeEnter: function beforeEnter(to, from, next) {
         if (localStorage.getItem('foeiwafwfuwe')) {
@@ -105357,7 +105409,7 @@ exports.push([module.i, "\n.payment-box[data-v-074b448a] {\n  background-color: 
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 358 */,
@@ -106231,7 +106283,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "panel panel-default"
   }, [_c('div', {
     staticClass: "panel-heading"
-  }, [_vm._v("\n          Reports: Client:\n        ")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n          Reports: \n        ")]), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
   }, [_c('div', {
     staticClass: "row"
@@ -106266,45 +106318,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.contract_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
       }, _vm.fetchContract]
     }
-  }, _vm._l((_vm.contracts), function(contract) {
+  }, [_c('option', {
+    attrs: {
+      "selected": ""
+    }
+  }, [_vm._v("Select Contract")]), _vm._v(" "), _vm._l((_vm.contracts), function(contract) {
     return _c('option', {
       domProps: {
         "value": contract.id
       }
     }, [_vm._v("CNTR" + _vm._s(contract.id) + " - (" + _vm._s(contract.name) + ") - " + _vm._s(contract.client.Name))])
-  }))])]), _vm._v(" "), _vm._m(0), _vm._v(" "), _vm._m(1)]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-sm-6"
-  }, [_c('div', {
-    staticClass: "panel panel-default"
-  }, [_c('div', {
-    staticClass: "panel-heading"
-  }, [_vm._v("\n                  Pending Offloading:\n                ")]), _vm._v(" "), _c('div', {
-    staticClass: "panel-body"
-  }, [_c('div', {
-    staticClass: "table-responsive"
-  }, [_c('table', {
-    staticClass: "table"
-  }, [_vm._m(2), _vm._v(" "), _c('tbody', _vm._l((_vm.contract.lsdeliveries), function(delivery, index) {
-    return _c('tr', [_c('td', [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c('td', [_vm._v("RKS-" + _vm._s(delivery.id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(delivery.vehicle.plate_number))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(delivery.vehicle.driver.first_name))])])
-  }))])])])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-6"
-  }, [_c('div', {
-    staticClass: "panel panel-default"
-  }, [_c('div', {
-    staticClass: "panel-heading"
-  }, [_vm._v("\n                  Fuel Issue: Total Issued:\n                ")]), _vm._v(" "), _c('div', {
-    staticClass: "panel-body"
-  }, [_c('div', {
-    staticClass: "table-responsive"
-  }, [_c('table', {
-    staticClass: "table"
-  }, [_vm._m(3), _vm._v(" "), _c('tbody', _vm._l((_vm.contract.lsfuels), function(fuel, index) {
-    return _c('tr', [_c('td', [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.vehicle.plate_number))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.vehicle.driver.first_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.fuel_issued))]), _vm._v(" "), _c('td', [_vm._v("Deliveries")])])
-  }))])])])])])])])])])])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
+  })], 2)])]), _vm._v(" "), (_vm.contract_id) ? _c('div', {
     staticClass: "col-sm-4"
   }, [_c('div', {
     staticClass: "form-group"
@@ -106318,12 +106342,63 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "type": "button",
       "name": "button",
       "id": "progress"
+    },
+    on: {
+      "click": function($event) {
+        _vm.viewProgress()
+      }
     }
-  }, [_vm._v("View Progress")])])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
+  }, [_vm._v("View Progress")])])]) : _vm._e(), _vm._v(" "), (_vm.contract_id) ? _c('div', {
     staticClass: "col-sm-4"
+  }, [_vm._m(0)]) : _vm._e()]), _vm._v(" "), (_vm.contract_id) ? _c('div', {
+    staticClass: "row"
   }, [_c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_vm._v("\n                  Pending Offloading:\n                ")]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('div', {
+    staticClass: "table-responsive"
+  }, [_c('table', {
+    staticClass: "table"
+  }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.contract.lsdeliveries), function(delivery, index) {
+    return (delivery.status == 'Loaded') ? _c('tr', [_c('td', [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c('td', [_vm._v("RKS-" + _vm._s(delivery.id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(delivery.vehicle.plate_number))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(delivery.vehicle.driver.first_name))])]) : _vm._e()
+  }))])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_vm._v("\n                  Fuel Issued\n                  "), (_vm.contract.lsfuels) ? _c('b', {
+    staticClass: "pull-right"
+  }, [_vm._v("\n                    Total Issued: " + _vm._s(_vm.myarraySum(this.contract.lsfuels, 'fuel_issued')) + " Ltrs")]) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('div', {
+    staticClass: "table-responsive"
+  }, [_c('table', {
+    staticClass: "table"
+  }, [_vm._m(2), _vm._v(" "), _c('tbody', _vm._l((_vm.contract.lsfuels), function(fuel, index) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.vehicle.plate_number))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.vehicle.driver.first_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.fuel_issued))]), _vm._v(" "), _c('td', [_vm._v("Deliveries")])])
+  }))])])])])])]) : _vm._e(), _vm._v(" "), (_vm.contract_id) ? _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_vm._v("\n                    Trucks Awaiting Loading\n                ")]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('table', {
+    staticClass: "table no-wrap"
+  }, [_vm._m(3), _vm._v(" "), _c('tbody', _vm._l((_vm.contract.lsgatepasses), function(gatepass, index) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(gatepass.vehicle.plate_number))]), _vm._v(" "), _c('td', [_vm._v("GP - " + _vm._s(gatepass.id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.humanDate(gatepass.created_at)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.minsWaiting(gatepass.created_at)))]), _vm._v(" "), (gatepass.vehicle.driver) ? _c('td', [_vm._v(_vm._s(gatepass.vehicle.driver.first_name) + " " + _vm._s(gatepass.vehicle.driver.last_name))]) : _vm._e(), _vm._v(" "), (!gatepass.vehicle.driver) ? _c('td', [_vm._v(" -- ")]) : _vm._e()])
+  }))])])])])]) : _vm._e()])])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
@@ -106336,11 +106411,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "button",
       "id": "summary"
     }
-  }, [_vm._v("View Summary")])])])
+  }, [_vm._v("View Summary")])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('thead', [_c('tr', [_c('th', [_vm._v("#")]), _vm._v(" "), _c('th', [_vm._v("DNote No")]), _vm._v(" "), _c('th', [_vm._v("Vehicle")]), _vm._v(" "), _c('th', [_vm._v("Driver")])])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('thead', [_c('tr', [_c('th', [_vm._v("#")]), _vm._v(" "), _c('th', [_vm._v("Vehicle")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th', [_vm._v("Fuel Amt")]), _vm._v(" "), _c('th', [_vm._v("Deliveries ")])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('thead', [_c('tr', [_c('th', [_vm._v("#")]), _vm._v(" "), _c('th', [_vm._v("Plate #")]), _vm._v(" "), _c('th', [_vm._v("Gate Pass #")]), _vm._v(" "), _c('th', [_vm._v("Time In")]), _vm._v(" "), _c('th', [_vm._v("Mins")]), _vm._v(" "), _c('th', [_vm._v("Driver")])])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
@@ -109746,6 +109823,227 @@ if(false) {
 
 module.exports = __webpack_require__(267);
 
+
+/***/ }),
+/* 538 */,
+/* 539 */,
+/* 540 */,
+/* 541 */,
+/* 542 */,
+/* 543 */,
+/* 544 */,
+/* 545 */,
+/* 546 */,
+/* 547 */,
+/* 548 */,
+/* 549 */,
+/* 550 */,
+/* 551 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = {
+  data: function data() {
+    return {
+      lsdeliveries: [],
+      contract: {
+        client: {
+          Name: ''
+        }
+      }
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    this.$root.isLoading = true;
+    http.get('/api/lsloadingunloading/' + this.$route.params.id).then(function (response) {
+      _this.lsdeliveries = response.lsdeliveries;
+      _this.contract = response.contract;
+      prepareTable();
+      _this.$root.isLoading = false;
+    });
+  },
+
+
+  methods: {
+    reRender: function reRender() {}
+  }
+
+};
+
+/***/ }),
+/* 552 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(4)();
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+/***/ }),
+/* 553 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(555)
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(551),
+  /* template */
+  __webpack_require__(554),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/sam/gaitara/rk/resources/assets/js/localshunting/reports/LoadingUnloading.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] LoadingUnloading.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-6d1a998a", Component.options)
+  } else {
+    hotAPI.reload("data-v-6d1a998a", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 554 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "container"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-sm-12"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_vm._v("\n          Loadings and offloadings - Local Shunting\n        ")]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-sm-12"
+  }, [_c('div', {
+    staticClass: "col-sm-3"
+  }, [_vm._v("\n                Contract No. CTR - " + _vm._s(this.$route.params.id) + "\n              ")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-4"
+  }, [_vm._v("\n                Client Name: " + _vm._s(_vm.contract.client.Name) + "\n              ")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-"
+  }, [_vm._v("\n                Contract Status: " + _vm._s(_vm.contract.status) + "\n              ")])])]), _vm._v(" "), _c('div', {
+    staticClass: "table responsive"
+  }, [_c('table', {
+    staticClass: "table table-nowrap"
+  }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.lsdeliveries), function(delivery, index) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(delivery.vehicle.plate_number))]), _vm._v(" "), _c('td', [_vm._v("RKS - " + _vm._s(delivery.id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(delivery.loading_net_weight))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(delivery.offloading_net_weight))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(delivery.vehicle.driver.first_name) + " " + _vm._s(delivery.vehicle.driver.last_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(delivery.loading_weighbridge_number))])])
+  }))])])])])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('thead', [_c('tr', [_c('th', [_vm._v("SNo")]), _vm._v(" "), _c('th', [_vm._v("Truck")]), _vm._v(" "), _c('th', [_vm._v("DNote")]), _vm._v(" "), _c('th', [_vm._v("Load QTY")]), _vm._v(" "), _c('th', [_vm._v("Offload QTY")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th', [_vm._v("WB Loading")])])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-6d1a998a", module.exports)
+  }
+}
+
+/***/ }),
+/* 555 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(552);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(5)("3e271a50", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-6d1a998a!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./LoadingUnloading.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-6d1a998a!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./LoadingUnloading.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
 
 /***/ })
 /******/ ]);

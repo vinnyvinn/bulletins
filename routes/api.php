@@ -114,4 +114,5 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::get('lsdashboard','LSDashboardController@dashboard');
     Route::resource('lsreport', 'LSReportController');
+    Route::get('lsloadingunloading/{id}', 'LSReportController@loadingUnloading');
 });
