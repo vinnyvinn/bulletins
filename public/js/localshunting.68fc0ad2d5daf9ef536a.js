@@ -104393,6 +104393,52 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
   data: function data() {
@@ -104401,7 +104447,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       contract: {
         client: {
           Name: ''
-        }
+        },
+        route: {}
       }
     };
   },
@@ -104419,7 +104466,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
   methods: {
-    reRender: function reRender() {}
+    humanDate: function humanDate(date) {
+      return moment(date).format('ll');
+    }
   }
 
 };
@@ -104430,6 +104479,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
 //
 //
 //
@@ -105501,7 +105551,7 @@ exports.push([module.i, "\n.payment-box[data-v-074b448a] {\n  background-color: 
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 359 */,
@@ -105538,7 +105588,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 372 */,
@@ -106518,7 +106568,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('table', {
     staticClass: "table"
   }, [_vm._m(2), _vm._v(" "), _c('tbody', _vm._l((_vm.contract.lsfuels), function(fuel, index) {
-    return _c('tr', [_c('td', [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.vehicle.plate_number))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.vehicle.driver.first_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.fuel_issued))]), _vm._v(" "), _c('td', [_vm._v("Deliveries")])])
+    return _c('tr', [_c('td', [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.vehicle.plate_number))]), _vm._v(" "), (fuel.vehicle.driver) ? _c('td', [_vm._v(_vm._s(fuel.vehicle.driver.first_name))]) : _vm._e(), _vm._v(" "), (!fuel.vehicle.driver) ? _c('td', [_vm._v("---")]) : _vm._e(), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.fuel_issued))]), _vm._v(" "), _c('td', [_vm._v("Deliveries")])])
   }))])])])])])]) : _vm._e(), _vm._v(" "), (_vm.contract_id) ? _c('div', {
     staticClass: "row"
   }, [_c('div', {
@@ -108250,22 +108300,52 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "row"
   }, [_c('div', {
-    staticClass: "col-sm-12"
-  }, [_c('div', {
     staticClass: "col-sm-3"
   }, [_vm._v("\n                Contract No. CTR - " + _vm._s(this.$route.params.id) + "\n              ")]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-4"
+    staticClass: "col-sm-3"
   }, [_vm._v("\n                Client Name: " + _vm._s(_vm.contract.client.Name) + "\n              ")]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-"
-  }, [_vm._v("\n                Contract Status: " + _vm._s(_vm.contract.status) + "\n              ")])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_vm._v("\n                Contract Status: " + _vm._s(_vm.contract.status) + "\n              ")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_vm._v("\n                Trucks: " + _vm._s(_vm.contract.trucks_allocated) + "\n              ")])]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-sm-3"
+  }, [_vm._v("\n                Route No: " + _vm._s(_vm.contract.route_id) + "\n              ")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_vm._v("\n                From: " + _vm._s(_vm.contract.route.source) + "\n              ")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_vm._v("\n                To: " + _vm._s(_vm.contract.route.destination) + "\n              ")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_vm._v("\n                Shifts: " + _vm._s(_vm.contract.shifts) + "\n              ")])]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-sm-3"
+  }, [_vm._v("\n                Contract Allocated: " + _vm._s(_vm.contract.quantity) + "\n              ")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_vm._v("\n                Total Offloaded: offloaded\n              ")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_vm._v("\n                Pending Offloading:\n              ")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_vm._v("\n                % Completion:\n              ")])]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-sm-3"
+  }, [_vm._v("\n                Start Date: " + _vm._s(_vm.contract.start_date) + "\n              ")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_vm._v("\n                Days: " + _vm._s() + "\n              ")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_vm._v("\n                Offloaded:\n              ")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-3"
+  }, [_vm._v("\n                Loaded:\n              ")])]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
     staticClass: "table responsive"
   }, [_c('table', {
     staticClass: "table table-nowrap"
   }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.lsdeliveries), function(delivery, index) {
-    return _c('tr', [_c('td', [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(delivery.vehicle.plate_number))]), _vm._v(" "), _c('td', [_vm._v("RKS - " + _vm._s(delivery.id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(delivery.loading_net_weight))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(delivery.offloading_net_weight))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(delivery.vehicle.driver.first_name) + " " + _vm._s(delivery.vehicle.driver.last_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(delivery.loading_weighbridge_number))])])
+    return _c('tr', [_c('td', [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(delivery.vehicle.plate_number))]), _vm._v(" "), _c('td', [_vm._v("RKS - " + _vm._s(delivery.id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(delivery.loading_net_weight))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(delivery.offloading_net_weight))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(delivery.vehicle.driver.first_name) + " " + _vm._s(delivery.vehicle.driver.last_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(delivery.loading_weighbridge_number))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.humanDate(delivery.created_at)))])])
   }))])])])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('thead', [_c('tr', [_c('th', [_vm._v("SNo")]), _vm._v(" "), _c('th', [_vm._v("Truck")]), _vm._v(" "), _c('th', [_vm._v("DNote")]), _vm._v(" "), _c('th', [_vm._v("Load QTY")]), _vm._v(" "), _c('th', [_vm._v("Offload QTY")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th', [_vm._v("WB Loading")])])])
+  return _c('thead', [_c('tr', [_c('th', [_vm._v("SNo")]), _vm._v(" "), _c('th', [_vm._v("Truck")]), _vm._v(" "), _c('th', [_vm._v("DNote")]), _vm._v(" "), _c('th', [_vm._v("Load QTY")]), _vm._v(" "), _c('th', [_vm._v("Offload QTY")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th', [_vm._v("WB Loading")]), _vm._v(" "), _c('th', [_vm._v("Date")])])])
 }]}
 module.exports.render._withStripped = true
 if (false) {

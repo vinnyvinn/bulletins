@@ -44,7 +44,9 @@ class LSReportController extends Controller
         'lsdeliveries' => LSDelivery::where('contract_id', $id)
               ->with('vehicle','vehicle.driver')
               ->get(),
-        'contract' => Contract::where('id', $id)->with('client')->first()
+        'contract' => Contract::where('id', $id)
+              ->with('client','route')
+              ->first()
       ]);
     }
 

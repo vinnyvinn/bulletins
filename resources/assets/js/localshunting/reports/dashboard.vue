@@ -84,7 +84,8 @@
                           <tr v-for="(fuel, index) in contract.lsfuels">
                             <td>{{ index + 1 }}</td>
                             <td>{{ fuel.vehicle.plate_number }}</td>
-                            <td>{{ fuel.vehicle.driver.first_name }}</td>
+                            <td v-if="fuel.vehicle.driver">{{ fuel.vehicle.driver.first_name }}</td>
+                            <td v-if="!fuel.vehicle.driver">---</td>
                             <td>{{ fuel.fuel_issued }}</td>
                             <td>Deliveries</td>
                           </tr>
