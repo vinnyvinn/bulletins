@@ -10,9 +10,8 @@
             <div class="row">
               <div class="col-sm-4">
                 <div class="form-group">
-                    <label for="contract_id">Contract</label>
+                    <label for="contract_id">Select Contract</label>
                     <select @change="fetchContract" v-model="contract_id" class="form-control input-sm" id="contract_id" required>
-                        <option selected>Select Contract</option>
                         <option v-for="contract in contracts" :value="contract.id">CNTR{{ contract.id }} - ({{ contract.name }}) - {{ contract.client.Name }}</option>
                     </select>
                 </div>
@@ -70,24 +69,23 @@
                   </div>
                   <div class="panel-body">
                     <div class="table-responsive">
-                      <table class="table">
+                      <table class="table table-striped">
                         <thead>
                           <tr>
                             <th>#</th>
                             <th>Vehicle</th>
-                            <th>Driver</th>
+                            <th>Refuels</th>
                             <th>Fuel Amt</th>
-                            <th>Deliveries </th>
+                            <th>Deliveries</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr v-for="(fuel, index) in contract.lsfuels">
+                          <tr v-for="(fuel, index) in fuelsgrouped">
                             <td>{{ index + 1 }}</td>
-                            <td>{{ fuel.vehicle.plate_number }}</td>
-                            <td v-if="fuel.vehicle.driver">{{ fuel.vehicle.driver.first_name }}</td>
-                            <td v-if="!fuel.vehicle.driver">---</td>
-                            <td>{{ fuel.fuel_issued }}</td>
-                            <td>Deliveries</td>
+                            <td>{{ fuel.vehicle }}</td>
+                            <td>{{ fuel.fuel_issued.length }}</td>
+                            <td>{{ myarraySum(fuel.fuel_issued, 'fuel') }}</td>
+                            <td>{{ countInstances(fuel.vehicle) }}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -117,7 +115,7 @@
                       <tbody>
                         <tr v-for="(gatepass, index) in contract.lsgatepasses">
                           <td>{{ index + 1 }}</td>
-                          <td>{{ gatepass.vehicle.plate_number }}</td>
+                          <td @click="openVehicle()">{{ gatepass.vehicle.plate_number }}</td>
                           <td>GP - {{ gatepass.id}}</td>
                           <td>{{ humanDate(gatepass.created_at) }}</td>
                           <td>{{ minsWaiting(gatepass.created_at) }}</td>
@@ -144,7 +142,8 @@ export default {
       return {
         contracts: [],
         contract_id: '',
-        contract: {}
+        contract: {},
+        fuelsgrouped: [],
       }
     },
 
@@ -152,6 +151,7 @@ export default {
       this.$root.isLoading = true;
       http.get('/api/lsreport').then( (response) => {
         this.contracts = response.contracts;
+
         this.$root.isLoading = false;
       })
     },
@@ -161,6 +161,7 @@ export default {
         this.$root.isLoading = true;
         http.get('/api/lsreport/' + this.contract_id).then( (response) => {
           this.contract = response.contract;
+          this.groupArrayObjects(this.contract.lsfuels);
           this.$root.isLoading = false;
         });
       },
@@ -180,6 +181,37 @@ export default {
         }, 0);
       },
 
+      groupArrayObjects (myArray) {
+        var groups = {};
+        for (var i = 0; i < myArray.length; i++) {
+          var groupName = myArray[i].vehicle.plate_number;
+          if(!groups[groupName]) {
+            groups[groupName] = [];
+          }
+          groups[groupName].push({'fuel': myArray[i].fuel_issued});
+        }
+        myArray = [];
+        for (var groupName in groups) {
+          myArray.push({vehicle: groupName, fuel_issued: groups[groupName]});
+        }
+        this.fuelsgrouped = myArray;
+      },
+
+      countInstances(value) {
+        var count = 0;
+        var deliveries = this.contract.lsdeliveries
+        for(var i = 0; i < deliveries.length; i++) {
+          if(deliveries[i].vehicle.plate_number == value) {
+            count = count + 1;
+          }
+        }
+        return count;
+      },
+
+      openVehicle() {
+        alert('Hi');
+      },
+
       viewProgress() {
         this.$router.push('/ls/loadingreports/' + this.contract_id);
       }
@@ -189,5 +221,10 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
+
+table{
+  height: 150px !important;
+}
+
 </style>

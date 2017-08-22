@@ -104438,7 +104438,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = {
   data: function data() {
@@ -104468,6 +104467,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   methods: {
     humanDate: function humanDate(date) {
       return moment(date).format('ll');
+    },
+    daysSince: function daysSince(startdate) {
+      return moment().diff(moment(startdate), 'days');
+    },
+    myarraySum: function myarraySum(items, prop) {
+      return items.reduce(function (a, b) {
+        var b = parseInt(b[prop]);
+        return a + b;
+      }, 0);
     }
   }
 
@@ -104616,8 +104624,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = {
@@ -104625,7 +104631,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     return {
       contracts: [],
       contract_id: '',
-      contract: {}
+      contract: {},
+      fuelsgrouped: []
     };
   },
   created: function created() {
@@ -104634,6 +104641,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     this.$root.isLoading = true;
     http.get('/api/lsreport').then(function (response) {
       _this.contracts = response.contracts;
+
       _this.$root.isLoading = false;
     });
   },
@@ -104646,6 +104654,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.$root.isLoading = true;
       http.get('/api/lsreport/' + this.contract_id).then(function (response) {
         _this2.contract = response.contract;
+        _this2.groupArrayObjects(_this2.contract.lsfuels);
         _this2.$root.isLoading = false;
       });
     },
@@ -104660,6 +104669,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         var b = parseInt(b[prop]);
         return a + b;
       }, 0);
+    },
+    groupArrayObjects: function groupArrayObjects(myArray) {
+      var groups = {};
+      for (var i = 0; i < myArray.length; i++) {
+        var groupName = myArray[i].vehicle.plate_number;
+        if (!groups[groupName]) {
+          groups[groupName] = [];
+        }
+        groups[groupName].push({ 'fuel': myArray[i].fuel_issued });
+      }
+      myArray = [];
+      for (var groupName in groups) {
+        myArray.push({ vehicle: groupName, fuel_issued: groups[groupName] });
+      }
+      this.fuelsgrouped = myArray;
+    },
+    countInstances: function countInstances(value) {
+      var count = 0;
+      var deliveries = this.contract.lsdeliveries;
+      for (var i = 0; i < deliveries.length; i++) {
+        if (deliveries[i].vehicle.plate_number == value) {
+          count = count + 1;
+        }
+      }
+      return count;
+    },
+    openVehicle: function openVehicle() {
+      alert('Hi');
     },
     viewProgress: function viewProgress() {
       this.$router.push('/ls/loadingreports/' + this.contract_id);
@@ -105551,7 +105588,7 @@ exports.push([module.i, "\n.payment-box[data-v-074b448a] {\n  background-color: 
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\ntable[data-v-191c1150]{\n  height: 150px !important;\n}\n\n", ""]);
 
 /***/ }),
 /* 359 */,
@@ -105588,7 +105625,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 372 */,
@@ -106088,7 +106125,7 @@ var Component = __webpack_require__(1)(
   /* template */
   __webpack_require__(446),
   /* scopeId */
-  null,
+  "data-v-191c1150",
   /* cssModules */
   null
 )
@@ -106482,7 +106519,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "for": "contract_id"
     }
-  }, [_vm._v("Contract")]), _vm._v(" "), _c('select', {
+  }, [_vm._v("Select Contract")]), _vm._v(" "), _c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -106505,17 +106542,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.contract_id = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
       }, _vm.fetchContract]
     }
-  }, [_c('option', {
-    attrs: {
-      "selected": ""
-    }
-  }, [_vm._v("Select Contract")]), _vm._v(" "), _vm._l((_vm.contracts), function(contract) {
+  }, _vm._l((_vm.contracts), function(contract) {
     return _c('option', {
       domProps: {
         "value": contract.id
       }
     }, [_vm._v("CNTR" + _vm._s(contract.id) + " - (" + _vm._s(contract.name) + ") - " + _vm._s(contract.client.Name))])
-  })], 2)])]), _vm._v(" "), (_vm.contract_id) ? _c('div', {
+  }))])]), _vm._v(" "), (_vm.contract_id) ? _c('div', {
     staticClass: "col-sm-4"
   }, [_c('div', {
     staticClass: "form-group"
@@ -106566,9 +106599,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "table-responsive"
   }, [_c('table', {
-    staticClass: "table"
-  }, [_vm._m(2), _vm._v(" "), _c('tbody', _vm._l((_vm.contract.lsfuels), function(fuel, index) {
-    return _c('tr', [_c('td', [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.vehicle.plate_number))]), _vm._v(" "), (fuel.vehicle.driver) ? _c('td', [_vm._v(_vm._s(fuel.vehicle.driver.first_name))]) : _vm._e(), _vm._v(" "), (!fuel.vehicle.driver) ? _c('td', [_vm._v("---")]) : _vm._e(), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.fuel_issued))]), _vm._v(" "), _c('td', [_vm._v("Deliveries")])])
+    staticClass: "table table-striped"
+  }, [_vm._m(2), _vm._v(" "), _c('tbody', _vm._l((_vm.fuelsgrouped), function(fuel, index) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.vehicle))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(fuel.fuel_issued.length))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.myarraySum(fuel.fuel_issued, 'fuel')))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.countInstances(fuel.vehicle)))])])
   }))])])])])])]) : _vm._e(), _vm._v(" "), (_vm.contract_id) ? _c('div', {
     staticClass: "row"
   }, [_c('div', {
@@ -106582,7 +106615,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('table', {
     staticClass: "table no-wrap"
   }, [_vm._m(3), _vm._v(" "), _c('tbody', _vm._l((_vm.contract.lsgatepasses), function(gatepass, index) {
-    return _c('tr', [_c('td', [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(gatepass.vehicle.plate_number))]), _vm._v(" "), _c('td', [_vm._v("GP - " + _vm._s(gatepass.id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.humanDate(gatepass.created_at)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.minsWaiting(gatepass.created_at)))]), _vm._v(" "), (gatepass.vehicle.driver) ? _c('td', [_vm._v(_vm._s(gatepass.vehicle.driver.first_name) + " " + _vm._s(gatepass.vehicle.driver.last_name))]) : _vm._e(), _vm._v(" "), (!gatepass.vehicle.driver) ? _c('td', [_vm._v(" -- ")]) : _vm._e()])
+    return _c('tr', [_c('td', [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c('td', {
+      on: {
+        "click": function($event) {
+          _vm.openVehicle()
+        }
+      }
+    }, [_vm._v(_vm._s(gatepass.vehicle.plate_number))]), _vm._v(" "), _c('td', [_vm._v("GP - " + _vm._s(gatepass.id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.humanDate(gatepass.created_at)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.minsWaiting(gatepass.created_at)))]), _vm._v(" "), (gatepass.vehicle.driver) ? _c('td', [_vm._v(_vm._s(gatepass.vehicle.driver.first_name) + " " + _vm._s(gatepass.vehicle.driver.last_name))]) : _vm._e(), _vm._v(" "), (!gatepass.vehicle.driver) ? _c('td', [_vm._v(" -- ")]) : _vm._e()])
   }))])])])])]) : _vm._e()])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
@@ -106602,7 +106641,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('thead', [_c('tr', [_c('th', [_vm._v("#")]), _vm._v(" "), _c('th', [_vm._v("DNote No")]), _vm._v(" "), _c('th', [_vm._v("Vehicle")]), _vm._v(" "), _c('th', [_vm._v("Driver")])])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('thead', [_c('tr', [_c('th', [_vm._v("#")]), _vm._v(" "), _c('th', [_vm._v("Vehicle")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th', [_vm._v("Fuel Amt")]), _vm._v(" "), _c('th', [_vm._v("Deliveries ")])])])
+  return _c('thead', [_c('tr', [_c('th', [_vm._v("#")]), _vm._v(" "), _c('th', [_vm._v("Vehicle")]), _vm._v(" "), _c('th', [_vm._v("Refuels")]), _vm._v(" "), _c('th', [_vm._v("Fuel Amt")]), _vm._v(" "), _c('th', [_vm._v("Deliveries")])])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('thead', [_c('tr', [_c('th', [_vm._v("#")]), _vm._v(" "), _c('th', [_vm._v("Plate #")]), _vm._v(" "), _c('th', [_vm._v("Gate Pass #")]), _vm._v(" "), _c('th', [_vm._v("Time In")]), _vm._v(" "), _c('th', [_vm._v("Mins")]), _vm._v(" "), _c('th', [_vm._v("Driver")])])])
 }]}
@@ -108301,43 +108340,73 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-3"
-  }, [_vm._v("\n                Contract No. CTR - " + _vm._s(this.$route.params.id) + "\n              ")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n                Contract No: "), _c('b', {
+    staticClass: "pull-right"
+  }, [_vm._v("CTR - " + _vm._s(this.$route.params.id))])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-3"
-  }, [_vm._v("\n                Client Name: " + _vm._s(_vm.contract.client.Name) + "\n              ")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n                Client Name: "), _c('b', {
+    staticClass: "pull-right"
+  }, [_vm._v(_vm._s(_vm.contract.client.Name))])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-3"
-  }, [_vm._v("\n                Contract Status: " + _vm._s(_vm.contract.status) + "\n              ")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n                Contract Status:\n                "), _c('b', {
+    staticClass: "pull-right"
+  }, [(_vm.contract.status == 'Pending Approval') ? _c('span', {
+    staticClass: "label label-info"
+  }, [_vm._v(_vm._s(_vm.contract.status))]) : _vm._e(), _vm._v(" "), (_vm.contract.status == 'Approved') ? _c('span', {
+    staticClass: "label label-success"
+  }, [_vm._v(_vm._s(_vm.contract.status))]) : _vm._e(), _vm._v(" "), (_vm.contract.status == 'Closed') ? _c('span', {
+    staticClass: "label label-default"
+  }, [_vm._v(_vm._s(_vm.contract.status))]) : _vm._e()])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-3"
-  }, [_vm._v("\n                Trucks: " + _vm._s(_vm.contract.trucks_allocated) + "\n              ")])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n                Trucks: "), _c('b', {
+    staticClass: "pull-right"
+  }, [_vm._v(_vm._s(_vm.contract.trucks_allocated))])])]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-3"
-  }, [_vm._v("\n                Route No: " + _vm._s(_vm.contract.route_id) + "\n              ")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n                Route No: "), _c('b', {
+    staticClass: "pull-right"
+  }, [_vm._v(_vm._s(_vm.contract.route_id))])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-3"
-  }, [_vm._v("\n                From: " + _vm._s(_vm.contract.route.source) + "\n              ")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n                From: "), _c('b', {
+    staticClass: "pull-right"
+  }, [_vm._v(_vm._s(_vm.contract.route.source))])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-3"
-  }, [_vm._v("\n                To: " + _vm._s(_vm.contract.route.destination) + "\n              ")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n                To: "), _c('b', {
+    staticClass: "pull-right"
+  }, [_vm._v(_vm._s(_vm.contract.route.destination))])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-3"
-  }, [_vm._v("\n                Shifts: " + _vm._s(_vm.contract.shifts) + "\n              ")])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n                Shifts: "), _c('b', {
+    staticClass: "pull-right"
+  }, [_vm._v(_vm._s(_vm.contract.no_of_shifts))])])]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-3"
-  }, [_vm._v("\n                Contract Allocated: " + _vm._s(_vm.contract.quantity) + "\n              ")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n                Contract Allocated: "), _c('b', {
+    staticClass: "pull-right"
+  }, [_vm._v(_vm._s(_vm.contract.quantity))])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-3"
-  }, [_vm._v("\n                Total Offloaded: offloaded\n              ")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n                Total Offloaded: "), _c('b', {
+    staticClass: "pull-right"
+  }, [_vm._v(_vm._s(_vm.myarraySum(_vm.lsdeliveries, 'offloading_net_weight')))])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-3"
-  }, [_vm._v("\n                Pending Offloading:\n              ")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n                Pending Offloading: "), _c('b', {
+    staticClass: "pull-right"
+  }, [_vm._v(_vm._s(_vm.myarraySum(_vm.lsdeliveries, 'loading_net_weight') - _vm.myarraySum(_vm.lsdeliveries, 'offloading_net_weight')))])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-3"
-  }, [_vm._v("\n                % Completion:\n              ")])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n                % Completion: "), _c('b', {
+    staticClass: "pull-right"
+  }, [_vm._v(_vm._s(((_vm.myarraySum(_vm.lsdeliveries, 'loading_net_weight') - _vm.myarraySum(_vm.lsdeliveries, 'offloading_net_weight')) / _vm.contract.quantity) * 100) + " %")])])]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-3"
-  }, [_vm._v("\n                Start Date: " + _vm._s(_vm.contract.start_date) + "\n              ")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n                Start Date: "), _c('b', {
+    staticClass: "pull-right"
+  }, [_vm._v(_vm._s(_vm.humanDate(_vm.contract.start_date)))])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-3"
-  }, [_vm._v("\n                Days: " + _vm._s() + "\n              ")]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [_vm._v("\n                Offloaded:\n              ")]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [_vm._v("\n                Loaded:\n              ")])]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n                Days: "), _c('b', {
+    staticClass: "pull-right"
+  }, [_vm._v(_vm._s(_vm.daysSince(_vm.contract.start_date)))])])]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
     staticClass: "table responsive"
   }, [_c('table', {
     staticClass: "table table-nowrap"
@@ -109946,13 +110015,13 @@ var content = __webpack_require__(358);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(5)("1a053317", content, false);
+var update = __webpack_require__(5)("71c0a46c", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-191c1150!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./dashboard.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-191c1150!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./dashboard.vue");
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-191c1150&scoped=true!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./dashboard.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-191c1150&scoped=true!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./dashboard.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
