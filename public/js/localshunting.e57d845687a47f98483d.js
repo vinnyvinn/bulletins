@@ -104438,6 +104438,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
   data: function data() {
@@ -104476,6 +104481,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         var b = parseInt(b[prop]);
         return a + b;
       }, 0);
+    },
+    progress: function progress() {
+      return this.myarraySum(this.lsdeliveries, 'offloading_net_weight') / this.contract.quantity * 100;
+    },
+    styleProgress: function styleProgress() {
+      return 'width:' + this.progress() + '%';
     }
   }
 
@@ -105625,7 +105636,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 372 */,
@@ -108394,9 +108405,18 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "pull-right"
   }, [_vm._v(_vm._s(_vm.myarraySum(_vm.lsdeliveries, 'loading_net_weight') - _vm.myarraySum(_vm.lsdeliveries, 'offloading_net_weight')))])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-3"
-  }, [_vm._v("\n                % Completion: "), _c('b', {
-    staticClass: "pull-right"
-  }, [_vm._v(_vm._s(((_vm.myarraySum(_vm.lsdeliveries, 'loading_net_weight') - _vm.myarraySum(_vm.lsdeliveries, 'offloading_net_weight')) / _vm.contract.quantity) * 100) + " %")])])]), _vm._v(" "), _c('div', {
+  }, [_c('div', {
+    staticClass: "progress"
+  }, [_c('div', {
+    staticClass: "progress-bar progress-bar-success",
+    style: (_vm.styleProgress()),
+    attrs: {
+      "role": "progressbar",
+      "aria-valuenow": _vm.progress(),
+      "aria-valuemin": "0",
+      "aria-valuemax": "150"
+    }
+  }, [_vm._v("\n                    " + _vm._s(_vm.progress()) + " % Complete\n                  ")])])])]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-3"

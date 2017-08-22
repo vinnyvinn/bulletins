@@ -51,7 +51,12 @@
                   Pending Offloading: <b class="pull-right">{{ myarraySum(lsdeliveries, 'loading_net_weight') - myarraySum(lsdeliveries, 'offloading_net_weight')  }}</b>
                 </div>
                 <div class="col-sm-3">
-                  % Completion: <b class="pull-right">{{ ((myarraySum(lsdeliveries, 'loading_net_weight') - myarraySum(lsdeliveries, 'offloading_net_weight')) / contract.quantity) * 100  }} %</b>
+                  <div class="progress">
+                    <div class="progress-bar progress-bar-success" role="progressbar" :aria-valuenow="progress()"
+                    aria-valuemin="0" aria-valuemax="150" :style="styleProgress()">
+                      {{ progress() }} % Complete
+                    </div>
+                  </div>
                 </div>
             </div>
             <div class="row">
@@ -138,6 +143,14 @@ export default {
         return a + b;
       }, 0);
     },
+
+    progress() {
+      return (this.myarraySum(this.lsdeliveries, 'offloading_net_weight') / this.contract.quantity) * 100;
+    },
+
+    styleProgress() {
+      return 'width:' + this.progress() +'%';
+    }
   }
 
 
