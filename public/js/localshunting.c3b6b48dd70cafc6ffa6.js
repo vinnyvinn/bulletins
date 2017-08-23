@@ -101562,13 +101562,17 @@ module.exports = Component.exports
 /* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
+
+/* styles */
+__webpack_require__(557)
+
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(291),
   /* template */
   __webpack_require__(475),
   /* scopeId */
-  null,
+  "data-v-537b4009",
   /* cssModules */
   null
 )
@@ -102044,10 +102048,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         $('input[type="number"]').on('focus', function () {
             this.select();
         });
+        this.setupUI();
     },
 
 
     methods: {
+        setupUI: function setupUI() {
+            var _this2 = this;
+
+            $('#temporary_driver').select2().on('change', function (e) {
+                return _this2.deliveryNote.temporary_driver = e.target.value;
+            });
+        },
         updateNote: function updateNote() {
             if (parseFloat(this.deliveryNote.loading_gross_weight) >= parseFloat(this.deliveryNote.loading_tare_weight)) {
                 this.deliveryNote.loading_net_weight = parseFloat(this.deliveryNote.loading_gross_weight) - parseFloat(this.deliveryNote.loading_tare_weight);
@@ -102058,18 +102070,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         checkState: function checkState() {
-            var _this2 = this;
+            var _this3 = this;
 
             this.$root.isLoading = true;
             var id = this.$route.params.unload ? this.$route.params.unload : this.$route.params.id;
 
             return http.get('/api/lsdelivery/' + id).then(function (response) {
-                _this2.deliveryNote = response.delivery;
-                _this2.$root.isLoading = false;
+                _this3.deliveryNote = response.delivery;
+                _this3.vehicle = response.delivery.vehicle;
+                _this3.$root.isLoading = false;
             });
         },
         store: function store() {
-            var _this3 = this;
+            var _this4 = this;
 
             this.$root.isLoading = true;
             var request = null;
@@ -102083,12 +102096,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
 
             request.then(function (response) {
-                _this3.$root.isLoading = false;
-                alert2(_this3.$root, [response.message], 'success');
+                _this4.$root.isLoading = false;
+                alert2(_this4.$root, [response.message], 'success');
                 window._router.push({ path: '/ls/delivery' });
             }).catch(function (error) {
-                _this3.$root.isLoading = false;
-                alert2(_this3.$root, Object.values(JSON.parse(error.message)), 'danger');
+                _this4.$root.isLoading = false;
+                alert2(_this4.$root, Object.values(JSON.parse(error.message)), 'danger');
             });
         }
     }
@@ -102637,6 +102650,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
     created: function created() {
@@ -102660,11 +102677,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.can_save = true;
         }
         this.$root.isLoading = true;
-        http.get('/api/lsfuelcreate/' + this.$route.params.id).then(function (response) {
+        http.get('/api/lsfuelcreate/' + this.$route.params.id + '/' + this.$route.params.contract).then(function (response) {
             _this.truck = response.truck;
             _this.average_trips = response.average_trips;
             _this.trips = response.trips;
             _this.fuel.under_trips = parseInt(_this.average_trips) - parseInt(_this.trips);
+            _this.refuelValidity();
             _this.$root.isLoading = false;
         });
     },
@@ -102701,7 +102719,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             },
             can_save: false,
             below_reserve: false,
-            deficit: ''
+            deficit: '',
+            message: ''
         };
     },
 
@@ -102712,6 +102731,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
+        refuelValidity: function refuelValidity() {
+            if (parseInt(this.trips) < parseInt(this.average_trips)) {
+                this.message = 'Trips done are less than the average trips set. Refueling requires approval.';
+                return false;
+            } else {
+                return true;
+            }
+        },
         validateKm: function validateKm() {
             if (parseFloat(this.fuel.current_km) < parseFloat(this.truck.current_km)) {
                 alert2(this.$root, ['Current Km should be more than previous Km'], 'danger');
@@ -102868,6 +102895,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
     data: function data() {
@@ -102881,13 +102909,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     created: function created() {
         var _this = this;
 
+        this.$root.isLoading = true;
         http.get('/api/lsfuel').then(function (response) {
             _this.vehicles = response.vehicles;
+            prepareTable();
+            _this.$root.isLoading = false;
         });
     },
 
 
     methods: {
+        viewFuelsIndex: function viewFuelsIndex() {
+            this.$router.push('/ls/fuelindex');
+        },
         fuel: function fuel(truck) {
             this.$router.push('/ls/fuel/create/' + truck.id + '/' + truck.contract_id);
         },
@@ -102901,27 +102935,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         date2: function date2(value) {
             return window._date2(value);
-        },
-        destroy: function destroy(id) {
-            var _this3 = this;
-
-            this.$root.isLoading = true;
-
-            http.destroy('api/journey/' + id + '/?s=' + window.Laravel.station_id).then(function (response) {
-                if (response.status != 'success') {
-                    _this3.$root.isLoading = false;
-                    alert2(_this3.$root, [response.message], 'danger');
-                    return;
-                }
-                $('table').dataTable().fnDestroy();
-                _this3.contracts = response.contracts;
-                prepareTable();
-                _this3.$root.isLoading = false;
-                alert2(_this3.$root, [response.message], 'success');
-            }).catch(function (error) {
-                _this3.$root.isLoading = false;
-                alert2(_this3.$root, Object.values(JSON.parse(error.message)), 'danger');
-            });
         }
     }
 };
@@ -102933,8 +102946,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 //
 //
 //
@@ -103002,108 +103013,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
 
 /* harmony default export */ __webpack_exports__["default"] = {
   data: function data() {
     return {
-      km_covered: 0,
-      fuel_used: 0,
-      km_per_litre: 0,
-      fuel: {
-        journey: {
-          driver: {
-            first_name: '',
-            identification_number: '',
-            mobile_phone: '',
-            dl_number: '',
-            avatar: ''
-          },
-          route: {
-            id: '',
-            source: '',
-            destination: ''
-          },
-          truck: {
-            model: '',
-            trailer_id: ''
-          }
-        },
-        fuel_required: '',
-        current_fuel: '',
-        fuel_requested: '',
-        fuel_issued: '',
-        fuel_total: '',
-        narration: '',
-        tank: '',
-        pump: '',
-        top_up: '',
-        top_up_reason: '',
-        top_up_quantity: 0
-      },
-      delivery_note: '',
-      mileage: {
-        journey_id: '',
-        mileage_type: '',
-        requested_amount: '',
-        standard_amount: '',
-        id: '',
-        status: '',
-        approved_amount: '',
-        narration: '',
-        top_up: '',
-        top_up_reason: '',
-        top_up_amount: 0
+      lsfuel: {
+        vehicle: {
+          driver: {}
+        }
       }
     };
   },
@@ -103115,24 +103032,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       return false;
     }
     this.$root.isLoading = true;
-    http.get('/api/fuel/' + this.$route.params.id).then(function (response) {
-      _this.fuel = response.fuel;
-      _this.delivery_note = response.delivery_note;
-      _this.mileage = response.mileage;
+    http.get('/api/lsfuel/' + this.$route.params.id).then(function (response) {
+      _this.lsfuel = response.lsfuel;
       _this.$root.isLoading = false;
     });
   },
 
+
   computed: {
     disablePrint: function disablePrint() {
-      if (this.fuel.status == "Approved" && this.mileage.status == "Approved") {
+      if (this.lsfuel.status == "Approved") {
         return false;
       } else {
         return true;
       }
-    },
-    minimumKm: function minimumKm() {
-      return this.fuel.previous_km;
     }
   },
 
@@ -103140,18 +103053,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     calculateTotal: function calculateTotal() {
       return this.fuel.fuel_total = parseInt(this.fuel.fuel_issued) + parseInt(this.fuel.current_fuel);
     },
-    calculateKms: function calculateKms() {
-      if (this.fuel.current_km < this.fuel.previous_km) {
-        return alert2(this.$root, ['Current Km readings should be greater than previous Km reading'], 'danger');
-      }
-      this.fuel_used = parseInt(this.fuel.previous_fuel) - parseInt(this.fuel.current_fuel);
-      this.km_covered = parseInt(this.fuel.current_km) - parseInt(this.fuel.previous_km);
-
-      return this.km_per_litre = parseInt(this.km_covered) / parseInt(this.fuel_used);
-    },
     getSource: function getSource() {
-      if (this.fuel.journey.driver.avatar) {
-        return '/images/' + this.journey.driver.avatar;
+      if (this.lsfuel.vehicle.driver.avatar) {
+        return '/images/' + this.vehicle.driver.avatar;
       }
       return '/images/default_avatar.png';
     },
@@ -103161,14 +103065,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     approveFuel: function approveFuel(id) {
       var _this2 = this;
 
-      http.get('/api/approve/' + id).then(function (response) {
+      this.$root.isLoading = true;
+      http.get('/api/ls/approvefuel/' + id).then(function (response) {
         if (response.status != 'success') {
           _this2.$root.isLoading = false;
           alert2(_this2.$root, [response.message], 'danger');
           return;
         }
 
-        _this2.fuel = response.fuel;
+        _this2.lsfuel = response.lsfuel;
 
         _this2.$root.isLoading = false;
         alert2(_this2.$root, [response.message], 'success');
@@ -103186,8 +103091,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function($) {Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
 //
 //
 //
@@ -103285,7 +103188,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var _this4 = this;
 
       http.post('/api/lsgatepass', this.gatepass).then(function (response) {
+        _this4.gatepass.vehicle_id = null;
         _this4.gatepasses = response.gatepasses;
+        _this4.vehicles = response.vehicles;
         alert2(_this4.$root, [response.message], 'success');
       });
     }
@@ -105445,14 +105350,14 @@ function authMiddleware(to, from, next) {
     return next();
 }
 
-module.exports = [{ path: '/', redirect: '/login', beforeEnter: authMiddleware }, { path: '/ls', component: __webpack_require__(257), beforeEnter: authMiddleware }, { path: '/ls/dashboard', component: __webpack_require__(257), beforeEnter: authMiddleware }, { path: '/progress', component: __webpack_require__(207), beforeEnter: authMiddleware }, { path: '/progress/pre-loading', component: __webpack_require__(214), beforeEnter: authMiddleware }, { path: '/progress/pre-loading/:id', component: __webpack_require__(209), beforeEnter: authMiddleware }, { path: '/progress/loading', component: __webpack_require__(212), beforeEnter: authMiddleware }, { path: '/progress/loading/:id', component: __webpack_require__(208), beforeEnter: authMiddleware }, { path: '/progress/enroute', component: __webpack_require__(210), beforeEnter: authMiddleware }, { path: '/progress/enroute/:id', component: __webpack_require__(206), beforeEnter: authMiddleware }, { path: '/progress/offloading', component: __webpack_require__(213), beforeEnter: authMiddleware }, { path: '/progress/in-yard', component: __webpack_require__(211), beforeEnter: authMiddleware }, { path: '/users', component: __webpack_require__(216), beforeEnter: authMiddleware }, { path: '/users/create', component: __webpack_require__(215), beforeEnter: authMiddleware }, { path: '/contracts', component: __webpack_require__(163), beforeEnter: authMiddleware },
+module.exports = [{ path: '/', redirect: '/login', beforeEnter: authMiddleware }, { path: '/ls', component: __webpack_require__(401), beforeEnter: authMiddleware }, { path: '/ls/dashboard', component: __webpack_require__(257), beforeEnter: authMiddleware }, { path: '/progress', component: __webpack_require__(207), beforeEnter: authMiddleware }, { path: '/progress/pre-loading', component: __webpack_require__(214), beforeEnter: authMiddleware }, { path: '/progress/pre-loading/:id', component: __webpack_require__(209), beforeEnter: authMiddleware }, { path: '/progress/loading', component: __webpack_require__(212), beforeEnter: authMiddleware }, { path: '/progress/loading/:id', component: __webpack_require__(208), beforeEnter: authMiddleware }, { path: '/progress/enroute', component: __webpack_require__(210), beforeEnter: authMiddleware }, { path: '/progress/enroute/:id', component: __webpack_require__(206), beforeEnter: authMiddleware }, { path: '/progress/offloading', component: __webpack_require__(213), beforeEnter: authMiddleware }, { path: '/progress/in-yard', component: __webpack_require__(211), beforeEnter: authMiddleware }, { path: '/users', component: __webpack_require__(216), beforeEnter: authMiddleware }, { path: '/users/create', component: __webpack_require__(215), beforeEnter: authMiddleware }, { path: '/contracts', component: __webpack_require__(163), beforeEnter: authMiddleware },
 // { path: '/ls/contracts/r/:print', component: require('../transport/contracts/index.vue'), beforeEnter: authMiddleware },
 // { path: '/ls/contracts/create', component: require('../transport/contracts/form.vue'), beforeEnter: authMiddleware },
 // { path: '/ls/contracts/create/:templateId', component: require('../transport/contracts/form.vue'), beforeEnter: authMiddleware },
 { path: '/contracts/:id', component: __webpack_require__(222), beforeEnter: authMiddleware },
 // { path: '/ls/contracts/:id/edit', component: require('../transport/contracts/form.vue'), beforeEnter: authMiddleware },
 
-{ path: '/ls/contract-templates', component: __webpack_require__(219), beforeEnter: authMiddleware }, { path: '/ls/contract-templates/create', component: __webpack_require__(156), beforeEnter: authMiddleware }, { path: '/ls/contract-templates/:id', component: __webpack_require__(220), beforeEnter: authMiddleware }, { path: '/ls/contract-templates/:id/edit', component: __webpack_require__(156), beforeEnter: authMiddleware }, { path: '/ls/trucks-allocation', component: __webpack_require__(403), beforeEnter: authMiddleware }, { path: '/ls/trucks-allocation/create/:id', component: __webpack_require__(259), beforeEnter: authMiddleware }, { path: '/ls/trucks-allocation/:id', component: __webpack_require__(404), beforeEnter: authMiddleware }, { path: '/ls/trucks-allocation/:id/edit', component: __webpack_require__(259), beforeEnter: authMiddleware }, { path: '/ls/fuel', component: __webpack_require__(392), beforeEnter: authMiddleware }, { path: '/ls/fuel/create/:id/:contract', component: __webpack_require__(258), beforeEnter: authMiddleware }, { path: '/ls/fuel/:id', component: __webpack_require__(393), beforeEnter: authMiddleware }, { path: '/ls/fuel/:id/edit', component: __webpack_require__(258), beforeEnter: authMiddleware }, { path: '/ls/gatepass', component: __webpack_require__(394), beforeEnter: authMiddleware }, { path: '/ls/mileage', component: __webpack_require__(396), beforeEnter: authMiddleware }, { path: '/ls/mileage/:contract', component: __webpack_require__(398), beforeEnter: authMiddleware }, { path: '/ls/mileage/create', component: __webpack_require__(162), beforeEnter: authMiddleware }, { path: '/ls/mileage/:id', component: __webpack_require__(399), beforeEnter: authMiddleware }, { path: '/ls/mileage/:approve/approve', component: __webpack_require__(162), beforeEnter: authMiddleware }, { path: '/ls/mileage/:id/edit', component: __webpack_require__(162), beforeEnter: authMiddleware }, { path: '/ls/mileage/create/:truck/:contract', component: __webpack_require__(162), beforeEnter: authMiddleware }, { path: '/ls/mileage/employee/:employee/:contract', component: __webpack_require__(397), beforeEnter: authMiddleware },
+{ path: '/ls/contract-templates', component: __webpack_require__(219), beforeEnter: authMiddleware }, { path: '/ls/contract-templates/create', component: __webpack_require__(156), beforeEnter: authMiddleware }, { path: '/ls/contract-templates/:id', component: __webpack_require__(220), beforeEnter: authMiddleware }, { path: '/ls/contract-templates/:id/edit', component: __webpack_require__(156), beforeEnter: authMiddleware }, { path: '/ls/trucks-allocation', component: __webpack_require__(403), beforeEnter: authMiddleware }, { path: '/ls/trucks-allocation/create/:id', component: __webpack_require__(259), beforeEnter: authMiddleware }, { path: '/ls/trucks-allocation/:id', component: __webpack_require__(404), beforeEnter: authMiddleware }, { path: '/ls/trucks-allocation/:id/edit', component: __webpack_require__(259), beforeEnter: authMiddleware }, { path: '/ls/fuel', component: __webpack_require__(392), beforeEnter: authMiddleware }, { path: '/ls/fuelindex', component: __webpack_require__(559), beforeEnter: authMiddleware }, { path: '/ls/fuel/create/:id/:contract', component: __webpack_require__(258), beforeEnter: authMiddleware }, { path: '/ls/fuel/:id', component: __webpack_require__(393), beforeEnter: authMiddleware }, { path: '/ls/fuel/:id/edit', component: __webpack_require__(258), beforeEnter: authMiddleware }, { path: '/ls/gatepass', component: __webpack_require__(394), beforeEnter: authMiddleware }, { path: '/ls/mileage', component: __webpack_require__(396), beforeEnter: authMiddleware }, { path: '/ls/mileage/:contract', component: __webpack_require__(398), beforeEnter: authMiddleware }, { path: '/ls/mileage/create', component: __webpack_require__(162), beforeEnter: authMiddleware }, { path: '/ls/mileage/:id', component: __webpack_require__(399), beforeEnter: authMiddleware }, { path: '/ls/mileage/:approve/approve', component: __webpack_require__(162), beforeEnter: authMiddleware }, { path: '/ls/mileage/:id/edit', component: __webpack_require__(162), beforeEnter: authMiddleware }, { path: '/ls/mileage/create/:truck/:contract', component: __webpack_require__(162), beforeEnter: authMiddleware }, { path: '/ls/mileage/employee/:employee/:contract', component: __webpack_require__(397), beforeEnter: authMiddleware },
 
 // { path: '/route-card', component: require('./transport/routecard/index.vue'), beforeEnter: authMiddleware },
 // { path: '/route-card/create', component: require('../transport/routecard/form.vue'), beforeEnter: authMiddleware },
@@ -108176,13 +108081,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-12"
   }, [_c('div', {
+    staticClass: "col-sm-12"
+  }, [_c('i', {
+    staticClass: "message"
+  }, [_vm._v(_vm._s(_vm.message))])]), _vm._v(" "), _c('div', {
     staticClass: "form-group pull-right"
   }, [_c('button', {
     staticClass: "btn btn-success",
     attrs: {
       "disabled": !_vm.can_save
     }
-  }, [_vm._v("Save")]), _vm._v(" "), _c('router-link', {
+  }, [_vm._v(_vm._s(_vm.refuelValidity() ? 'Save' : 'Request Approval'))]), _vm._v(" "), _c('router-link', {
     staticClass: "btn btn-danger",
     attrs: {
       "to": "/ls/fuel"
@@ -108481,12 +108390,19 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "panel-heading"
   }, [_vm._v("\n        Gatepass Inwards\n      ")]), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
-  }, [_c('form', {
-    attrs: {
-      "action": "#"
-    }
   }, [_c('div', {
     staticClass: "row"
+  }, [_c('form', {
+    attrs: {
+      "action": "#",
+      "role": "form"
+    },
+    on: {
+      "submit": function($event) {
+        $event.preventDefault();
+        _vm.store($event)
+      }
+    }
   }, [_c('div', {
     staticClass: "col-sm-6"
   }, [_c('div', {
@@ -108501,7 +108417,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "select2 col-sm-12",
     attrs: {
       "name": "truck",
-      "id": "truck"
+      "id": "truck",
+      "required": ""
     },
     on: {
       "change": function($event) {
@@ -108524,23 +108441,22 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "for": "truck"
     }
-  }, [_vm._v("Select Vehicle")])], 2)])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Select Vehicle")])], 2)])]), _vm._v(" "), _vm._m(0)])]), _vm._v(" "), _c('table', {
+    staticClass: "table no-wrap"
+  }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.gatepasses), function(gatepass) {
+    return _c('tr', [_c('td', [_vm._v("GP - " + _vm._s(gatepass.id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(gatepass.vehicle.plate_number) + " ")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(gatepass.user.first_name))])])
+  })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("#")]), _vm._v(" "), _c('th', [_vm._v("Vehicle")]), _vm._v(" "), _c('th', [_vm._v("Created By")])])])], 1)])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
     staticClass: "col-sm-6"
   }, [_c('button', {
     staticClass: "btn btn-sm btn-success",
     attrs: {
-      "type": "button",
+      "type": "submit",
       "name": "button"
-    },
-    on: {
-      "click": _vm.store
     }
-  }, [_vm._v("Check In")])])])]), _vm._v(" "), _c('table', {
-    staticClass: "table no-wrap"
-  }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.gatepasses), function(gatepass) {
-    return _c('tr', [_c('td', [_vm._v("GP - " + _vm._s(gatepass.id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(gatepass.vehicle.plate_number) + " ")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(gatepass.user.first_name))])])
-  })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("#")]), _vm._v(" "), _c('th', [_vm._v("Vehicle")]), _vm._v(" "), _c('th', [_vm._v("Created By")])])])], 1)])])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  }, [_vm._v("Check In")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('thead', [_c('tr', [_c('th', [_vm._v("#")]), _vm._v(" "), _c('th', [_vm._v("Vehicle")]), _vm._v(" "), _c('th', [_vm._v("Created By")])])])
 }]}
 module.exports.render._withStripped = true
@@ -108567,9 +108483,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('div', {
     staticClass: "row print-row"
-  }, [_c('div', {
-    staticClass: "col-xs-12"
-  }, [_c('h4', [_c('strong', [_vm._v("FUEL VOUCHER (Delivery Note N0: RKS " + _vm._s(_vm.delivery_note.id) + ")")])])]), _vm._v(" "), _c('div', {
+  }, [_vm._m(1), _vm._v(" "), _c('div', {
     staticClass: "col-xs-3"
   }, [_c('strong', [_vm._v("Driver")]), _c('br'), _vm._v(" "), _c('img', {
     attrs: {
@@ -108578,39 +108492,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "width": "100",
       "height": "100"
     }
-  }), _vm._v(" "), _c('br'), _vm._v("\n                Name: " + _vm._s(_vm.fuel.journey.driver.first_name)), _c('br'), _vm._v("\n                Id No: " + _vm._s(_vm.fuel.journey.driver.identification_number)), _c('br'), _vm._v("\n                Mobile No: " + _vm._s(_vm.fuel.journey.driver.mobile_phone)), _c('br'), _vm._v("\n                DL number: " + _vm._s(_vm.fuel.journey.driver.dl_number) + "\n              ")]), _vm._v(" "), _c('div', {
+  }), _vm._v(" "), _c('br'), _vm._v("\n                Name: " + _vm._s(_vm.lsfuel.vehicle.driver.first_name)), _c('br'), _vm._v("\n                Id No: " + _vm._s(_vm.lsfuel.vehicle.driver.identification_number)), _c('br'), _vm._v("\n                Mobile No: " + _vm._s(_vm.lsfuel.vehicle.driver.mobile_phone)), _c('br'), _vm._v("\n                DL number: " + _vm._s(_vm.lsfuel.vehicle.driver.dl_number) + "\n              ")]), _vm._v(" "), _c('div', {
     staticClass: "col-xs-3"
-  }, [_vm._v("\n                  Date: " + _vm._s(_vm.fuel.date)), _c('br'), _vm._v("\n                  Journey: JRNY-" + _vm._s(_vm.fuel.journey_id)), _c('br'), _vm._v("\n                  Status: " + _vm._s(_vm.fuel.status) + "\n                  "), _c('hr'), _vm._v(" "), _c('strong', [_vm._v("Route")]), _vm._v("\n                  Route: Route: RT-" + _vm._s(_vm.fuel.journey.route.id)), _c('br'), _vm._v("\n                  From: " + _vm._s(_vm.fuel.journey.route.source)), _c('br'), _vm._v("\n                  To: " + _vm._s(_vm.fuel.journey.route.destination)), _c('br'), _vm._v(" "), _c('hr'), _vm._v(" "), _c('strong', [_vm._v("Vehicle")]), _vm._v("\n                  Reg.No: " + _vm._s(_vm.fuel.journey.truck.plate_number)), _c('br'), _vm._v("\n                  Model: " + _vm._s(_vm.fuel.journey.truck.model)), _c('br'), _vm._v("\n                  Trailer Attached: "), _c('input', {
-    attrs: {
-      "type": "checkbox",
-      "name": "trailer_attached"
-    },
-    domProps: {
-      "checked": _vm.fuel.journey.truck.trailer_id
-    }
-  }), _c('br'), _vm._v(" "), (_vm.fuel.journey.truck.trailer_id) ? _c('div', {}, [_vm._v("\n                    Trailer: " + _vm._s(_vm.fuel.journey.truck.trailer_id)), _c('br'), _vm._v("\n                    Trailer Category: " + _vm._s(_vm.fuel.journey.truck.trailer_id) + " "), _c('br')]) : _vm._e()]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n                  Date: " + _vm._s(_vm.lsfuel.created_at)), _c('br'), _vm._v("\n                  Status: " + _vm._s(_vm.lsfuel.status) + "\n                  "), _c('hr'), _vm._v(" "), _c('strong', [_vm._v("Route")]), _vm._v("\n                  Route: Route: RT-"), _c('br'), _vm._v("\n                  From: "), _c('br'), _vm._v("\n                  To: "), _c('br'), _vm._v(" "), _c('hr'), _vm._v(" "), _c('strong', [_vm._v("Vehicle")]), _vm._v("\n                  Reg.No: " + _vm._s(_vm.lsfuel.vehicle.plate_number)), _c('br'), _vm._v("\n                  Model: " + _vm._s(_vm.lsfuel.vehicle.model)), _c('br')]), _vm._v(" "), _c('div', {
     staticClass: "col-xs-3"
-  }, [_c('strong', [_vm._v("Fuel")]), _c('br'), _vm._v("\n                  Standard Quantity for this route (Ltrs): " + _vm._s(_vm.fuel.fuel_required)), _c('br'), _vm._v("\n                  Current Fuel (Litres): " + _vm._s(_vm.fuel.current_fuel)), _c('br'), _vm._v("\n                  Requested Quantity: " + _vm._s(_vm.fuel.fuel_requested)), _c('br'), _vm._v("\n                  Fuel Issued: " + _vm._s(_vm.fuel.fuel_issued)), _c('br'), _vm._v("\n                  Total Fuel in Tank: " + _vm._s(_vm.fuel.fuel_total)), _c('br'), _vm._v(" "), _c('hr'), _vm._v(" "), _c('strong', [_vm._v("Narration")]), _c('br'), _vm._v("\n                  " + _vm._s(_vm.fuel.narration) + "\n                  "), _c('hr'), _vm._v(" "), _c('strong', [_vm._v("Top Up fuel")]), _vm._v(" "), (parseInt(_vm.fuel.top_up)) ? _c('div', {
-    staticClass: "col-xs-12"
-  }, [_vm._v("\n                    Top Up: " + _vm._s(_vm.fuel.top_up_quantity)), _c('br'), _vm._v("\n                    Reason: " + _vm._s(_vm.fuel.top_up_reason) + "\n                  ")]) : _vm._e(), _vm._v(" "), _c('hr')]), _vm._v(" "), _c('div', {
+  }, [_c('strong', [_vm._v("Fuel")]), _c('br'), _vm._v("\n                  Standard Quantity for this route (Ltrs): ---"), _c('br'), _vm._v("\n                  Current Fuel (Litres): ---"), _c('br'), _vm._v("\n                  Requested Quantity: ---"), _c('br'), _vm._v("\n                  Fuel Issued: " + _vm._s(_vm.lsfuel.fuel_issued)), _c('br'), _vm._v("\n                  Total Fuel in Tank: " + _vm._s(_vm.lsfuel.total_in_tank)), _c('br'), _vm._v(" "), _c('hr'), _vm._v(" "), _c('strong', [_vm._v("Narration")]), _c('br'), _vm._v("\n                  " + _vm._s(_vm.lsfuel.narration) + "\n                  "), _c('hr')]), _vm._v(" "), _c('div', {
     staticClass: "col-xs-3"
-  }, [_c('strong', [_vm._v("Mileage Readings")]), _c('br'), _vm._v("\n                  Current Km: " + _vm._s(_vm.fuel.current_km)), _c('br'), _vm._v("\n                  Previous KM: " + _vm._s(_vm.fuel.previous_km)), _c('br'), _vm._v(" "), _c('strong', [_vm._v("KM Covered: " + _vm._s(parseInt(_vm.fuel.current_km) - parseInt(_vm.fuel.previous_km)) + " Kms"), _c('br')]), _vm._v("\n                  Current Fuel (Litres): " + _vm._s(_vm.fuel.current_fuel)), _c('br'), _vm._v("\n                  Previous Fuel: " + _vm._s(_vm.fuel.previous_fuel)), _c('br'), _vm._v(" "), _c('strong', [_vm._v("Fuel Used: " + _vm._s(parseInt(_vm.fuel.previous_fuel) - parseInt(_vm.fuel.current_fuel)) + " Ltrs"), _c('br')]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('strong', [_vm._v("\n                    KM/Ltr: " + _vm._s(parseInt((parseInt(_vm.fuel.current_km) - parseInt(_vm.fuel.previous_km)) / parseInt(parseInt(_vm.fuel.previous_fuel) - parseInt(_vm.fuel.current_fuel))).toFixed(2))), _c('br')])])]), _vm._v(" "), _c('hr', {
+  }, [_c('strong', [_vm._v("Mileage Readings")]), _c('br'), _vm._v("\n                  Current Km: " + _vm._s(_vm.lsfuel.current_km)), _c('br')])]), _vm._v(" "), _c('hr', {
     staticClass: "print-hr"
-  }), _vm._v(" "), _c('div', {
-    staticClass: "row print-row"
-  }, [_c('div', {
-    staticClass: "col-xs-12"
-  }, [_c('h4', [_c('strong', [_vm._v("MILEAGE ALLOCATION (Delivery Note N0: RKS " + _vm._s(_vm.delivery_note.id) + ")")])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-xs-3"
-  }, [_vm._v("\n            Journey Number: " + _vm._s(_vm.mileage.journey_id)), _c('br'), _vm._v("\n            Mileage Type: " + _vm._s(_vm.mileage.mileage_type)), _c('br'), _vm._v("\n            Requested Amount: " + _vm._s(_vm.mileage.requested_amount)), _c('br'), _vm._v("\n            Standard Amount: " + _vm._s(_vm.mileage.standard_amount)), _c('br')]), _vm._v(" "), (parseInt(_vm.mileage.top_up)) ? _c('div', {
-    staticClass: "col-xs-3"
-  }, [_c('strong', [_vm._v("Top Up")]), _c('br'), _vm._v("\n            Amount: " + _vm._s(_vm.mileage.top_up_amount)), _c('br'), _vm._v("\n            Reason: " + _vm._s(_vm.mileage.top_up_reason) + "\n          ")]) : _vm._e(), _vm._v(" "), _c('div', {
-    staticClass: "col-xs-3"
-  }, [_vm._v("\n            Mileage Allocation No: " + _vm._s(_vm.mileage.id)), _c('br'), _vm._v("\n            Status: " + _vm._s(_vm.mileage.status)), _c('br'), _vm._v("\n            Amount Approved: " + _vm._s(_vm.mileage.approved_amount)), _c('br')]), _vm._v(" "), _c('div', {
-    staticClass: "col-xs-3"
-  }, [_vm._v("\n            Narration:"), _c('br'), _vm._v("\n            " + _vm._s(_vm.mileage.narration) + "\n          ")])])]), _vm._v(" "), _c('div', {
+  })]), _vm._v(" "), _c('div', {
     staticClass: "form-group pull-right"
-  }, [(_vm.fuel.status == 'Awaiting Approval') ? _c('button', {
+  }, [(_vm.lsfuel.status == 'Pending Approval') ? _c('button', {
     staticClass: "btn btn-success",
     attrs: {
       "type": "button",
@@ -108618,7 +108510,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     },
     on: {
       "click": function($event) {
-        _vm.approveFuel(_vm.fuel.id)
+        _vm.approveFuel(_vm.lsfuel.id)
       }
     }
   }, [_vm._v("Approve")]) : _vm._e(), _vm._v(" "), _c('button', {
@@ -108635,13 +108527,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }), _vm._v(" Print")]), _vm._v(" "), _c('router-link', {
     staticClass: "btn btn-danger",
     attrs: {
-      "to": "/fuel"
+      "to": "/ls/fuelindex"
     }
   }, [_vm._v("Back")])], 1)])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "panel-heading"
   }, [_c('strong', [_vm._v("Fuel Allocation")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "col-xs-12"
+  }, [_c('h4', [_c('strong', [_vm._v("FUEL VOUCHER")])])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
@@ -109474,7 +109370,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "col-sm-3"
   }, [_c('div', {
     staticClass: "form-group"
-  }, [_c('label', [_vm._v("Trailer Attached")]), _vm._v(" "), (_vm.vehicle.trailer) ? _c('h5', [_vm._v(_vm._s(_vm.vehicle.trailer.trailer_number))]) : _vm._e()])]), _vm._v(" "), _c('div', {
+  }, [_c('label', [_vm._v("Trailer Attached")]), _vm._v(" "), (_vm.vehicle.trailer) ? _c('h5', [_vm._v(_vm._s(_vm.vehicle.trailer.plate_number))]) : _vm._e()])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-3"
   }, [_c('div', {
     staticClass: "form-group"
@@ -109770,7 +109666,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.deliveryNote.offloading_weighbridge_number = $event.target.value
       }
     }
-  })]), _vm._v(" "), _c('div', {
+  })]), _vm._v(" "), (!_vm.$route.params.unload) ? _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
@@ -109783,7 +109679,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       value: (_vm.deliveryNote.temporary_driver),
       expression: "deliveryNote.temporary_driver"
     }],
-    staticClass: "form-control input-sm",
+    staticClass: "form-control input-sm select2",
+    attrs: {
+      "id": "temporary_driver"
+    },
     on: {
       "change": function($event) {
         var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
@@ -109806,7 +109705,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "value": driver.id
       }
     }, [_vm._v(_vm._s(driver.first_name) + " " + _vm._s(driver.last_name))])
-  })], 2)])]), _vm._v(" "), _c('div', {
+  })], 2)]) : _vm._e()]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-2"
   }, [_vm._m(3), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
     staticClass: "form-group"
@@ -109959,14 +109858,27 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "col-md-12"
   }, [_c('div', {
     staticClass: "panel panel-default"
-  }, [_vm._m(0), _vm._v(" "), _c('div', {
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_c('strong', [_vm._v("Trucks Awaiting Fueling ")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-sm btn-success pull-right",
+    attrs: {
+      "type": "button",
+      "name": "button"
+    },
+    on: {
+      "click": function($event) {
+        _vm.viewFuelsIndex()
+      }
+    }
+  }, [_vm._v("FUEL ALLOCATED")])]), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
   }, [_c('div', {
     staticClass: "table-responsive"
   }, [_c('table', {
     staticClass: "table no-wrap"
-  }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.vehicles), function(truck) {
-    return _c('tr', [_c('td', [_vm._v(_vm._s(truck.plate_number))]), _vm._v(" "), (truck.trailer) ? _c('td', [_vm._v(_vm._s(truck.trailer.trailer_number))]) : _vm._e(), _vm._v(" "), (!truck.trailer) ? _c('td', [_vm._v(" -- ")]) : _vm._e(), _vm._v(" "), (truck.driver) ? _c('td', [_vm._v(_vm._s(truck.driver.first_name))]) : _vm._e(), _vm._v(" "), (!truck.driver) ? _c('td', [_vm._v("--")]) : _vm._e(), _vm._v(" "), _c('td', [_vm._v(_vm._s(truck.current_fuel))]), _vm._v(" "), _c('td', [_c('button', {
+  }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.vehicles), function(truck) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(truck.plate_number))]), _vm._v(" "), (truck.trailer) ? _c('td', [_vm._v(_vm._s(truck.trailer.plate_number))]) : _vm._e(), _vm._v(" "), (!truck.trailer) ? _c('td', [_vm._v(" -- ")]) : _vm._e(), _vm._v(" "), (truck.driver) ? _c('td', [_vm._v(_vm._s(truck.driver.first_name))]) : _vm._e(), _vm._v(" "), (!truck.driver) ? _c('td', [_vm._v("--")]) : _vm._e(), _vm._v(" "), _c('td', [_vm._v(_vm._s(truck.current_fuel))]), _vm._v(" "), _c('td', [_c('button', {
       staticClass: "btn btn-sm btn-success",
       attrs: {
         "type": "button",
@@ -109980,10 +109892,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_vm._v("Fuel")])])])
   })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("Plate #")]), _vm._v(" "), _c('th', [_vm._v("Trailer")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th', [_vm._v("Current Ltrs")]), _vm._v(" "), _c('th', [_vm._v("Action")])])])], 1)])])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "panel-heading"
-  }, [_c('strong', [_vm._v("Trucks Awaiting Fueling ")])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('thead', [_c('tr', [_c('th', [_vm._v("Plate #")]), _vm._v(" "), _c('th', [_vm._v("Trailer")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th', [_vm._v("Current Ltrs")]), _vm._v(" "), _c('th', [_vm._v("Action")])])])
 }]}
 module.exports.render._withStripped = true
@@ -110200,6 +110108,261 @@ if(false) {
 
 module.exports = __webpack_require__(267);
 
+
+/***/ }),
+/* 543 */,
+/* 544 */,
+/* 545 */,
+/* 546 */,
+/* 547 */,
+/* 548 */,
+/* 549 */,
+/* 550 */,
+/* 551 */,
+/* 552 */,
+/* 553 */,
+/* 554 */,
+/* 555 */,
+/* 556 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(4)();
+exports.push([module.i, "\n.message[data-v-537b4009]{\n  color: red;\n}\n", ""]);
+
+/***/ }),
+/* 557 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(556);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(5)("7fd792f7", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-537b4009&scoped=true!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./form.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-537b4009&scoped=true!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./form.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 558 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function($) {Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = {
+  data: function data() {
+    return {
+      lsfuels: []
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    this.$root.isLoading = true;
+    http.get('/api/lsfuelindex').then(function (response) {
+      _this.lsfuels = response.lsfuels;
+      prepareTable();
+      _this.$root.isLoading = false;
+    });
+  },
+
+
+  methods: {
+    approveFuel: function approveFuel(id) {
+      this.$router.push('/ls/fuel/' + id);
+    },
+    humanDate: function humanDate(date) {
+      return moment(date).format('ll');
+    },
+    fuel: function fuel(truck) {
+      this.$router.push('/ls/fuel/create/' + truck.id + '/' + truck.contract_id);
+    },
+    setupConfirm: function setupConfirm() {
+      var _this2 = this;
+
+      $('.btn-destroy').off();
+      confirm2('.btn-destroy', function (element) {
+        _this2.destroy(element.dataset.item);
+      });
+    },
+    date2: function date2(value) {
+      return window._date2(value);
+    },
+    viewTrucksAwaitingFueling: function viewTrucksAwaitingFueling() {
+      this.$router.push('/ls/fuel');
+    }
+  }
+};
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
+
+/***/ }),
+/* 559 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(558),
+  /* template */
+  __webpack_require__(560),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/sam/gaitara/rk/resources/assets/js/localshunting/fuel/lsfuels.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] lsfuels.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-8b6c43be", Component.options)
+  } else {
+    hotAPI.reload("data-v-8b6c43be", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 560 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "container"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-12"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_c('strong', [_vm._v("Local Shunting Fueling")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-sm btn-success pull-right",
+    attrs: {
+      "type": "button",
+      "name": "button"
+    },
+    on: {
+      "click": function($event) {
+        _vm.viewTrucksAwaitingFueling()
+      }
+    }
+  }, [_vm._v("Trucks Awaiting Fueling")])]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('div', {
+    staticClass: "table-responsive"
+  }, [_c('table', {
+    staticClass: "table no-wrap"
+  }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.lsfuels), function(lsfuel, index) {
+    return _c('tr', [_c('th', [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c('td', [_vm._v("LS Fuel - " + _vm._s(lsfuel.id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(lsfuel.status))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(lsfuel.vehicle.plate_number))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(lsfuel.vehicle.driver.first_name) + " " + _vm._s(lsfuel.vehicle.driver.last_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(lsfuel.fuel_issued))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(lsfuel.user.first_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.humanDate(lsfuel.created_at)))]), _vm._v(" "), (lsfuel.status == 'Pending Approval') ? _c('td', [_c('button', {
+      staticClass: "btn btn-sm btn-success",
+      attrs: {
+        "type": "button"
+      },
+      on: {
+        "click": function($event) {
+          _vm.approveFuel(lsfuel.id)
+        }
+      }
+    }, [_vm._v("Approve")])]) : _c('td'), _vm._v(" "), _c('td', [_vm._v(_vm._s(lsfuel.approved_by ? lsfuel.approved_by.first_name + ' ' + lsfuel.approved_by.last_name : ''))])])
+  })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("#")]), _vm._v(" "), _c('th', [_vm._v("Fuel Id")]), _vm._v(" "), _c('th', [_vm._v("Status")]), _vm._v(" "), _c('th', [_vm._v("Vehicle")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th', [_vm._v("Fuel")]), _vm._v(" "), _c('th', [_vm._v("Created By")]), _vm._v(" "), _c('th', [_vm._v("Date")]), _vm._v(" "), _c('th', [_vm._v("Approval")]), _vm._v(" "), _c('th', [_vm._v("Approved By")])])])], 1)])])])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('thead', [_c('tr', [_c('th', [_vm._v("#")]), _vm._v(" "), _c('th', [_vm._v("Fuel Id")]), _vm._v(" "), _c('th', [_vm._v("Status")]), _vm._v(" "), _c('th', [_vm._v("Vehicle")]), _vm._v(" "), _c('th', [_vm._v("Driver")]), _vm._v(" "), _c('th', [_vm._v("Fuel")]), _vm._v(" "), _c('th', [_vm._v("Created By")]), _vm._v(" "), _c('th', [_vm._v("Date")]), _vm._v(" "), _c('th', [_vm._v("Needs Approval")]), _vm._v(" "), _c('th', [_vm._v("Approved By")])])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-8b6c43be", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

@@ -23,7 +23,7 @@ class CreateLSFuelsTable extends Migration
             $table->integer('fuel_issued')->default(0);
             $table->integer('current_km')->default(0);
             $table->integer('total_in_tank')->default(0);
-            $table->string('status')->default(Constants::STATUS_PENDING);
+            $table->string('status')->default(Constants::STATUS_APPROVED);
             $table->integer('created_by');
             $table->integer('approved_by')->nullable();
             $table->timestamps();

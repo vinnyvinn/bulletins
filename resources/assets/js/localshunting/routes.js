@@ -16,7 +16,7 @@ function authMiddleware(to, from, next) {
 
 module.exports = [
     { path: '/', redirect: '/login', beforeEnter: authMiddleware },
-    { path: '/ls', component: require('./dashboard/index.vue'), beforeEnter: authMiddleware },
+    { path: '/ls', component: require('./reports/dashboard.vue'), beforeEnter: authMiddleware },
     { path: '/ls/dashboard', component: require('./dashboard/index.vue'), beforeEnter: authMiddleware },
 
     { path: '/progress', component: require('../components/truck-progress/index.vue'), beforeEnter: authMiddleware },
@@ -54,6 +54,7 @@ module.exports = [
 
 
     { path: '/ls/fuel', component: require('./fuel/index.vue'), beforeEnter: authMiddleware },
+    { path: '/ls/fuelindex', component: require('./fuel/lsfuels.vue'), beforeEnter: authMiddleware },
     { path: '/ls/fuel/create/:id/:contract', component: require('./fuel/form.vue'), beforeEnter: authMiddleware },
     { path: '/ls/fuel/:id', component: require('./fuel/view.vue'), beforeEnter: authMiddleware },
     { path: '/ls/fuel/:id/edit', component: require('./fuel/form.vue'), beforeEnter: authMiddleware },

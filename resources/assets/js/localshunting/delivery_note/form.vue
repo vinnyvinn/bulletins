@@ -22,7 +22,7 @@
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label>Trailer Attached</label>
-                            <h5 v-if="vehicle.trailer">{{ vehicle.trailer.trailer_number }}</h5>
+                            <h5 v-if="vehicle.trailer">{{ vehicle.trailer.plate_number }}</h5>
                         </div>
                     </div>
                     <div class="col-sm-3">
@@ -82,9 +82,9 @@
                             <label for="offloading_weighbridge_number">Weighbridge Ticket Number</label>
                             <input :disabled="(typeof $route.params.unload !== 'string') && (typeof $route.params.id !== 'string')" id="offloading_weighbridge_number" v-model="deliveryNote.offloading_weighbridge_number" type="text" class="form-control input-sm" required>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" v-if="!$route.params.unload">
                           <label for="temporary_driver">Temporary Driver</label>
-                          <select class="form-control input-sm" v-model="deliveryNote.temporary_driver">
+                          <select id="temporary_driver" class="form-control input-sm select2" v-model="deliveryNote.temporary_driver">
                             <option value="" disabled> Select A driver</option>
                             <option v-for="driver in drivers":value="driver.id">{{ driver.first_name }} {{ driver.last_name }}</option>
                           </select>
@@ -169,9 +169,14 @@
             $('input[type="number"]').on('focus', function () {
                 this.select();
             });
+            this.setupUI()
         },
 
         methods: {
+            setupUI() {
+              $('#temporary_driver').select2().on('change', e => this.deliveryNote.temporary_driver = e.target.value);
+            },
+
             updateNote() {
               if(parseFloat(this.deliveryNote.loading_gross_weight) >= parseFloat(this.deliveryNote.loading_tare_weight)) {
                 this.deliveryNote.loading_net_weight = parseFloat(this.deliveryNote.loading_gross_weight) - parseFloat(this.deliveryNote.loading_tare_weight);
@@ -189,6 +194,7 @@
 
                 return http.get('/api/lsdelivery/' + id).then((response) => {
                     this.deliveryNote = response.delivery;
+                    this.vehicle = response.delivery.vehicle;
                     this.$root.isLoading = false;
                 });
             },

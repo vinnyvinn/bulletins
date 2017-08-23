@@ -49,6 +49,9 @@ class GatePassController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+          'vehicle_id' => 'required|unique:l_s_gate_passes'
+        ]);
         $data = $request->all();
         $data['user_id'] = Auth::id();
 
@@ -57,7 +60,13 @@ class GatePassController extends Controller
         return Response::json([
           'status' => 'success',
           'message' => 'Successfully created gatepass inwards',
-          'gatepasses' => LSGatePass::with('vehicle','user')->get()
+          'gatepasses' => LSGatePass::with('vehicle','user')->get(),
+          'vehicles' => Vehicle::has('contract')
+                    ->doesntHave('lsgatepass')
+                    ->whereDoesntHave('lsdelivery', function ($q) {
+                      return $q->where('status','Loaded');
+                    })
+                    ->get(),
         ]);
     }
 

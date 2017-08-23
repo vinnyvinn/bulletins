@@ -80,8 +80,12 @@
                     </div>
 
                     <div class="col-sm-12">
+                      <div class="col-sm-12">
+                        <i class="message">{{ message }}</i>
+                      </div>
+
                       <div class="form-group pull-right">
-                          <button class="btn btn-success" :disabled="!can_save">Save</button>
+                          <button class="btn btn-success" :disabled="!can_save">{{ refuelValidity() ? 'Save' : 'Request Approval' }}</button>
                           <router-link to="/ls/fuel" class="btn btn-danger">Back</router-link>
                       </div>
                     </div>
@@ -116,11 +120,12 @@
             this.can_save = true;
           }
             this.$root.isLoading = true;
-            http.get('/api/lsfuelcreate/' + this.$route.params.id).then((response) => {
+            http.get('/api/lsfuelcreate/' + this.$route.params.id + '/' + this.$route.params.contract).then( (response) => {
                 this.truck = response.truck;
                 this.average_trips = response.average_trips;
                 this.trips = response.trips;
                 this.fuel.under_trips = parseInt(this.average_trips) - parseInt(this.trips);
+                this.refuelValidity();
                 this.$root.isLoading = false;
             });
         },
@@ -159,7 +164,8 @@
                 },
                 can_save: false,
                 below_reserve: false,
-                deficit: ''
+                deficit: '',
+                message: ''
             };
         },
         computed: {
@@ -170,6 +176,15 @@
         },
 
         methods: {
+          refuelValidity() {
+            if( parseInt(this.trips) < parseInt(this.average_trips) ) {
+              this.message = 'Trips done are less than the average trips set. Refueling requires approval.';
+              return false;
+            } else {
+              return true;
+            }
+          },
+
           validateKm () {
             if(parseFloat(this.fuel.current_km) < parseFloat(this.truck.current_km)){
               alert2(this.$root, ['Current Km should be more than previous Km'], 'danger');
@@ -265,3 +280,9 @@
         }
     }
 </script>
+
+<style media="screen" scoped>
+  .message{
+    color: red;
+  }
+</style>

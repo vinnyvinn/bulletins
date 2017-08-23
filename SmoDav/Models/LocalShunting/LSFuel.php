@@ -4,6 +4,7 @@ namespace SmoDav\Models\LocalShunting;
 
 use Illuminate\Database\Eloquent\Model;
 use SmoDav\Models\Vehicle;
+use App\User;
 
 class LSFuel extends Model
 {
@@ -17,6 +18,11 @@ class LSFuel extends Model
   public function user()
   {
     return $this->belongsTo(User::class, 'created_by');
+  }
+
+  public function approved_by()
+  {
+    return $this->belongsTo(User::class, 'approved_by');
   }
 
   public function vehicle()

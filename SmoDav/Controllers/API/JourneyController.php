@@ -41,10 +41,12 @@ class JourneyController extends Controller
             ])
             ->get([
                 'id', 'driver_id', 'is_contract_related', 'truck_id', 'contract_id', 'journey_type', 'job_date', 'ref_no', 'status',
+                'temporary_driver'
             ]);
 
         return Response::json([
             'journeys' => $journeys,
+            'drivers' => Driver::all()
         ]);
     }
 

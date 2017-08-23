@@ -5,6 +5,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>Trucks Awaiting Fueling </i></strong>
+                        <button type="button" class="btn btn-sm btn-success pull-right" name="button" @click="viewFuelsIndex()">FUEL ALLOCATED</button>
                     </div>
                     <div class="panel-body">
                         <div class="table-responsive">
@@ -21,7 +22,7 @@
                                 <tbody>
                                 <tr v-for="truck in vehicles">
                                     <td>{{ truck.plate_number }}</td>
-                                    <td v-if="truck.trailer">{{ truck.trailer.trailer_number }}</td>
+                                    <td v-if="truck.trailer">{{ truck.trailer.plate_number }}</td>
                                     <td v-if="!truck.trailer"> -- </td>
                                     <td v-if="truck.driver">{{ truck.driver.first_name }}</td>
                                     <td v-if="!truck.driver">--</td>
@@ -61,12 +62,19 @@
         },
 
         created() {
+          this.$root.isLoading = true;
           http.get('/api/lsfuel').then( response => {
             this.vehicles = response.vehicles;
+            prepareTable();
+            this.$root.isLoading = false;
           });
         },
 
         methods: {
+
+            viewFuelsIndex(){
+              this.$router.push('/ls/fuelindex');
+            },
 
             fuel (truck) {
               this.$router.push('/ls/fuel/create/' + truck.id + '/' + truck.contract_id);
@@ -82,28 +90,6 @@
             date2(value) {
                 return window._date2(value);
             },
-
-
-
-            destroy(id) {
-                this.$root.isLoading = true;
-
-                http.destroy('api/journey/' + id + '/?s=' + window.Laravel.station_id).then(response => {
-                    if (response.status != 'success') {
-                        this.$root.isLoading = false;
-                        alert2(this.$root, [response.message], 'danger');
-                        return;
-                    }
-                    $('table').dataTable().fnDestroy();
-                    this.contracts = response.contracts;
-                    prepareTable();
-                    this.$root.isLoading = false;
-                    alert2(this.$root, [response.message], 'success');
-                }).catch((error) => {
-                    this.$root.isLoading = false;
-                    alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
-                });
-            }
         }
     }
 </script>

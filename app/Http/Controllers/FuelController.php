@@ -164,7 +164,8 @@ class FuelController extends Controller
         $data = $request->all();
         unset($data['_token'], $data['_method']);
         $data['date'] = Carbon::parse(str_replace('/', '-', $data['date']))->format('Y-m-d');
-
+        $data['user_id'] = Auth::id();
+        
         $fuel = Fuel::findOrFail($id);
         $fuel->update($data);
 

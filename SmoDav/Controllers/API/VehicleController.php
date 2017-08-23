@@ -26,6 +26,8 @@ use SmoDav\Models\Journey;
 use App\Fuel;
 use SmoDav\Models\LocalShunting\LSFuel;
 use SmoDav\Models\LocalShunting\LSDelivery;
+use SmoDav\Support\Constants;
+
 
 class VehicleController extends Controller
 {
@@ -311,12 +313,15 @@ class VehicleController extends Controller
         ]);
     }
 
-    public function lsfuelcreate($id)
+    public function lsfuelcreate($id, $contract)
     {
-      $vehicle_ls_fuel = LSFuel::where('vehicle_id', $id)->orderBy('created_at', 'desc')->first();
+      $vehicle_ls_fuel = LSFuel::where('vehicle_id', $id)->where('contract_id', $contract)->orderBy('created_at', 'desc')->first();
       if($vehicle_ls_fuel) {
         $last_refuel_time = $vehicle_ls_fuel->created_at;
-        $deliveries_since_refuel = count(LSDelivery::where('vehicle_id', $id)->where('created_at','>',$last_refuel_time)->get());
+        $deliveries_since_refuel = count(LSDelivery::where('vehicle_id', $id)
+        ->where('contract_id', $contract)
+        ->where('status', Constants::OFFLOADED)
+        ->get());
       } else {
         $deliveries_since_refuel = 0;
       }

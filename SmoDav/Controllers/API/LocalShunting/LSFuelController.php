@@ -8,41 +8,47 @@ use SmoDav\Models\LocalShunting\LSFuel;
 use Auth;
 use Response;
 use SmoDav\Models\Vehicle;
+use SmoDav\Support\Constants;
+
 
 class LSFuelController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public function lsfuelindex()
     {
         return Response::json([
-          'vehicles' => Vehicle::has('contract')->get()
+          'lsfuels' => LSFuel::with('vehicle','vehicle.driver','user','approved_by')->get()
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function index()
+    {
+        return Response::json([
+          'vehicles' => Vehicle::has('contract')->with('driver','trailer')->get()
+        ]);
+    }
+
+
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
+        $message = 'Truck successfully issued with fuel';
+
         $data = $request->all();
         $data['created_by'] = Auth::id();
+
+        if(intval($data['under_trips']) > 0) {
+          $data['status'] = Constants::STATUS_PENDING;
+          $message = 'Fuel Request pending approval';
+        } else {
+          $data['status'] = Constants::STATUS_APPROVED;
+        }
+
         $lsfuel = LSFuel::create($data);
 
         $vehicle = Vehicle::findOrFail($data['vehicle_id']);
@@ -50,55 +56,35 @@ class LSFuelController extends Controller
         $vehicle->current_fuel = $data['total_in_tank'];
         $vehicle->update();
 
+
+
         return Response::json([
           'status' => 'Success',
-          'message' => 'Truck successfully issued with fuel'
+          'message' => $message
         ]);
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        
+      return Response::json([
+        'lsfuel' => LSFuel::where('id', $id)->with('vehicle','vehicle.driver','user','approved_by')->first()
+      ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function approveLSFuel($id)
     {
-        //
+        $lsfuel = LSFuel::findOrFail($id);
+        $lsfuel->status = Constants::STATUS_APPROVED;
+        $lsfuel->approved_by = Auth::id();
+        $lsfuel->update();
+
+        return Response::json([
+          'status' => 'success',
+          'message' => 'Fuel approved successfully',
+          'lsfuel' => LSFuel::where('id', $id)->with('vehicle','vehicle.driver','user','approved_by')->first()
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
 
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

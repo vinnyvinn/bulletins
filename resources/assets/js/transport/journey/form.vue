@@ -88,11 +88,6 @@ l <template>
                             </select>
                         </div>
 
-                        <!-- <div class="form-group">
-                            <label for="driver_id">Driver</label><br>
-
-                            {{ truck.driver ? truck.driver.first_name : '' }} {{ truck.driver ? truck.last_name : '' }}
-                        </div> -->
 
                         <div class="form-group">
                             <label for="driver_id">Driver</label>
@@ -100,6 +95,7 @@ l <template>
                                 <option v-for="driver in drivers" :value="driver.id">{{ driver.first_name }} {{ driver.last_name }} ({{ driver.mobile_phone }})</option>
                             </select>
                         </div>
+
                     </div>
 
 
@@ -298,6 +294,7 @@ l <template>
 
         data() {
             return {
+                temp_driver: false,
                 isContractsLoaded: false,
                 contracts: [],
                 drivers: [],
@@ -538,6 +535,8 @@ l <template>
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                 });
             },
+
+
         }
     }
 </script>

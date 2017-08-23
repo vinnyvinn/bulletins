@@ -69,16 +69,19 @@
 <script>
     export default {
         created() {
+          this.$root.isLoading = true;
             http.get('/api/journey?s=' + window.Laravel.station_id).then(response => {
                 this.journeys = response.journeys;
                 this.setupConfirm();
                 prepareTable();
+                this.$root.isLoading = false;
             });
         },
 
         data() {
             return {
-                journeys: []
+                journeys: [],
+
             };
         },
 
@@ -107,7 +110,7 @@
                         return;
                     }
                     $('table').dataTable().fnDestroy();
-                    this.contracts = response.contracts;
+                    this.journeys = response.journeys;
                     prepareTable();
                     this.$root.isLoading = false;
                     alert2(this.$root, [response.message], 'success');
@@ -115,7 +118,7 @@
                     this.$root.isLoading = false;
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                 });
-            }
-        }
+            },
+          }
     }
 </script>

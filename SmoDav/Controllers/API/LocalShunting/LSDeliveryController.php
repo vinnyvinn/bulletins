@@ -37,7 +37,7 @@ class LSDeliveryController extends Controller
       if(request('id')) {
         return Response::json([
           'vehicle' => Vehicle::where('id',request('id'))->with('contract','driver','trailer')->first(),
-          'drivers' => Driver::unassigned()->get()
+          'drivers' => Driver::unassigned()->orderBy('first_name')->get()
         ]);
       }
 
@@ -80,7 +80,7 @@ class LSDeliveryController extends Controller
     public function show($id)
     {
       return Response::json([
-        'delivery' => LSDelivery::findOrFail($id)
+        'delivery' => LSDelivery::where('id', $id)->with('vehicle','vehicle.driver','vehicle.trailer')->first()
       ]);
     }
 

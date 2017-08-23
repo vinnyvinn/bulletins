@@ -68,7 +68,6 @@
                             </select>
                         </div>
 
-
                         <div class="form-group">
                             <label for="driver_id">Driver</label>
                             <h5>{{ journey_close.driver.first_name }} {{ journey_close.driver.last_name
@@ -701,7 +700,6 @@
                     return alert2(this.$root, ['Current Km readings should be greater than previous Km reading'], 'danger');
                 }
             },
-
         }
     }
 </script>
