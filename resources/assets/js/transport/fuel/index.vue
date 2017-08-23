@@ -47,7 +47,8 @@
                     <td>{{ fuel.current_fuel }}</td>
                     <td>{{ fuel.fuel_requested }}</td>
                     <td>{{ fuel.fuel_issued }}</td>
-                    <td>{{ fuel.user.first_name }} {{ fuel.user.last_name }}</td>
+                    <td v-if="fuel.user">{{ fuel.user.first_name }} {{ fuel.user.last_name }}</td>
+                    <td v-if="!fuel.user">---</td>
                     <td>
                       <span @click="edit(fuel)" v-if="$root.can('edit-fuel')" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
                       <button v-if="$root.can('delete-fuel')" data-toggle="popover" :data-item="fuel.id" class="btn btn-xs btn-danger btn-destroy">
@@ -86,10 +87,12 @@
 <script>
 export default {
   created() {
-    http.get('/api/fuel/?s=' + window.Laravel.station_id).then(response => {
+    this.$root.isLoading = true;
+    http.get('/api/fuel/?s=' + window.Laravel.station_id).then( (response) => {
         this.fuels = response.fuel;
         this.setupConfirm();
         prepareTable();
+        this.$root.isLoading = false;
     });
   },
 
