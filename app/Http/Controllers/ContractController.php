@@ -394,10 +394,17 @@ class ContractController extends Controller
 
     public function contractTrucks ($id)
     {
+      $allocated_trucks = Vehicle::where('contract_id', $id)->with([
+        'trailer',
+        'lsdelivery' => function($q) {
+          return $q->where('status', Constants::LOADED);
+        }
+      ])->get();
+
       return Response::json([
         'contract_trucks' => Contract::select('trucks_allocated')->findOrFail($id),
         'contract_employees' => Employee::where('contract_id', $id)->get(),
-        'allocated_trucks' => Vehicle::where('contract_id', $id)->with(['trailer','lsdelivery'])->get()
+        'allocated_trucks' => $allocated_trucks
       ]);
     }
 
