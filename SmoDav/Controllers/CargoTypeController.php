@@ -35,7 +35,8 @@ class CargoTypeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(CargoTypeRequest $request)
@@ -54,7 +55,8 @@ class CargoTypeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\CargoType  $cargoType
+     * @param \App\CargoType $cargoType
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(CargoType $cargoType)
@@ -65,7 +67,8 @@ class CargoTypeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\CargoType  $cargoType
+     * @param \App\CargoType $cargoType
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(CargoType $cargoType)
@@ -76,8 +79,9 @@ class CargoTypeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\CargoType  $cargoType
+     * @param \Illuminate\Http\Request $request
+     * @param \App\CargoType           $cargoType
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, CargoType $cargoType)
@@ -88,7 +92,8 @@ class CargoTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\CargoType  $cargoType
+     * @param \App\CargoType $cargoType
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(CargoType $cargoType)

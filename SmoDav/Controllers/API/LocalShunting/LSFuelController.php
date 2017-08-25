@@ -10,30 +10,26 @@ use Response;
 use SmoDav\Models\Vehicle;
 use SmoDav\Support\Constants;
 
-
 class LSFuelController extends Controller
 {
-
     public function lsfuelindex()
     {
         return Response::json([
-          'lsfuels' => LSFuel::with('vehicle','vehicle.driver','user','approved_by')->get()
+          'lsfuels' => LSFuel::with('vehicle', 'vehicle.driver', 'user', 'approved_by')->get()
         ]);
     }
 
     public function index()
     {
         return Response::json([
-          'vehicles' => Vehicle::has('contract')->with('driver','trailer')->get()
+          'vehicles' => Vehicle::has('contract')->with('driver', 'trailer')->get()
         ]);
     }
-
 
     public function create()
     {
         //
     }
-
 
     public function store(Request $request)
     {
@@ -42,11 +38,11 @@ class LSFuelController extends Controller
         $data = $request->all();
         $data['created_by'] = Auth::id();
 
-        if(intval($data['under_trips']) > 0) {
-          $data['status'] = Constants::STATUS_PENDING;
-          $message = 'Fuel Request pending approval';
+        if (\intval($data['under_trips']) > 0) {
+            $data['status'] = Constants::STATUS_PENDING;
+            $message = 'Fuel Request pending approval';
         } else {
-          $data['status'] = Constants::STATUS_APPROVED;
+            $data['status'] = Constants::STATUS_APPROVED;
         }
 
         $lsfuel = LSFuel::create($data);
@@ -56,19 +52,16 @@ class LSFuelController extends Controller
         $vehicle->current_fuel = $data['total_in_tank'];
         $vehicle->update();
 
-
-
         return Response::json([
           'status' => 'Success',
           'message' => $message
         ]);
-
     }
 
     public function show($id)
     {
-      return Response::json([
-        'lsfuel' => LSFuel::where('id', $id)->with('vehicle','vehicle.driver','user','approved_by')->first()
+        return Response::json([
+        'lsfuel' => LSFuel::where('id', $id)->with('vehicle', 'vehicle.driver', 'user', 'approved_by')->first()
       ]);
     }
 
@@ -82,9 +75,7 @@ class LSFuelController extends Controller
         return Response::json([
           'status' => 'success',
           'message' => 'Fuel approved successfully',
-          'lsfuel' => LSFuel::where('id', $id)->with('vehicle','vehicle.driver','user','approved_by')->first()
+          'lsfuel' => LSFuel::where('id', $id)->with('vehicle', 'vehicle.driver', 'user', 'approved_by')->first()
         ]);
     }
-
-
 }

@@ -101,7 +101,7 @@ class Contract extends Model
 
     public function contractConfig()
     {
-        return $this->hasOne(contractConfig::class);
+        return $this->hasOne(ContractConfig::class);
     }
 
     public function lsfuels()

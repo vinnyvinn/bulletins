@@ -8,7 +8,6 @@ use App\Route;
 use App\Truck;
 use SmoDav\Support\Constants;
 use App\Fuel;
-use SmoDav\Models\Delivery;
 use App\User;
 
 class Journey extends SmoDavModel

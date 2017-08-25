@@ -73,7 +73,7 @@ class Requisition extends SmoDavModel
                 'iFromWhseID' => 1,
                 'iToWhseID' => $warehouseId,
                 'fQuantity' => (int) $line->issued_quantity,
-                'cReference' => "PR-" . $line->id . '-' . $index,
+                'cReference' => 'PR-' . $line->id . '-' . $index,
                 'cDescription' => 'Parts Requisition',
                 'iProjectID' => $project,
                 'iUnitsOfMeasureID' => 0
@@ -86,7 +86,7 @@ class Requisition extends SmoDavModel
     public function makeJournal($items)
     {
         $result = StockItem::select(['StockLink', 'AveUCst', 'iUOMStockingUnitID'])
-            ->whereIn('StockLink', array_keys($items))
+            ->whereIn('StockLink', \array_keys($items))
             ->get()
             ->keyBy('StockLink');
 
@@ -99,19 +99,19 @@ class Requisition extends SmoDavModel
 
             DB::table('_etblInvJrBatchLines')->insert(
                 [
-                    'iInvJrBatchID'     => Helpers::get_option(Option::CONSUMPTION_JOURNAL_BATCH),
-                    'iStockID'          => $itemId,
-                    'iWarehouseID'      => Helpers::get_option(Option::WAREHOUSE_TO_TRANSFER),
-                    'dTrDate'           => Carbon::now(),
-                    'iTrCodeID'         => 37,
-                    'iGLContraID'       => 5,
-                    'cReference'        => 'PR-' . $this->id . '-' .$itemId . time(),
-                    'cDescription'      => 'Consumption for PR-' . $this->id,
-                    'fQtyIn'            => 0,
-                    'fQtyOut'           => $quantity,
-                    'fNewCost'          => $details->AveUCst,
-                    'iProjectID'        => $project,
-                    'cLineNotes'        => '',
+                    'iInvJrBatchID' => Helpers::get_option(Option::CONSUMPTION_JOURNAL_BATCH),
+                    'iStockID' => $itemId,
+                    'iWarehouseID' => Helpers::get_option(Option::WAREHOUSE_TO_TRANSFER),
+                    'dTrDate' => Carbon::now(),
+                    'iTrCodeID' => 37,
+                    'iGLContraID' => 5,
+                    'cReference' => 'PR-' . $this->id . '-' . $itemId . \time(),
+                    'cDescription' => 'Consumption for PR-' . $this->id,
+                    'fQtyIn' => 0,
+                    'fQtyOut' => $quantity,
+                    'fNewCost' => $details->AveUCst,
+                    'iProjectID' => $project,
+                    'cLineNotes' => '',
                     'iUnitsOfMeasureId' => $details->iUOMStockingUnitID
                 ]);
         }

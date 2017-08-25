@@ -4,7 +4,6 @@ namespace SmoDav\Models;
 
 use Carbon\Carbon;
 use GuzzleHttp\Client;
-use SmoDav\Engine\PassportRepository;
 
 class APIIntegration extends SmoDavModel
 {
@@ -32,7 +31,7 @@ class APIIntegration extends SmoDavModel
     private function updatePayroll($attributes)
     {
         $attributes['redirect_uri'] =
-            substr($attributes['redirect_uri'], strlen(request()->getSchemeAndHttpHost()));
+            \substr($attributes['redirect_uri'], \strlen(request()->getSchemeAndHttpHost()));
 
         if ($attributes['grant_type'] == 'personal_token') {
             $this->update([
@@ -47,7 +46,7 @@ class APIIntegration extends SmoDavModel
         }
 
         $this->update([
-            'endpoint' => rtrim($attributes['endpoint'], '/'),
+            'endpoint' => \rtrim($attributes['endpoint'], '/'),
             'grant_type' => $attributes['grant_type'],
             'client_id' => $attributes['client_id'],
             'client_secret' => $attributes['client_secret'],
@@ -64,19 +63,19 @@ class APIIntegration extends SmoDavModel
             'read-employees'
         ];
 
-        $query = http_build_query([
+        $query = \http_build_query([
             'client_id' => $this->client_id,
             'redirect_uri' => request()->getSchemeAndHttpHost() . $this->redirect_uri,
             'response_type' => 'code',
-            'scope' => implode(' ', $scopes),
+            'scope' => \implode(' ', $scopes),
         ]);
 
-        return redirect(rtrim($this->endpoint, '/') . '/oauth/authorize?' .$query);
+        return redirect(\rtrim($this->endpoint, '/') . '/oauth/authorize?' . $query);
     }
 
     public function completeIntegration($attributes)
     {
-        if (array_key_exists('code', $attributes)) {
+        if (\array_key_exists('code', $attributes)) {
             return $this->requestAccessToken($attributes);
         }
 
@@ -91,7 +90,7 @@ class APIIntegration extends SmoDavModel
         $http = new Client;
 
         try {
-            $response = $http->post(rtrim($this->endpoint, '/') .'/oauth/token', [
+            $response = $http->post(\rtrim($this->endpoint, '/') . '/oauth/token', [
                 'form_params' => [
                     'grant_type' => 'authorization_code',
                     'client_id' => $this->client_id,
@@ -101,7 +100,7 @@ class APIIntegration extends SmoDavModel
                 ],
             ]);
 
-            $tokens = json_decode((string) $response->getBody(), true);
+            $tokens = \json_decode((string) $response->getBody(), true);
 
             $this->update([
                 'access_token' => $tokens['access_token'],

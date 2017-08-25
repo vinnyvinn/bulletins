@@ -2,22 +2,16 @@
 
 namespace SmoDav\Factory;
 
-use function abort;
 use App\Contract;
-use App\Support\Core;
 use App\Trailer;
 use App\Trip;
 use App\Truck;
 use Carbon\Carbon;
 use DB;
-use function json_decode;
-use function round;
 use SmoDav\SAGE\Cashier;
-use function strtoupper;
 
 class TruckFactory
 {
-
     public static function atLocation($location)
     {
         switch ($location) {
@@ -66,7 +60,7 @@ class TruckFactory
 
     public static function create($attributes)
     {
-        $attributes['plate_number'] = strtoupper($attributes['plate_number']);
+        $attributes['plate_number'] = \strtoupper($attributes['plate_number']);
         $attributes['project_id'] = self::createInSAGE($attributes);
         $truck = Truck::create($attributes);
 
@@ -161,14 +155,14 @@ class TruckFactory
         $quantity = $route->distance;
         $delNote = $trip->deliveryNote;
         $receiveNote = $trip->receiveNote;
-        $receiveNote->fields = json_decode($receiveNote->fields);
+        $receiveNote->fields = \json_decode($receiveNote->fields);
 
         if ($contract->rate == Contract::PER_KM) {
             $quantity = $route->distance;
         }
 
         if ($contract->rate == Contract::PER_HR) {
-            $quantity = round((Carbon::parse($delNote->createdAt)->diffInMinutes($receiveNote->createdAt)) / 60);
+            $quantity = \round((Carbon::parse($delNote->createdAt)->diffInMinutes($receiveNote->createdAt)) / 60);
         }
 
         if ($contract->rate == Contract::PER_TONNE) {

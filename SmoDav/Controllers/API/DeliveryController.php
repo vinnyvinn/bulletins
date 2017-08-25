@@ -2,7 +2,6 @@
 
 namespace SmoDav\Controllers\API;
 
-use App\Client;
 use App\Contract;
 use App\Driver;
 use App\Http\Controllers\Controller;
@@ -11,12 +10,9 @@ use App\Truck;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Response;
-use SmoDav\Models\CargoClassification;
 use SmoDav\Models\CargoType;
-use SmoDav\Models\CarriagePoint;
 use SmoDav\Models\Delivery;
 use SmoDav\Models\Journey;
-use SmoDav\Models\Mileage;
 use SmoDav\Support\Constants;
 use Auth;
 
@@ -70,7 +66,7 @@ class DeliveryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
@@ -78,7 +74,7 @@ class DeliveryController extends Controller
     {
         $data = $request->all();
         unset($data['_token'], $data['_method']);
-        $data['raw'] = json_encode($data);
+        $data['raw'] = \json_encode($data);
 
         foreach ($data as $key => $value) {
             if ($value == 'null') {
@@ -118,15 +114,16 @@ class DeliveryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param Delivery $delivery
+     * @param \Illuminate\Http\Request $request
+     * @param Delivery                 $delivery
+     *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
     public function update(Request $request, Delivery $delivery)
     {
         $data = $request->all();
         unset($data['_token'], $data['_method']);
-        $data['raw'] = json_encode($data);
+        $data['raw'] = \json_encode($data);
 
         foreach ($data as $key => $value) {
             if ($value == 'null') {
@@ -147,6 +144,7 @@ class DeliveryController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Delivery $delivery
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Delivery $delivery)

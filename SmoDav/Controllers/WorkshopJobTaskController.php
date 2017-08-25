@@ -25,7 +25,7 @@ class WorkshopJobTaskController extends Controller
     {
         $operations = WorkshopJobOperation::all(['id', 'name']);
 
-        if (! count($operations)) {
+        if (! \count($operations)) {
             return redirect()->route('workshop.job-type.index')
                 ->with('error', 'Please create a job operation first before creating a task');
         }
@@ -77,6 +77,7 @@ class WorkshopJobTaskController extends Controller
             })
             ->addColumn('actions', function ($record) {
                 return '';
+
                 return '<a href="' . route('workshop.job-type.show', $record->id) .
                     '" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>';
             })

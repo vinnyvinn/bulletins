@@ -5,10 +5,9 @@ namespace SmoDav\Models\LocalShunting;
 use Illuminate\Database\Eloquent\Model;
 use App\User;
 
-
 class LSEmployeeMileage extends Model
 {
-  protected $fillable = [
+    protected $fillable = [
     'contract_id',
     'employee_id',
     'amount',
@@ -17,8 +16,8 @@ class LSEmployeeMileage extends Model
     'user_id'
   ];
 
-  public function user()
-  {
-    return $this->belongsTo(User::class);
-  }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

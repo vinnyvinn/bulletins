@@ -25,7 +25,7 @@
                                     <td>{{ contract.client.Name }}</td>
                                     <td>Progress</td>
                                     <td>
-                                      <router-link :to="'/ls/mileage/'+ contract.id">
+                                      <router-link v-if="$root.can('ls-create-mileage')" :to="'/ls/mileage/'+ contract.id">
                                         <span class="btn btn-xs btn-success">Allocate Mileage</span>
                                       </router-link>
                                     </td>

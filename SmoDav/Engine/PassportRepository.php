@@ -4,7 +4,6 @@ namespace SmoDav\Engine;
 
 use App\Option;
 use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Request;
 use SmoDav\Models\APIIntegration;
 
 class PassportRepository
@@ -25,7 +24,7 @@ class PassportRepository
             'headers' => self::getHeaders($token)
         ]);
 
-        return json_decode((string) $response->getBody());
+        return \json_decode((string) $response->getBody());
     }
 
     private static function makeRequests($endpoint, APIIntegration $integration)
@@ -33,11 +32,11 @@ class PassportRepository
         $result = [];
         $nextPage = $endpoint;
         try {
-            ini_set('max_execution_time', 300);
-            while (! is_null($nextPage)) {
+            \ini_set('max_execution_time', 300);
+            while (! \is_null($nextPage)) {
                 $response = self::getRequest($nextPage, $integration->access_token);
                 $nextPage = $response->next_page_url;
-                $result = array_merge($result, $response->data);
+                $result = \array_merge($result, $response->data);
             }
         } catch (\Exception $exception) {
             return false;
@@ -49,7 +48,7 @@ class PassportRepository
     public static function getPayrollDepartments()
     {
         $payroll = APIIntegration::payroll();
-        $endpoint = trim($payroll->endpoint, " \t\n\r\0\x0B/") . '/api/v1/department';
+        $endpoint = \trim($payroll->endpoint, " \t\n\r\0\x0B/") . '/api/v1/department';
 
         return self::makeRequests($endpoint, $payroll);
     }
@@ -68,11 +67,11 @@ class PassportRepository
             })
             ->toArray();
 
-        $query = http_build_query([
-            'departments' => implode(',', $departments)
+        $query = \http_build_query([
+            'departments' => \implode(',', $departments)
         ]);
 
-        $endpoint = trim($payroll->endpoint, " \t\n\r\0\x0B/") . '/api/v1/employee?' . $query;
+        $endpoint = \trim($payroll->endpoint, " \t\n\r\0\x0B/") . '/api/v1/employee?' . $query;
 
         return self::makeRequests($endpoint, $payroll);
     }

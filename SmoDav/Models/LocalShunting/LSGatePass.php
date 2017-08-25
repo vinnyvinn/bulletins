@@ -3,7 +3,6 @@
 namespace SmoDav\Models\LocalShunting;
 
 use Illuminate\Database\Eloquent\Model;
-use SmoDav\Models\LocalShunting\LSGatePass;
 use SmoDav\Models\Vehicle;
 use App\User;
 
@@ -13,11 +12,11 @@ class LSGatePass extends Model
 
     public function vehicle()
     {
-      return $this->belongsTo(Vehicle::class);
+        return $this->belongsTo(Vehicle::class);
     }
 
     public function user()
     {
-      return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 }

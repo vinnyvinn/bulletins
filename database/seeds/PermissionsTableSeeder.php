@@ -216,28 +216,28 @@ class PermissionsTableSeeder extends Seeder
             $permission[] = [
                 'name' => 'Create ' . $title,
                 'group' => 'localshunting',
-                'slug' => 'create-' . $module,
+                'slug' => 'ls-create-' . $module,
                 'description' => 'Allow the user to create the ' . $title
             ];
 
             $permission[] = [
                 'name' => 'View ' . $title,
                 'group' => 'localshunting',
-                'slug' => 'view-' . $module,
+                'slug' => 'ls-view-' . $module,
                 'description' => 'Allow the user to view the ' . $title
             ];
 
             $permission[] = [
                 'name' => 'Edit ' . $title,
                 'group' => 'localshunting',
-                'slug' => 'edit-' . $module,
+                'slug' => 'ls-edit-' . $module,
                 'description' => 'Allow the user to edit the ' . $title
             ];
 
             $permission[] = [
                 'name' => 'Delete ' . $title,
                 'group' => 'localshunting',
-                'slug' => 'delete-' . $module,
+                'slug' => 'ls-delete-' . $module,
                 'description' => 'Allow the user to delete the ' . $title
             ];
 
@@ -245,7 +245,7 @@ class PermissionsTableSeeder extends Seeder
                 $permission [] = [
                     'name' => 'Approve ' . $title,
                     'group' => 'localshunting',
-                    'slug' => 'approve-' . $module,
+                    'slug' => 'ls-approve-' . $module,
                     'description' => 'Allow the user to approve the ' . $module
                 ];
             }

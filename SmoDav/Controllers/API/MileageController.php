@@ -2,18 +2,12 @@
 
 namespace SmoDav\Controllers\API;
 
-use App\Client;
-use App\Contract;
 use App\Driver;
 use App\Http\Controllers\Controller;
 use App\Route;
 use App\Truck;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Response;
-use SmoDav\Models\CargoClassification;
-use SmoDav\Models\CargoType;
-use SmoDav\Models\CarriagePoint;
 use SmoDav\Models\Journey;
 use SmoDav\Models\Mileage;
 use SmoDav\Models\MileageType;
@@ -38,7 +32,7 @@ class MileageController extends Controller
             ->get([
                 'id', 'journey_id', 'mileage_type', 'standard_amount', 'requested_amount', 'approved_amount', 'status'
             ]);
-            
+
         return Response::json([
             'mileages' => $mileages
         ]);
@@ -59,7 +53,6 @@ class MileageController extends Controller
                     ->firstOrFail();
 
             $toExclude = ['Return Mileage'];
-
 
             foreach ($journey->mileages as $mile) {
                 $toExclude[] = $mile->mileage_type;
@@ -91,7 +84,7 @@ class MileageController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
@@ -99,7 +92,7 @@ class MileageController extends Controller
     {
         $data = $request->all();
         unset($data['_token'], $data['_method']);
-        $data['raw'] = json_encode($data);
+        $data['raw'] = \json_encode($data);
 
         foreach ($data as $key => $value) {
             if ($value == 'null') {
@@ -135,7 +128,6 @@ class MileageController extends Controller
             }])
             ->first();
 
-
         $toExclude = [];
 
         if ($mileage->mileage_type != 'Return Mileage') {
@@ -161,16 +153,16 @@ class MileageController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
+     * @param Mileage                  $mileage
      *
-     * @param Mileage $mileage
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
     public function update(Request $request, Mileage $mileage)
     {
         $data = $request->all();
         unset($data['_token'], $data['_method']);
-        $data['raw'] = json_encode($data);
+        $data['raw'] = \json_encode($data);
 
         foreach ($data as $key => $value) {
             if ($value == 'null') {
@@ -193,7 +185,6 @@ class MileageController extends Controller
      * @param Mileage $mileage
      *
      * @return \Illuminate\Http\JsonResponse
-     *
      */
     public function destroy(Mileage $mileage)
     {

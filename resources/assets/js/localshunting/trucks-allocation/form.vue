@@ -34,7 +34,7 @@
                                     <td> {{ truck.plate_number }} </td>
                                     <td> <span v-if="truck.trailer">{{ truck.trailer.plate_number }}</span></td>
                                     <td> <span v-if="truck.driver">{{ truck.driver.first_name }}</span></td>
-                                    <td> <button type="button" @click="allocate(truck)" name="button" class="btn btn-sm btn-success">Add</button></td>
+                                    <td> <button v-if="$root.can('ls-create-allocation') || $root.can('ls-edit-allocation')" type="button" @click="allocate(truck)" name="button" class="btn btn-sm btn-success">Add</button></td>
                                 </tr>
                                 </tbody>
 
@@ -75,7 +75,7 @@
                                     <td><span v-if="allocatedtruck.trailer"> {{ allocatedtruck.trailer.plate_number}} </span></td>
                                     <td><span v-if="allocatedtruck.driver"> {{ allocatedtruck.driver.first_name }} </span></td>
                                     <td>
-                                      <button type="button" @click="toggleRemoveTruck(allocatedtruck)" class="btn btn-sm btn-danger"><i class="fa fa-minus"></i></button>
+                                      <button v-if="$root.can('ls-delete-allocation') || $root.can('ls-edit-allocation')" type="button" @click="toggleRemoveTruck(allocatedtruck)" class="btn btn-sm btn-danger"><i class="fa fa-minus"></i></button>
                                     </td>
                                 </tr>
                                 <tr v-if="unallocateTruck">

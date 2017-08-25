@@ -7,12 +7,9 @@ use App\Support\Core;
 use App\Truck;
 use Illuminate\Database\Eloquent\Model;
 use App\Contract;
-use SmoDav\Models\GatePass;
 use SmoDav\Models\LocalShunting\LSGatePass;
 use SmoDav\Models\Model as VehicleModel;
 use SmoDav\Models\LocalShunting\LSDelivery;
-
-
 
 class Vehicle extends Model
 {
@@ -43,7 +40,7 @@ class Vehicle extends Model
 
     public function trailer()
     {
-        return $this->belongsTo(Vehicle::class, 'trailer_id');
+        return $this->belongsTo(self::class, 'trailer_id');
     }
 
     public function truck()
@@ -58,22 +55,22 @@ class Vehicle extends Model
 
     public function contract()
     {
-      return $this->belongsTo(Contract::class);
+        return $this->belongsTo(Contract::class);
     }
 
     public function gatepass()
     {
-      return $this->hasOne(GatePass::class);
+        return $this->hasOne(GatePass::class);
     }
 
     public function lsgatepass()
     {
-      return $this->hasOne(LSGatePass::class);
+        return $this->hasOne(LSGatePass::class);
     }
 
     public function lsdelivery()
     {
-      return $this->hasMany(LSDelivery::class);
+        return $this->hasMany(LSDelivery::class);
     }
 
     public function make()

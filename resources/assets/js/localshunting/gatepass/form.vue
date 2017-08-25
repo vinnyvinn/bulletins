@@ -6,18 +6,18 @@
           </div>
           <div class="panel-body">
               <div class="row">
-              <form action="#" role="form" @submit.prevent="store">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <select class="select2 col-sm-12" name="truck" v-model="gatepass.vehicle_id" id="truck" required>
-                      <option :value="vehicle.id" v-for="vehicle in vehicles">{{ vehicle.plate_number }}</option>
+                <form v-if="$root.can('ls-create-gatepass')" action="#" role="form" @submit.prevent="store">
+                  <div class="col-sm-6">
+                    <div class="form-group">
                       <label for="truck">Select Vehicle</label>
-                    </select>
+                      <select class="select2 col-sm-12" name="truck" v-model="gatepass.vehicle_id" id="truck" required>
+                        <option :value="vehicle.id" v-for="vehicle in vehicles">{{ vehicle.plate_number }}</option>
+                      </select>
+                    </div>
                   </div>
-                </div>
-                <div class="col-sm-6">
-                  <button type="submit" name="button" class="btn btn-sm btn-success">Check In</button>
-                </div>
+                  <div class="col-sm-6">
+                    <button type="submit" name="button" class="btn btn-sm btn-success">Check In</button>
+                  </div>
                 </form>
               </div>
 

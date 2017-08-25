@@ -2,18 +2,12 @@
 
 namespace SmoDav\Controllers\API;
 
-use App\Client;
-use App\Contract;
 use App\Driver;
 use App\Http\Controllers\Controller;
 use App\Route;
 use App\Truck;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Response;
-use SmoDav\Models\CargoClassification;
-use SmoDav\Models\CargoType;
-use SmoDav\Models\CarriagePoint;
 use SmoDav\Models\Inspection;
 use SmoDav\Models\Journey;
 use SmoDav\Support\Constants;
@@ -66,7 +60,7 @@ class InspectionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
@@ -74,7 +68,7 @@ class InspectionController extends Controller
     {
         $data = $request->all();
         unset($data['_token'], $data['_method']);
-        $data['fields'] = json_encode($data);
+        $data['fields'] = \json_encode($data);
         $data['inspector_id'] = \Auth::id();
         $data['status'] = Constants::STATUS_APPROVED;
         $data['suitable_for_loading'] = $data['suitable_for_loading'] != 0;
@@ -98,7 +92,7 @@ class InspectionController extends Controller
         $inspection = Inspection::with(['journey','journey.truck','journey.driver','journey.truck.trailer','journey.route'])
         ->where('id', $id)
         ->first();
-        $inspection->fields = json_decode($inspection->fields);
+        $inspection->fields = \json_decode($inspection->fields);
 
         return Response::json([
             'status' => 'success',
@@ -111,9 +105,8 @@ class InspectionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     *
-     * @param Inspection                $inspection
+     * @param \Illuminate\Http\Request $request
+     * @param Inspection               $inspection
      *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
@@ -121,7 +114,7 @@ class InspectionController extends Controller
     {
         $data = $request->all();
         unset($data['_token'], $data['_method']);
-        $data['fields'] = json_encode($data);
+        $data['fields'] = \json_encode($data);
         $data['inspector_id'] = \Auth::id();
         $data['status'] = Constants::STATUS_APPROVED;
         $data['suitable_for_loading'] = $data['suitable_for_loading'] != 0;
@@ -193,7 +186,7 @@ class InspectionController extends Controller
         ]);
     }
 
-    public function newInspection ($id)
+    public function newInspection($id)
     {
         return Response::json([
             'status' => 'success',
@@ -204,5 +197,4 @@ class InspectionController extends Controller
             'inspector' => true,
         ]);
     }
-
 }

@@ -30,7 +30,8 @@ class JobCardController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -41,7 +42,8 @@ class JobCardController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\JobCard  $jobCard
+     * @param \App\JobCard $jobCard
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(JobCard $jobCard)
@@ -52,7 +54,8 @@ class JobCardController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\JobCard  $jobCard
+     * @param \App\JobCard $jobCard
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(JobCard $jobCard)
@@ -63,8 +66,9 @@ class JobCardController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\JobCard  $jobCard
+     * @param \Illuminate\Http\Request $request
+     * @param \App\JobCard             $jobCard
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, JobCard $jobCard)
@@ -75,7 +79,8 @@ class JobCardController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\JobCard  $jobCard
+     * @param \App\JobCard $jobCard
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(JobCard $jobCard)

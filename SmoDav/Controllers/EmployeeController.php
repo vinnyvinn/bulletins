@@ -11,7 +11,6 @@ use SmoDav\Engine\PassportRepository;
 use SmoDav\Models\WorkshopEmployee;
 use SmoDav\Support\Constants;
 use Yajra\Datatables\Facades\Datatables;
-use App\UDF;
 
 class EmployeeController extends Controller
 {
@@ -25,6 +24,7 @@ class EmployeeController extends Controller
         if (request()->ajax()) {
             return $this->getTableData();
         }
+
         return view('masters.employees.index')
             ->with('type', request('t', 'employees'));
     }
@@ -42,7 +42,8 @@ class EmployeeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -54,6 +55,7 @@ class EmployeeController extends Controller
      * Display the specified resource.
      *
      * @param  $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -73,12 +75,14 @@ class EmployeeController extends Controller
             default:
                 break;
         }
-        return view('masters.employees.show', ['driver'=>Driver::findOrFail($id)]);
+
+        return view('masters.employees.show', ['driver' => Driver::findOrFail($id)]);
     }
 
     public function edit($id)
     {
         $employee = WorkshopEmployee::findOrFail($id);
+
         return view('masters.employees.edit')
             ->with('type', request('t', 'employees'))
             ->with('driver', Driver::findOrFail($id));
@@ -98,11 +102,11 @@ class EmployeeController extends Controller
 
             if ($request->hasFile($key)) {
                 $extension = $request->file($key)->getClientOriginalExtension();
-                $filename = time().".".$extension;
+                $filename = \time() . '.' . $extension;
                 $request->file($key)->move(public_path('uploads'), $filename);
                 $driver->{$key} = $filename;
             }
-          }
+        }
 
         $driver->save();
 
@@ -121,7 +125,6 @@ class EmployeeController extends Controller
         session()->flash('flash_status', 'success');
 
         return redirect()->route('super.employee.index');
-
     }
 
     private function getTableData($type = null)
@@ -139,6 +142,7 @@ class EmployeeController extends Controller
                 $results = WorkshopEmployee::select($fields);
                 break;
         }
+
         return Datatables::of($results)
             ->addColumn('actions', function ($result) {
                 return
@@ -159,7 +163,7 @@ class EmployeeController extends Controller
     public function importFromPayroll()
     {
         try {
-            ini_set('max_execution_time', 3000);
+            \ini_set('max_execution_time', 3000);
             $employees = PassportRepository::getPayrollEmployees();
             $departments = Option::select(['option_key', 'option_value'])
                 ->whereIn('option_key', [Option::PAYROLL_DEPARTMENT_DRIVER, Option::PAYROLL_WORKSHOP_DRIVER])
@@ -178,7 +182,7 @@ class EmployeeController extends Controller
                 return $employee->identification_number;
             })->toArray();
 
-            $currentEmployees = array_merge($drivers, $workshopEmployees);
+            $currentEmployees = \array_merge($drivers, $workshopEmployees);
 
             unset($drivers, $workshopEmployees);
 
@@ -187,7 +191,7 @@ class EmployeeController extends Controller
                 foreach ($value as $employee) {
                     $employee = (array) $employee;
 
-                    if (in_array($employee['identification_number'], $currentEmployees)) {
+                    if (\in_array($employee['identification_number'], $currentEmployees)) {
                         continue;
                     }
 

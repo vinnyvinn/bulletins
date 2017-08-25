@@ -6,10 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use App\User;
 use SmoDav\Models\Vehicle;
 
-
 class LSMileage extends Model
 {
-  protected $fillable = [
+    protected $fillable = [
     'contract_id',
     'vehicle_id',
     'amount',
@@ -18,15 +17,13 @@ class LSMileage extends Model
     'user_id'
   ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
-
-  public function user()
-  {
-    return $this->belongsTo(User::class);
-  }
-
-  public function vehicle()
-  {
-    return $this->belongsTo(Vehicle::class);
-  }
+    public function vehicle()
+    {
+        return $this->belongsTo(Vehicle::class);
+    }
 }
