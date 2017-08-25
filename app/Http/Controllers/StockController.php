@@ -8,8 +8,6 @@ use App\Shop;
 use App\Stock;
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Yajra\Datatables\Datatables;
 
@@ -23,14 +21,14 @@ class StockController extends Controller
     public function index()
     {
         $pageTitle = 'Stock List';
-        return view(session('userLevel') .'stock_index', compact('pageTitle'));
-    }
 
+        return view(session('userLevel') . 'stock_index', \compact('pageTitle'));
+    }
 
     public function indexData()
     {
         $user = Auth::user();
-        
+
         $stocks = Stock::orderBy('id', 'desc')
             ->when(! $user->isSuperAdmin(), function ($builder) use ($user) {
                 return $builder->where('shop_id', $user->shop);
@@ -40,10 +38,10 @@ class StockController extends Controller
 
         return Datatables::of($stocks)
             ->editColumn('total_product', function ($stock) {
-                return number_format($stock->total_product, 2);
+                return \number_format($stock->total_product, 2);
             })
             ->editColumn('unite_price', function ($stock) {
-                return number_format($stock->unite_price, 2);
+                return \number_format($stock->unite_price, 2);
             })
             ->editColumn('product_id', function ($stock) {
                 return $stock->product->product_name;
@@ -52,10 +50,11 @@ class StockController extends Controller
                 if ($stock->shop_id == 0) {
                     return '<label class="label label-success">In House</label>';
                 }
-                return '<span class="text-success"> '.$stock->shop->name.' </span>';
+
+                return '<span class="text-success"> ' . $stock->shop->name . ' </span>';
             })
             ->editColumn('created_at', function ($stock) {
-                return '<span title="'. $stock->created_at->format('F d, Y') .
+                return '<span title="' . $stock->created_at->format('F d, Y') .
                     '" data-toggle="tooltip" data-placement="top"> ' . $stock->created_at->diffForHumans() .
                     ' </span>';
             })
@@ -76,7 +75,6 @@ class StockController extends Controller
             ->make(true);
     }
 
-
     /**
      * Show the form for creating a new resource.
      *
@@ -86,20 +84,22 @@ class StockController extends Controller
     {
         $pageTitle = 'Add Stock';
         $products = Product::all();
-        return view('admin.stock_create', compact('pageTitle', 'products'));
+
+        return view('admin.stock_create', \compact('pageTitle', 'products'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $rules = [
-            'product'       => 'required',
-            'unite_price'   => 'required',
+            'product' => 'required',
+            'unite_price' => 'required',
             'total_product' => 'required',
         ];
 
@@ -109,15 +109,15 @@ class StockController extends Controller
         $shop_base_activity = '';
         $unit_price = $request->input('unite_price');
 
-        if(array_has($request->input(), 'shop')) {
+        if (array_has($request->input(), 'shop')) {
             $rules['shop'] = 'required';
             unset($rules['unite_price']);
             $shop_id = $request->input('shop');
             $unit_price = 0;
 
-            if( ! empty($shop_id)) {
+            if (! empty($shop_id)) {
                 $shop_detail = Shop::find($shop_id);
-                $shop_base_activity = ' to '.$shop_detail->name;
+                $shop_base_activity = ' to ' . $shop_detail->name;
             }
         }
 
@@ -127,43 +127,46 @@ class StockController extends Controller
         $product_id = $request->input('product');
 
         $stockData = [
-            'shop_id'       => $shop_id,
-            'product_id'    => $product_id,
-            'unite_price'   => $unit_price,
+            'shop_id' => $shop_id,
+            'product_id' => $product_id,
+            'unite_price' => $unit_price,
             'total_product' => $request->input('total_product'),
-            'user_id'       => $user->id,
+            'user_id' => $user->id,
         ];
 
         $create = Stock::create($stockData);
 
-        if($create) {
+        if ($create) {
             $product = Product::find($product_id);
-                //Add Activity
-                Activity::create(['user_id' => $user->id, 'activity' => 'You have added '.$stockData['total_product']. '  '.$product->product_name. $shop_base_activity ]);
-                return redirect()->back()->with('success', 'Stock Added success');
-        }
-        return redirect()->back()->with('error', 'Something went wrong, please try again');
+            //Add Activity
+            Activity::create(['user_id' => $user->id, 'activity' => 'You have added ' . $stockData['total_product'] . '  ' . $product->product_name . $shop_base_activity]);
 
+            return redirect()->back()->with('success', 'Stock Added success');
+        }
+
+        return redirect()->back()->with('error', 'Something went wrong, please try again');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-
         $pageTitle = 'Add Stock';
         $stock = Stock::find($id);
-        return view('admin.stock_show', compact('pageTitle', 'stock'));
+
+        return view('admin.stock_show', \compact('pageTitle', 'stock'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -171,15 +174,16 @@ class StockController extends Controller
         $pageTitle = 'Edit Stock';
         $products = Product::all();
         $stock = Stock::find($id);
-        return view('admin.stock_edit', compact('pageTitle', 'products', 'stock'));
 
+        return view('admin.stock_edit', \compact('pageTitle', 'products', 'stock'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -187,13 +191,13 @@ class StockController extends Controller
         $stock = Stock::find($id);
 
         $rules = [
-            'product'       => 'required',
+            'product' => 'required',
             'total_product' => 'required',
         ];
 
-        if($stock->shop_id == 0) {
-            $rules['unite_price']   = 'required';
-            $stock->unite_price =  $request->input('unite_price');
+        if ($stock->shop_id == 0) {
+            $rules['unite_price'] = 'required';
+            $stock->unite_price = $request->input('unite_price');
         }
 
         $this->validate($request, $rules);
@@ -203,20 +207,21 @@ class StockController extends Controller
         $total_product = $request->input('total_product');
 
         $stock->product_id = $product_id;
-        if($stock->shop_id == 0) {
-            $stock->unite_price =  $request->input('unite_price');
+        if ($stock->shop_id == 0) {
+            $stock->unite_price = $request->input('unite_price');
         }
         $stock->total_product = $total_product;
         $update = $stock->save();
 
-        if($update) {
+        if ($update) {
             $product = Product::find($product_id);
             //Add Activity
-            Activity::create(['user_id' => $user->id, 'activity' => 'You have updated stock '.$total_product. ' products  '.$product->product_name ]);
+            Activity::create(['user_id' => $user->id, 'activity' => 'You have updated stock ' . $total_product . ' products  ' . $product->product_name]);
+
             return redirect()->back()->with('success', 'Stock updated success');
         }
-        return redirect()->back()->with('error', 'Something went wrong, please try again');
 
+        return redirect()->back()->with('error', 'Something went wrong, please try again');
     }
 
     public function transferToShop()
@@ -225,19 +230,21 @@ class StockController extends Controller
         $shops = Shop::where('status', 1)->get();
         $products = Product::all();
 
-        return view('admin.transfer_stock', compact('pageTitle','shops', 'products'));
+        return view('admin.transfer_stock', \compact('pageTitle', 'shops', 'products'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request)
     {
         $stock_id = $request->input('stock_id');
         Stock::destroy($stock_id);
+
         return ['status' => 1];
     }
 }

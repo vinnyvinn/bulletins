@@ -6,8 +6,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
-use App\Fuel;
-use App\Contract;
 use SmoDav\Models\Mileage;
 use SmoDav\Models\Journey;
 use SmoDav\Models\Delivery;
@@ -51,9 +49,8 @@ class User extends Authenticatable
     {
         $email = $this->email;
         $url = 'http://www.gravatar.com/avatar/';
-        $url .= md5(strtolower(trim($email)));
+        $url .= \md5(\strtolower(\trim($email)));
         $url .= "?s=$s&d=$d&r=$r";
-
 
         if (!empty($this->photo)) {
             $url = asset('uploads/photo/' . $this->photo);
@@ -157,7 +154,7 @@ class User extends Authenticatable
         return $this->belongsToMany(Station::class);
     }
 
-    public function gatepass ()
+    public function gatepass()
     {
         return $this->hasOne(GatePass::class);
     }

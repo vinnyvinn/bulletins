@@ -6,9 +6,7 @@ use App\Http\Requests\TrailerRequest;
 use App\Http\Requests\UploadRequest;
 use App\Trailer;
 use Carbon\Carbon;
-use function collect;
 use Exception;
-use Illuminate\Http\Request;
 use Response;
 use SmoDav\Support\Excel;
 
@@ -40,7 +38,7 @@ class TrailerController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  TrailerRequest  $request
+     * @param TrailerRequest $request
      *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
@@ -51,7 +49,7 @@ class TrailerController extends Controller
             $data[$key] = $item;
             if ($request->hasFile($key)) {
                 $extension = $request->file($key)->getClientOriginalExtension();
-                $filename = time().".".$extension;
+                $filename = \time() . '.' . $extension;
                 $request->file($key)->move(public_path('uploads'), $filename);
                 $data[$key] = $filename;
             }
@@ -70,7 +68,7 @@ class TrailerController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Trailer  $trailer
+     * @param \App\Trailer $trailer
      *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
@@ -85,7 +83,8 @@ class TrailerController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Trailer  $trailer
+     * @param \App\Trailer $trailer
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Trailer $trailer)
@@ -96,8 +95,8 @@ class TrailerController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Trailer  $trailer
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Trailer             $trailer
      *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
@@ -109,7 +108,7 @@ class TrailerController extends Controller
 
             if ($request->hasFile($key)) {
                 $extension = $request->file($key)->getClientOriginalExtension();
-                $filename = time().".".$extension;
+                $filename = \time() . '.' . $extension;
                 $request->file($key)->move(public_path('uploads'), $filename);
                 $data[$key] = $filename;
             }
@@ -127,7 +126,7 @@ class TrailerController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Trailer  $trailer
+     * @param \App\Trailer $trailer
      *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
@@ -174,6 +173,7 @@ class TrailerController extends Controller
             Trailer::insert($rows);
         } catch (Exception $ex) {
             echo $ex->getMessage();
+
             return Response::json([
                 'status' => 'error',
                 'message' => 'Please use the sample file format provided and fill all the required fields.'
@@ -186,5 +186,4 @@ class TrailerController extends Controller
             'trailers' => Trailer::all()
         ]);
     }
-
 }

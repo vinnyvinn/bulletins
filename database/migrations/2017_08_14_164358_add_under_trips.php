@@ -8,26 +8,22 @@ class AddUnderTrips extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
-      Schema::table('l_s_fuels', function (Blueprint $table) {
-          $table->integer('under_trips')->nullable();
-          $table->string('reason')->nullable();
-      });
+        Schema::table('l_s_fuels', function (Blueprint $table) {
+            $table->integer('under_trips')->nullable();
+            $table->string('reason')->nullable();
+        });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
-      Schema::table('l_s_fuels', function (Blueprint $table) {
-          //
-      });
+        Schema::table('l_s_fuels', function (Blueprint $table) {
+            //
+        });
     }
 }

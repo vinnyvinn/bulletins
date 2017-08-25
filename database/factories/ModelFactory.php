@@ -29,4 +29,3 @@ $factory->define(SmoDav\Models\Station::class, function (Faker\Generator $faker)
         'location' => $faker->streetName,
     ];
 });
-

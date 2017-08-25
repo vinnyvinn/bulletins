@@ -8,8 +8,6 @@ class CargoSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
     public function run()
     {
@@ -54,4 +52,3 @@ class CargoSeeder extends Seeder
         CargoType::insert($toImport);
     }
 }
-

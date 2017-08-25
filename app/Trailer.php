@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Trailer extends Model
 {
-//    use SoftDeletes;
+    //    use SoftDeletes;
 
     protected $fillable = [
         'trailer_number', 'make', 'type', 'truck_id'

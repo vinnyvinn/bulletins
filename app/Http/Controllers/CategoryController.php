@@ -6,8 +6,6 @@ use App\Activity;
 use App\Category;
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Yajra\Datatables\Datatables;
 
@@ -22,22 +20,23 @@ class CategoryController extends Controller
     {
         $pageTitle = 'Categories';
 
-        return view('admin.category_index', compact('pageTitle'));
+        return view('admin.category_index', \compact('pageTitle'));
     }
 
     public function indexData()
     {
         $categories = Category::select(['id', 'category_name', 'created_at']);
-        
+
         return Datatables::of($categories)
             ->editColumn('created_at', function ($category) {
-                return '<span title="'. $category->created_at->format('F d, Y') .
+                return '<span title="' . $category->created_at->format('F d, Y') .
                     '" data-toggle="tooltip" data-placement="top"> ' . $category->created_at->diffForHumans() .
                     ' </span>';
             })
             ->addColumn('actions', function ($category) {
-                $button = '<a href="'. route('edit_category', $category->id) .'" class="btn btn-xs btn-info" title="Edit" data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil"></i> </a>';
-                $button .= '<a href="javascript:;" class="btn btn-xs btn-danger deleteCategory" title="Delete" data-toggle="tooltip" data-placement="top" data-id="'.$category->id.'"><i class="fa fa-trash-o"></i> </a>';
+                $button = '<a href="' . route('edit_category', $category->id) . '" class="btn btn-xs btn-info" title="Edit" data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil"></i> </a>';
+                $button .= '<a href="javascript:;" class="btn btn-xs btn-danger deleteCategory" title="Delete" data-toggle="tooltip" data-placement="top" data-id="' . $category->id . '"><i class="fa fa-trash-o"></i> </a>';
+
                 return $button;
             })
             ->rawColumns(['actions', 'created_at'])
@@ -54,18 +53,19 @@ class CategoryController extends Controller
     {
         $pageTitle = 'Create Category';
 
-        return view('admin.category_create', compact('pageTitle'));
+        return view('admin.category_create', \compact('pageTitle'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $user= Auth::user();
+        $user = Auth::user();
         $rules = [
             'category_name' => 'required'
         ];
@@ -79,7 +79,7 @@ class CategoryController extends Controller
         $create = Category::create($data);
 
         if ($create) {
-            Activity::create(['user_id' => $user->id, 'activity' => 'You have added '.$category_name. '  category']);
+            Activity::create(['user_id' => $user->id, 'activity' => 'You have added ' . $category_name . '  category']);
 
             return redirect()->route('all_categories')->with('success', 'Category create success');
         }
@@ -90,7 +90,8 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -101,7 +102,8 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -110,14 +112,15 @@ class CategoryController extends Controller
 
         $category = Category::find($id);
 
-        return view('admin.category_edit', compact('pageTitle', 'category'));
+        return view('admin.category_edit', \compact('pageTitle', 'category'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -149,7 +152,8 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request)
@@ -161,12 +165,12 @@ class CategoryController extends Controller
         $category_name = $category->category_name;
         $destroy = $category->delete();
 
-        if($destroy)
-        {
+        if ($destroy) {
             $response['status'] = 1;
-            $response['msg']    = 'Success';
+            $response['msg'] = 'Success';
         }
-        Activity::create(['user_id' => $user->id, 'activity' => 'You have deleted '.$category_name. '  category']);
+        Activity::create(['user_id' => $user->id, 'activity' => 'You have deleted ' . $category_name . '  category']);
+
         return $response;
     }
 }

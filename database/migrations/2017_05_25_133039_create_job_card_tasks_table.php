@@ -8,8 +8,6 @@ class CreateJobCardTasksTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -38,8 +36,6 @@ class CreateJobCardTasksTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

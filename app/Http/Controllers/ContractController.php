@@ -9,7 +9,6 @@ use App\Option;
 use App\Route;
 use App\StockItem;
 use Carbon\Carbon;
-use DB;
 use Illuminate\Http\Request;
 use Response;
 use SmoDav\Models\CargoClassification;
@@ -17,9 +16,7 @@ use SmoDav\Models\CargoType;
 use SmoDav\Models\CarriagePoint;
 use SmoDav\Support\Constants;
 use SmoDav\Models\Vehicle;
-use function str_replace;
 use Auth;
-use SmoDav\Models\Journey;
 use App\Employee;
 
 class ContractController extends Controller
@@ -71,8 +68,7 @@ class ContractController extends Controller
         $items = StockItem::where('ItemGroup', Helpers::get_option(Option::BILLABLE_GROUP))
             ->select(['StockLink', 'Description_1'])
             ->get();
-        $last_contract_id = Contract::orderBy('created_at','desc')->first(['id']);
-
+        $last_contract_id = Contract::orderBy('created_at', 'desc')->first(['id']);
 
         return Response::json([
             'routes' => Route::all(['id', 'source', 'destination', 'distance']),
@@ -88,7 +84,7 @@ class ContractController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
@@ -101,24 +97,24 @@ class ContractController extends Controller
             }
         }
 
-        $data['start_date'] = Carbon::parse(str_replace('/', '-', $data['start_date']))->format('Y-m-d');
-        $data['end_date'] = Carbon::parse(str_replace('/', '-', $data['start_date']))
+        $data['start_date'] = Carbon::parse(\str_replace('/', '-', $data['start_date']))->format('Y-m-d');
+        $data['end_date'] = Carbon::parse(\str_replace('/', '-', $data['start_date']))
             ->addDays($data['estimated_days'])
             ->format('Y-m-d');
 
         $data['berthing_date'] = isset($data['berthing_date']) ?
-            Carbon::parse(str_replace('/', '-', $data['berthing_date']))->format('Y-m-d') :
+            Carbon::parse(\str_replace('/', '-', $data['berthing_date']))->format('Y-m-d') :
             null;
         $data['vessel_arrival_date'] = isset($data['vessel_arrival_date']) ?
-            Carbon::parse(str_replace('/', '-', $data['vessel_arrival_date']))->format('Y-m-d') :
+            Carbon::parse(\str_replace('/', '-', $data['vessel_arrival_date']))->format('Y-m-d') :
             null;
 
-        $data['unloading_points'] = json_decode($data['unloading_points']);
-        $data['shifts'] = json_decode($data['shifts']);
+        $data['unloading_points'] = \json_decode($data['unloading_points']);
+        $data['shifts'] = \json_decode($data['shifts']);
 
-        $data['raw'] = json_encode($data);
-        $data['shifts'] = json_encode($data['shifts']);
-        $data['unloading_points'] = json_encode($data['unloading_points']);
+        $data['raw'] = \json_encode($data);
+        $data['shifts'] = \json_encode($data['shifts']);
+        $data['unloading_points'] = \json_encode($data['unloading_points']);
         $data['user_id'] = Auth::id();
         $data['ignore_delivery_note'] = 0;
         $data['capture_loading_weights'] = 0;
@@ -141,14 +137,14 @@ class ContractController extends Controller
         ];
 
         foreach ($data as $key => $item) {
-            if (in_array($key, $ignore)) {
+            if (\in_array($key, $ignore)) {
                 continue;
             }
 
             $contract->{$key} = $item;
             if ($request->hasFile($key)) {
                 $extension = $request->file($key)->getClientOriginalExtension();
-                $filename = time().".".$extension;
+                $filename = \time() . '.' . $extension;
                 $request->file($key)->move(public_path('uploads'), $filename);
                 $contract->{$key} = $filename;
             }
@@ -158,7 +154,7 @@ class ContractController extends Controller
 
         return Response::json([
             'message' => 'Successfully created new contract ending on ' .
-                Carbon::parse(str_replace('/', '-', $data['end_date']))->format('l dS F Y')
+                Carbon::parse(\str_replace('/', '-', $data['end_date']))->format('l dS F Y')
         ]);
     }
 
@@ -166,6 +162,7 @@ class ContractController extends Controller
      * Display the specified resource.
      *
      * @param $id
+     *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
     public function show($id)
@@ -193,7 +190,7 @@ class ContractController extends Controller
             }
         ])->findOrFail($id);
 
-        $contract->raw = json_decode($contract->raw);
+        $contract->raw = \json_decode($contract->raw);
 
         return Response::json([
             'routes' => Route::all(['id', 'source', 'destination', 'distance']),
@@ -209,8 +206,8 @@ class ContractController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Contract  $contract
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Contract            $contract
      *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
@@ -232,25 +229,24 @@ class ContractController extends Controller
         $data['subcontracted'] = 0;
         $data['ignore_delivery_note'] = 0;
         $data['allow_route_change'] = 0;
-        $data['start_date'] = Carbon::parse(str_replace('/', '-', $data['start_date']))->format('Y-m-d');
-        $data['end_date'] = Carbon::parse(str_replace('/', '-', $data['start_date']))
+        $data['start_date'] = Carbon::parse(\str_replace('/', '-', $data['start_date']))->format('Y-m-d');
+        $data['end_date'] = Carbon::parse(\str_replace('/', '-', $data['start_date']))
             ->addDays($data['estimated_days'])
             ->format('Y-m-d');
 
         $data['berthing_date'] = isset($data['berthing_date']) ?
-            Carbon::parse(str_replace('/', '-', $data['berthing_date']))->format('Y-m-d') :
+            Carbon::parse(\str_replace('/', '-', $data['berthing_date']))->format('Y-m-d') :
             null;
         $data['vessel_arrival_date'] = isset($data['vessel_arrival_date']) ?
-            Carbon::parse(str_replace('/', '-', $data['vessel_arrival_date']))->format('Y-m-d') :
+            Carbon::parse(\str_replace('/', '-', $data['vessel_arrival_date']))->format('Y-m-d') :
             null;
 
+        $data['unloading_points'] = \json_decode($data['unloading_points']);
+        $data['shifts'] = \json_decode($data['shifts']);
 
-        $data['unloading_points'] = json_decode($data['unloading_points']);
-        $data['shifts'] = json_decode($data['shifts']);
-
-        $data['raw'] = json_encode($data);
-        $data['shifts'] = json_encode($data['shifts']);
-        $data['unloading_points'] = json_encode($data['unloading_points']);
+        $data['raw'] = \json_encode($data);
+        $data['shifts'] = \json_encode($data['shifts']);
+        $data['unloading_points'] = \json_encode($data['unloading_points']);
 
         unset($data['_token'], $data['_method']);
         $ignore = [
@@ -259,7 +255,7 @@ class ContractController extends Controller
         ];
 
         foreach ($data as $key => $item) {
-            if (in_array($key, $ignore)) {
+            if (\in_array($key, $ignore)) {
                 continue;
             }
 
@@ -272,7 +268,7 @@ class ContractController extends Controller
 
             if ($request->hasFile($key)) {
                 $extension = $request->file($key)->getClientOriginalExtension();
-                $filename = time().".".$extension;
+                $filename = \time() . '.' . $extension;
                 $request->file($key)->move(public_path('uploads'), $filename);
                 $contract->{$key} = $filename;
             }
@@ -288,7 +284,7 @@ class ContractController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Contract  $contract
+     * @param \App\Contract $contract
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -322,16 +318,16 @@ class ContractController extends Controller
         ]);
 
         $contract_vehicles = Vehicle::where('contract_id', $id)->get();
-        foreach($contract_vehicles as $contract_vehicle) {
-          $contract_vehicle->contract_id = null;
-          $contract_vehicle->update();
+        foreach ($contract_vehicles as $contract_vehicle) {
+            $contract_vehicle->contract_id = null;
+            $contract_vehicle->update();
         }
 
         $contract_employees = Employee::where('contract_id', $id)->get();
 
-        foreach($contract_employees as $contract_employee) {
-          $contract_employee->contract_id = null;
-          $contract_employee->update();
+        foreach ($contract_employees as $contract_employee) {
+            $contract_employee->contract_id = null;
+            $contract_employee->update();
         }
 
         return Response::json([
@@ -354,54 +350,54 @@ class ContractController extends Controller
 
     public function allocateTruck(Request $request)
     {
-      $data = $request->all();
-      $contract = Contract::findOrFail($data['contract_id']);
+        $data = $request->all();
+        $contract = Contract::findOrFail($data['contract_id']);
 
-      $currently_allocated_trucks = $contract->vehicles;
+        $currently_allocated_trucks = $contract->vehicles;
 
-      foreach($currently_allocated_trucks as $currently_allocated_truck) {
-        $currently_allocated_truck->contract_id = null;
-        $currently_allocated_truck->update();
-      }
+        foreach ($currently_allocated_trucks as $currently_allocated_truck) {
+            $currently_allocated_truck->contract_id = null;
+            $currently_allocated_truck->update();
+        }
 
-      foreach($data['allocatedtrucks'] as $truck) {
-        $truck = Vehicle::findOrFail($truck['id']);
-        $contract->vehicles()->save($truck);
-      }
+        foreach ($data['allocatedtrucks'] as $truck) {
+            $truck = Vehicle::findOrFail($truck['id']);
+            $contract->vehicles()->save($truck);
+        }
 
-      return Response::json([
+        return Response::json([
         'status' => 'success',
         'message' => 'Trucks Successfully Allocated',
         'allocated_trucks' => $contract->vehicles
       ]);
     }
 
-    public function lscontracts ()
+    public function lscontracts()
     {
-      return Response::json([
+        return Response::json([
         'contracts' => Contract::where('status', Constants::STATUS_APPROVED)->with('client')->get()
       ]);
     }
 
     public function lscontractShow($id)
     {
-      return Response::json([
+        return Response::json([
         'contract' => Contract::where('id', $id)
         ->with(['vehicles','vehicles.trailer','vehicles.driver', 'client'])
         ->first()
       ]);
     }
 
-    public function contractTrucks ($id)
+    public function contractTrucks($id)
     {
-      $allocated_trucks = Vehicle::where('contract_id', $id)->with([
+        $allocated_trucks = Vehicle::where('contract_id', $id)->with([
         'trailer',
-        'lsdelivery' => function($q) {
-          return $q->where('status', Constants::LOADED);
+        'lsdelivery' => function ($q) {
+            return $q->where('status', Constants::LOADED);
         }
       ])->get();
 
-      return Response::json([
+        return Response::json([
         'contract_trucks' => Contract::select('trucks_allocated')->findOrFail($id),
         'contract_employees' => Employee::where('contract_id', $id)->get(),
         'allocated_trucks' => $allocated_trucks
@@ -410,15 +406,15 @@ class ContractController extends Controller
 
     public function unallocate(Request $request)
     {
-      $data = $request->all();
+        $data = $request->all();
 
-      $vehicle = Vehicle::findOrFail($data['id']);
+        $vehicle = Vehicle::findOrFail($data['id']);
 
-      $vehicle->current_fuel = $data['contract_end_fuel'];
-      $vehicle->contract_id = null;
-      $vehicle->save();
+        $vehicle->current_fuel = $data['contract_end_fuel'];
+        $vehicle->contract_id = null;
+        $vehicle->save();
 
-      return Response::json([
+        return Response::json([
         'vehicle' => $vehicle,
         'status' => 'success',
         'message' => 'Vehicle Successfully removed from contract.'
@@ -426,7 +422,5 @@ class ContractController extends Controller
     }
     public function updateFuelValue(Request $request)
     {
-
     }
-
 }

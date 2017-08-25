@@ -1,6 +1,5 @@
 <?php
 
-use App\Core;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -9,8 +8,6 @@ class CreateDriversTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -25,7 +22,7 @@ class CreateDriversTable extends Migration
             $table->string('email')->nullable();
             $table->string('mobile_phone', 13)->nullable();
             $table->string('dl_number')->nullable();
-            $table->integer('truck_id')->nullable()->index()->unsigned();           
+            $table->integer('truck_id')->nullable()->index()->unsigned();
             $table->softDeletes();
             $table->timestamps();
         });
@@ -33,8 +30,6 @@ class CreateDriversTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

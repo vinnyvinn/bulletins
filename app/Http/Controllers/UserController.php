@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Invoice;
 use App\User;
 use Auth;
-use Illuminate\Http\Request;
 use Response;
 
 class UserController extends Controller
@@ -26,13 +25,14 @@ class UserController extends Controller
     public function workIndex()
     {
         $pageTitle = 'All Staff List';
-        return view('admin.agents', compact('pageTitle'));
-    }
 
+        return view('admin.agents', \compact('pageTitle'));
+    }
 
     public function logout()
     {
         Auth::logout();
+
         return redirect(route('sign_in'));
     }
 
@@ -42,12 +42,12 @@ class UserController extends Controller
 
         $shop = $user->shop;
 
-        $year = date('Y');
+        $year = \date('Y');
 
         $sales_data = Invoice::when($shop, function ($builder) use ($shop) {
             return $builder->where('shop_id', $shop->id);
         })
-            ->whereRaw('YEAR(created_at) ='.$year)
+            ->whereRaw('YEAR(created_at) =' . $year)
             ->selectRaw('DATEPART(MM, created_at) as month, sum(total_price) as amount')
             ->groupBy('created_at')
             ->orderBy('created_at')
@@ -56,12 +56,11 @@ class UserController extends Controller
         $label = '[';
         $amount = '';
         foreach ($sales_data as $data) {
-            $label .= '"'.$data->month.'", ';
-            $amount .= $data->amount.', ';
+            $label .= '"' . $data->month . '", ';
+            $amount .= $data->amount . ', ';
         }
         $label .= ']';
 
-
-        return view('user_admin.dashboard', compact('user', 'label', 'amount'));
+        return view('user_admin.dashboard', \compact('user', 'label', 'amount'));
     }
 }

@@ -3,15 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use function redirect;
 use Response;
 
 class HomeController extends Controller
 {
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -47,8 +44,8 @@ class HomeController extends Controller
         return redirect('/');
     }
 
-    public function localshunting ()
+    public function localshunting()
     {
-      return view('localshunting');
+        return view('localshunting');
     }
 }

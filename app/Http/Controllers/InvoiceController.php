@@ -3,60 +3,55 @@
 namespace App\Http\Controllers;
 
 use App\Invoice;
-use App\Payment_request;
-use App\Repair_invoice;
 use Barryvdh\DomPDF\PDF;
-use Illuminate\Http\Request;
 
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Yajra\Datatables\Datatables;
 
 class InvoiceController extends Controller
 {
-
     public function shopSales()
     {
         $user = Auth::user();
 
         $pageTitle = 'All Sales';
 
-        if ($user->isSuperAdmin()){
-            return view('admin.sales_index', compact('pageTitle'));
+        if ($user->isSuperAdmin()) {
+            return view('admin.sales_index', \compact('pageTitle'));
         }
 
-        return view('user_admin.sales_index', compact('pageTitle'));
-
+        return view('user_admin.sales_index', \compact('pageTitle'));
     }
 
     public function shopSalesData()
     {
         $user = Auth::user();
 
-        if($user->isSuperAdmin()) {
+        if ($user->isSuperAdmin()) {
             $invoices = Invoice::select('id', 'shop_id', 'user_id', 'invoice_id', 'total_price', 'customer_name', 'created_at')->with('shop', 'user');
 
             return Datatables::of($invoices)
-                ->addColumn('product', function($invoice){
+                ->addColumn('product', function ($invoice) {
                     $output = '';
-                    foreach($invoice->invoice_items as $item){
-                        $output .= $item->product_name.' <br />';
+                    foreach ($invoice->invoice_items as $item) {
+                        $output .= $item->product_name . ' <br />';
                     }
+
                     return $output;
                 })
-                ->editColumn('shop_id', function($invoice){
-                    if($invoice->shop) 
+                ->editColumn('shop_id', function ($invoice) {
+                    if ($invoice->shop) {
                         return $invoice->shop->name;
+                    }
                 })
-                ->editColumn('user_id', function($invoice){
+                ->editColumn('user_id', function ($invoice) {
                     return $invoice->user->get_fullname();
                 })
-                ->addColumn('created_at', function($invoice){
-                    return '<span title="'.$invoice->created_at->format('F d, Y').'" data-toggle="tooltip" data-placement="top"> '.$invoice->created_at->diffForHumans().' </span>';
+                ->addColumn('created_at', function ($invoice) {
+                    return '<span title="' . $invoice->created_at->format('F d, Y') . '" data-toggle="tooltip" data-placement="top"> ' . $invoice->created_at->diffForHumans() . ' </span>';
                 })
-                ->addColumn('actions', function($invoice){
-                    $button = '<a href="'.route('admin_view_sales_invoice', $invoice->id).'" class="btn btn-xs btn-success" title="View" data-toggle="tooltip" data-placement="top"><i class="fa fa-eye"></i> </a>';
+                ->addColumn('actions', function ($invoice) {
+                    $button = '<a href="' . route('admin_view_sales_invoice', $invoice->id) . '" class="btn btn-xs btn-success" title="View" data-toggle="tooltip" data-placement="top"><i class="fa fa-eye"></i> </a>';
 
                     return $button;
                 })
@@ -65,10 +60,8 @@ class InvoiceController extends Controller
                 ->rawColumns(['actions', 'created_at'])
                 ->removeColumn('id')
                 ->make(true);
-
         } else {
             $invoices = Invoice::where('user_id', $user->id)->select('id', 'shop_id', 'user_id', 'invoice_id', 'total_price', 'customer_name', 'created_at')->with('shop', 'user');
-
 
             return Datatables::of($invoices)
                 ->addColumn('product', function ($invoice) {
@@ -76,11 +69,13 @@ class InvoiceController extends Controller
                     foreach ($invoice->invoice_items as $item) {
                         $output .= $item->product_name . ' <br />';
                     }
+
                     return $output;
                 })
                 ->editColumn('shop_id', function ($invoice) {
-                    if($invoice->shop) 
+                    if ($invoice->shop) {
                         return $invoice->shop->name;
+                    }
                 })
                 ->editColumn('user_id', function ($invoice) {
                     return $invoice->user->get_fullname();
@@ -100,40 +95,40 @@ class InvoiceController extends Controller
         }
     }
 
-
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
         $user = Auth::user();
-        $pageTitle= 'Sales Invoice';
+        $pageTitle = 'Sales Invoice';
         $invoice = Invoice::where('id', $id)->with('items.product')->first();
-        
-        return view(session('userLevel') .'sales_invoice_show', compact('payment', 'invoice', 'pageTitle'));
+
+        return view(session('userLevel') . 'sales_invoice_show', \compact('payment', 'invoice', 'pageTitle'));
     }
 
     public function invoicePrint($id)
     {
         $invoice = Invoice::where('id', $id)->with('items.product')->first();
-        return view('invoice.sales_invoice', compact('payment', 'invoice'));
+
+        return view('invoice.sales_invoice', \compact('payment', 'invoice'));
     }
 
     public function invoicePDF($id)
     {
         $invoice = Invoice::find($id);
 
-        $pdf = \PDF::loadView('invoice.sales_invoice-pdf', compact('invoice'));
-        return $pdf->download('invoice-'.$invoice->invoice_id.'.pdf');
+        $pdf = \PDF::loadView('invoice.sales_invoice-pdf', \compact('invoice'));
+
+        return $pdf->download('invoice-' . $invoice->invoice_id . '.pdf');
     }
 
-    public function trackRepairInvoice(){
-        return view('invoice.tracking_form', compact('payment', 'invoice'));
+    public function trackRepairInvoice()
+    {
+        return view('invoice.tracking_form', \compact('payment', 'invoice'));
     }
-
-
-
 }

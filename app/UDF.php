@@ -21,12 +21,11 @@ class UDF extends Model
     const FILE = 'file';
     const MODULES = ['Drivers', 'Routes', 'Trailers', 'Trucks', 'Contracts'];
     const TABLES = [
-        'Drivers'=>'drivers',
-        'Routes'=>'routes',
-        'Trailers'=>'trailers',
-        'Trucks'=>'trucks',
-        'Contracts'=>'contracts',
+        'Drivers' => 'drivers',
+        'Routes' => 'routes',
+        'Trailers' => 'trailers',
+        'Trucks' => 'trucks',
+        'Contracts' => 'contracts',
     ];
     protected $fillable = ['name', 'input_type', 'description', 'module', 'value', 'status','slug'];
-
 }

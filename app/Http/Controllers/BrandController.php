@@ -4,14 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Activity;
 use App\Brand;
-use App\Http\Helpers\Helpers;
 use App\Http\Requests\ModelRequest;
 use App\SAGEUDF;
 use DB;
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Yajra\Datatables\Facades\Datatables;
 
@@ -26,7 +23,7 @@ class BrandController extends Controller
     {
         $pageTitle = 'All Models';
 
-        return view('admin.brand_index', compact('pageTitle'));
+        return view('admin.brand_index', \compact('pageTitle'));
     }
 
     public function indexData()
@@ -42,7 +39,7 @@ class BrandController extends Controller
             ->addColumn('actions', function ($brand) {
                 $button = '<a href="' . route('edit_brand', $brand->id) .
                     '" class="btn btn-xs btn-info" title="Edit" data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil"></i></a>';
-                $button .= '<a href="javascript:;" class="btn btn-xs btn-danger deleteBrands" title="Delete" data-toggle="tooltip" data-placement="top" data-id="' . $brand->id .'"><i class="fa fa-trash-o"></i> </a>';
+                $button .= '<a href="javascript:;" class="btn btn-xs btn-danger deleteBrands" title="Delete" data-toggle="tooltip" data-placement="top" data-id="' . $brand->id . '"><i class="fa fa-trash-o"></i> </a>';
 
                 return $button;
             })
@@ -60,18 +57,19 @@ class BrandController extends Controller
     {
         $pageTitle = 'Create Model';
 
-        return view('admin.brand_create', compact('pageTitle'));
+        return view('admin.brand_create', \compact('pageTitle'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(ModelRequest $request)
     {
-        $user= Auth::user();
+        $user = Auth::user();
         $rules = [
             'brand_name' => 'required'
         ];
@@ -88,7 +86,7 @@ class BrandController extends Controller
             SAGEUDF::addModelUDF($brand_name);
 
             if ($create) {
-                Activity::create(['user_id' => $user->id, 'activity' => 'You have added '.$brand_name. '  brand']);
+                Activity::create(['user_id' => $user->id, 'activity' => 'You have added ' . $brand_name . '  brand']);
 
                 return redirect()->route('all_brands')->with('success', 'Model created successfully');
             }
@@ -100,7 +98,8 @@ class BrandController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -111,22 +110,24 @@ class BrandController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
         $pageTitle = 'Create Brands';
         $brand = Brand::find($id);
-        return view('admin.brand_edit', compact('pageTitle', 'brand'));
 
+        return view('admin.brand_edit', \compact('pageTitle', 'brand'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -144,20 +145,20 @@ class BrandController extends Controller
         $brand->brand_name = $brand_name;
         $update = $brand->save();
 
-        if($update)
-        {
-            Activity::create(['user_id' => $user->id, 'activity' => 'You have added '.$brand->brand_name. '  Brand']);
+        if ($update) {
+            Activity::create(['user_id' => $user->id, 'activity' => 'You have added ' . $brand->brand_name . '  Brand']);
 
             return redirect()->back()->with('success', 'Brand update success');
         }
-        return redirect()->back()->with('error', 'Something went wrong, please try again');
 
+        return redirect()->back()->with('error', 'Something went wrong, please try again');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request)
@@ -169,12 +170,12 @@ class BrandController extends Controller
         $brand_name = $brand->brand_name;
         $destroy = $brand->delete();
 
-        if($destroy)
-        {
+        if ($destroy) {
             $response['status'] = 1;
-            $response['msg']    = 'Success';
+            $response['msg'] = 'Success';
         }
-        Activity::create(['user_id' => $user->id, 'activity' => 'You have deleted '.$brand_name. '  Brand']);
+        Activity::create(['user_id' => $user->id, 'activity' => 'You have deleted ' . $brand_name . '  Brand']);
+
         return $response;
     }
 }

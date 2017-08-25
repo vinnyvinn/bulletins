@@ -7,8 +7,6 @@ class CreateMessagesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -19,7 +17,7 @@ class CreateMessagesTable extends Migration
             $table->string('subject');
             $table->text('message');
             $table->enum('is_read', [0,1]);
-            $table->enum('message_for', [ 'shop', 'admin','user']);
+            $table->enum('message_for', ['shop', 'admin','user']);
             $table->enum('from', ['shop', 'admin','user']);
             $table->integer('parent_id');
             $table->timestamps();
@@ -28,8 +26,6 @@ class CreateMessagesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

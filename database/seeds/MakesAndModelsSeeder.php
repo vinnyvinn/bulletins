@@ -8,8 +8,6 @@ class MakesAndModelsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
     public function run()
     {
@@ -189,10 +187,10 @@ class MakesAndModelsSeeder extends Seeder
 
         DB::transaction(function () use ($makes) {
             foreach ($makes as $make) {
-                $makeModel = Make::create(['name' => ucwords(strtolower($make['name']))]);
-                $models = array_map(function ($model) use ($makeModel) {
+                $makeModel = Make::create(['name' => \ucwords(\strtolower($make['name']))]);
+                $models = \array_map(function ($model) use ($makeModel) {
                     return [
-                        'name' => ucwords(strtolower($model)),
+                        'name' => \ucwords(\strtolower($model)),
                         'make_id' => $makeModel->id
                     ];
                 }, $make['models']);
@@ -202,6 +200,3 @@ class MakesAndModelsSeeder extends Seeder
         });
     }
 }
-
-
-

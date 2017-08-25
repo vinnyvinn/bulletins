@@ -8,12 +8,10 @@ class AddChangesToContractsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
-        Schema::table('contracts', function (Blueprint $table) {            
+        Schema::table('contracts', function (Blueprint $table) {
             $table->integer('trucks_allocated')->nullable()->change();
             $table->text('job_description')->nullable()->change();
             $table->integer('estimated_days')->nullable()->change();
@@ -27,8 +25,6 @@ class AddChangesToContractsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

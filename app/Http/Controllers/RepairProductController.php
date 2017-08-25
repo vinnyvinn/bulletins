@@ -8,8 +8,6 @@ use App\Repair_invoice_item;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Yajra\Datatables\Datatables;
 
@@ -24,7 +22,7 @@ class RepairProductController extends Controller
     {
         $pageTitle = 'Repair product index';
 
-        return view(session('userLevel') . 'repair_product_index', compact('pageTitle'));
+        return view(session('userLevel') . 'repair_product_index', \compact('pageTitle'));
     }
 
     public function repairInvoiceData()
@@ -73,7 +71,6 @@ class RepairProductController extends Controller
                 ->removeColumn('user')
                 ->rawColumns(['actions', 'created_at'])
                 ->make(true);
-
         } else {
             $invoices = Repair_invoice::where('user_id', $user->id)->select([
                 'id', 'shop_id', 'user_id', 'invoice_id', 'total_price', 'customer_name','created_at'
@@ -118,14 +115,12 @@ class RepairProductController extends Controller
         }
     }
 
-
     public function completedRepairProduct()
     {
         $pageTitle = 'Repair product index';
 
-        return view(session('userLevel') . 'completed_repair_product_index', compact('pageTitle'));
+        return view(session('userLevel') . 'completed_repair_product_index', \compact('pageTitle'));
     }
-
 
     public function completedRepairInvoiceData()
     {
@@ -167,6 +162,7 @@ class RepairProductController extends Controller
                 $button = '<a href="' . route(
                         'view_repair_invoice',
                         $invoice->invoice_id) . '" class="btn btn-xs btn-success" title="View" data-toggle="tooltip" data-placement="top"><i class="fa fa-eye"></i> </a>';
+
                 return $button;
             })
             ->removeColumn('id')
@@ -175,7 +171,6 @@ class RepairProductController extends Controller
             ->rawColumns(['actions', 'created_at'])
             ->make(true);
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -187,23 +182,23 @@ class RepairProductController extends Controller
         $pageTitle = 'Add new repair product';
         $products = Product::all();
 
-        return view(session('userLevel') . 'new_repair_product', compact('pageTitle', 'products'));
+        return view(session('userLevel') . 'new_repair_product', \compact('pageTitle', 'products'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $rules = [
-            'customer_name'    => 'required',
-            'customer_phone'   => 'required',
+            'customer_name' => 'required',
+            'customer_phone' => 'required',
             'customer_address' => 'required',
-            'delivery_date'    => 'required',
+            'delivery_date' => 'required',
         ];
         $this->validate($request, $rules);
         if (Cart::count() == 0) {
@@ -223,7 +218,7 @@ class RepairProductController extends Controller
         while ((Repair_invoice::where('invoice_id', $invoice_id)->count()) > 0) {
             $invoice_id = str_random(6);
         }
-        $invoice_id = strtoupper($invoice_id);
+        $invoice_id = \strtoupper($invoice_id);
 
         $total_price = Cart::total();
 
@@ -234,19 +229,18 @@ class RepairProductController extends Controller
         $delivery_date = $request->input('delivery_date');
         $special_note = $request->input('special_note');
 
-
         $invoice_data = [
-            'shop_id'          => $shop_id,
-            'user_id'          => $user->id,
-            'invoice_id'       => $invoice_id,
-            'total_price'      => $total_price,
-            'customer_name'    => $customer_name,
-            'customer_email'   => $customer_email,
-            'customer_phone'   => $customer_phone,
+            'shop_id' => $shop_id,
+            'user_id' => $user->id,
+            'invoice_id' => $invoice_id,
+            'total_price' => $total_price,
+            'customer_name' => $customer_name,
+            'customer_email' => $customer_email,
+            'customer_phone' => $customer_phone,
             'customer_address' => $customer_address,
-            'delivery_date'    => $delivery_date,
-            'special_note'     => $special_note,
-            'status'           => 'waiting'
+            'delivery_date' => $delivery_date,
+            'special_note' => $special_note,
+            'status' => 'waiting'
         ];
 
         $invoice_create = Repair_invoice::create($invoice_data);
@@ -255,12 +249,12 @@ class RepairProductController extends Controller
         if ($invoice_create) {
             foreach (Cart::content() as $row) {
                 $invoice_item = [
-                    'invoice_id'       => $invoice_create->id,
-                    'product_id'       => $row->id,
-                    'qty'              => $row->qty,
-                    'unit_price'       => $row->price,
+                    'invoice_id' => $invoice_create->id,
+                    'product_id' => $row->id,
+                    'qty' => $row->qty,
+                    'unit_price' => $row->price,
                     'unit_price_total' => $row->subtotal,
-                    'status'           => 'waiting'
+                    'status' => 'waiting'
                 ];
                 Repair_invoice_item::create($invoice_item);
             }
@@ -276,7 +270,7 @@ class RepairProductController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return \Illuminate\Http\Response
      */
@@ -287,12 +281,11 @@ class RepairProductController extends Controller
         $invoice = Repair_invoice::where('invoice_id', $id)->with('items.product')->first();
 
         if ($user->isSuperAdmin()) {
-            return view('admin.repair_invoice_show', compact('payment', 'invoice', 'pageTitle'));
+            return view('admin.repair_invoice_show', \compact('payment', 'invoice', 'pageTitle'));
         }
 
-        return view('user_admin.repair_invoice_show', compact('payment', 'invoice', 'pageTitle'));
+        return view('user_admin.repair_invoice_show', \compact('payment', 'invoice', 'pageTitle'));
     }
-
 
     public function changeRepairInvoiceStatus(Request $request)
     {
@@ -324,28 +317,26 @@ class RepairProductController extends Controller
         return ['status' => 0];
     }
 
-
     public function invoicePrint($id)
     {
         $invoice = Repair_invoice::where('invoice_id', $id)->with('items.product')->first();
 
-        return view('invoice.repair_invoice', compact('payment', 'invoice'));
+        return view('invoice.repair_invoice', \compact('payment', 'invoice'));
     }
 
     public function invoicePDF($id)
     {
         $invoice = Repair_invoice::where('invoice_id', $id)->with('items.product')->first();
 
-        $pdf = \PDF::loadView('invoice.repair_invoice-pdf', compact('invoice'));
+        $pdf = \PDF::loadView('invoice.repair_invoice-pdf', \compact('invoice'));
 
         return $pdf->download('invoice-' . $invoice->invoice_id . '.pdf');
-
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return \Illuminate\Http\Response
      */
@@ -357,8 +348,8 @@ class RepairProductController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int                      $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
      *
      * @return \Illuminate\Http\Response
      */
@@ -370,7 +361,7 @@ class RepairProductController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return \Illuminate\Http\Response
      */
@@ -379,10 +370,9 @@ class RepairProductController extends Controller
         //
     }
 
-
     public function trackRepairInvoice()
     {
-        return view('invoice.tracking_form', compact('payment', 'invoice'));
+        return view('invoice.tracking_form', \compact('payment', 'invoice'));
     }
 
     public function trackRepairInvoicePost(Request $request)
@@ -392,11 +382,9 @@ class RepairProductController extends Controller
 
         if ($invoice) {
             //return redirect(route('admin_print_sales_invoice', $invoice));
-            return view('invoice.repair_invoice', compact('invoice'));
+            return view('invoice.repair_invoice', \compact('invoice'));
         } else {
             return redirect()->back()->with('error', 'Invoice Not Found !');
         }
     }
-
-
 }

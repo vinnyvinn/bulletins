@@ -57,6 +57,4 @@ class Core
                 return self::AWAITING_ALLOCATION;
         }
     }
-
 }
-

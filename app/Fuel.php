@@ -2,8 +2,7 @@
 
 namespace App;
 
-use App\User;
-use Illuminate\Database\Eloquent\Builder;
+
 use Illuminate\Database\Eloquent\Model;
 use SmoDav\Models\Journey;
 
@@ -17,11 +16,11 @@ class Fuel extends Model
 
     public function journey()
     {
-      return $this->belongsTo(Journey::class);
+        return $this->belongsTo(Journey::class);
     }
 
     public function user()
     {
-       return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 }

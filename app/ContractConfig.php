@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Contract;
 
 class ContractConfig extends Model
 {
@@ -11,6 +10,6 @@ class ContractConfig extends Model
 
     public function contract()
     {
-      return $this->hasOne(Contract::class);
+        return $this->hasOne(Contract::class);
     }
 }

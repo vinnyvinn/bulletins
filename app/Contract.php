@@ -11,7 +11,6 @@ use SmoDav\Models\Delivery;
 use SmoDav\Support\Constants;
 use SmoDav\Models\Journey;
 use SmoDav\Models\Vehicle;
-use App\ContractConfig;
 use SmoDav\Models\LocalShunting\LSFuel;
 use SmoDav\Models\LocalShunting\LSGatePass;
 use SmoDav\Models\LocalShunting\LSDelivery;
@@ -35,7 +34,6 @@ class Contract extends Model
         'sub_delivery_address_3','sub_delivery_address_4','user_id', 'ignore_delivery_note', 'allow_route_change'
     ];
 
-
     public function classification()
     {
         return $this->belongsTo(CargoClassification::class, 'cargo_classification_id');
@@ -53,7 +51,7 @@ class Contract extends Model
 
     public function client()
     {
-        return $this->belongsTo(Client::class, 'client_id', 'DCLink')->select(array('DCLink', 'Name'));
+        return $this->belongsTo(Client::class, 'client_id', 'DCLink')->select(['DCLink', 'Name']);
     }
 
     public function route()
@@ -93,36 +91,36 @@ class Contract extends Model
 
     public function user()
     {
-      return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function vehicles()
     {
-      return $this->hasMany(Vehicle::class);
+        return $this->hasMany(Vehicle::class);
     }
 
     public function contractConfig()
     {
-      return $this->hasOne(contractConfig::class);
+        return $this->hasOne(contractConfig::class);
     }
 
     public function lsfuels()
     {
-      return $this->hasMany(LSFuel::class);
+        return $this->hasMany(LSFuel::class);
     }
 
     public function lsgatepasses()
     {
-      return $this->hasManyThrough(LSGatePass::class, Vehicle::class, 'contract_id', 'vehicle_id', 'id');
+        return $this->hasManyThrough(LSGatePass::class, Vehicle::class, 'contract_id', 'vehicle_id', 'id');
     }
 
     public function lsdeliveries()
     {
-      return $this->hasMany(LSDelivery::class);
+        return $this->hasMany(LSDelivery::class);
     }
 
     public function lsmileages()
     {
-      return $this->hasMany(LSMileage::class);
+        return $this->hasMany(LSMileage::class);
     }
 }

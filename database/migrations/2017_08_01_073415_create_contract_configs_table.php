@@ -8,8 +8,6 @@ class CreateContractConfigsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -38,8 +36,6 @@ class CreateContractConfigsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
