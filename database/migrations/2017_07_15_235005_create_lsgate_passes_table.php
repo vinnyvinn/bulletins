@@ -28,6 +28,6 @@ class CreateLSGatePassesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('gate_passes');
+        Schema::dropIfExists('l_s_gate_passes');
     }
 }

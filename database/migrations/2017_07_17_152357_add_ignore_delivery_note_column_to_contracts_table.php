@@ -15,10 +15,6 @@ class AddIgnoreDeliveryNoteColumnToContractsTable extends Migration
     {
         Schema::table('contracts', function (Blueprint $table) {
             $table->boolean('ignore_delivery_note')->default(false);
-            $table->integer('lsfuel')->nullable();
-            $table->integer('lsmileage')->nullable();
-            $table->integer('fuel')->nullable();
-            $table->integer('mileage')->nullable();
         });
     }
 

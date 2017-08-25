@@ -29,6 +29,6 @@ class CreateContractEmployees extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('ls_contract_employees');
     }
 }
