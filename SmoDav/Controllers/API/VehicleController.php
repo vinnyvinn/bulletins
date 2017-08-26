@@ -27,6 +27,7 @@ use App\Fuel;
 use SmoDav\Models\LocalShunting\LSFuel;
 use SmoDav\Models\LocalShunting\LSDelivery;
 use SmoDav\Support\Constants;
+use App\ContractConfig;
 
 
 class VehicleController extends Controller
@@ -326,11 +327,16 @@ class VehicleController extends Controller
         $deliveries_since_refuel = 0;
       }
 
+      $previous_refuels = count(LSFuel::where('vehicle_id', $id)->where('contract_id', $contract)->get());
+
       return Response::json([
+      'previous_refuels' => $previous_refuels,
       'truck' => Vehicle::findOrFail($id),
-      'average_trips' => Vehicle::findOrFail($id)->contract->contractConfig->trips,
       'trips' => $deliveries_since_refuel,
-      'fuels' => LSFuel::all()
+      'fuels' => LSFuel::all(),
+      'contract_settings' => ContractConfig::where('contract_id', $contract)->first([
+        'average_fuel_per_trip', 'trips_before_refuel', 'initial_fuel', 'refuel_1', 'refuel_2', 'refuel_3'
+        ])
       ]);
     }
 }

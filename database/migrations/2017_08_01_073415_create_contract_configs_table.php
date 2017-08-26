@@ -16,7 +16,7 @@ class CreateContractConfigsTable extends Migration
         Schema::create('contract_configs', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('contract_id')->unique();
-            $table->integer('average_fuel')->nullable();
+            $table->integer('average_fuel_per_trip')->nullable();
             $table->integer('supervisors')->nullable();
             $table->integer('supervisors_rate')->nullable();
             $table->integer('casuals')->nullable();
@@ -25,6 +25,7 @@ class CreateContractConfigsTable extends Migration
             $table->integer('operators_rate')->nullable();
             $table->integer('mechanics')->nullable();
             $table->integer('mechanics_rate')->nullable();
+            $table->integer('drivers_rate')->nullable();
             $table->integer('tail_gates')->nullable();
             $table->integer('tail_gates_rate')->nullable();
             $table->integer('trips_before_refuel')->nullable();

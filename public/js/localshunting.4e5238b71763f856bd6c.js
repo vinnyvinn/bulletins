@@ -100392,187 +100392,235 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
-    created: function created() {
-        var _this = this;
+  data: function data() {
+    return {
+      trips: 0,
+      truck: {},
+      fuel_reserve: 25,
+      km_covered: 0,
+      fuel_used: 0,
+      km_per_litre: 0,
+      fuel: {
+        station_id: window.Laravel.station_id,
+        contract_id: '',
+        vehicle_id: '',
+        current_fuel: 0,
+        fuel_issued: 0,
+        total_in_tank: 0,
+        narration: '',
+        previous_km: 0,
+        previous_fuel: 0,
+        current_km: 0,
+        tank: '',
+        pump: '',
+        under_trips: 0,
+        reason: '',
+        refuel_number: 0,
+        needs_approval: false
+      },
+      can_save: false,
+      below_reserve: false,
+      deficit: '',
+      message: '',
+      contract_settings: {
+        average_fuel_per_trip: 0,
+        trips_before_refuel: 0,
+        initial_fuel: 0,
+        refuel_1: 0,
+        refuel_2: 0,
+        refuel_3: 0
+      },
+      first_fuelling: false,
+      previous_refuels: 0
+    };
+  },
+  created: function created() {
+    var _this = this;
 
-        if (!this.$route.params.id && !this.$route.params.unload && !this.$root.can('create-fuel')) {
-            this.$router.push('/403');
-            return false;
-        }
-
-        if (this.$route.params.id && !this.$root.can('edit-fuel')) {
-            this.$router.push('/403');
-            return false;
-        }
-
-        this.$root.isLoading = true;
-        this.fuel.vehicle_id = this.$route.params.id;
-        this.fuel.contract_id = this.$route.params.contract;
-
-        if (this.$route.params.id) {
-            this.can_save = true;
-        }
-        this.$root.isLoading = true;
-        http.get('/api/lsfuelcreate/' + this.$route.params.id + '/' + this.$route.params.contract).then(function (response) {
-            _this.truck = response.truck;
-            _this.average_trips = response.average_trips;
-            _this.trips = response.trips;
-            _this.fuel.under_trips = parseInt(_this.average_trips) - parseInt(_this.trips);
-            _this.refuelValidity();
-            _this.$root.isLoading = false;
-        });
-    },
-    mounted: function mounted() {
-
-        $('input[type="number"]').on('focus', function () {
-            this.select();
-        });
-    },
-    data: function data() {
-        return {
-            average_trips: 0,
-            trips: 0,
-            truck: {},
-            fuel_reserve: 25,
-            km_covered: 0,
-            fuel_used: 0,
-            km_per_litre: 0,
-            fuel: {
-                station_id: window.Laravel.station_id,
-                contract_id: '',
-                vehicle_id: '',
-                current_fuel: 0,
-                fuel_issued: 0,
-                total_in_tank: 0,
-                narration: '',
-                previous_km: 0,
-                previous_fuel: 0,
-                current_km: 0,
-                tank: '',
-                pump: '',
-                under_trips: 0,
-                reason: ''
-            },
-            can_save: false,
-            below_reserve: false,
-            deficit: '',
-            message: ''
-        };
-    },
-
-    computed: {
-        minimumKm: function minimumKm() {
-            return this.truck.current_km;
-        }
-    },
-
-    methods: {
-        refuelValidity: function refuelValidity() {
-            if (parseInt(this.trips) < parseInt(this.average_trips)) {
-                this.message = 'Trips done are less than the average trips set. Refueling requires approval.';
-                return false;
-            } else {
-                return true;
-            }
-        },
-        validateKm: function validateKm() {
-            if (parseFloat(this.fuel.current_km) < parseFloat(this.truck.current_km)) {
-                alert2(this.$root, ['Current Km should be more than previous Km'], 'danger');
-                this.fuel.current_km = 0;
-                return;
-            }
-        },
-        setupUI: function setupUI() {
-            var _this2 = this;
-
-            $('.datepicker').datepicker({
-                autoclose: true,
-                format: 'dd/mm/yyyy',
-                todayHighlight: true
-            });
-
-            $('#date').datepicker().on('changeDate', function (e) {
-                _this2.fuel.date = e.date.toLocaleDateString('en-GB');
-            });
-        },
-        checkState: function checkState() {
-            var _this3 = this;
-
-            if (this.$route.params.id) {
-                http.get('/api/fuel/' + this.$route.params.id).then(function (response) {
-                    _this3.fuel = response.fuel;
-                    _this3.setupUI();
-                    _this3.$root.isLoading = false;
-                });
-            }
-            this.setupUI();
-        },
-        calculateTotalFuel: function calculateTotalFuel() {
-            this.fuel.total_in_tank = parseInt(this.fuel.current_fuel) + parseInt(this.fuel.fuel_issued);
-        },
-        calculateTotal: function calculateTotal() {
-            var reserve = parseInt(this.fuel_reserve);
-            var current_fuel = parseInt(this.fuel.current_fuel);
-            var route_fuel_required = parseInt(this.current_route.fuel_required);
-
-            if (parseInt(this.fuel.current_fuel) < reserve) {
-                this.deficit = reserve - current_fuel;
-                this.below_reserve = true;
-            } else {
-                this.below_reserve = false;
-            }
-
-            this.fuel.fuel_requested = route_fuel_required + reserve - current_fuel;
-            return this.fuel.fuel_total = parseInt(this.fuel.fuel_issued) + parseInt(this.fuel.current_fuel);
-        },
-        calculateKms: function calculateKms() {
-            if (parseInt(this.fuel.current_km) < parseInt(this.current_vehicle.current_km)) {
-                this.can_save = false;
-                this.fuel.current_km = 0;
-                return alert2(this.$root, ['Current Km readings should be greater than previous Km reading'], 'danger');
-            }
-            this.fuel_used = parseInt(this.current_vehicle.current_fuel) - parseInt(this.fuel.current_fuel);
-            this.km_covered = parseInt(this.fuel.current_km) - parseInt(this.current_vehicle.current_km);
-
-            if (parseInt(this.fuel.current_km) > 0 && parseInt(this.fuel.current_km) > parseInt(this.current_vehicle.current_km)) {
-                this.can_save = true;
-            }
-
-            return this.km_per_litre = parseInt(this.km_covered) / parseInt(this.fuel_used);
-        },
-        getSource: function getSource() {
-            if (this.current_driver.avatar) {
-                return '/images/' + this.current_driver.avatar;
-            }
-            return '/images/default_avatar.png';
-        },
-        store: function store() {
-            var _this4 = this;
-
-            this.$root.isLoading = true;
-            // let request = null;
-
-            // let body = Object.assign({}, this.fuel)
-
-            // if(this.$route.params.id) {
-            //   request = axios.put('/api/fuel/'+ this.$route.params.id, body)
-            // } else {
-            var request = axios.post('/api/lsfuel', this.fuel);
-            // }
-
-            request.then(function (response) {
-                _this4.$root.isLoading = false;
-                alert2(_this4.$root, [response.data.message], 'success');
-
-                _this4.$router.push('/ls/trucks-allocation/' + _this4.fuel.contract_id);
-            }).catch(function (error) {
-                _this4.$root.isLoading = false;
-                alert2(_this4.$root, Object.values(JSON.parse(error.message)), 'danger');
-            });
-        }
+    if (!this.$route.params.id && !this.$route.params.unload && !this.$root.can('create-fuel')) {
+      this.$router.push('/403');
+      return false;
     }
+
+    if (this.$route.params.id && !this.$root.can('edit-fuel')) {
+      this.$router.push('/403');
+      return false;
+    }
+
+    this.$root.isLoading = true;
+    this.fuel.vehicle_id = this.$route.params.id;
+    this.fuel.contract_id = this.$route.params.contract;
+
+    if (this.$route.params.id) {
+      this.can_save = true;
+    }
+    this.$root.isLoading = true;
+    http.get('/api/lsfuelcreate/' + this.$route.params.id + '/' + this.$route.params.contract).then(function (response) {
+      _this.truck = response.truck;
+      _this.trips = response.trips;
+      _this.contract_settings = response.contract_settings;
+      _this.fuel.under_trips = parseInt(_this.contract_settings.trips_before_refuel) - parseInt(_this.trips);
+      _this.previous_refuels = response.previous_refuels;
+      _this.fuel.refuel_number = _this.refuelNumber();
+      _this.refuelValidity();
+      _this.fuel.needs_approval = !_this.refuelValidity();
+      _this.$root.isLoading = false;
+    });
+  },
+  mounted: function mounted() {
+    $('input[type="number"]').on('focus', function () {
+      this.select();
+    });
+  },
+
+
+  computed: {
+    minimumKm: function minimumKm() {
+      return this.truck.current_km;
+    }
+  },
+
+  methods: {
+    refuelNumber: function refuelNumber() {
+      if (this.previous_refuels == 0) {
+        return 'first';
+      } else if (this.previous_refuels == 1) {
+        return 'second';
+      } else if (this.previous_refuels == 2) {
+        return 'third';
+      } else {
+        return 'other';
+      }
+    },
+    refuelValidity: function refuelValidity() {
+      if (this.refuelNumber == 'first') {
+        return true;
+      }
+
+      if (parseInt(this.trips) < parseInt(this.contract_settings.trips_before_refuel)) {
+        this.message = 'Trips done are less than the average trips set. Refueling requires approval.';
+        return false;
+      } else {
+        return true;
+      }
+    },
+    validateKm: function validateKm() {
+      if (parseFloat(this.fuel.current_km) < parseFloat(this.truck.current_km)) {
+        alert2(this.$root, ['Current Km should be more than previous Km'], 'danger');
+        this.fuel.current_km = 0;
+        return;
+      }
+    },
+    setupUI: function setupUI() {
+      var _this2 = this;
+
+      $('.datepicker').datepicker({
+        autoclose: true,
+        format: 'dd/mm/yyyy',
+        todayHighlight: true
+      });
+
+      $('#date').datepicker().on('changeDate', function (e) {
+        _this2.fuel.date = e.date.toLocaleDateString('en-GB');
+      });
+    },
+    checkState: function checkState() {
+      var _this3 = this;
+
+      if (this.$route.params.id) {
+        http.get('/api/fuel/' + this.$route.params.id).then(function (response) {
+          _this3.fuel = response.fuel;
+          _this3.setupUI();
+          _this3.$root.isLoading = false;
+        });
+      }
+      this.setupUI();
+    },
+    calculateFuelToIssue: function calculateFuelToIssue() {
+      if (this.refuelNumber() == 'first') {
+        this.fuel.fuel_issued = this.contract_settings.initial_fuel - this.fuel.current_fuel;
+        this.fuel.total_in_tank = this.contract_settings.initial_fuel;
+      } else if (this.refuelNumber() == 'second') {
+        this.fuel.fuel_issued = this.contract_settings.refuel_1 - this.fuel.current_fuel;
+        this.fuel.total_in_tank = this.contract_settings.refuel_1;
+      } else if (this.refuelNumber() == 'third') {
+        this.fuel.fuel_issued = this.contract_settings.refuel_2 - this.fuel.current_fuel;
+        this.fuel.total_in_tank = this.contract_settings.refuel_2;
+      } else {
+        this.fuel.fuel_issued = this.contract_settings.refuel_3 - this.fuel.current_fuel;
+        this.fuel.total_in_tank = this.contract_settings.refuel_3;
+      }
+    },
+    refuelAmount: function refuelAmount() {
+      if (this.refuelNumber() == 'first') {
+        return this.contract_settings.initial_fuel;
+      } else if (this.refuelNumber() == 'second') {
+        return this.contract_settings.refuel_1;
+      } else if (this.refuelNumber() == 'third') {
+        return this.contract_settings.refuel_2;
+      } else {
+        return this.contract_settings.refuel_3;
+      }
+    },
+    calculateTotal: function calculateTotal() {
+      var reserve = parseInt(this.fuel_reserve);
+      var current_fuel = parseInt(this.fuel.current_fuel);
+      var route_fuel_required = parseInt(this.current_route.fuel_required);
+
+      if (parseInt(this.fuel.current_fuel) < reserve) {
+        this.deficit = reserve - current_fuel;
+        this.below_reserve = true;
+      } else {
+        this.below_reserve = false;
+      }
+
+      this.fuel.fuel_requested = route_fuel_required + reserve - current_fuel;
+      return this.fuel.fuel_total = parseInt(this.fuel.fuel_issued) + parseInt(this.fuel.current_fuel);
+    },
+    calculateKms: function calculateKms() {
+      if (parseInt(this.fuel.current_km) < parseInt(this.current_vehicle.current_km)) {
+        this.can_save = false;
+        this.fuel.current_km = 0;
+        return alert2(this.$root, ['Current Km readings should be greater than previous Km reading'], 'danger');
+      }
+      this.fuel_used = parseInt(this.current_vehicle.current_fuel) - parseInt(this.fuel.current_fuel);
+      this.km_covered = parseInt(this.fuel.current_km) - parseInt(this.current_vehicle.current_km);
+
+      if (parseInt(this.fuel.current_km) > 0 && parseInt(this.fuel.current_km) > parseInt(this.current_vehicle.current_km)) {
+        this.can_save = true;
+      }
+
+      return this.km_per_litre = parseInt(this.km_covered) / parseInt(this.fuel_used);
+    },
+    getSource: function getSource() {
+      if (this.current_driver.avatar) {
+        return '/images/' + this.current_driver.avatar;
+      }
+      return '/images/default_avatar.png';
+    },
+    store: function store() {
+      var _this4 = this;
+
+      this.$root.isLoading = true;
+
+      var request = axios.post('/api/lsfuel', this.fuel);
+
+      request.then(function (response) {
+        _this4.$root.isLoading = false;
+        alert2(_this4.$root, [response.data.message], 'success');
+
+        _this4.$router.push('/ls/fuel/' + _this4.fuel.vehicle_id);
+      }).catch(function (error) {
+        _this4.$root.isLoading = false;
+        alert2(_this4.$root, Object.values(JSON.parse(error.message)), 'danger');
+      });
+    }
+  }
 };
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
 
@@ -101616,7 +101664,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       _this.vehicle = response.vehicle;
       _this.mileages = response.mileages;
       _this.deliveries = response.deliveries;
-      _this.rate_per_trip = response.rate.rate ? response.rate.rate : 0;
+      _this.rate_per_trip = response.drivers_rate.drivers_rate ? response.drivers_rate.drivers_rate : 0;
 
       _this.calculateMileageBalance();
       _this.$root.isLoading = false;
@@ -101632,6 +101680,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   computed: {},
 
   methods: {
+    humanDate: function humanDate(date) {
+      return moment(date).format('ll');
+    },
     updateNote: function updateNote() {
       if (parseFloat(this.deliveryNote.loading_gross_weight) >= parseFloat(this.deliveryNote.loading_tare_weight)) {
         this.deliveryNote.loading_net_weight = parseFloat(this.deliveryNote.loading_gross_weight) - parseFloat(this.deliveryNote.loading_tare_weight);
@@ -101793,9 +101844,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   created: function created() {
     var _this = this;
 
+    this.$root.isLoading = true;
     http.get('/api/ls_mileage_employees/' + this.$route.params.contract).then(function (response) {
       _this.employees = response.employees;
       _this.vehicles = response.vehicles;
+      _this.$root.isLoading = false;
     });
   },
 
@@ -103383,7 +103436,7 @@ exports.push([module.i, "\n.modal-content[data-v-23b6ac5e] {\n  margin-top: 100p
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 367 */,
@@ -105669,7 +105722,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "panel-heading"
   }, [_c('strong', [_vm._v("Fuel Allocation -- Truck: " + _vm._s(_vm.truck.plate_number) + " ")]), _vm._v(" "), _c('strong', {
     staticClass: "pull-right"
-  }, [_vm._v("Contract Average Trips: " + _vm._s(_vm.average_trips))])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Contract Average Trips: " + _vm._s(_vm.contract_settings.trips_before_refuel))])]), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
   }, [_c('form', {
     attrs: {
@@ -105772,13 +105825,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "type": "number",
       "min": "0",
+      "max": _vm.refuelAmount(),
       "name": "current_fuel"
     },
     domProps: {
       "value": (_vm.fuel.current_fuel)
     },
     on: {
-      "keyup": _vm.calculateTotalFuel,
+      "keyup": _vm.calculateFuelToIssue,
       "input": function($event) {
         if ($event.target.composing) { return; }
         _vm.fuel.current_fuel = $event.target.value
@@ -105857,7 +105911,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "for": "fuel_issued"
     }
-  }, [_vm._v("Fuel Approved (Litres)")]), _vm._v(" "), _c('input', {
+  }, [_vm._v("Fuel To be Issued (Litres)")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -105866,6 +105920,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control input-sm",
     attrs: {
+      "readonly": "",
       "type": "number",
       "min": "0",
       "name": "fuel_issued"
@@ -105874,7 +105929,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "value": (_vm.fuel.fuel_issued)
     },
     on: {
-      "keyup": _vm.calculateTotalFuel,
       "input": function($event) {
         if ($event.target.composing) { return; }
         _vm.fuel.fuel_issued = $event.target.value
@@ -105883,7 +105937,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.$forceUpdate()
       }
     }
-  })])])]), _vm._v(" "), _c('div', {
+  })])]), _vm._v("\n\n                Refuel: "), _c('strong', [_vm._v(_vm._s(_vm.refuelNumber()))]), _c('br'), _vm._v("\n                Contract Set Fuel: "), _c('strong', [_vm._v(_vm._s(_vm.refuelAmount()))])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-4"
   }, [_c('div', {
     staticClass: "col-sm-12"
@@ -105918,7 +105972,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.$forceUpdate()
       }
     }
-  })])]), _vm._v(" "), (parseInt(_vm.trips) < parseInt(_vm.average_trips)) ? _c('div', {
+  })])]), _vm._v(" "), (!_vm.first_fuelling) ? _c('div', {
     staticClass: "col-sm-12"
   }, [_c('div', {
     staticClass: "form-group"
@@ -106479,13 +106533,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("\n                Deliveries Done\n                "), _c('table', {
     staticClass: "table no-wrap"
   }, [_c('caption', [_vm._v("Total Deliveries: ")]), _vm._v(" "), _vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.deliveries), function(delivery, index) {
-    return _c('tr', [_c('td', [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c('td', [_vm._v("DL - " + _vm._s(delivery.id))]), _vm._v(" "), _c('td', [(delivery.temporary_driver) ? _c('span', [_vm._v(_vm._s(delivery.temporary_driver.first_name) + _vm._s(delivery.temporary_driver.last_name))]) : _vm._e()]), _vm._v(" "), _c('td', [_vm._v(_vm._s(delivery.created_at))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(delivery.user.first_name))])])
+    return _c('tr', [_c('td', [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c('td', [_vm._v("DL - " + _vm._s(delivery.id))]), _vm._v(" "), _c('td', [(delivery.temporary_driver) ? _c('span', [_vm._v(_vm._s(delivery.temporary_driver.first_name) + _vm._s(delivery.temporary_driver.last_name))]) : _vm._e()]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.humanDate(delivery.created_at)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(delivery.user.first_name))])])
   })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("#")]), _vm._v(" "), _c('th', [_vm._v("Delivery #")]), _vm._v(" "), _c('th', [_vm._v(" Temporary Driver ")]), _vm._v(" "), _c('th', [_vm._v("When")]), _vm._v(" "), _c('th', [_vm._v("Created By")])])])], 1)]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
   }, [_vm._v("\n                Paid out Mileages\n                "), _c('table', {
     staticClass: "table no-wrap"
   }, [_c('caption', [_vm._v("Total Amount Paid: ")]), _vm._v(" "), _vm._m(2), _vm._v(" "), _c('tbody', _vm._l((_vm.mileages), function(mileage, index) {
-    return _c('tr', [_c('td', [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c('td', [_vm._v("ML - " + _vm._s(mileage.id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(mileage.created_at))]), _vm._v(" "), (mileage.is_advance == 1) ? _c('td', [_c('span', {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c('td', [_vm._v("ML - " + _vm._s(mileage.id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.humanDate(mileage.created_at)))]), _vm._v(" "), (mileage.is_advance == 1) ? _c('td', [_c('span', {
       staticClass: "label label-success"
     }, [_vm._v("Yes")])]) : _vm._e(), _vm._v(" "), (mileage.is_advance == 0) ? _c('td') : _vm._e(), _vm._v(" "), _c('td', [_vm._v(_vm._s(mileage.amount))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(mileage.user.first_name))])])
   })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('th', [_vm._v("#")]), _vm._v(" "), _c('th', [_vm._v("Delivery #")]), _vm._v(" "), _c('th', [_vm._v("When")]), _vm._v(" "), _c('th', [_vm._v("Advance")]), _vm._v(" "), _c('th', [_vm._v("Amount")]), _vm._v(" "), _c('th', [_vm._v("Paid By")])])])], 1)])]), _vm._v(" "), _c('form', {
@@ -106642,7 +106696,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("Process")]), _vm._v(" "), _c('router-link', {
     staticClass: "btn btn-danger",
     attrs: {
-      "to": "/delivery"
+      "to": '/ls/mileage/' + _vm.mileage.contract_id
     }
   }, [_vm._v("Back")])], 1)])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;

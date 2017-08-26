@@ -54,7 +54,7 @@
                           <td>
                             <span v-if="delivery.temporary_driver">{{ delivery.temporary_driver.first_name }}{{delivery.temporary_driver.last_name}}</span>
                           </td>
-                          <td>{{ delivery.created_at }}</td>
+                          <td>{{ humanDate(delivery.created_at) }}</td>
                           <td>{{ delivery.user.first_name}}</td>
                         </tr>
                       </tbody>
@@ -88,7 +88,7 @@
                         <tr v-for="(mileage, index) in mileages">
                           <td>{{ index + 1 }}</td>
                           <td>ML - {{ mileage.id }}</td>
-                          <td>{{ mileage.created_at }}</td>
+                          <td>{{ humanDate(mileage.created_at) }}</td>
                           <td v-if="mileage.is_advance == 1"><span class="label label-success">Yes</span></td>
                           <td v-if="mileage.is_advance == 0"></td>
                           <td>{{ mileage.amount }}</td>
@@ -143,7 +143,7 @@
                 </div>
                 <div class="form-group">
                     <button class="btn btn-success">Process</button>
-                    <router-link to="/delivery" class="btn btn-danger">Back</router-link>
+                    <router-link :to="'/ls/mileage/' + mileage.contract_id" class="btn btn-danger">Back</router-link>
                 </div>
             </form>
         </div>
@@ -181,7 +181,7 @@
                 this.vehicle = response.vehicle;
                 this.mileages = response.mileages;
                 this.deliveries = response.deliveries;
-                this.rate_per_trip = response.rate.rate ? response.rate.rate : 0;
+                this.rate_per_trip = response.drivers_rate.drivers_rate ? response.drivers_rate.drivers_rate : 0;
 
                 this.calculateMileageBalance();
                 this.$root.isLoading = false;
@@ -200,6 +200,10 @@
         },
 
         methods: {
+          humanDate(date) {
+            return moment(date).format('ll');
+          },
+
             updateNote() {
               if(parseFloat(this.deliveryNote.loading_gross_weight) >= parseFloat(this.deliveryNote.loading_tare_weight)) {
                 this.deliveryNote.loading_net_weight = parseFloat(this.deliveryNote.loading_gross_weight) - parseFloat(this.deliveryNote.loading_tare_weight);

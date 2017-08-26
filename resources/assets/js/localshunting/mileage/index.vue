@@ -95,9 +95,11 @@ export default {
     }
   },
   created () {
+    this.$root.isLoading = true;
     http.get('/api/ls_mileage_employees/' + this.$route.params.contract).then((response) => {
       this.employees = response.employees;
       this.vehicles = response.vehicles;
+      this.$root.isLoading = false;
     })
   },
   methods: {

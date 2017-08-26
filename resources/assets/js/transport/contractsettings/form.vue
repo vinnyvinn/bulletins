@@ -7,7 +7,7 @@
         </div>
         <div class="panel-body">
           <form action="#">
-            <div class="form-group c0l-sm-12" v-for="(field, index) in fields" v-if="field != 'contract_id'">
+            <div class="form-group c0l-sm-6" v-for="(field, index) in fields" v-if="field != 'contract_id'">
               <label for="setting">{{ field }}</label>
               <input type="text" class="form-control" v-model="setting[field]" id="setting">
             </div>

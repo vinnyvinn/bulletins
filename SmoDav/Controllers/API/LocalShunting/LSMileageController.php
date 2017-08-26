@@ -51,7 +51,7 @@ class LSMileageController extends Controller
           'vehicle' =>Vehicle::where('id', $truck)
               ->with('trailer','driver')
               ->first(),
-          'rate' => ContractConfig::where('contract_id', $contract)->first(['rate'])
+          'drivers_rate' => ContractConfig::where('contract_id', $contract)->first(['drivers_rate'])
         ]);
       }
     }

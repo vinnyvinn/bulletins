@@ -42,7 +42,7 @@ class LSFuelController extends Controller
         $data = $request->all();
         $data['created_by'] = Auth::id();
 
-        if(intval($data['under_trips']) > 0) {
+        if($data['needs_approval']) {
           $data['status'] = Constants::STATUS_PENDING;
           $message = 'Fuel Request pending approval';
         } else {

@@ -121876,7 +121876,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._l((_vm.fields), function(field, index) {
     return (field != 'contract_id') ? _c('div', {
-      staticClass: "form-group c0l-sm-12"
+      staticClass: "form-group c0l-sm-6"
     }, [_c('label', {
       attrs: {
         "for": "setting"
