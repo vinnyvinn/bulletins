@@ -2,7 +2,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <strong>Fuel Allocation -- Truck: {{ truck.plate_number }} </strong>
-            <strong class="pull-right">Contract Average Trips: {{ average_trips }}</strong>
+            <strong class="pull-right">Contract Average Trips: {{ contract_settings.trips_before_refuel }}</strong>
         </div>
 
         <div class="panel-body">
@@ -19,14 +19,14 @@
                     <div class="col-sm-12">
                       <div class="form-group">
                         <label for="current_km">Current KM</label>
-                        <input type="number" :min="minimumKm" name="current_km" class="form-control input-sm" v-model="fuel.current_km" @change="validateKm">
+                        <input type="number" :min="minimumKm" name="current_km"  class="form-control input-sm" v-model="fuel.current_km" @change="validateKm">
                       </div>
                     </div>
 
                     <div class="col-sm-12">
                       <div class="form-group">
                         <label for="current_fuel">Balance in Tank (Litres)</label>
-                        <input type="number" min="0" name="current_fuel" class="form-control input-sm" v-model="fuel.current_fuel" @keyup="calculateTotalFuel">
+                        <input type="number" min=0 :max="refuelAmount()" name="current_fuel" class="form-control input-sm" v-model="fuel.current_fuel" @keyup="calculateFuelToIssue">
                       </div>
                     </div>
 
@@ -50,10 +50,13 @@
 
                     <div class="col-sm-12">
                       <div class="form-group">
-                        <label for="fuel_issued">Fuel Approved (Litres)</label>
-                        <input type="number" min=0 name="fuel_issued" class="form-control input-sm" v-model="fuel.fuel_issued" @keyup="calculateTotalFuel">
+                        <label for="fuel_issued">Fuel To be Issued (Litres)</label>
+                        <input readonly type="number" min=0 name="fuel_issued" class="form-control input-sm" v-model="fuel.fuel_issued">
                       </div>
                     </div>
+
+                    Refuel: <strong>{{ refuelNumber() }}</strong><br>
+                    Contract Set Fuel: <strong>{{ refuelAmount() }}</strong>
 
                   </div>
 
@@ -65,7 +68,7 @@
                       </div>
                     </div>
 
-                    <div class="col-sm-12" v-if="parseInt(trips) < parseInt(average_trips)">
+                    <div class="col-sm-12" v-if="!first_fuelling">
                       <div class="form-group">
                         <label for="reason">Reason</label>
                         <textarea name="reason" class="form-control input-sm" v-model="fuel.reason" placeholder="Reason why truck has made less trips"></textarea>
@@ -101,6 +104,49 @@
 
 <script>
     export default {
+        data() {
+            return {
+                trips: 0,
+                truck: {},
+                fuel_reserve: 25,
+                km_covered: 0,
+                fuel_used: 0,
+                km_per_litre: 0,
+                fuel: {
+                    station_id: window.Laravel.station_id,
+                    contract_id: '',
+                    vehicle_id: '',
+                    current_fuel: 0,
+                    fuel_issued: 0,
+                    total_in_tank: 0,
+                    narration: '',
+                    previous_km: 0,
+                    previous_fuel: 0,
+                    current_km: 0,
+                    tank: '',
+                    pump: '',
+                    under_trips: 0,
+                    reason: '',
+                    refuel_number: 0,
+                    needs_approval: false,
+                },
+                can_save: false,
+                below_reserve: false,
+                deficit: '',
+                message: '',
+                contract_settings: {
+                  average_fuel_per_trip: 0,
+                  trips_before_refuel: 0,
+                  initial_fuel: 0,
+                  refuel_1: 0,
+                  refuel_2: 0,
+                  refuel_3: 0
+                },
+                first_fuelling: false,
+                previous_refuels: 0
+            };
+        },
+
         created() {
             if (! this.$route.params.id && ! this.$route.params.unload &&  ! this.$root.can('create-fuel')) {
                 this.$router.push('/403');
@@ -122,52 +168,23 @@
             this.$root.isLoading = true;
             http.get('/api/lsfuelcreate/' + this.$route.params.id + '/' + this.$route.params.contract).then( (response) => {
                 this.truck = response.truck;
-                this.average_trips = response.average_trips;
                 this.trips = response.trips;
-                this.fuel.under_trips = parseInt(this.average_trips) - parseInt(this.trips);
+                this.contract_settings = response.contract_settings;
+                this.fuel.under_trips = parseInt(this.contract_settings.trips_before_refuel) - parseInt(this.trips);
+                this.previous_refuels = response.previous_refuels;
+                this.fuel.refuel_number = this.refuelNumber();
                 this.refuelValidity();
+                this.fuel.needs_approval = !this.refuelValidity();
                 this.$root.isLoading = false;
             });
         },
 
         mounted() {
-
             $('input[type="number"]').on('focus', function () {
                 this.select();
             });
         },
 
-        data() {
-            return {
-                average_trips: 0,
-                trips: 0,
-                truck: {},
-                fuel_reserve: 25,
-                km_covered: 0,
-                fuel_used: 0,
-                km_per_litre: 0,
-                fuel: {
-                    station_id: window.Laravel.station_id,
-                    contract_id: '',
-                    vehicle_id: '',
-                    current_fuel: 0,
-                    fuel_issued: 0,
-                    total_in_tank: 0,
-                    narration: '',
-                    previous_km: 0,
-                    previous_fuel: 0,
-                    current_km: 0,
-                    tank: '',
-                    pump: '',
-                    under_trips: 0,
-                    reason: ''
-                },
-                can_save: false,
-                below_reserve: false,
-                deficit: '',
-                message: ''
-            };
-        },
         computed: {
           minimumKm () {
             return this.truck.current_km;
@@ -176,8 +193,24 @@
         },
 
         methods: {
+          refuelNumber() {
+            if(this.previous_refuels == 0) {
+              return 'first';
+            } else if( this.previous_refuels == 1) {
+              return 'second';
+            } else if( this.previous_refuels == 2) {
+              return 'third';
+            } else {
+              return 'other';
+            }
+          },
+
           refuelValidity() {
-            if( parseInt(this.trips) < parseInt(this.average_trips) ) {
+            if(this.refuelNumber == 'first') {
+              return true;
+            }
+
+            if( parseInt(this.trips) < parseInt(this.contract_settings.trips_before_refuel) ) {
               this.message = 'Trips done are less than the average trips set. Refueling requires approval.';
               return false;
             } else {
@@ -214,9 +247,34 @@
               }
               this.setupUI();
           },
-          calculateTotalFuel() {
-            this.fuel.total_in_tank =   parseInt(this.fuel.current_fuel) + parseInt(this.fuel.fuel_issued);
+          calculateFuelToIssue() {
+            if(this.refuelNumber() == 'first') {
+              this.fuel.fuel_issued = this.contract_settings.initial_fuel - this.fuel.current_fuel;
+              this.fuel.total_in_tank = this.contract_settings.initial_fuel;
+            } else if (this.refuelNumber() == 'second') {
+              this.fuel.fuel_issued = this.contract_settings.refuel_1 - this.fuel.current_fuel;
+              this.fuel.total_in_tank = this.contract_settings.refuel_1;
+            }else if (this.refuelNumber() == 'third') {
+              this.fuel.fuel_issued = this.contract_settings.refuel_2 - this.fuel.current_fuel;
+              this.fuel.total_in_tank = this.contract_settings.refuel_2;
+            } else {
+              this.fuel.fuel_issued = this.contract_settings.refuel_3 - this.fuel.current_fuel;
+              this.fuel.total_in_tank = this.contract_settings.refuel_3;
+            }
           },
+
+          refuelAmount() {
+            if(this.refuelNumber() == 'first') {
+              return this.contract_settings.initial_fuel;
+            } else if (this.refuelNumber() == 'second') {
+              return this.contract_settings.refuel_1;
+            }else if (this.refuelNumber() == 'third') {
+              return this.contract_settings.refuel_2;
+            } else {
+              return this.contract_settings.refuel_3;
+            }
+          },
+
           calculateTotal() {
             let reserve = parseInt(this.fuel_reserve);
             let current_fuel = parseInt(this.fuel.current_fuel);
@@ -257,21 +315,14 @@
           },
           store() {
                 this.$root.isLoading = true;
-                // let request = null;
 
-                // let body = Object.assign({}, this.fuel)
-
-                // if(this.$route.params.id) {
-                //   request = axios.put('/api/fuel/'+ this.$route.params.id, body)
-                // } else {
                 let  request = axios.post('/api/lsfuel', this.fuel)
-                // }
 
                 request.then((response) => {
                     this.$root.isLoading = false;
                     alert2(this.$root, [response.data.message], 'success');
 
-                    this.$router.push('/ls/trucks-allocation/' + this.fuel.contract_id);
+                    this.$router.push('/ls/fuel/' + this.fuel.vehicle_id);
                 }).catch((error) => {
                     this.$root.isLoading = false;
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
