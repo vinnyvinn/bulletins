@@ -21,7 +21,6 @@ class Constants
     const LOADED = 'Loaded';
     const OFFLOADED = 'Offloaded';
 
-    CONST LONGHAUL = 'Longhaul';
-    CONST SHORTHAUL = 'Shorthaul';
-    
+    const LONGHAUL = 'Longhaul';
+    const SHORTHAUL = 'Shorthaul';
 }

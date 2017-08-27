@@ -38,16 +38,16 @@ class PartsController extends Controller
     public function create()
     {
         $modelColumn = DB::select('SELECT cFieldName FROM _rtblUserDict WHERE idUserDict = ' .
-            "(SELECT option_value FROM options WHERE option_key = '". SAGEUDF::MODEL_UDF . "')");
+            "(SELECT option_value FROM options WHERE option_key = '" . SAGEUDF::MODEL_UDF . "')");
 
         $makeColumn = DB::select('SELECT cFieldName FROM _rtblUserDict WHERE idUserDict = ' .
-            "(SELECT option_value FROM options WHERE option_key = '". Make::UDF . "')");
+            "(SELECT option_value FROM options WHERE option_key = '" . Make::UDF . "')");
 
-        if (count($modelColumn)) {
+        if (\count($modelColumn)) {
             $modelColumn = $modelColumn[0]->cFieldName;
         }
 
-        if (count($makeColumn)) {
+        if (\count($makeColumn)) {
             $makeColumn = $makeColumn[0]->cFieldName;
         }
 
@@ -71,14 +71,14 @@ class PartsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         $data = $request->all();
-        $data['raw_data'] = json_encode($data);
+        $data['raw_data'] = \json_encode($data);
         $data['status'] = Constants::STATUS_PENDING;
         $data['user_id'] = Auth::id();
 
@@ -102,14 +102,14 @@ class PartsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      *
      * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
         $requisition = Requisition::with(['user'])->findOrFail($id);
-        $requisition->raw_data = json_decode($requisition->raw_data);
+        $requisition->raw_data = \json_decode($requisition->raw_data);
 
         return Response::json([
             'requisition' => $requisition,
@@ -119,7 +119,8 @@ class PartsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -130,8 +131,9 @@ class PartsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -142,14 +144,14 @@ class PartsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         //
     }
-
 
     public function approve(Request $request, $id)
     {
@@ -180,7 +182,7 @@ class PartsController extends Controller
                 'status' => $requisition->status == Constants::STATUS_PENDING ?
                     Constants::STATUS_APPROVED :
                     Constants::STATUS_ISSUED,
-                'raw_data' => json_encode($data)
+                'raw_data' => \json_encode($data)
             ]);
 
             if ($requisition->status == Constants::STATUS_ISSUED) {
@@ -208,7 +210,7 @@ class PartsController extends Controller
                 $fields = [
                     'consumed_quantity' => $line->consumed_quantity + $itemLine['consumed_quantity']
                 ];
-                if (intval($itemLine['consumed_quantity'])) {
+                if (\intval($itemLine['consumed_quantity'])) {
                     $consumed[$itemLine['item_id']] = $itemLine['consumed_quantity'];
                     $itemLine['old_consumed_quantity'] = $fields['consumed_quantity'];
                     $itemLine['consumed_quantity'] = 0;
@@ -227,7 +229,7 @@ class PartsController extends Controller
 
             $requisition->update([
                 'status' => $fullyConsumed ? Constants::STATUS_CLOSED : Constants::STATUS_ISSUED,
-                'raw_data' => json_encode($data)
+                'raw_data' => \json_encode($data)
             ]);
         });
 

@@ -2,19 +2,10 @@
 
 namespace SmoDav\Support;
 
-use function array_filter;
-use function array_map;
-use function array_merge;
-use function array_values;
-use Closure;
-use function count;
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
 use Illuminate\Http\UploadedFile;
-use function in_array;
-use function is_null;
 use PHPExcel;
 use PHPExcel_IOFactory;
-use function strtoupper;
 
 class Excel
 {
@@ -37,7 +28,7 @@ class Excel
 
     protected $rows;
 
-    protected $onNull = Excel::SET_NULL;
+    protected $onNull = self::SET_NULL;
 
     protected $nullValue = null;
 
@@ -45,17 +36,16 @@ class Excel
 
     protected $excludeValues = [];
 
-
     public static function validateExcel(UploadedFile $file)
     {
         if (! $file || ! $file->isValid()) {
             return false;
         }
 
-        $mime = explode('.', $file->getClientOriginalExtension());
-        $currentMime = $mime[count($mime) - 1];
+        $mime = \explode('.', $file->getClientOriginalExtension());
+        $currentMime = $mime[\count($mime) - 1];
 
-        if (strtoupper($currentMime) != 'XLS' && strtoupper($currentMime) != 'XLSX') {
+        if (\strtoupper($currentMime) != 'XLS' && \strtoupper($currentMime) != 'XLSX') {
             return false;
         }
 
@@ -78,14 +68,14 @@ class Excel
     }
 
     /**
-     * @param int  $action
+     * @param int                 $action
      * @param null | string | int $replace
      *
      * @return $this
      */
-    public function whenNull($action = Excel::SET_NULL, $replace = null)
+    public function whenNull($action = self::SET_NULL, $replace = null)
     {
-        if (! in_array($action, [0, 1, 2])) {
+        if (! \in_array($action, [0, 1, 2])) {
             throw new InvalidArgumentException('Invalid action attribute passed.');
         }
 
@@ -112,8 +102,8 @@ class Excel
     public function excludeRows($key = null, $values = [])
     {
         $this->excludeKey = $key;
-        $this->excludeValues = array_map(function ($value) {
-            return strtoupper($value);
+        $this->excludeValues = \array_map(function ($value) {
+            return \strtoupper($value);
         }, $values);
 
         return $this;
@@ -144,9 +134,9 @@ class Excel
         switch ($this->onNull) {
             default:
             case self::SET_NULL:
-                return null;
+                return;
             case self::EXCLUDE_ROW:
-                return null;
+                return;
             case self::SET_VALUE:
                 return $this->nullValue;
         }
@@ -154,11 +144,11 @@ class Excel
 
     private function cleanHeader($header = [])
     {
-        $fromExcel = array_map(function ($item) {
-            return strtolower(str_replace(' ', '_', $item));
+        $fromExcel = \array_map(function ($item) {
+            return \strtolower(\str_replace(' ', '_', $item));
         }, $header);
 
-        if (count($fromExcel) != count($this->headers)) {
+        if (\count($fromExcel) != \count($this->headers)) {
             return $fromExcel;
         }
 
@@ -169,22 +159,21 @@ class Excel
     {
         $cleaned = $this->manageNulls($rows);
 
-
-        $mapped = array_map(function ($row) use ($header) {
+        $mapped = \array_map(function ($row) use ($header) {
             $mapped = [];
             foreach ($row as $index => $item) {
                 $mapped[$header[$index]] = $item;
 
-                if ($header[$index] == $this->excludeKey && in_array($item, $this->excludeValues)) {
-                    return null;
+                if ($header[$index] == $this->excludeKey && \in_array($item, $this->excludeValues)) {
+                    return;
                 }
             }
 
-            return array_merge($mapped, $this->additionalColumns);
+            return \array_merge($mapped, $this->additionalColumns);
         }, $cleaned);
 
-        return array_filter($mapped, function ($row) {
-            return ! is_null($row);
+        return \array_filter($mapped, function ($row) {
+            return ! \is_null($row);
         });
     }
 
@@ -194,9 +183,8 @@ class Excel
             return $rows;
         }
 
-
-        return array_filter($rows, function ($entry) {
-            return ! in_array(null, array_values($entry));
+        return \array_filter($rows, function ($entry) {
+            return ! \in_array(null, \array_values($entry));
         });
     }
 }

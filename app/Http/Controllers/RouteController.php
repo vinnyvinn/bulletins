@@ -8,7 +8,6 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Response;
-use function sleep;
 use SmoDav\Support\Excel;
 use SmoDav\Models\MileageType;
 
@@ -40,9 +39,9 @@ class RouteController extends Controller
             return $item->destination;
         })->values()->toArray();
 
-        $routes = array_merge($source, $destination);
+        $routes = \array_merge($source, $destination);
 
-        $routes = array_values(array_unique($routes));
+        $routes = \array_values(\array_unique($routes));
 
         $mileageTypes = MileageType::all(['name', 'slug']);
 
@@ -55,7 +54,7 @@ class RouteController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
@@ -84,7 +83,7 @@ class RouteController extends Controller
                 $altRoute->{$key} = $item;
                 if ($request->hasFile($key)) {
                     $extension = $request->file($key)->getClientOriginalExtension();
-                    $filename = time().".".$extension;
+                    $filename = \time() . '.' . $extension;
                     $request->file($key)->move(public_path('uploads'), $filename);
                     $route->{$key} = $filename;
                     $altRoute->{$key} = $filename;
@@ -103,7 +102,7 @@ class RouteController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Route  $route
+     * @param \App\Route $route
      *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
@@ -116,8 +115,8 @@ class RouteController extends Controller
             return $item->destination;
         })->values()->toArray();
 
-        $locations = array_merge($source, $destination);
-        $locations = array_values(array_unique($locations));
+        $locations = \array_merge($source, $destination);
+        $locations = \array_values(\array_unique($locations));
 
         $mileageTypes = MileageType::all(['name', 'slug']);
 
@@ -131,8 +130,8 @@ class RouteController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Route  $route
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Route               $route
      *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
@@ -161,7 +160,7 @@ class RouteController extends Controller
                 $route->{$key} = $item;
                 if ($request->hasFile($key)) {
                     $extension = $request->file($key)->getClientOriginalExtension();
-                    $filename = time().".".$extension;
+                    $filename = \time() . '.' . $extension;
                     $request->file($key)->move(public_path('uploads'), $filename);
                     $route->{$key} = $filename;
                 }
@@ -177,7 +176,7 @@ class RouteController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Route  $route
+     * @param \App\Route $route
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -216,6 +215,7 @@ class RouteController extends Controller
             Route::insert($rows);
         } catch (Exception $ex) {
             echo $ex->getMessage();
+
             return Response::json([
                 'status' => 'error',
                 'message' => 'Please use the sample file format provided and fill all the required fields.'

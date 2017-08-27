@@ -21,14 +21,14 @@ class Make extends SmoDavModel
     public static function updateFromSAGE()
     {
         $makeColumn = collect(DB::select('SELECT cFieldName FROM _rtblUserDict WHERE idUserDict = ' .
-            "(SELECT option_value FROM options WHERE option_key = '". self::UDF . "')"))
+            "(SELECT option_value FROM options WHERE option_key = '" . self::UDF . "')"))
             ->first();
 
         if (! $makeColumn) {
             return false;
         }
 
-        $current = Make::all(['name'])->map(function ($make) {
+        $current = self::all(['name'])->map(function ($make) {
             return $make->name;
         })->toArray();
 
@@ -38,7 +38,7 @@ class Make extends SmoDavModel
             ->distinct()
             ->get())
             ->reject(function ($make) use ($current, $makeColumn) {
-                return in_array($make->{$makeColumn->cFieldName}, $current);
+                return \in_array($make->{$makeColumn->cFieldName}, $current);
             })
             ->map(function ($make) use ($makeColumn) {
                 return [
@@ -48,7 +48,7 @@ class Make extends SmoDavModel
             })
             ->toArray();
 
-        Make::insert($makes);
+        self::insert($makes);
 
         return true;
     }

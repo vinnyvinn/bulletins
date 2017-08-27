@@ -3,7 +3,7 @@
     <div class="panel panel-default">
       <div class="panel-heading">
           Trucks Awaiting Off-loading
-          <button type="button" class="btn btn-success btn-xs pull-right" name="button" @click="load">Loading</button>
+          <button v-if="$root.can('ls-create-delivery')" type="button" class="btn btn-success btn-xs pull-right" name="button" @click="load">Loading</button>
       </div>
       <div class="panel-body">
         <table class="table no-wrap">
@@ -23,7 +23,7 @@
               <td>{{ delivery.vehicle.plate_number }}</td>
               <td v-if="delivery.vehicle.driver">{{ delivery.vehicle.driver.first_name }} {{ delivery.vehicle.driver.last_name }}</td>
               <td v-if="!delivery.vehicle"> -- </td>
-              <td><button type="button" @click="unload(delivery.id)" name="button" class="btn btn-sm btn-success">Offload</button></td>
+              <td><button v-if="$root.can('ls-create-delivery')" type="button" @click="unload(delivery.id)" name="button" class="btn btn-sm btn-success">Offload</button></td>
             </tr>
           </tbody>
           <tfoot>

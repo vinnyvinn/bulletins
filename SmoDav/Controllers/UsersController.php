@@ -35,7 +35,6 @@ class UsersController extends Controller
             ->where('id', '>', 1)
             ->get(['id', 'first_name', 'last_name', 'username', 'email']);
 
-
         return Datatables::of($records)
             ->addColumn('actions', function ($record) {
                 return '
@@ -51,7 +50,7 @@ class UsersController extends Controller
                     return $station->name;
                 })->flatten()->toArray();
 
-                return implode(', ', $stations);
+                return \implode(', ', $stations);
             })
             ->removeColumn('id')
             ->rawColumns(['actions'])
@@ -66,7 +65,7 @@ class UsersController extends Controller
     public function create()
     {
         $stations = Station::all(['name', 'id']);
-        $permissions = Permission::all(['name', 'group', 'slug']);
+        $permissions = Permission::all(['name', 'group', 'slug'])->groupBy('group');
 
         return view('workshop.users.create')
             ->with('stations', $stations)
@@ -76,16 +75,16 @@ class UsersController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param UserRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(UserRequest $request)
     {
         $data = $request->all();
-        $data['permissions'] = "[]";
-        if( isset($data['permission'])) {
-          $data['permissions'] = json_encode(array_keys($request->get('permission')));
-          unset($data['permission']);
+        $data['permissions'] = '[]';
+        if (isset($data['permission'])) {
+            $data['permissions'] = \json_encode(\array_keys($request->get('permission')));
+            unset($data['permission']);
         }
         $data['password'] = bcrypt($data['password']);
         $user = User::create($data);
@@ -103,7 +102,8 @@ class UsersController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -114,15 +114,16 @@ class UsersController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit($id)
     {
         $stations = Station::all(['name', 'id']);
-        $permissions = Permission::all(['name', 'group', 'slug']);
+        $permissions = Permission::all(['name', 'group', 'slug'])->groupBy('group');
         $user = User::with(['stations'])->findOrFail($id);
-        $user->permissions = json_decode($user->permissions);
+        $user->permissions = \json_decode($user->permissions);
         $userStations = $user->stations->map(function ($station) {
             return $station->id;
         })->toArray();
@@ -138,8 +139,9 @@ class UsersController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(UserRequest $request, $id)
@@ -147,7 +149,7 @@ class UsersController extends Controller
         $user = User::findOrFail($id);
 
         $data = $request->all();
-        $data['permissions'] = json_encode(array_keys($request->get('permission')));
+        $data['permissions'] = \json_encode(\array_keys($request->get('permission')));
         unset($data['permission']);
         if ($request->get('password')) {
             $data['password'] = bcrypt($data['password']);
@@ -169,7 +171,8 @@ class UsersController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

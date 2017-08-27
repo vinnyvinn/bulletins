@@ -21,13 +21,13 @@ class SAGEUDF extends Model
 
     public static function updateUDFs()
     {
-        $brand = Helpers::get_option(SAGEUDF::BRAND_UDF);
-        $model = Helpers::get_option(SAGEUDF::MODEL_UDF);
+        $brand = Helpers::get_option(self::BRAND_UDF);
+        $model = Helpers::get_option(self::MODEL_UDF);
 
         $udfs = self::whereIn('idUserDict', [$brand, $model])->get(['idUserDict', 'cLookupOptions']);
 
         foreach ($udfs as $udf) {
-            $options = explode(';', $udf->cLookupOptions);
+            $options = \explode(';', $udf->cLookupOptions);
 
             foreach ($options as $option) {
                 switch ($udf->idUserDict) {
@@ -46,14 +46,14 @@ class SAGEUDF extends Model
 
     public static function addMakeUDF($value)
     {
-        $brand = Helpers::get_option(SAGEUDF::BRAND_UDF);
+        $brand = Helpers::get_option(self::BRAND_UDF);
 
         return self::addLookupUDF($brand, $value);
     }
 
     public static function addModelUDF($value)
     {
-        $modelUdf = Helpers::get_option(SAGEUDF::MODEL_UDF);
+        $modelUdf = Helpers::get_option(self::MODEL_UDF);
 
         return self::addLookupUDF($modelUdf, $value);
     }
@@ -62,13 +62,13 @@ class SAGEUDF extends Model
     {
         $udf = self::where('idUserDict', $itemUdf)->first();
 
-        $lookup = explode(';', $udf->cLookupOptions);
-        if (! in_array($value, $lookup)) {
+        $lookup = \explode(';', $udf->cLookupOptions);
+        if (! \in_array($value, $lookup)) {
             $lookup[] = $value;
         }
 
         return $udf->update([
-            'cLookupOptions' => implode(';', $lookup)
+            'cLookupOptions' => \implode(';', $lookup)
         ]);
     }
 }

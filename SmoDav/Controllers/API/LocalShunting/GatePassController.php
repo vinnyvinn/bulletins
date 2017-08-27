@@ -18,8 +18,8 @@ class GatePassController extends Controller
      */
     public function index()
     {
-      return Response::json([
-        'gatepasses' => LSGatePass::with('vehicle','vehicle.driver','user')->get()
+        return Response::json([
+        'gatepasses' => LSGatePass::with('vehicle', 'vehicle.driver', 'user')->get()
       ]);
     }
 
@@ -30,21 +30,22 @@ class GatePassController extends Controller
      */
     public function create()
     {
-      return Response::json([
+        return Response::json([
         'vehicles' => Vehicle::has('contract')
                   ->doesntHave('lsgatepass')
                   ->whereDoesntHave('lsdelivery', function ($q) {
-                    return $q->where('status','Loaded');
+                      return $q->where('status', 'Loaded');
                   })
                   ->get(),
-        'gatepasses' => LSGatePass::with('vehicle','user')->get()
+        'gatepasses' => LSGatePass::with('vehicle', 'user')->get()
       ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -60,11 +61,11 @@ class GatePassController extends Controller
         return Response::json([
           'status' => 'success',
           'message' => 'Successfully created gatepass inwards',
-          'gatepasses' => LSGatePass::with('vehicle','user')->get(),
+          'gatepasses' => LSGatePass::with('vehicle', 'user')->get(),
           'vehicles' => Vehicle::has('contract')
                     ->doesntHave('lsgatepass')
                     ->whereDoesntHave('lsdelivery', function ($q) {
-                      return $q->where('status','Loaded');
+                        return $q->where('status', 'Loaded');
                     })
                     ->get(),
         ]);
@@ -73,7 +74,8 @@ class GatePassController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -84,7 +86,8 @@ class GatePassController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -95,8 +98,9 @@ class GatePassController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -107,7 +111,8 @@ class GatePassController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

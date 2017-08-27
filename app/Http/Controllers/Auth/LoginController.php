@@ -30,8 +30,6 @@ class LoginController extends Controller
 
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -47,11 +45,11 @@ class LoginController extends Controller
     {
         session()->put('userLevel', 'user_admin.');
         $stations = $user->stations;
-        if (! count($stations)) {
+        if (! \count($stations)) {
             session()->put('station_id', 0);
         }
 
-        if (count($stations) == 1) {
+        if (\count($stations) == 1) {
             session()->put('station_id', $stations->first()->id);
         }
 
@@ -66,7 +64,8 @@ class LoginController extends Controller
     /**
      * Log the user out of the application.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function logout(Request $request)

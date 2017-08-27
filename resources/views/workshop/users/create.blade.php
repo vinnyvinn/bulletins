@@ -124,14 +124,19 @@
                             <div class="col-sm-8 permissions">
                                 <h4><strong>Permissions</strong></h4>
                                 <div class="row">
-                                    @foreach($permissions as $permission)
-                                        <div class="col-sm-3 {{ $permission->group }}">
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox" id="{{ $permission->slug == '*' ? 'all-permissions' : $permission->slug }}" name="permission[{{ $permission->slug }}]" {{ isset($user) ? in_array($permission->slug, $user->permissions) ? ' checked' : '' : '' }}> {{ $permission->name }}
-                                                </label>
-                                            </div>
+                                    @foreach($permissions as $group => $groupPermissions)
+                                        <div class="col-sm-12">
+                                            <h4>{{ $group == "" ? 'Common Modules' : ucwords($group) }}</h4>
                                         </div>
+                                        @foreach($groupPermissions as $permission)
+                                            <div class="col-sm-3 {{ $permission->group }}">
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input type="checkbox" id="{{ $permission->slug == '*' ? 'all-permissions' : $permission->slug }}" name="permission[{{ $permission->slug }}]" {{ isset($user) ? in_array($permission->slug, $user->permissions) ? ' checked' : '' : '' }}> {{ $permission->name }}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        @endforeach
                                     @endforeach
                                 </div>
                             </div>

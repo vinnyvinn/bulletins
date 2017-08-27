@@ -30,7 +30,8 @@ class JobTypeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -41,7 +42,7 @@ class JobTypeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\WorkshopJobType $jobType
+     * @param \App\WorkshopJobType $jobType
      *
      * @return \Illuminate\Http\Response
      */
@@ -53,7 +54,7 @@ class JobTypeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\WorkshopJobType $jobType
+     * @param \App\WorkshopJobType $jobType
      *
      * @return \Illuminate\Http\Response
      */
@@ -65,8 +66,8 @@ class JobTypeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \App\WorkshopJobType     $jobType
+     * @param \Illuminate\Http\Request $request
+     * @param \App\WorkshopJobType     $jobType
      *
      * @return \Illuminate\Http\Response
      */
@@ -78,7 +79,7 @@ class JobTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\WorkshopJobType  $jobType
+     * @param \App\WorkshopJobType $jobType
      *
      * @return \Illuminate\Http\Response
      */

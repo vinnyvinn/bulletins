@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Employee;
 use Response;
-use Auth;
 use SmoDav\Models\LocalShunting\LSEmployeeMileage;
 
 class RKEmployeeController extends Controller
@@ -17,7 +16,7 @@ class RKEmployeeController extends Controller
      */
     public function index()
     {
-      return Response::json([
+        return Response::json([
         'employees' => Employee::all()
       ]);
     }
@@ -29,13 +28,13 @@ class RKEmployeeController extends Controller
      */
     public function create()
     {
-
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -52,18 +51,19 @@ class RKEmployeeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -74,8 +74,9 @@ class RKEmployeeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -86,7 +87,8 @@ class RKEmployeeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -94,31 +96,32 @@ class RKEmployeeController extends Controller
         //
     }
 
-    public function unallocatedEmployees ()
+    public function unallocatedEmployees()
     {
-      return Response::json([
+        return Response::json([
         'employees' => Employee::whereNull('contract_id')->get()
       ]);
     }
 
     public function allocateEmployee(Request $request)
     {
-      $data = $request->all();
-      $allocatedEmployees = $data['allocatedEmployees'];
+        $data = $request->all();
+        $allocatedEmployees = $data['allocatedEmployees'];
 
-      $currently_allocated_employees = Employee::where('contract_id', $data['contract_id'])->get();
+        $currently_allocated_employees = Employee::where('contract_id', $data['contract_id'])->get();
 
-      foreach($currently_allocated_employees as $currently_allocated_employee) {
-        $currently_allocated_employee->contract_id = null;
-        $currently_allocated_employee->update();
-      }
+        foreach ($currently_allocated_employees as $currently_allocated_employee) {
+            $currently_allocated_employee->contract_id = null;
+            $currently_allocated_employee->update();
+        }
 
-      foreach($allocatedEmployees as $allocatedEmployee) {
-        $employee = Employee::findOrFail($allocatedEmployee['id']);
-        $employee->contract_id = $data['contract_id'];
-        $employee->update();
-      }
-      return Response::json([
+        foreach ($allocatedEmployees as $allocatedEmployee) {
+            $employee = Employee::findOrFail($allocatedEmployee['id']);
+            $employee->contract_id = $data['contract_id'];
+            $employee->update();
+        }
+
+        return Response::json([
         'status' => 'success',
         'message' => 'Employee(s) successfully allocated'
       ]);
@@ -126,7 +129,7 @@ class RKEmployeeController extends Controller
 
     public function create_employee_mileage($employee, $contract)
     {
-      return Response::json([
+        return Response::json([
         'employee' => Employee::findOrFail($employee),
         'mileages' => LSEmployeeMileage::where('employee_id', $employee)
             ->where('contract_id', $contract)

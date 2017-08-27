@@ -9,7 +9,6 @@ class Product extends Model
 {
     protected $guarded = [];
 
-
     public function user()
     {
         return $this->belongsTo('App\User');
@@ -30,10 +29,8 @@ class Product extends Model
         return $this->hasMany('App\Product_attribute');
     }
 
-
     public function stock_available($method_shop_id = 0)
     {
-        
         $shop_id = $method_shop_id;
         if ($method_shop_id == 0) {
             $user = Auth::user();
@@ -45,7 +42,6 @@ class Product extends Model
         }
         $total_stock = $this->hasMany('App\Stock')->where('shop_id', $shop_id)->sum('total_product');
         $total_sales = $this->hasMany('App\Invoice_items')->sum('qty');
-
 
         return ($total_stock - $total_sales);
     }

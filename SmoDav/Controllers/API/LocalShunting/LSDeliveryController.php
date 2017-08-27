@@ -34,19 +34,19 @@ class LSDeliveryController extends Controller
      */
     public function create()
     {
-      if(request('id')) {
-        return Response::json([
-          'vehicle' => Vehicle::where('id',request('id'))->with('contract','driver','trailer')->first(),
+        if (request('id')) {
+            return Response::json([
+          'vehicle' => Vehicle::where('id', request('id'))->with('contract', 'driver', 'trailer')->first(),
           'drivers' => Driver::unassigned()->orderBy('first_name')->get()
         ]);
-      }
-
+        }
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -58,7 +58,7 @@ class LSDeliveryController extends Controller
 
         //Detach vehicle from gatepass
         $vehicle = Vehicle::findOrFail($data['vehicle_id']);
-        $lsgatepass = LSGatepass::where('vehicle_id',$data['vehicle_id'])->first();
+        $lsgatepass = LSGatepass::where('vehicle_id', $data['vehicle_id'])->first();
         $lsgatepass->delete();
 
         $data['user_id'] = Auth::id();
@@ -74,20 +74,22 @@ class LSDeliveryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-      return Response::json([
-        'delivery' => LSDelivery::where('id', $id)->with('vehicle','vehicle.driver','vehicle.trailer')->first()
+        return Response::json([
+        'delivery' => LSDelivery::where('id', $id)->with('vehicle', 'vehicle.driver', 'vehicle.trailer')->first()
       ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -98,29 +100,30 @@ class LSDeliveryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-      $data = $request->all();
-      unset($data['_token'], $data['_method']);
-      $data['raw'] = json_encode($data);
+        $data = $request->all();
+        unset($data['_token'], $data['_method']);
+        $data['raw'] = \json_encode($data);
 
-      foreach ($data as $key => $value) {
-          if ($value == 'null') {
-              unset($data[$key]);
-          }
-      }
+        foreach ($data as $key => $value) {
+            if ($value == 'null') {
+                unset($data[$key]);
+            }
+        }
 
-      $data['offloading_time'] = Carbon::now();
-      $data['status'] = Constants::OFFLOADED;
+        $data['offloading_time'] = Carbon::now();
+        $data['status'] = Constants::OFFLOADED;
 
-      $delivery = LSDelivery::findOrFail($id);
-      $delivery->update($data);
+        $delivery = LSDelivery::findOrFail($id);
+        $delivery->update($data);
 
-      return Response::json([
+        return Response::json([
           'message' => 'Successfully offloaded'
       ]);
     }
@@ -128,7 +131,8 @@ class LSDeliveryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

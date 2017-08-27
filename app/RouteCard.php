@@ -9,6 +9,6 @@ class RouteCard extends Model
 {
     public function delivery()
     {
-      return $this->belongsTo(Delivery::class);
+        return $this->belongsTo(Delivery::class);
     }
 }

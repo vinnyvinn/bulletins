@@ -13,22 +13,18 @@ use App\Truck;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
-use function intval;
-use function json_encode;
 use Response;
 use SmoDav\Factory\TruckFactory;
 use SmoDav\Factory\VehicleFactory;
 use SmoDav\Models\Make;
 use SmoDav\Models\Vehicle;
 use SmoDav\Support\Excel;
-use function str_replace;
 use SmoDav\Models\Journey;
 use App\Fuel;
 use SmoDav\Models\LocalShunting\LSFuel;
 use SmoDav\Models\LocalShunting\LSDelivery;
 use SmoDav\Support\Constants;
 use App\ContractConfig;
-
 
 class VehicleController extends Controller
 {
@@ -72,7 +68,7 @@ class VehicleController extends Controller
         foreach ($request->all() as $key => $item) {
             if ($request->hasFile($key)) {
                 $extension = $request->file($key)->getClientOriginalExtension();
-                $filename = time().".".$extension;
+                $filename = \time() . '.' . $extension;
                 $request->file($key)->move(public_path('uploads'), $filename);
                 $data[$key] = $filename;
             }
@@ -91,7 +87,6 @@ class VehicleController extends Controller
      * @param $id
      *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
-     *
      */
     public function show($id)
     {
@@ -103,8 +98,8 @@ class VehicleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  TruckRequest $request
-     * @param                           $id
+     * @param TruckRequest $request
+     * @param              $id
      *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
@@ -116,7 +111,7 @@ class VehicleController extends Controller
             $data[$key] = $item;
             if ($request->hasFile($key)) {
                 $extension = $request->file($key)->getClientOriginalExtension();
-                $filename = time().".".$extension;
+                $filename = \time() . '.' . $extension;
                 $request->file($key)->move(public_path('uploads'), $filename);
                 $data[$key] = $filename;
             }
@@ -132,7 +127,7 @@ class VehicleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Truck  $truck
+     * @param \App\Truck $truck
      *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
@@ -157,7 +152,7 @@ class VehicleController extends Controller
         $data['type'] = Checklist::class;
         $data['from_station'] = $truck->contract->route->source;
         $data['to_station'] = $truck->contract->route->destination;
-        $data['fields'] = json_encode($data['items']);
+        $data['fields'] = \json_encode($data['items']);
         $data['inspector_id'] = 1;
         $data['supervisor_id'] = 1;
         $data['suitable_for_loading'] = $data['suitable_for_loading'] == 1;
@@ -213,8 +208,8 @@ class VehicleController extends Controller
 
         $rows = collect($rows)->keyBy('plate_number')->values()->toArray();
 
-        $rows = array_map(function ($row) {
-            $row['max_load'] = intval(str_replace(',', '', $row['max_load']));
+        $rows = \array_map(function ($row) {
+            $row['max_load'] = \intval(\str_replace(',', '', $row['max_load']));
 
             return $row;
         }, $rows);
@@ -225,6 +220,7 @@ class VehicleController extends Controller
             }
         } catch (Exception $ex) {
             echo $ex->getMessage();
+
             return Response::json([
                 'status' => 'error',
                 'message' => 'Please use the sample file format provided and fill all the required fields.'
@@ -245,87 +241,84 @@ class VehicleController extends Controller
         $activities = [];
         $journeys = Journey::where('truck_id', $id)->with('inspection', 'delivery', 'fuel', 'mileage')->get();
 
-
         foreach ($journeys as $journey) {
             $activity = [
-                'id'              => $journey->id,
-                'activity'        => 'Journey Creation',
-                'date'            => $journey->created_at,
-                'time'            => $journey->created_at,
+                'id' => $journey->id,
+                'activity' => 'Journey Creation',
+                'date' => $journey->created_at,
+                'time' => $journey->created_at,
                 'document_number' => 'JRNY-' . $journey->id,
-                'posted_by'       => $journey->user->name,
+                'posted_by' => $journey->user->name,
             ];
-            array_push($activities, $activity);
+            \array_push($activities, $activity);
 
             if ($journey->inspection) {
                 $activity = [
-                    'id'              => $journey->inspection->id,
-                    'activity'        => 'Inspection Done',
-                    'date'            => $journey->inspection->created_at,
-                    'time'            => $journey->inspection->created_at,
+                    'id' => $journey->inspection->id,
+                    'activity' => 'Inspection Done',
+                    'date' => $journey->inspection->created_at,
+                    'time' => $journey->inspection->created_at,
                     'document_number' => 'INSP-' . $journey->inspection->id,
-                    'posted_by'       => $journey->inspection->inspector->name,
+                    'posted_by' => $journey->inspection->inspector->name,
                 ];
-                array_push($activities, $activity);
+                \array_push($activities, $activity);
             }
 
             if ($journey->delivery) {
                 $activity = [
-                    'id'              => $journey->delivery->id,
-                    'activity'        => 'Delivery Note Issue',
-                    'date'            => $journey->delivery->created_at,
-                    'time'            => $journey->delivery->created_at,
+                    'id' => $journey->delivery->id,
+                    'activity' => 'Delivery Note Issue',
+                    'date' => $journey->delivery->created_at,
+                    'time' => $journey->delivery->created_at,
                     'document_number' => 'RKS-' . $journey->delivery->id,
-                    'posted_by'       => $journey->delivery->user->name,
+                    'posted_by' => $journey->delivery->user->name,
                 ];
-                array_push($activities, $activity);
+                \array_push($activities, $activity);
             }
 
             if ($journey->fuel) {
                 $activity = [
-                    'id'              => $journey->fuel->id,
-                    'activity'        => 'Fuel Issue',
-                    'date'            => $journey->fuel->created_at,
-                    'time'            => $journey->fuel->created_at,
+                    'id' => $journey->fuel->id,
+                    'activity' => 'Fuel Issue',
+                    'date' => $journey->fuel->created_at,
+                    'time' => $journey->fuel->created_at,
                     'document_number' => 'FUEL-' . $journey->fuel->id,
-                    'posted_by'       => $journey->fuel->user->name,
+                    'posted_by' => $journey->fuel->user->name,
                 ];
-                array_push($activities, $activity);
+                \array_push($activities, $activity);
             }
 
             if ($journey->mileage) {
                 $activity = [
-                    'id'              => $journey->mileage->id,
-                    'activity'        => 'Mileage Issue',
-                    'date'            => $journey->mileage->created_at,
-                    'time'            => $journey->mileage->created_at,
+                    'id' => $journey->mileage->id,
+                    'activity' => 'Mileage Issue',
+                    'date' => $journey->mileage->created_at,
+                    'time' => $journey->mileage->created_at,
                     'document_number' => 'MLG-' . $journey->mileage->id,
-                    'posted_by'       => $journey->mileage->user->name,
+                    'posted_by' => $journey->mileage->user->name,
                 ];
-                array_push($activities, $activity);
+                \array_push($activities, $activity);
             }
-
-
         }
 
         return Response::json([
-            'truck'      => $truck,
+            'truck' => $truck,
             'activities' => $activities,
         ]);
     }
 
     public function lsfuelcreate($id, $contract)
     {
-      $vehicle_ls_fuel = LSFuel::where('vehicle_id', $id)->where('contract_id', $contract)->orderBy('created_at', 'desc')->first();
-      if($vehicle_ls_fuel) {
-        $last_refuel_time = $vehicle_ls_fuel->created_at;
-        $deliveries_since_refuel = count(LSDelivery::where('vehicle_id', $id)
+        $vehicle_ls_fuel = LSFuel::where('vehicle_id', $id)->where('contract_id', $contract)->orderBy('created_at', 'desc')->first();
+        if ($vehicle_ls_fuel) {
+            $last_refuel_time = $vehicle_ls_fuel->created_at;
+            $deliveries_since_refuel = \count(LSDelivery::where('vehicle_id', $id)
         ->where('contract_id', $contract)
         ->where('status', Constants::OFFLOADED)
         ->get());
-      } else {
-        $deliveries_since_refuel = 0;
-      }
+        } else {
+            $deliveries_since_refuel = 0;
+        }
 
       $previous_refuels = count(LSFuel::where('vehicle_id', $id)->where('contract_id', $contract)->get());
 

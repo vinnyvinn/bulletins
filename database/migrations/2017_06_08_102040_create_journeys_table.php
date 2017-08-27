@@ -9,8 +9,6 @@ class CreateJourneysTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -39,7 +37,6 @@ class CreateJourneysTable extends Migration
             $table->integer('closed_by')->unsigned()->nullable();
             $table->integer('mileage_balance')->default(0);
 
-
             $table->timestamps();
 
             $table->foreign('contract_id')->references('id')->on('contracts')->onDelete('cascade');
@@ -51,8 +48,6 @@ class CreateJourneysTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

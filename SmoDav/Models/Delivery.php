@@ -2,7 +2,6 @@
 
 namespace SmoDav\Models;
 
-use SmoDav\Models\Journey;
 use App\RouteCard;
 use App\User;
 
@@ -41,6 +40,6 @@ class Delivery extends SmoDavModel
 
     public function user()
     {
-      return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 }

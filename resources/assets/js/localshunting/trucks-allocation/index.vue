@@ -25,10 +25,11 @@
                                     <td>{{ contract.client.Name }}</td>
                                     <td>Progress</td>
                                     <td>
-                                      <router-link :to="'/ls/trucks-allocation/create/'+ contract.id">
-                                        <span class="btn btn-xs btn-success">Allocate Trucks/Employees</span>
-                                      </router-link>
+                                        <router-link v-if="$root.can('ls-create-allocation') || $root.can('ls-edit-allocation') || $root.can('ls-delete-allocation')" :to="'/ls/trucks-allocation/create/'+ contract.id">
+                                            <span class="btn btn-xs btn-success">Allocate Trucks/Employees</span>
+                                        </router-link>
                                     </td>
+
                                 </tr>
                                 </tbody>
 

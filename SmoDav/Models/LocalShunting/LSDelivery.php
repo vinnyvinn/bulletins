@@ -3,7 +3,6 @@
 namespace SmoDav\Models\LocalShunting;
 
 use Illuminate\Database\Eloquent\Model;
-use SmoDav\Models\Journey;
 use SmoDav\Models\Vehicle;
 use App\RouteCard;
 use App\User;
@@ -31,8 +30,6 @@ class LSDelivery extends Model
         'temporary_driver'
     ];
 
-
-
     public function routecard()
     {
         return $this->hasOne(RouteCard::class);
@@ -40,15 +37,15 @@ class LSDelivery extends Model
 
     public function user()
     {
-      return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function vehicle()
     {
-      return $this->belongsTo(Vehicle::class);
+        return $this->belongsTo(Vehicle::class);
     }
     public function temporary_driver()
     {
-      return $this->belongsTo(Driver::class, 'temporary_driver', 'id');
+        return $this->belongsTo(Driver::class, 'temporary_driver', 'id');
     }
 }

@@ -30,7 +30,8 @@ class VehiclesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -41,7 +42,8 @@ class VehiclesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Vehicles  $vehicles
+     * @param \App\Vehicles $vehicles
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Vehicles $vehicles)
@@ -52,7 +54,8 @@ class VehiclesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Vehicles  $vehicles
+     * @param \App\Vehicles $vehicles
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Vehicles $vehicles)
@@ -63,8 +66,9 @@ class VehiclesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Vehicles  $vehicles
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Vehicles            $vehicles
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Vehicles $vehicles)
@@ -75,7 +79,8 @@ class VehiclesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Vehicles  $vehicles
+     * @param \App\Vehicles $vehicles
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Vehicles $vehicles)

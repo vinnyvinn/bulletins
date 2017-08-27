@@ -4,8 +4,8 @@
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <strong>Trucks Awaiting Fueling </i></strong>
-                        <button type="button" class="btn btn-sm btn-success pull-right" name="button" @click="viewFuelsIndex()">FUEL ALLOCATED</button>
+                        <strong>Trucks Awaiting Fueling</strong>
+                        <button v-if="$root.can('ls-view-fuel')" type="button" class="btn btn-sm btn-success pull-right" name="button" @click="viewFuelsIndex()">FUEL ALLOCATED</button>
                     </div>
                     <div class="panel-body">
                         <div class="table-responsive">
@@ -27,7 +27,7 @@
                                     <td v-if="truck.driver">{{ truck.driver.first_name }}</td>
                                     <td v-if="!truck.driver">--</td>
                                     <td>{{ truck.current_fuel}}</td>
-                                    <td><button type="button" @click="fuel(truck)" name="button" class="btn btn-sm btn-success">Fuel</button></td>
+                                    <td><button v-if="$root.can('ls-create-fuel')" type="button" @click="fuel(truck)" name="button" class="btn btn-sm btn-success">Fuel</button></td>
                                 </tr>
                                 </tbody>
 

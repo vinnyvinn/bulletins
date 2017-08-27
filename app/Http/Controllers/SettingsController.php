@@ -7,8 +7,6 @@ use App\SAGEUDF;
 use DB;
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
 use SmoDav\Models\Make;
 
 class SettingsController extends Controller
@@ -57,12 +55,12 @@ class SettingsController extends Controller
             ->with('pageTitle', $pageTitle);
     }
 
-
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request)

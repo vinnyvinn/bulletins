@@ -26,27 +26,26 @@ class Message extends Model
     public function sender()
     {
         $sender = '';
-        if($this->from == 'admin')
-        {
+        if ($this->from == 'admin') {
             $sender = 'Admin';
         } else {
             $user = $this->belongsTo('App\User', 'sender_id')->first();
             $sender = $user->get_fullname();
         }
+
         return $sender;
     }
-
 
     public function to()
     {
         $to = '';
-        if($this->user_id == 0)
-        {
+        if ($this->user_id == 0) {
             $to = 'Admin';
         } else {
             $user = $this->belongsTo('App\User', 'user_id')->first();
             $to = $user->get_fullname();
         }
+
         return $to;
     }
 
@@ -54,5 +53,4 @@ class Message extends Model
     {
         return $this->hasMany('App\Message', 'parent_id');
     }
-
 }

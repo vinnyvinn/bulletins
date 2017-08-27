@@ -64,6 +64,7 @@ class WorkshopInspectionCheckListController extends Controller
         return Datatables::of($records)
             ->addColumn('actions', function ($record) {
                 return '';
+
                 return '<a href="' . route('workshop.job-type.show', $record->id) .
                     '" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>';
             })

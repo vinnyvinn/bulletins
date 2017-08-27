@@ -84,7 +84,8 @@ class GatePassController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -103,7 +104,8 @@ class GatePassController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $gatePassId
+     * @param int $gatePassId
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($gatePassId)
@@ -122,7 +124,8 @@ class GatePassController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $gatePassId
+     * @param int $gatePassId
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($gatePassId)
@@ -133,8 +136,9 @@ class GatePassController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $gatePassId
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $gatePassId
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $gatePassId)
@@ -153,7 +157,8 @@ class GatePassController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $gatePassId
+     * @param int $gatePassId
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($gatePassId)

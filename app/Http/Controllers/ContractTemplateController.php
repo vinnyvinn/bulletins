@@ -11,14 +11,11 @@ use App\Option;
 use App\Route;
 use App\StockItem;
 use Carbon\Carbon;
-use DB;
 use Illuminate\Http\Request;
 use Response;
 use SmoDav\Models\CargoClassification;
 use SmoDav\Models\CargoType;
 use SmoDav\Models\CarriagePoint;
-use SmoDav\Support\Constants;
-use function str_replace;
 use Auth;
 
 class ContractTemplateController extends Controller
@@ -48,7 +45,6 @@ class ContractTemplateController extends Controller
             ->select(['StockLink', 'Description_1'])
             ->get();
 
-
         return Response::json([
             'routes' => Route::all(['id', 'source', 'destination', 'distance']),
             'clients' => Client::all(['DCLink', 'Name', 'Account']),
@@ -62,7 +58,7 @@ class ContractTemplateController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
@@ -76,20 +72,19 @@ class ContractTemplateController extends Controller
         }
 
         $data['berthing_date'] = isset($data['berthing_date']) ?
-            Carbon::parse(str_replace('/', '-', $data['berthing_date']))->format('Y-m-d') :
+            Carbon::parse(\str_replace('/', '-', $data['berthing_date']))->format('Y-m-d') :
             null;
         $data['vessel_arrival_date'] = isset($data['vessel_arrival_date']) ?
-            Carbon::parse(str_replace('/', '-', $data['vessel_arrival_date']))->format('Y-m-d') :
+            Carbon::parse(\str_replace('/', '-', $data['vessel_arrival_date']))->format('Y-m-d') :
             null;
 
-        $data['unloading_points'] = json_decode($data['unloading_points']);
-        $data['shifts'] = json_decode($data['shifts']);
+        $data['unloading_points'] = \json_decode($data['unloading_points']);
+        $data['shifts'] = \json_decode($data['shifts']);
 
-        $data['raw'] = json_encode($data);
-        $data['shifts'] = json_encode($data['shifts']);
-        $data['unloading_points'] = json_encode($data['unloading_points']);
+        $data['raw'] = \json_encode($data);
+        $data['shifts'] = \json_encode($data['shifts']);
+        $data['unloading_points'] = \json_encode($data['unloading_points']);
         $data['user_id'] = Auth::id();
-
 
         unset($data['_token'], $data['_method']);
 
@@ -104,6 +99,7 @@ class ContractTemplateController extends Controller
      * Display the specified resource.
      *
      * @param $id
+     *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
     public function show($id)
@@ -114,7 +110,7 @@ class ContractTemplateController extends Controller
 
         $contract = ContractTemplate::findOrFail($id);
 
-        $contract->raw = json_decode($contract->raw);
+        $contract->raw = \json_decode($contract->raw);
 
         return Response::json([
             'routes' => Route::all(['id', 'source', 'destination', 'distance']),
@@ -130,9 +126,9 @@ class ContractTemplateController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     *
+     * @param \Illuminate\Http\Request $request
      * @param $id
+     *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -144,18 +140,18 @@ class ContractTemplateController extends Controller
             }
         }
         $data['berthing_date'] = isset($data['berthing_date']) ?
-            Carbon::parse(str_replace('/', '-', $data['berthing_date']))->format('Y-m-d') :
+            Carbon::parse(\str_replace('/', '-', $data['berthing_date']))->format('Y-m-d') :
             null;
         $data['vessel_arrival_date'] = isset($data['vessel_arrival_date']) ?
-            Carbon::parse(str_replace('/', '-', $data['vessel_arrival_date']))->format('Y-m-d') :
+            Carbon::parse(\str_replace('/', '-', $data['vessel_arrival_date']))->format('Y-m-d') :
             null;
 
-        $data['unloading_points'] = json_decode($data['unloading_points']);
-        $data['shifts'] = json_decode($data['shifts']);
+        $data['unloading_points'] = \json_decode($data['unloading_points']);
+        $data['shifts'] = \json_decode($data['shifts']);
 
-        $data['raw'] = json_encode($data);
-        $data['shifts'] = json_encode($data['shifts']);
-        $data['unloading_points'] = json_encode($data['unloading_points']);
+        $data['raw'] = \json_encode($data);
+        $data['shifts'] = \json_encode($data['shifts']);
+        $data['unloading_points'] = \json_encode($data['unloading_points']);
 
         $contract = ContractTemplate::findOrFail($id);
         $contract->update($data);
@@ -170,6 +166,7 @@ class ContractTemplateController extends Controller
      *
      *
      * @param $id
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)

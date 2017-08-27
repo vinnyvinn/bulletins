@@ -9,7 +9,6 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Response;
-use function sleep;
 use SmoDav\Factory\DriverFactory;
 use SmoDav\Support\Excel;
 
@@ -28,7 +27,7 @@ class DriverController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
@@ -45,7 +44,7 @@ class DriverController extends Controller
 
             if ($request->hasFile($key)) {
                 $extension = $request->file($key)->getClientOriginalExtension();
-                $filename = time().".".$extension;
+                $filename = \time() . '.' . $extension;
                 $request->file($key)->move(public_path('uploads'), $filename);
                 $driver->{$key} = $filename;
             }
@@ -78,7 +77,7 @@ class DriverController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
@@ -96,7 +95,7 @@ class DriverController extends Controller
 
             if ($request->hasFile($key)) {
                 $extension = $request->file($key)->getClientOriginalExtension();
-                $filename = time().".".$extension;
+                $filename = \time() . '.' . $extension;
                 $request->file($key)->move(public_path('uploads'), $filename);
                 $driver->{$key} = $filename;
             }
@@ -113,7 +112,7 @@ class DriverController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Driver  $driver
+     * @param \App\Driver $driver
      *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */

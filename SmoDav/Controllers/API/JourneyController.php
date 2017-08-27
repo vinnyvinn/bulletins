@@ -76,7 +76,6 @@ class JourneyController extends Controller
 
         $ls = Vehicle::whereNotNull('contract_id')->get(['id']);
 
-
         $trucks = Vehicle::typeTruck()
             ->has('trailer')
             ->with([
@@ -110,7 +109,7 @@ class JourneyController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
@@ -127,8 +126,8 @@ class JourneyController extends Controller
         }
 
         unset($data['_token'], $data['_method']);
-        $data['raw'] = json_encode($data);
-        $data['job_date'] = Carbon::parse(str_replace('/', '-', $data['job_date']))->format('Y-m-d');
+        $data['raw'] = \json_encode($data);
+        $data['job_date'] = Carbon::parse(\str_replace('/', '-', $data['job_date']))->format('Y-m-d');
         $data['user_id'] = Auth::id();
         $data['subcontracted'] = 0;
 
@@ -155,8 +154,8 @@ class JourneyController extends Controller
     public function show($id)
     {
         $journey = Journey::with(['contract', 'route', 'driver', 'truck.trailer', 'mileage', 'fuel','delivery'])->findOrFail($id);
-        $journey->raw = json_decode($journey->raw);
-        $contract = $journey->contract ? json_decode($journey->contract->raw) : new \stdClass();
+        $journey->raw = \json_decode($journey->raw);
+        $contract = $journey->contract ? \json_decode($journey->contract->raw) : new \stdClass();
         $contract->id = $journey->contract ? $journey->contract->id : '';
         unset($journey->contract);
 
@@ -190,7 +189,6 @@ class JourneyController extends Controller
             ->with('client')
             ->get(['id', 'raw', 'name', 'client_id', 'ignore_delivery_note']);
 
-
         return Response::json([
             'routes' => Route::all(['id', 'source', 'destination', 'distance']),
             'clients' => Client::all(['DCLink', 'Name', 'Account']),
@@ -209,9 +207,8 @@ class JourneyController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     *
-     * @param Journey $journey
+     * @param \Illuminate\Http\Request $request
+     * @param Journey                  $journey
      *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
@@ -228,8 +225,8 @@ class JourneyController extends Controller
         }
 
         unset($data['_token'], $data['_method']);
-        $data['raw'] = json_encode($data);
-        $data['job_date'] = Carbon::parse(str_replace('/', '-', $data['job_date']))->format('Y-m-d');
+        $data['raw'] = \json_encode($data);
+        $data['job_date'] = Carbon::parse(\str_replace('/', '-', $data['job_date']))->format('Y-m-d');
 
         foreach ($data as $key => $value) {
             if ($value == 'null') {
@@ -250,7 +247,6 @@ class JourneyController extends Controller
      * @param Journey $journey
      *
      * @return \Illuminate\Http\JsonResponse
-     *
      */
     public function destroy(Journey $journey)
     {
@@ -296,8 +292,7 @@ class JourneyController extends Controller
         $returnMileage['top_up_amount'] = 0;
         $returnMileage['top_up_reason'] = '';
         $returnMileage['user_id'] = Auth::id();
-        $returnMileage['raw'] = json_encode($returnMileage);
-
+        $returnMileage['raw'] = \json_encode($returnMileage);
 
         \DB::transaction(function () use ($id, $request, $returnMileage) {
             $journey = Journey::findOrFail($id);

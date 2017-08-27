@@ -5,17 +5,13 @@ namespace App\Http\Controllers;
 use App\Checklist;
 use App\Support\Core;
 use App\Trip;
-use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use function json_decode;
 use Response;
 use SmoDav\Factory\VehicleFactory;
-use function view;
 
 class ProgressController extends Controller
 {
-
     public function loading(Request $request, $id)
     {
         $truck = VehicleFactory::findOrFail($id);
@@ -26,7 +22,7 @@ class ProgressController extends Controller
         $data['type'] = Checklist::DELIVERY_NOTE;
         $data['from_station'] = $truck->contract->route->source;
         $data['to_station'] = $truck->contract->route->destination;
-        $data['fields'] = json_encode($data);
+        $data['fields'] = \json_encode($data);
         $data['inspector_id'] = $data['user_id'];
         $data['supervisor_id'] = $data['user_id'];
         $data['for_date'] = Carbon::now();
@@ -49,7 +45,7 @@ class ProgressController extends Controller
         $truck->update(['location' => Core::nextStep($truck->location)]);
 
         $delnote = $trip->deliveryNote;
-        $delnote->fields = json_decode($delnote->fields);
+        $delnote->fields = \json_decode($delnote->fields);
         $trip->deliveryNote = $delnote;
 
         $printout = view('printouts.deliverynote')->with('trip', $trip)->render();
@@ -71,7 +67,7 @@ class ProgressController extends Controller
         $data['type'] = Checklist::OFFLOADING_NOTE;
         $data['from_station'] = $truck->contract->route->source;
         $data['to_station'] = $truck->contract->route->destination;
-        $data['fields'] = json_encode($data);
+        $data['fields'] = \json_encode($data);
         $data['inspector_id'] = $data['user_id'];
         $data['supervisor_id'] = $data['user_id'];
         $data['for_date'] = Carbon::now();
@@ -93,10 +89,10 @@ class ProgressController extends Controller
         $truck->update(['location' => Core::nextStep($truck->location)]);
 
         $delnote = $trip->deliveryNote;
-        $delnote->fields = json_decode($delnote->fields);
+        $delnote->fields = \json_decode($delnote->fields);
         $trip->deliveryNote = $delnote;
         $delnote = $trip->receiveNote;
-        $delnote->fields = json_decode($delnote->fields);
+        $delnote->fields = \json_decode($delnote->fields);
         $trip->receiveNote = $delnote;
 
         $printout = view('printouts.deliverynote')->with('trip', $trip)->render();
@@ -161,15 +157,13 @@ class ProgressController extends Controller
                 break;
         }
 
+        //        $nextStep = Core::nextStep($truck->location);
+        //
+        //        if ($nextStep == Core::IN_YARD) {
+        //            VehicleFactory::createBilling($truck);
+        //        }
 
-
-//        $nextStep = Core::nextStep($truck->location);
-//
-//        if ($nextStep == Core::IN_YARD) {
-//            VehicleFactory::createBilling($truck);
-//        }
-
-//        $truck->update(['location' => $nextStep]);
+        //        $truck->update(['location' => $nextStep]);
 
         return Response::json([
             'message' => 'Successfully completed action.',
@@ -186,7 +180,7 @@ class ProgressController extends Controller
         $data['type'] = Checklist::class;
         $data['from_station'] = $truck->contract->route->source;
         $data['to_station'] = $truck->contract->route->destination;
-        $data['fields'] = json_encode($data['items']);
+        $data['fields'] = \json_encode($data['items']);
         $data['inspector_id'] = $data['user_id'];
         $data['supervisor_id'] = $data['user_id'];
         $data['suitable_for_loading'] = $data['suitable_for_loading'] == 1;
@@ -198,7 +192,6 @@ class ProgressController extends Controller
             ->where('truck_id', $truck->id)
             ->where('is_complete', false)
             ->first();
-
 
         if (! $trip) {
             $checklist = Checklist::create($data);
@@ -246,7 +239,7 @@ class ProgressController extends Controller
         }
 
         $checklist = $trip->preLoadingChecklist;
-        $checklist->fields = json_decode($checklist->fields);
+        $checklist->fields = \json_decode($checklist->fields);
         $trip->preLoadingChecklist = $checklist;
         $trip->trip_date = Carbon::parse($trip->trip_date)->format('d F Y');
 

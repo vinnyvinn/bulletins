@@ -3,7 +3,7 @@
     <div class="panel panel-default" v-if="!showEmployees">
       <div class="panel-heading">
           Awaiting Mileage
-          <button type="button" name="button" class="btn btn-success btn-sm pull-right" @click="employeeMileage">Supervisor/Casuals Mileage</button>
+          <button v-if="$root.can('ls-create-mileage')" type="button" name="button" class="btn btn-success btn-sm pull-right" @click="employeeMileage">Supervisor/Casuals Mileage</button>
       </div>
       <div class="panel-body">
         <table class="table no-wrap">
@@ -21,7 +21,7 @@
               <td>{{ vehicle.plate_number }}</td>
               <td v-if="vehicle.driver">{{ vehicle.driver.first_name }} {{ vehicle.driver.last_name }}</td>
               <td v-if="!vehicle.driver"> -- </td>
-              <td><button type="button" @click="createMileage(vehicle.id, vehicle.contract_id)" name="button" class="btn btn-sm btn-success">Allocate Mileage</button></td>
+              <td><button v-if="$root.can('ls-create-mileage')" type="button" @click="createMileage(vehicle.id, vehicle.contract_id)" name="button" class="btn btn-sm btn-success">Allocate Mileage</button></td>
             </tr>
           </tbody>
           <tfoot>

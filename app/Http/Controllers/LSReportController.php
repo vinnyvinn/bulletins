@@ -2,17 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Response;
 use App\Client;
 use App\Contract;
-use SmoDav\Models\LocalShunting\LSGatePass;
 use SmoDav\Models\LocalShunting\LSDelivery;
-
 
 class LSReportController extends Controller
 {
-
     public function index()
     {
         return Response::json([
@@ -20,12 +16,10 @@ class LSReportController extends Controller
         ]);
     }
 
-
     public function create()
     {
         //
     }
-
 
     public function show($id)
     {
@@ -33,21 +27,20 @@ class LSReportController extends Controller
           'contract' => Contract::where('id', $id)->with('client')
               ->with('lsdeliveries','lsdeliveries.vehicle','lsdeliveries.vehicle.driver',
               'lsfuels','lsfuels.vehicle','lsfuels.vehicle.driver',
-              'lsgatepasses','lsgatepasses.vehicle', 'lsgatepasses.vehicle.driver')
+              'lsgatepasses', 'lsgatepasses.vehicle', 'lsgatepasses.vehicle.driver')
               ->first()
         ]);
     }
 
     public function loadingUnloading($id)
     {
-      return Response::json([
+        return Response::json([
         'lsdeliveries' => LSDelivery::where('contract_id', $id)
-              ->with('vehicle','vehicle.driver')
+              ->with('vehicle', 'vehicle.driver')
               ->get(),
         'contract' => Contract::where('id', $id)
-              ->with('client','route')
+              ->with('client', 'route')
               ->first()
       ]);
     }
-
 }

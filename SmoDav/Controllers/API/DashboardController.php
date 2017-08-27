@@ -41,8 +41,8 @@ class DashboardController extends Controller
                 return $builder->whereMonth('job_date', $today->month)->whereYear('job_date', $today->year);
             })
             ->when(request('month'), function ($builder) {
-                $dates = explode('-', request('month'));
-                if (count($dates) < 2) {
+                $dates = \explode('-', request('month'));
+                if (\count($dates) < 2) {
                     return $builder;
                 }
 
@@ -85,8 +85,8 @@ class DashboardController extends Controller
                 return $builder->whereMonth('job_date', $today->month)->whereYear('job_date', $today->year);
             })
             ->when(request('month'), function ($builder) {
-                $dates = explode('-', request('month'));
-                if (count($dates) < 2) {
+                $dates = \explode('-', request('month'));
+                if (\count($dates) < 2) {
                     return $builder;
                 }
 
@@ -112,8 +112,8 @@ class DashboardController extends Controller
                 return $builder->whereMonth('job_date', $today->month)->whereYear('job_date', $today->year);
             })
             ->when(request('month'), function ($builder) {
-                $dates = explode('-', request('month'));
-                if (count($dates) < 2) {
+                $dates = \explode('-', request('month'));
+                if (\count($dates) < 2) {
                     return $builder;
                 }
 
@@ -139,8 +139,8 @@ class DashboardController extends Controller
                 return $builder->whereMonth('job_date', $today->month)->whereYear('job_date', $today->year);
             })
             ->when(request('month'), function ($builder) {
-                $dates = explode('-', request('month'));
-                if (count($dates) < 2) {
+                $dates = \explode('-', request('month'));
+                if (\count($dates) < 2) {
                     return $builder;
                 }
 

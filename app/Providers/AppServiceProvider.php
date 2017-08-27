@@ -9,8 +9,6 @@ class AppServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
     public function boot()
     {
@@ -21,14 +19,12 @@ class AppServiceProvider extends ServiceProvider
                 $lShop = $loggedUser->shop;
             }
 
-            $view->with(['lUser' => $loggedUser, 'lShop' => $lShop ]);
+            $view->with(['lUser' => $loggedUser, 'lShop' => $lShop]);
         });
     }
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
     public function register()
     {

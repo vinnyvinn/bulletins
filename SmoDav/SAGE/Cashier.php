@@ -6,13 +6,9 @@ use App\Contract;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Support\Str;
-use function rand;
-use function time;
-use function uniqid;
 
 class Cashier
 {
-
     public static function invoice(Contract $contract, $unitPrice, $quantity, $projectId)
     {
         DB::transaction(function () use ($contract, $unitPrice, $quantity, $projectId) {
@@ -25,7 +21,7 @@ class Cashier
 
     private static function mapInvoice(Contract $contract, $totalAmount, $projectId)
     {
-        $reference = 'WEB' . uniqid(Str::random(6));
+        $reference = 'WEB' . \uniqid(Str::random(6));
         $transactionDate = Carbon::now();
 
         return [
@@ -72,7 +68,6 @@ class Cashier
         ];
     }
 
-
     private static function mapInvoiceLine($invoiceId, $contract, $unitPrice, $quantity, $projectId)
     {
         $stockItem = DB::table('StkItem')->where('StockLink', $contract->stock_item_id)->first();
@@ -95,7 +90,7 @@ class Cashier
             'cLineNotes' => '',
             'fUnitCost' => 0,
             'fLineDiscount' => 0,
-            'fTaxRate' => floatval($tax->TaxRate),
+            'fTaxRate' => \floatval($tax->TaxRate),
             'fAddCost' => 0,
             'iJobID' => 0,
             'iPriceListNameID' => 1,
@@ -173,7 +168,7 @@ class Cashier
             'iModule' => 0,
             'iStockCodeID' => (int) $stockItem->StockLink,
             'iTaxTypeID' => (int) $stockItem->TTI,
-            'fQuantityLineTotIncl' =>  $totalPrice,
+            'fQuantityLineTotIncl' => $totalPrice,
             'fQuantityLineTotExcl' => 0,
             'fQuantityLineTotInclNoDisc' => $totalPrice,
             'fQuantityLineTotExclNoDisc' => 0,
@@ -183,9 +178,9 @@ class Cashier
             'fQtyChangeLineTotExcl' => 0,
             'fQtyChangeLineTotInclNoDisc' => $totalPrice,
             'fQtyChangeLineTotExclNoDisc' => 0,
-            'fQtyChangeLineTaxAmount' =>  0,
+            'fQtyChangeLineTaxAmount' => 0,
             'fQtyChangeLineTaxAmountNoDisc' => 0,
-            'fQtyToProcessLineTotIncl' =>  $totalPrice,
+            'fQtyToProcessLineTotIncl' => $totalPrice,
             'fQtyToProcessLineTotExcl' => 0,
             'fQtyToProcessLineTotInclNoDisc' => $totalPrice,
             'fQtyToProcessLineTotExclNoDisc' => 0,

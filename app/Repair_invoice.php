@@ -21,7 +21,7 @@ class Repair_invoice extends Model
 
     public function items()
     {
-        return $this->hasMany('App\Repair_invoice_item',  'invoice_id');
+        return $this->hasMany('App\Repair_invoice_item', 'invoice_id');
     }
 
     public function invoice_items()

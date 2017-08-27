@@ -37,20 +37,20 @@ class UDFController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         //
         $data = $request->all();
-        $slugcount = UDF::where('name', strtolower($request->name))->where('module', $request->module)->count();
+        $slugcount = UDF::where('name', \strtolower($request->name))->where('module', $request->module)->count();
 
-        if ($slugcount > 0){
-            $slug = convertString($request->name)."_".count($slugcount);
-            $data['name'] = $request->name ." ".($slugcount+1);
-        }
-        else{
+        if ($slugcount > 0) {
+            $slug = convertString($request->name) . '_' . \count($slugcount);
+            $data['name'] = $request->name . ' ' . ($slugcount + 1);
+        } else {
             $slug = convertString($request->name);
         }
         $data['slug'] = $slug;
@@ -66,7 +66,8 @@ class UDFController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -78,7 +79,8 @@ class UDFController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -90,26 +92,27 @@ class UDFController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         //
         $udf = UDF::findOrfail($id);
-        if (strtolower($request->name) == strtolower($udf->name)){
+        if (\strtolower($request->name) == \strtolower($udf->name)) {
             $udf->update($request->all());
-           return response()->json(['message'=>'UDF Updated Successfully']);
+
+            return response()->json(['message' => 'UDF Updated Successfully']);
         }
 
-        $slugcount = UDF::where('name',strtolower($request->name))->where('module', $request->module)->count();
+        $slugcount = UDF::where('name', \strtolower($request->name))->where('module', $request->module)->count();
         $data = $request->all();
-        if ($slugcount > 0){
-            $slug = convertString($request->name)."_".count($slugcount);
-            $data['name'] = $request->name ." ".($slugcount+1);
-        }
-        else{
+        if ($slugcount > 0) {
+            $slug = convertString($request->name) . '_' . \count($slugcount);
+            $data['name'] = $request->name . ' ' . ($slugcount + 1);
+        } else {
             $slug = convertString($request->name);
         }
 
@@ -117,28 +120,32 @@ class UDFController extends Controller
         renamecolumn(UDF::TABLES[$request->module], $udf->slug, $slug);
         $udf->update($data);
 
-        return response()->json(['message'=>'UDF Updated Successfully']);
+        return response()->json(['message' => 'UDF Updated Successfully']);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         //
         $udf = UDF::findOrfail($id);
-        deletecolumn(UDF::TABLES[$udf->module],$udf->name);
+        deletecolumn(UDF::TABLES[$udf->module], $udf->name);
         $udf->delete();
-        return response()->json(['message'=>'UDF deleted Successfully']);
+
+        return response()->json(['message' => 'UDF deleted Successfully']);
     }
 
-    public function moduleUdf($module){
-      return response()->json(UDF::where('module', $module)->where('status', UDF::ACTIVE)->get()->toArray());
+    public function moduleUdf($module)
+    {
+        return response()->json(UDF::where('module', $module)->where('status', UDF::ACTIVE)->get()->toArray());
     }
-    public function download($file){
-        return response()->file('uploads/'.$file);
+    public function download($file)
+    {
+        return response()->file('uploads/' . $file);
     }
 }

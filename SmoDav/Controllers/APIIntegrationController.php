@@ -29,7 +29,7 @@ class APIIntegrationController extends Controller
 
             $response->with('departments', $departments)
                 ->with('complete', true);
-        };
+        }
 
         return $response;
     }

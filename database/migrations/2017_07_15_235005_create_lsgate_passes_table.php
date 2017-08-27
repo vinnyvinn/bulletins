@@ -8,8 +8,6 @@ class CreateLSGatePassesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -23,11 +21,9 @@ class CreateLSGatePassesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
-        Schema::dropIfExists('gate_passes');
+        Schema::dropIfExists('l_s_gate_passes');
     }
 }

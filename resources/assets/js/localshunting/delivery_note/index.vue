@@ -3,7 +3,7 @@
     <div class="panel panel-default">
       <div class="panel-heading">
           Trucks Awaiting Loading
-          <button type="button" class="btn btn-success btn-xs pull-right" name="button" @click="offload">Offloading</button>
+          <button v-if="$root.can('ls-create-delivery')" type="button" class="btn btn-success btn-xs pull-right" name="button" @click="offload">Offloading</button>
       </div>
       <div class="panel-body">
         <table class="table no-wrap">
@@ -23,7 +23,9 @@
               <td>GP - {{ gatepass.id}}</td>
               <td v-if="gatepass.vehicle.driver">{{ gatepass.vehicle.driver.first_name }} {{ gatepass.vehicle.driver.last_name }}</td>
               <td v-if="!gatepass.vehicle.driver"> -- </td>
-              <td><button type="button" @click="createDelivery(gatepass.vehicle.id)" name="button" class="btn btn-sm btn-success">Create Delivery Note</button></td>
+              <td>
+                <button v-if="$root.can('ls-create-delivery')" type="button" @click="createDelivery(gatepass.vehicle.id)" name="button" class="btn btn-sm btn-success">Create Delivery Note</button>
+              </td>
             </tr>
           </tbody>
           <tfoot>

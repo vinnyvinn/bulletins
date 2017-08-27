@@ -65,6 +65,7 @@ class WorkshopJobTypeController extends Controller
         return Datatables::of($make)
             ->addColumn('actions', function ($make) {
                 return '';
+
                 return '<a href="' . route('workshop.job-type.show', $make->id) .
                     '" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>';
             })

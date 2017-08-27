@@ -43,7 +43,8 @@ class ModelController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -56,7 +57,7 @@ class ModelController extends Controller
 
         return DB::transaction(function () use ($data, $request) {
             $create = Model::create($data);
-//            SAGEUDF::addMakeUDF($request->get('name'));
+            //            SAGEUDF::addMakeUDF($request->get('name'));
 
             if ($create) {
                 Activity::create([
@@ -74,7 +75,8 @@ class ModelController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Make  $make
+     * @param \App\Make $make
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Make $make)
@@ -85,7 +87,8 @@ class ModelController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Make  $make
+     * @param \App\Make $make
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Make $make)
@@ -96,8 +99,9 @@ class ModelController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Make  $make
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Make                $make
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Make $make)
@@ -108,7 +112,8 @@ class ModelController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Make  $make
+     * @param \App\Make $make
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Make $make)

@@ -2,7 +2,6 @@
 
 namespace App;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,8 +12,7 @@ class Shop extends Model
     public function statusText()
     {
         $text = '';
-        switch($this->status)
-        {
+        switch ($this->status) {
             case 0:
                 $text = '<p class="text-muted">Pending</p>';
                 break;
@@ -28,15 +26,16 @@ class Shop extends Model
                 $text = '<p class="text-yellow">Suspend</p>';
                 break;
         }
+
         return $text;
     }
 
     public function get_logo()
     {
-        if($this->logo != '')
-        {
-            return asset('uploads/thumb/'.$this->logo);
+        if ($this->logo != '') {
+            return asset('uploads/thumb/' . $this->logo);
         }
+
         return asset('uploads/noImg.png');
     }
 
@@ -51,29 +50,31 @@ class Shop extends Model
         return $this->hasMany('App\User');
     }
 
-    public function agent_single($agent_id = 0){
+    public function agent_single($agent_id = 0)
+    {
         return $this->agents()->where('users.id', $agent_id)->first();
     }
 
     public function loggedUserRating()
     {
         $rating = Shop_rating::where('user_id', Auth::user()->id)->where('shop_id', $this->id)->first();
-        if($rating)
-        {
+        if ($rating) {
             return $rating->rating;
         }
+
         return false;
     }
 
     public function avg_rating()
     {
         $ratings = $this->hasMany('App\Shop_rating');
-        if($ratings->count() > 0)
-        {
-            $avg_rating =  $ratings->sum('rating') / $ratings->count();
-            $response = (object) ['rating'  => $avg_rating, 'count' => $ratings->count()];
+        if ($ratings->count() > 0) {
+            $avg_rating = $ratings->sum('rating') / $ratings->count();
+            $response = (object) ['rating' => $avg_rating, 'count' => $ratings->count()];
+
             return  $response;
         }
+
         return 0;
     }
 

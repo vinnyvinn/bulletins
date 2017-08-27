@@ -69,7 +69,7 @@ class JobCardController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -77,7 +77,7 @@ class JobCardController extends Controller
     {
         DB::transaction(function () use ($request) {
             $data = $request->all();
-            $data['raw_data'] = json_encode($data);
+            $data['raw_data'] = \json_encode($data);
             $data['user_id'] = Auth::id();
             $data['time_in'] = Carbon::now()->setTimeFromTimeString($data['time_in']);
             $data['has_trailer'] = false;
@@ -113,7 +113,7 @@ class JobCardController extends Controller
     public function show($id)
     {
         $card = JobCard::with(['user'])->findOrFail($id);
-        $card->raw_data = json_decode($card->raw_data);
+        $card->raw_data = \json_decode($card->raw_data);
 
         return Response::json([
             'card' => $card,
@@ -123,7 +123,8 @@ class JobCardController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\JobCard  $jobCard
+     * @param \App\JobCard $jobCard
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(JobCard $jobCard)
@@ -134,8 +135,8 @@ class JobCardController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\JobCard  $jobCard
+     * @param \Illuminate\Http\Request $request
+     * @param \App\JobCard             $jobCard
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -144,7 +145,7 @@ class JobCardController extends Controller
         DB::transaction(function () use ($request, $jobCard) {
             $data = $request->all();
             $jobCard->update([
-                'raw_data' => json_encode($data)
+                'raw_data' => \json_encode($data)
             ]);
 
             JobCardInspection::where('job_card_id', $jobCard->id)->delete();
@@ -167,7 +168,8 @@ class JobCardController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\JobCard  $jobCard
+     * @param \App\JobCard $jobCard
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(JobCard $jobCard)

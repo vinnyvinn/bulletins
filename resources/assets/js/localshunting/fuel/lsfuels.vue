@@ -34,7 +34,9 @@
                                   <td>{{ lsfuel.fuel_issued }}</td>
                                   <td>{{ lsfuel.user.first_name }}</td>
                                   <td>{{ humanDate(lsfuel.created_at) }}</td>
-                                  <td v-if="lsfuel.status == 'Pending Approval'"><button type="button" class="btn btn-sm btn-success" @click="approveFuel(lsfuel.id)">Approve</button></td>
+                                  <td v-if="lsfuel.status == 'Pending Approval'">
+                                      <button v-if="$root.can('ls-approve-fuel')" type="button" class="btn btn-sm btn-success" @click="approveFuel(lsfuel.id)">Approve</button>
+                                  </td>
                                   <td v-else></td>
                                   <td>{{ lsfuel.approved_by ? lsfuel.approved_by.first_name + ' ' + lsfuel.approved_by.last_name : '' }}</td>
                                 </tr>

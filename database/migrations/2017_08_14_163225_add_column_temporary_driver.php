@@ -8,25 +8,21 @@ class AddColumnTemporaryDriver extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
-      Schema::table('deliveries', function (Blueprint $table) {
-          $table->bigInteger('temporary_driver')->unsigned()->nullable();
+        Schema::table('deliveries', function (Blueprint $table) {
+            $table->bigInteger('temporary_driver')->unsigned()->nullable();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
-      Schema::table('deliveries', function (Blueprint $table) {
-          $table->dropColumn('temporary_driver');
+        Schema::table('deliveries', function (Blueprint $table) {
+            $table->dropColumn('temporary_driver');
         });
     }
 }

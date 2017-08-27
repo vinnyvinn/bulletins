@@ -40,7 +40,7 @@ class AllocationController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
@@ -48,7 +48,7 @@ class AllocationController extends Controller
     {
         Truck::whereIn('id', $request->get('truck_id'))->update([
             'contract_id' => $request->get('contract_id'),
-            'location' =>  Core::PRE_LOADING
+            'location' => Core::PRE_LOADING
         ]);
 
         return Response::json([
@@ -83,7 +83,7 @@ class AllocationController extends Controller
         $truck = TruckFactory::findOrFail($id);
         $truck->update([
             'contract_id' => null,
-            'location' =>  Core::AWAITING_ALLOCATION
+            'location' => Core::AWAITING_ALLOCATION
         ]);
 
         return Response::json([

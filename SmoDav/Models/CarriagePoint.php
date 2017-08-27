@@ -7,7 +7,6 @@ class CarriagePoint extends SmoDavModel
     protected $fillable = ['name'];
 }
 
-
 //732	ZA 4456
 //255	ZB 9423
 //84	ZC 0458

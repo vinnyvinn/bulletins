@@ -10,8 +10,9 @@ class SuperUser
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -20,9 +21,9 @@ class SuperUser
             return redirect('/404');
         }
 
-        $permissions = json_decode(Auth::user()->permissions);
+        $permissions = \json_decode(Auth::user()->permissions);
 
-        if (! in_array('*', $permissions)) {
+        if (! \in_array('*', $permissions)) {
             return redirect('/404');
         }
 

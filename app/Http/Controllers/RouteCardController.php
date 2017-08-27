@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\RouteCard;
 use SmoDav\Models\Delivery;
 use Response;
 
@@ -16,7 +15,6 @@ class RouteCardController extends Controller
      */
     public function index()
     {
-
     }
 
     /**
@@ -26,17 +24,18 @@ class RouteCardController extends Controller
      */
     public function create()
     {
-        $delivery_notes = Delivery::with('journey','journey.contract','journey.route','journey.driver','journey.truck')->get();
+        $delivery_notes = Delivery::with('journey', 'journey.contract', 'journey.route', 'journey.driver', 'journey.truck')->get();
 
         return Response::json([
-          'delivery_notes'=>$delivery_notes
+          'delivery_notes' => $delivery_notes
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -47,7 +46,8 @@ class RouteCardController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -58,7 +58,8 @@ class RouteCardController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -69,8 +70,9 @@ class RouteCardController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -81,7 +83,8 @@ class RouteCardController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

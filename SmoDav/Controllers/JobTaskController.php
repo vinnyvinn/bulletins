@@ -30,7 +30,8 @@ class JobTaskController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -41,7 +42,8 @@ class JobTaskController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\JobTask  $jobTask
+     * @param \App\JobTask $jobTask
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(JobTask $jobTask)
@@ -52,7 +54,8 @@ class JobTaskController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\JobTask  $jobTask
+     * @param \App\JobTask $jobTask
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(JobTask $jobTask)
@@ -63,8 +66,9 @@ class JobTaskController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\JobTask  $jobTask
+     * @param \Illuminate\Http\Request $request
+     * @param \App\JobTask             $jobTask
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, JobTask $jobTask)
@@ -75,7 +79,8 @@ class JobTaskController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\JobTask  $jobTask
+     * @param \App\JobTask $jobTask
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(JobTask $jobTask)

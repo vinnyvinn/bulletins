@@ -75,13 +75,14 @@ class FuelController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         $data = $request->all();
-        $data['date'] = Carbon::parse(str_replace('/', '-', $data['date']))->format('Y-m-d');
+        $data['date'] = Carbon::parse(\str_replace('/', '-', $data['date']))->format('Y-m-d');
         $data['user_id'] = Auth::id();
         Fuel::create($data);
 
@@ -100,7 +101,8 @@ class FuelController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
@@ -131,7 +133,6 @@ class FuelController extends Controller
             ->where('model_id', $fuel->journey->truck->model_id)
             ->first(['model_id', 'route_id', 'amount']);
 
-
         return Response::json([
             'fuelRoute' => $fuelRoute,
             'fuel' => $fuel,
@@ -144,48 +145,49 @@ class FuelController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
         $data = $request->all();
         unset($data['_token'], $data['_method']);
-        $data['date'] = Carbon::parse(str_replace('/', '-', $data['date']))->format('Y-m-d');
+        $data['date'] = Carbon::parse(\str_replace('/', '-', $data['date']))->format('Y-m-d');
         $data['user_id'] = Auth::id();
-        
+
         $fuel = Fuel::findOrFail($id);
         $fuel->update($data);
 
         $journey = Journey::findOrFail($data['journey_id']);
 
         $truck = $journey->truck;
-        $truck->current_km = floatval($data['current_km']);
-        $truck->current_fuel = intval($data['fuel_total']);
+        $truck->current_km = \floatval($data['current_km']);
+        $truck->current_fuel = \intval($data['fuel_total']);
         $truck->update();
 
         return Response::json([
             'message' => 'Fuel Allocation Successfully updated.',
         ]);
-
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
@@ -215,9 +217,9 @@ class FuelController extends Controller
                 ->where('id', $id)->first();
 
             return Response::json([
-                'status'  => 'success',
+                'status' => 'success',
                 'message' => 'Successfully Approved fuel request.',
-                'fuel'    => $fuel,
+                'fuel' => $fuel,
             ]);
         }
         $fuel->status = 'Awaiting Approval';
@@ -230,9 +232,9 @@ class FuelController extends Controller
             ->first();
 
         return Response::json([
-            'status'  => 'success',
+            'status' => 'success',
             'message' => 'Approval Revoked.',
-            'fuel'    => $fuel,
+            'fuel' => $fuel,
         ]);
     }
 
@@ -258,9 +260,8 @@ class FuelController extends Controller
         ]);
     }
 
-    public function lsfuel (Request $request)
+    public function lsfuel(Request $request)
     {
-      $data = $request->all();
-
+        $data = $request->all();
     }
 }

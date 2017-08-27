@@ -22,6 +22,7 @@ class Driver extends Model
 
     /**
      * @param $query
+     *
      * @return mixed
      */
     public function scopeUnassigned($query)

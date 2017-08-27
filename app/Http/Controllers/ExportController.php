@@ -3,21 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Invoice;
-use Illuminate\Http\Request;
 
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Excel;
 
 class ExportController extends Controller
 {
-
     /**
      * Generate CSV
      */
-
     public function agentsCSVByMerchant()
     {
         $shop = Auth::user()->shop;
@@ -25,11 +20,10 @@ class ExportController extends Controller
 
         $salesArray[] = ['Invoice ID', 'Item Name', 'Total Price', 'Customer Name', 'Customer Phone', 'Customer Email', 'Sales Date'];
 
-        foreach ($sales as $item){
+        foreach ($sales as $item) {
+            $items_string = '';
 
-            $items_string = "";
-
-            foreach($item->items as $sales_item){
+            foreach ($item->items as $sales_item) {
                 $items_string .= $sales_item->product->product_name;
             }
 
@@ -46,9 +40,9 @@ class ExportController extends Controller
 
         //return $agents;
 
-        $file_name = $shop->name.'-'.'Sales-'.date('d-m-Y-h-i');
-        \Excel::create($file_name, function($excel) use($salesArray) {
-            $excel->sheet('Sheet 1', function($sheet) use($salesArray) {
+        $file_name = $shop->name . '-' . 'Sales-' . \date('d-m-Y-h-i');
+        \Excel::create($file_name, function ($excel) use ($salesArray) {
+            $excel->sheet('Sheet 1', function ($sheet) use ($salesArray) {
                 $sheet->fromArray($salesArray);
             });
         })->export('csv');
@@ -57,7 +51,6 @@ class ExportController extends Controller
     /**
      * Generate excel format for 2003
      */
-
     public function agentsXlsByMerchant()
     {
         $shop = Auth::user()->joinedShops()->first();
@@ -65,16 +58,15 @@ class ExportController extends Controller
 
         //return $agents;
 
-        $file_name = $shop->name.'-'.'all-merchants-'.date('d-m-Y-h-i');
-        \Excel::create($file_name, function($excel) use($agents) {
-            $excel->sheet('Sheet 1', function($sheet) use($agents) {
+        $file_name = $shop->name . '-' . 'all-merchants-' . \date('d-m-Y-h-i');
+        \Excel::create($file_name, function ($excel) use ($agents) {
+            $excel->sheet('Sheet 1', function ($sheet) use ($agents) {
                 $sheet->fromArray($agents);
             });
         })->export('xls');
     }
 
     /**
-     *
      * Generate excel format for 2007 or later
      */
     public function agentsXlsxByMerchant()
@@ -84,16 +76,15 @@ class ExportController extends Controller
 
         //return $agents;
 
-        $file_name = $shop->name.'-'.'all-merchants-'.date('d-m-Y-h-i');
-        \Excel::create($file_name, function($excel) use($agents) {
-            $excel->sheet('Sheet 1', function($sheet) use($agents) {
+        $file_name = $shop->name . '-' . 'all-merchants-' . \date('d-m-Y-h-i');
+        \Excel::create($file_name, function ($excel) use ($agents) {
+            $excel->sheet('Sheet 1', function ($sheet) use ($agents) {
                 $sheet->fromArray($agents);
             });
         })->export('xlsx');
     }
 
     /**
-     *
      * Generate PDF
      */
     public function agentsPdfByMerchant()
@@ -103,14 +94,11 @@ class ExportController extends Controller
 
         //return $agents;
 
-        $file_name = $shop->name.'-'.'all-merchants-'.date('d-m-Y-h-i');
-        \Excel::create($file_name, function($excel) use($agents) {
-            $excel->sheet('Sheet 1', function($sheet) use($agents) {
+        $file_name = $shop->name . '-' . 'all-merchants-' . \date('d-m-Y-h-i');
+        \Excel::create($file_name, function ($excel) use ($agents) {
+            $excel->sheet('Sheet 1', function ($sheet) use ($agents) {
                 $sheet->fromArray($agents);
             });
         })->export('pdf');
     }
-
-
-
 }
