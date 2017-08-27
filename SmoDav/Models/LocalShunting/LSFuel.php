@@ -5,6 +5,7 @@ namespace SmoDav\Models\LocalShunting;
 use Illuminate\Database\Eloquent\Model;
 use SmoDav\Models\Vehicle;
 use App\User;
+use App\Contract;
 
 class LSFuel extends Model
 {
@@ -27,5 +28,10 @@ class LSFuel extends Model
     public function vehicle()
     {
         return $this->belongsTo(Vehicle::class);
+    }
+
+    public function contract()
+    {
+        return $this->belongsTo(Contract::class);
     }
 }

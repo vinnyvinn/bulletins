@@ -100907,21 +100907,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = {
   data: function data() {
@@ -100929,6 +100914,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       lsfuel: {
         vehicle: {
           driver: {}
+        },
+        contract: {
+          route: {},
+          contract_config: {}
         }
       }
     };
@@ -100959,6 +100948,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
 
   methods: {
+    humanDate: function humanDate(date) {
+      return moment(date).format('ll');
+    },
     calculateTotal: function calculateTotal() {
       return this.fuel.fuel_total = parseInt(this.fuel.fuel_issued) + parseInt(this.fuel.current_fuel);
     },
@@ -106432,14 +106424,16 @@ if (false) {
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "panel panel-default"
-  }, [_vm._m(0), _vm._v(" "), _c('div', {
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_c('strong', [_vm._v("Fuel Allocation (" + _vm._s(_vm.lsfuel.status) + ")")])]), _vm._v(" "), _c('div', {
     staticClass: "panel-body",
     attrs: {
       "id": "printable"
     }
   }, [_c('div', {
     staticClass: "row print-row"
-  }, [_vm._m(1), _vm._v(" "), _c('div', {
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
     staticClass: "col-xs-3"
   }, [_c('strong', [_vm._v("Driver")]), _c('br'), _vm._v(" "), _c('img', {
     attrs: {
@@ -106448,15 +106442,39 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "width": "100",
       "height": "100"
     }
-  }), _vm._v(" "), _c('br'), _vm._v("\n                Name: " + _vm._s(_vm.lsfuel.vehicle.driver.first_name)), _c('br'), _vm._v("\n                Id No: " + _vm._s(_vm.lsfuel.vehicle.driver.identification_number)), _c('br'), _vm._v("\n                Mobile No: " + _vm._s(_vm.lsfuel.vehicle.driver.mobile_phone)), _c('br'), _vm._v("\n                DL number: " + _vm._s(_vm.lsfuel.vehicle.driver.dl_number) + "\n              ")]), _vm._v(" "), _c('div', {
+  }), _vm._v(" "), _c('br'), _vm._v("\n                Name: "), _c('strong', {
+    staticClass: "pull-right"
+  }, [_vm._v(_vm._s(_vm.lsfuel.vehicle.driver.first_name))]), _c('br'), _vm._v("\n                Id No: "), _c('strong', {
+    staticClass: "pull-right"
+  }, [_vm._v(_vm._s(_vm.lsfuel.vehicle.driver.identification_number))]), _c('br'), _vm._v("\n                Mobile No: "), _c('strong', {
+    staticClass: "pull-right"
+  }, [_vm._v(_vm._s(_vm.lsfuel.vehicle.driver.mobile_phone))]), _c('br'), _vm._v("\n                DL Number: "), _c('strong', {
+    staticClass: "pull-right"
+  }, [_vm._v(_vm._s(_vm.lsfuel.vehicle.driver.dl_number))])]), _vm._v(" "), _c('div', {
     staticClass: "col-xs-3"
-  }, [_vm._v("\n                  Date: " + _vm._s(_vm.lsfuel.created_at)), _c('br'), _vm._v("\n                  Status: " + _vm._s(_vm.lsfuel.status) + "\n                  "), _c('hr'), _vm._v(" "), _c('strong', [_vm._v("Route")]), _vm._v("\n                  Route: Route: RT-"), _c('br'), _vm._v("\n                  From: "), _c('br'), _vm._v("\n                  To: "), _c('br'), _vm._v(" "), _c('hr'), _vm._v(" "), _c('strong', [_vm._v("Vehicle")]), _vm._v("\n                  Reg.No: " + _vm._s(_vm.lsfuel.vehicle.plate_number)), _c('br'), _vm._v("\n                  Model: " + _vm._s(_vm.lsfuel.vehicle.model)), _c('br')]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n                  Date: "), _c('strong', {
+    staticClass: "pull-right"
+  }, [_vm._v(_vm._s(_vm.humanDate(_vm.lsfuel.created_at)))]), _c('br'), _vm._v("\n                  Reg.No: "), _c('strong', {
+    staticClass: "pull-right"
+  }, [_vm._v(_vm._s(_vm.lsfuel.vehicle.plate_number))]), _c('br'), _vm._v("\n                  Model: "), _c('strong', {
+    staticClass: "pull-right"
+  }, [_vm._v(_vm._s(_vm.lsfuel.vehicle.model))]), _c('br'), _vm._v("\n                  Current Km: "), _c('strong', {
+    staticClass: "pull-right"
+  }, [_vm._v(_vm._s(_vm.lsfuel.current_km))]), _c('br'), _vm._v("\n                  Route: "), (_vm.lsfuel.contract) ? _c('strong', {
+    staticClass: "pull-right"
+  }, [_vm._v(" RT-" + _vm._s(_vm.lsfuel.contract.route_id))]) : _vm._e(), _c('br'), _vm._v("\n                  From: "), (_vm.lsfuel.contract.route) ? _c('strong', {
+    staticClass: "pull-right"
+  }, [_vm._v(" " + _vm._s(_vm.lsfuel.contract.route.source))]) : _vm._e(), _c('br'), _vm._v("\n                  To: "), (_vm.lsfuel.contract.route) ? _c('strong', {
+    staticClass: "pull-right"
+  }, [_vm._v(" " + _vm._s(_vm.lsfuel.contract.route.destination))]) : _vm._e(), _c('br')]), _vm._v(" "), _c('div', {
     staticClass: "col-xs-3"
-  }, [_c('strong', [_vm._v("Fuel")]), _c('br'), _vm._v("\n                  Standard Quantity for this route (Ltrs): ---"), _c('br'), _vm._v("\n                  Current Fuel (Litres): ---"), _c('br'), _vm._v("\n                  Requested Quantity: ---"), _c('br'), _vm._v("\n                  Fuel Issued: " + _vm._s(_vm.lsfuel.fuel_issued)), _c('br'), _vm._v("\n                  Total Fuel in Tank: " + _vm._s(_vm.lsfuel.total_in_tank)), _c('br'), _vm._v(" "), _c('hr'), _vm._v(" "), _c('strong', [_vm._v("Narration")]), _c('br'), _vm._v("\n                  " + _vm._s(_vm.lsfuel.narration) + "\n                  "), _c('hr')]), _vm._v(" "), _c('div', {
-    staticClass: "col-xs-3"
-  }, [_c('strong', [_vm._v("Mileage Readings")]), _c('br'), _vm._v("\n                  Current Km: " + _vm._s(_vm.lsfuel.current_km)), _c('br')])]), _vm._v(" "), _c('hr', {
-    staticClass: "print-hr"
-  })]), _vm._v(" "), _c('div', {
+  }, [_c('strong', [_vm._v("Fuel")]), _c('br'), _vm._v("\n                  Standard Quantity for this route (Ltrs): "), (_vm.lsfuel.contract.contract_config) ? _c('strong', {
+    staticClass: "pull-right"
+  }, [_vm._v(_vm._s(_vm.lsfuel.contract.contract_config.average_fuel_per_trip))]) : _vm._e(), _c('br'), _vm._v("\n                  Trips Made: "), _c('strong', {
+    staticClass: "pull-right"
+  }), _c('br'), _vm._v("\n                  Fuel Requested: "), _c('strong', {
+    staticClass: "pull-right"
+  }, [_vm._v(_vm._s(_vm.lsfuel.fuel_issued) + " Ltrs ")]), _c('br')])])]), _vm._v(" "), _c('div', {
     staticClass: "form-group pull-right"
   }, [(_vm.lsfuel.status == 'Pending Approval') ? _c('button', {
     staticClass: "btn btn-success",
@@ -106487,10 +106505,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v("Back")])], 1)])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "panel-heading"
-  }, [_c('strong', [_vm._v("Fuel Allocation")])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "col-xs-12"
   }, [_c('h4', [_c('strong', [_vm._v("FUEL VOUCHER")])])])

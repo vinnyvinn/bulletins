@@ -68,7 +68,7 @@ class LSFuelController extends Controller
     public function show($id)
     {
       return Response::json([
-        'lsfuel' => LSFuel::where('id', $id)->with('vehicle','vehicle.driver','user','approved_by')->first()
+        'lsfuel' => LSFuel::where('id', $id)->with('contract', 'contract.route', 'contract.contractConfig', 'vehicle','vehicle.driver','user','approved_by')->first()
       ]);
     }
 
