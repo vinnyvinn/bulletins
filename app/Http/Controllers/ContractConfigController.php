@@ -97,10 +97,12 @@ class ContractConfigController extends Controller
      */
     public function show($id)
     {
+        $contract = ContractConfig::where('contract_id', $id)->first();
+
         return Response::json([
           'status' => 'success',
           'message' => 'successful',
-          'setting' => ContractConfig::where('contract_id', $id)->first()
+          'setting' => $contract
         ]);
     }
 
@@ -165,10 +167,11 @@ class ContractConfigController extends Controller
     {
         $schema = DB::getDoctrineSchemaManager();
         $fields = $schema->listTableColumns('contract_configs');
+        unset($fields['created_at'], $fields['updated_at'], $fields['id'], $fields['contract_id']);
 
         return Response::json([
-        'fields' => $fields
-      ]);
+            'fields' => $fields
+        ]);
     }
 
     public function checkConfigPresence($id)

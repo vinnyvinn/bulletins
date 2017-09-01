@@ -16,7 +16,7 @@ require('../bootstrap');
 Vue.component('alert', require('../components/core/alert.vue'));
 Vue.component('loader', require('../components/core/loader.vue'));
 Vue.component('core-nav', require('../components/layout/nav.vue'));
-
+Vue.component('show-udfs', require('../transport/udfs/show.vue'));
 
 Vue.component('ls-nav', require('./layout/nav.vue'));
 

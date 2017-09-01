@@ -36,6 +36,16 @@ module.exports = [
     { path: '/users/create', component: require('../components/users/form.vue'), beforeEnter: authMiddleware },
 
     { path: '/contracts', component: require('../transport/contracts/index.vue'), beforeEnter: authMiddleware },
+    { path: '/contracts/r/:print', component: require('../transport/contracts/index.vue'), beforeEnter: authMiddleware },
+    { path: '/contracts/create', component: require('../transport/contracts/form.vue'), beforeEnter: authMiddleware },
+    { path: '/contracts/create/:templateId', component: require('../transport/contracts/form.vue'), beforeEnter: authMiddleware },
+    { path: '/contracts/:id', component: require('../transport/contracts/view.vue'), beforeEnter: authMiddleware },
+    { path: '/contracts/:id/edit', component: require('../transport/contracts/form.vue'), beforeEnter: authMiddleware },
+
+    { path: '/config_fields/create', component: require('../components/contractconfig/form.vue'), beforeEnter: authMiddleware },
+    { path: '/contract_setting/create/:contract_id', component: require('../transport/contractsettings/form.vue'), beforeEnter: authMiddleware },
+
+
     // { path: '/ls/contracts/r/:print', component: require('../transport/contracts/index.vue'), beforeEnter: authMiddleware },
     // { path: '/ls/contracts/create', component: require('../transport/contracts/form.vue'), beforeEnter: authMiddleware },
     // { path: '/ls/contracts/create/:templateId', component: require('../transport/contracts/form.vue'), beforeEnter: authMiddleware },

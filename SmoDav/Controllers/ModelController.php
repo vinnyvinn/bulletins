@@ -37,7 +37,7 @@ class ModelController extends Controller
     {
         $makes = Make::orderBy('name')->get(['id', 'name']);
 
-        return view('workshop.makes.create')->with('makes', $makes);
+        return view('workshop.models.create')->with('makes', $makes);
     }
 
     /**
