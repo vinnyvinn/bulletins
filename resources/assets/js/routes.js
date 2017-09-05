@@ -146,11 +146,12 @@ module.exports = [
 
     { path: '/lhreports', component: require('./transport/reports/index.vue'), beforeEnter: authMiddleware },
     { path: '/lhreports/{details}', component: require('./transport/reports/view.vue'), beforeEnter: authMiddleware },
-        
+
     { path: '/403', component: require('./transport/403.vue'), beforeEnter: authMiddleware },
     { path: '/station-selection', component: require('./transport/station.vue'), beforeEnter: authMiddleware },
     { path: '/employees', component: require('./components/employees/index.vue'), beforeEnter: authMiddleware },
     { path: '/employees/create', component: require('./components/employees/form.vue'), beforeEnter: authMiddleware },
+    { path: '/employee/:id/edit', component: require('./components/employees/form.vue'), beforeEnter: authMiddleware },
 
     { path: '/employee_category/create', component: require('./components/employeecategory/form.vue'), beforeEnter: authMiddleware },
 

@@ -54,7 +54,7 @@
                                 <td>{{ employee.identification_number }}</td>
                                 <td>{{ employee.mobile_phone }}</td>
                                 <td class="text-center">
-                                    <span @click="view(employee)" class="btn btn-xs btn-success"><i class="fa fa-eye"></i></span>
+                                    <!-- <span @click="view(employee)" class="btn btn-xs btn-success"><i class="fa fa-eye"></i></span> -->
                                     <span @click="edit(employee)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
                                     <button data-toggle="popover" :data-item="employee.id" class="btn btn-xs btn-danger btn-destroy"><i class="fa fa-trash"></i></button>
                                 </td>
@@ -88,9 +88,11 @@
             };
         },
         created() {
+          this.$root.isLoading = true;
             http.get('/api/employee').then(response => {
                 this.employees = response.employees;
                 prepareTable();
+                this.$root.isLoading = false;
             });
 
         },
@@ -123,12 +125,12 @@
                     });
             },
 
-            edit(driver) {
-                window._router.push({path: '/drivers/' + driver.id + '/edit'})
+            edit(employee) {
+                window._router.push({path: '/employee/' + employee.id + '/edit'})
             },
 
-            view(driver) {
-                window._router.push({path: '/drivers/' + driver.id})
+            view(employee) {
+                window._router.push({path: '/employee/' + employee.id})
             },
 
             flatten(arr) {

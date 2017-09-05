@@ -57,6 +57,9 @@ class RKEmployeeController extends Controller
      */
     public function show($id)
     {
+      return Response::json([
+        'employee' => Employee::findOrFail($id)
+      ]);
     }
 
     /**

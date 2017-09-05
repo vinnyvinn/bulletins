@@ -50,7 +50,7 @@
 
                             <div class="form-group">
                                 <button class="btn btn-success">Save</button>
-                                <router-link to="/drivers" class="btn btn-danger">Back</router-link>
+                                <router-link to="/employees" class="btn btn-danger">Back</router-link>
                             </div>
                         </form>
                     </div>
@@ -78,7 +78,8 @@
                     last_name: '',
                     email: '',
                     dl_number: '',
-                    mobile_phone: ''
+                    mobile_phone: '',
+                    category: ''
                 },
                 employee_categories: [],
                 errors: [],
@@ -88,29 +89,32 @@
         },
 
         created() {
+
+          this.$root.isLoading = true;
           http.get('/api/employee_category'). then((response) => {
             this.employee_categories = response.employee_categories;
+            this.$root.isLoading = false;
           });
+
+          if(this.$route.params.id) {
+            this.$root.isLoading = true;
+            http.get('/api/employee/' + this.$route.params.id).then( (response) => {
+              this.employee = response.employee;
+              this.$root.isLoading = false;
+            });
+          }
+
+
         },
 
-        mounted() {
-            this.checkState();
-        },
 
         methods: {
-            checkState() {
-                if (this.$route.params.id) {
-                    this.driver._method = 'PUT';
-                    http.get('/api/driver/' + this.$route.params.id).then((response) => {
-                        this.driver = response.driver;
-                    });
-                }
-            },
 
             store() {
               http.post('/api/employee', this.employee).then((response) => {
                 alert2(this.$root,[response.message], 'success');
               });
+              window._router.push({path: '/employees'});
             },
         }
     }
