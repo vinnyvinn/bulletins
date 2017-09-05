@@ -27,14 +27,8 @@
                 </div><!-- /.box-header -->
                 <div class="box-body">
 
-                    <form class="form-horizontal" action="{{ route('workshop.model.store') }}" method="post">
+                    <form class="form-horizontal" action="{{ route('workshop.make.store') }}" method="post">
                         {{ csrf_field() }}
-
-                        <div class="form-group {{ $errors->has('make_id')? 'has-error' : '' }}">
-                            <label class="control-label col-sm-3" for="make_id">Make *</label>
-
-                          
-                        </div>
 
                         <div class="form-group {{ $errors->has('name')? 'has-error' : '' }}">
                             <label class="control-label col-sm-3">Name *</label>
@@ -49,7 +43,7 @@
                         <div class="form-group">
                             <div class="col-sm-7 col-sm-offset-3">
                                 <button type="submit" name="submit" class="btn btn-primary">
-                                    <i class="fa fa-plus-square-o"></i> Add New Model
+                                    <i class="fa fa-plus-square-o"></i> Save
                                 </button>
                             </div>
                         </div>
