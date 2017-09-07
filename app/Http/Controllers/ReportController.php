@@ -20,7 +20,7 @@ class ReportController extends Controller
 
         $columns = [
             'contracts.name', 'loading_gross_weight', 'loading_tare_weight', 'loading_net_weight',
-            'loading_weighbridge_number', 'loading_time', 'bags_loaded'
+            'loading_weighbridge_number', 'loading_time', 'bags_loaded', 'plate_number'
         ];
 
         if ($request->get('summary') == 1) {
@@ -34,6 +34,7 @@ class ReportController extends Controller
             ->where('loading_time', '<=', $end)
             ->join('journeys', 'journeys.id', '=', 'deliveries.journey_id')
             ->join('contracts', 'journeys.contract_id', '=', 'contracts.id')
+            ->join('vehicles', 'journeys.truck_id', '=', 'vehicles.id')
             ->when($request->get('summary') == 1, function ($builder) use ($columns) {
                 return $builder
                     ->select(\DB::raw(

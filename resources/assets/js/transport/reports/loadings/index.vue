@@ -49,6 +49,7 @@
                                     <thead>
                                         <tr>
                                             <th v-if="!is_grouped">Contract</th>
+                                            <th v-if="!is_summary">Plate Number</th>
                                             <th :class="is_summary ? 'text-right' : ''">{{ is_summary ? 'Total Trips' : 'Loading Time' }}</th>
                                             <th class="text-right">Total Bags</th>
                                             <th class="text-right">Gross Weight</th>
@@ -59,11 +60,19 @@
                                     </thead>
                                     <tbody v-if="is_grouped">
                                         <template v-for="(group, index) in deliveries">
-                                            <tr>
-                                                <td class="rowHead" :colspan="is_summary ? '5' : '6'"><strong>{{ index }}</strong></td>
+                                            <tr class="rowHead">
+                                                <td :colspan="is_summary ? 7 : 2">
+                                                    <strong>{{ index }} Totals</strong>
+                                                </td>
+                                                <td v-if="! is_summary" class="text-right">{{ is_summary ? '' : getSum(group, 'bags_loaded') }}</td>
+                                                <td v-if="! is_summary" class="text-right">{{ getSum(group, 'loading_gross_weight') }}</td>
+                                                <td v-if="! is_summary" class="text-right">{{ getSum(group, 'loading_tare_weight') }}</td>
+                                                <td v-if="! is_summary" class="text-right">{{ getSum(group, 'loading_net_weight') }}</td>
+                                                <td v-if="! is_summary" class="text-right"></td>
                                             </tr>
                                             <tr v-for="delivery in group">
                                                 <td :class="is_summary ? 'text-right' : ''">{{ is_summary ? delivery.total : formatDateTime(delivery.loading_time) }}</td>
+                                                <td v-if="!is_summary">{{ delivery.plate_number }}</td>
                                                 <td class="text-right">{{ formatNumber(delivery.bags_loaded) }}</td>
                                                 <td class="text-right">{{ formatNumber(delivery.loading_gross_weight) }}</td>
                                                 <td class="text-right">{{ formatNumber(delivery.loading_tare_weight) }}</td>
@@ -75,6 +84,7 @@
                                     <tbody v-else>
                                         <tr v-for="delivery in deliveries">
                                             <td>{{ delivery.name }}</td>
+                                            <td v-if="!is_summary">{{ delivery.plate_number }}</td>
                                             <td :class="is_summary ? 'text-right' : ''">{{ is_summary ? delivery.total : formatDateTime(delivery.loading_time) }}</td>
                                             <td class="text-right">{{ formatNumber(delivery.bags_loaded) }}</td>
                                             <td class="text-right">{{ formatNumber(delivery.loading_gross_weight) }}</td>
@@ -158,6 +168,19 @@
             printReport() {
                 $('#printout').html($('#reportBody').html());
                 window.print();
+            },
+
+            getSum(records, entry) {
+                if (records.length < 2) return records.length[0][entry];
+
+                return records.map(a => a[entry]).reduce((a, b) => {
+                    a = parseFloat(a);
+                    b = parseFloat(b);
+                    a = isNaN(a) ? 0 : a;
+                    b = isNaN(b) ? 0 : b;
+
+                    return a + b;
+                }).toLocaleString();
             }
         }
     }
