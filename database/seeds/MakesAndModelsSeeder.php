@@ -183,6 +183,10 @@ class MakesAndModelsSeeder extends Seeder
                 'name' => 'VOLKSWAGEN',
                 'models' => ['Toureg', 'GT']
             ],
+            [
+                'name' => 'CIMC',
+                'models' => ['Bulker']
+            ],
         ];
 
         DB::transaction(function () use ($makes) {
