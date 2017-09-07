@@ -106695,6 +106695,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         http.get('/api/employee').then(function (response) {
             _this.employees = response.employees;
             prepareTable();
+            _this.setupConfirm();
             _this.$root.isLoading = false;
         });
     },
@@ -106720,7 +106721,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     return;
                 }
                 $('table').dataTable().fnDestroy();
-                _this3.drivers = response.drivers;
+                _this3.employees = response.employees;
                 prepareTable();
                 alert2(_this3.$root, [response.message], 'success');
             }).catch(function (error) {
@@ -106754,14 +106755,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.$root.isLoading = true;
 
-            http.destroy('api/driver/' + id).then(function (response) {
+            http.destroy('api/employee/' + id).then(function (response) {
                 if (response.status != 'success') {
                     _this4.$root.isLoading = false;
                     alert2(_this4.$root, [response.message], 'danger');
                     return;
                 }
                 $('table').dataTable().fnDestroy();
-                _this4.drivers = response.drivers;
+                _this4.employees = response.employees;
                 prepareTable();
                 _this4.$root.isLoading = false;
                 alert2(_this4.$root, [response.message], 'success');
@@ -118775,83 +118776,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "row"
   }, [_vm._m(0), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-7"
-  }, [_c('transition', {
-    attrs: {
-      "name": "custom-classes-transition",
-      "enter-active-class": "animated flipInX",
-      "leave-active-class": "animated flipOutX"
-    }
-  }, [(_vm.showImport) ? _c('div', [_c('form', {
-    staticClass: "form-inline pull-right",
-    attrs: {
-      "id": "importForm",
-      "action": "#",
-      "method": "post",
-      "enctype": "multipart/form-data"
-    },
-    on: {
-      "submit": function($event) {
-        $event.preventDefault();
-        _vm.importDrivers($event)
-      }
-    }
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.csrf),
-      expression: "csrf"
-    }],
-    attrs: {
-      "type": "hidden",
-      "name": "_token"
-    },
-    domProps: {
-      "value": (_vm.csrf)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.csrf = $event.target.value
-      }
-    }
-  }), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('input', {
-    staticClass: "form-control input-sm",
-    attrs: {
-      "type": "file",
-      "id": "import_file",
-      "name": "import_file",
-      "required": ""
-    }
-  })]), _vm._v(" "), _c('button', {
-    staticClass: "btn btn-success btn-xs",
-    attrs: {
-      "type": "submit"
-    }
-  }, [_vm._v("Import")])]), _vm._v(" "), _c('div', {
-    staticClass: "clearfix"
-  }), _vm._v(" "), _c('h6', {
-    staticClass: "pull-right"
-  }, [_c('a', {
-    attrs: {
-      "target": "_blank",
-      "href": "/templates/drivers.xls"
-    }
-  }, [_vm._v("Download Sample")])])]) : _vm._e()])], 1), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-3"
-  }, [_c('a', {
-    staticClass: "btn btn-info btn-xs pull-right",
-    on: {
-      "click": function($event) {
-        _vm.showImport = !_vm.showImport
-      }
-    }
-  }, [_c('i', {
-    staticClass: "fa fa-inbox"
-  }), _vm._v(" Import")]), _vm._v(" "), _c('router-link', {
+    staticClass: "col-sm-10"
+  }, [_c('router-link', {
     staticClass: "btn btn-primary btn-xs pull-right",
     attrs: {
       "to": "/employees/create"

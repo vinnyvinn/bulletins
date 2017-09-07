@@ -91,7 +91,13 @@ class RKEmployeeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Employee::where('id', $id)->delete();
+
+        return Response::json([
+            'status'  => 'success',
+            'employees' => Employee::all(),
+            'message' => 'Successfully deleted employees',
+        ]);
     }
 
     public function unallocatedEmployees()

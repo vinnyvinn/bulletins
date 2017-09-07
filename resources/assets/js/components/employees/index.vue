@@ -8,7 +8,7 @@
                             <div class="col-sm-2">
                                 <h4>Employees</h4>
                             </div>
-                            <div class="col-sm-7">
+                            <!-- <div class="col-sm-7">
                                 <transition
                                         name="custom-classes-transition"
                                         enter-active-class="animated flipInX"
@@ -28,9 +28,9 @@
                                         <h6 class="pull-right"><a target="_blank" href="/templates/drivers.xls">Download Sample</a></h6>
                                     </div>
                                 </transition>
-                            </div>
-                            <div class="col-sm-3">
-                                <a class="btn btn-info btn-xs pull-right" @click="showImport = !showImport"><i class="fa fa-inbox"></i> Import</a>
+                            </div> -->
+                            <div class="col-sm-10">
+                               <!--  <a class="btn btn-info btn-xs pull-right" @click="showImport = !showImport"><i class="fa fa-inbox"></i> Import</a> -->
                                 <router-link to="/employees/create" class="btn btn-primary btn-xs pull-right"><i class="fa fa-plus"></i> Add New</router-link>
                             </div>
                         </div>
@@ -95,6 +95,7 @@
             http.get('/api/employee').then(response => {
                 this.employees = response.employees;
                 prepareTable();
+                this.setupConfirm();
                 this.$root.isLoading = false;
             });
 
@@ -118,7 +119,7 @@
                             return;
                         }
                         $('table').dataTable().fnDestroy();
-                        this.drivers = response.drivers;
+                        this.employees = response.employees;
                         prepareTable();
                         alert2(this.$root, [response.message], 'success');
                     })
@@ -147,14 +148,14 @@
             destroy(id) {
                 this.$root.isLoading = true;
 
-                http.destroy('api/driver/' + id).then(response => {
+                http.destroy('api/employee/' + id).then(response => {
                     if (response.status != 'success') {
                         this.$root.isLoading = false;
                         alert2(this.$root, [response.message], 'danger');
                         return;
                     }
                     $('table').dataTable().fnDestroy();
-                    this.drivers = response.drivers;
+                    this.employees = response.employees;
                     prepareTable();
                     this.$root.isLoading = false;
                     alert2(this.$root, [response.message], 'success');
