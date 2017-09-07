@@ -43,14 +43,15 @@ class ContractConfigController extends Controller
     public function store(Request $request)
     {
         $fields = $request->all();
-
-        $contract_setting = new ContractConfig;
+        $contract_setting = ContractConfig::where('contract_id', $fields['contract_id'])
+            ->firstOrNew(['contract_id' => $fields['contract_id']]);
 
         foreach ($fields as $key => $field) {
             if (!($key == '_method' || $key == '_token')) {
                 $contract_setting->$key = $field;
             }
         }
+
         $contract_setting->save();
 
         return Response::json([
@@ -93,7 +94,7 @@ class ContractConfigController extends Controller
      *
      * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {

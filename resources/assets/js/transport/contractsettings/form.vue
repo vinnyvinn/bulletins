@@ -32,9 +32,9 @@ export default {
     }
   },
   created() {
-    this.fetchFields();
-    this.fetchSettings();
-    this.fetchContractSettings();
+    this.fetchFields()
+      // .then(() => this.fetchSettings())
+      .then(() => this.fetchContractSettings());
   },
 
   methods: {
@@ -86,9 +86,10 @@ export default {
         this.$root.isLoading = false;
       });
     },
-    save() {
 
+    save() {
       this.$root.isLoading = true;
+      this.setting.contract_id = this.$route.params.contract_id;
       if(this.isEditing) {
         http.put('/api/contract_config/' + this.setting.id, this.setting).then((response) => {
           this.fetchSettings();

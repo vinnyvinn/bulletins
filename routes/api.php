@@ -112,9 +112,10 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::post('unallocate', 'ContractController@unallocate');
 
-    Route::get('lsdashboard','LSDashboardController@dashboard');
+    Route::get('lsdashboard', 'LSDashboardController@dashboard');
     Route::resource('lsreport', 'LSReportController');
     Route::get('lsloadingunloading/{id}', 'LSReportController@loadingUnloading');
     Route::get('lsfuelindex', '\SmoDav\Controllers\API\LocalShunting\LSFuelController@lsfuelindex');
     Route::get('ls/approvefuel/{id}', '\SmoDav\Controllers\API\LocalShunting\LSFuelController@approveLSFuel');
+    Route::post('reports/loading', 'ReportController@loading');
 });

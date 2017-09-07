@@ -69,7 +69,7 @@ export default {
   methods: {
     fetchFields () {
       this.$root.isLoading = true;
-      http.get('/api/config_field'). then((response) => {
+      http.get('/api/config_field').then((response) => {
         this.fields = response.fields;
         this.filterFields();
         this.$root.isLoading = false;

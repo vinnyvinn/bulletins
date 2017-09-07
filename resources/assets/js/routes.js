@@ -157,6 +157,9 @@ module.exports = [
 
     { path: '/config_fields/create', component: require('./components/contractconfig/form.vue'), beforeEnter: authMiddleware },
     { path: '/contract_setting/create/:contract_id', component: require('./transport/contractsettings/form.vue'), beforeEnter: authMiddleware },
+    { path: '/reports', component: require('./transport/reports/index.vue'), beforeEnter: authMiddleware },
+    { path: '/reports/loading', component: require('./transport/reports/loadings/index.vue'), beforeEnter: authMiddleware },
+    { path: '/reports/off-loading', component: require('./transport/reports/offloadings/index.vue'), beforeEnter: authMiddleware },
 
 
     { path: '*', component: require('./transport/404.vue'), beforeEnter: authMiddleware },
