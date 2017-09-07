@@ -75,7 +75,7 @@
                                     <tbody v-else>
                                         <tr v-for="delivery in deliveries">
                                             <td>{{ delivery.name }}</td>
-                                            <td>{{ is_summary ? delivery.total : formatDateTime(delivery.loading_time) }}</td>
+                                            <td :class="is_summary ? 'text-right' : ''">{{ is_summary ? delivery.total : formatDateTime(delivery.loading_time) }}</td>
                                             <td class="text-right">{{ formatNumber(delivery.bags_loaded) }}</td>
                                             <td class="text-right">{{ formatNumber(delivery.loading_gross_weight) }}</td>
                                             <td class="text-right">{{ formatNumber(delivery.loading_tare_weight) }}</td>
