@@ -6,7 +6,7 @@
                     <div class="panel-heading">
                         <strong>Employee Details</strong>
                         <div class="pull-right">
-                          <router-link to="/employee_category/create" class="btn btn-danger">New Category</router-link>
+                          <router-link to="/employee_category/create" class="btn btn-primary btn-xs">New Category</router-link>
                         </div>
                     </div>
 
@@ -34,7 +34,7 @@
                             <div class="form-group">
                                 <label for="identification_type">Employee Category</label>
                                 <select v-model="employee.category" class="form-control" id="category" name="category" required>
-                                    <option value="category.category" v-for="category in employee_categories">{{ category.category }}</option>
+                                    <option :value="category.category" v-for="category in employee_categories">{{ category.category }}</option>
                                 </select>
                             </div>
 
@@ -109,12 +109,17 @@
 
 
         methods: {
-
             store() {
-              http.post('/api/employee', this.employee).then((response) => {
-                alert2(this.$root,[response.message], 'success');
-              });
-              window._router.push({path: '/employees'});
+                let request = null;
+                if (this.$route.params.id) {
+                    request = http.put('/api/employee/' + this.$route.params.id, this.employee)
+                } else {
+                    request = http.post('/api/employee', this.employee)
+                }
+                request.then((response) => {
+                    alert2(this.$root,[response.message], 'success');
+                });
+                window._router.push({path: '/employees'});
             },
         }
     }

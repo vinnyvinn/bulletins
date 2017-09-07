@@ -72,7 +72,7 @@
                     <li class="dropdown messages-menu">
                         <a href="{{ route('admin_inbox') }}">
                             <i class="fa fa-envelope-o"></i>
-                            <span class="label label-success">{{ $lUser->messages_unread_count() }}</span>
+                            <span class="label label-success">{{ Auth::user()->messages_unread_count() }}</span>
                         </a>
                     </li>
                     <!-- Notifications: style can be found in dropdown.less -->
@@ -81,16 +81,16 @@
                     <!-- User Account: style can be found in dropdown.less -->
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="{{ $lUser->get_gravatar() }}" class="user-image" alt="{{ $lUser->get_fullname() }} Photo">
-                            <span class="hidden-xs">{{ $lUser->get_fullname() }}</span>
+                            <img src="{{ Auth::user()->get_gravatar() }}" class="user-image" alt="{{ Auth::user()->get_fullname() }} Photo">
+                            <span class="hidden-xs">{{ Auth::user()->get_fullname() }}</span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header">
-                                <img src="{{ $lUser->get_gravatar() }}" class="img-circle" alt="{{ $lUser->get_fullname() }} Photo">
+                                <img src="{{ Auth::user()->get_gravatar() }}" class="img-circle" alt="{{ Auth::user()->get_fullname() }} Photo">
                                 <p>
-                                    {{ $lUser->get_fullname() }}
-                                    <small>Member since {{ $lUser->created_at->format('F, Y') }}</small>
+                                    {{ Auth::user()->get_fullname() }}
+                                    <small>Member since {{ Auth::user()->created_at->format('F, Y') }}</small>
                                 </p>
                             </li>
                             <!-- Menu Body -->

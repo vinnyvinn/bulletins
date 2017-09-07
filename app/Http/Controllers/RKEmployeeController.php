@@ -17,8 +17,8 @@ class RKEmployeeController extends Controller
     public function index()
     {
         return Response::json([
-        'employees' => Employee::all()
-      ]);
+            'employees' => Employee::all(),
+        ]);
     }
 
     /**
@@ -43,8 +43,8 @@ class RKEmployeeController extends Controller
         $employee = Employee::create($data);
 
         return Response::json([
-          'status' => 'success',
-          'message' => 'Employee details successfully saved',
+            'status'  => 'success',
+            'message' => 'Employee details successfully saved',
         ]);
     }
 
@@ -57,34 +57,29 @@ class RKEmployeeController extends Controller
      */
     public function show($id)
     {
-      return Response::json([
-        'employee' => Employee::findOrFail($id)
-      ]);
+        return Response::json([
+            'employee' => Employee::findOrFail($id),
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param int                      $id
+     * @param int $id
      *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        //
+        $employee = Employee::findOrFail($id);
+        $employee->update($request->all());
+
+        return Response::json([
+            'status'  => 'success',
+            'message' => 'Employee details updated successfully',
+        ]);
     }
 
     /**
@@ -102,8 +97,8 @@ class RKEmployeeController extends Controller
     public function unallocatedEmployees()
     {
         return Response::json([
-        'employees' => Employee::whereNull('contract_id')->get()
-      ]);
+            'employees' => Employee::whereNull('contract_id')->get(),
+        ]);
     }
 
     public function allocateEmployee(Request $request)
@@ -125,19 +120,19 @@ class RKEmployeeController extends Controller
         }
 
         return Response::json([
-        'status' => 'success',
-        'message' => 'Employee(s) successfully allocated'
-      ]);
+            'status'  => 'success',
+            'message' => 'Employee(s) successfully allocated',
+        ]);
     }
 
     public function create_employee_mileage($employee, $contract)
     {
         return Response::json([
-        'employee' => Employee::findOrFail($employee),
-        'mileages' => LSEmployeeMileage::where('employee_id', $employee)
-            ->where('contract_id', $contract)
-            ->with('user')
-            ->get()
-      ]);
+            'employee' => Employee::findOrFail($employee),
+            'mileages' => LSEmployeeMileage::where('employee_id', $employee)
+                ->where('contract_id', $contract)
+                ->with('user')
+                ->get(),
+        ]);
     }
 }

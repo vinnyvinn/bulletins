@@ -47,7 +47,7 @@
                         <div class="form-group">
                             <div class="col-sm-7 col-sm-offset-3">
                                 <button type="submit" name="submit" class="btn btn-primary">
-                                    <i class="fa fa-plus-square-o"></i> {{ isset($type) ? 'Save Changes' : 'Add New Model' }}
+                                    <i class="fa fa-plus-square-o"></i> {{ isset($type) ? 'Save Changes' : 'Add New Type' }}
                                 </button>
                             </div>
                         </div>

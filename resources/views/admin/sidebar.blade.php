@@ -33,6 +33,7 @@
 
                     <li class="dropdown-header">MAN POWER</li>
                     <li><a href="{{ url('/drivers') }}"><i class="fa fa-list"></i> Drivers</a></li>
+                    <li><a href="{{ url('/employees') }}"><i class="fa fa-list"></i> Employees & Casuals</a></li>
 {{--                    <li><a href="{{ route('super.employee.index', ['t' => 'drivers']) }}"><i class="fa fa-list"></i> Drivers</a></li>--}}
                     {{--<li><a href="{{ route('super.employee.index', ['t' => 'workshop']) }}"><i class="fa fa-list"></i> Workshop Employee</a></li>--}}
                     <li><a href="{{ route('workshop.users.index') }}"><i class="fa fa-list"></i> System Users</a></li>

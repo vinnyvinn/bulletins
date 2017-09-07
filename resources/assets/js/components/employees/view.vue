@@ -3,7 +3,7 @@
       <div class="col-md-6 col-md-offset-3">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <router-link to="/drivers" class="btn btn-danger btn-xs">Back</router-link>
+            <router-link to="/employees" class="btn btn-danger btn-xs">Back</router-link>
             <strong>{{ driver.first_name }} {{ driver.last_name }}</strong>
           </div>
 
