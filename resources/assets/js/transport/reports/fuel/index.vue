@@ -56,7 +56,7 @@
                         </div>
                         <div class="panel-body">
                             <div id="reportBody">
-                                <h4 class="text-center">Offloading Report</h4>
+                                <h4 class="text-center">Fuel Issue Report</h4>
                                 <h5 class="text-center">From: {{ formatDateTime(report.start_date, true) }} To: {{ formatDateTime(report.end_date, true) }}</h5>
                                 <hr>
                                 <table class="table table-striped">
@@ -65,11 +65,12 @@
                                             <th>#</th>
                                             <th v-if="!is_grouped">Contract</th>
                                             <th v-if="!is_summary">Plate Number</th>
-                                            <th :class="is_summary ? 'text-right' : ''">{{ is_summary ? 'Total Trips' : 'Loading Time' }}</th>
-                                            <th class="text-right">Gross Weight</th>
-                                            <th class="text-right">Tare Weight</th>
-                                            <th class="text-right">Net Weight</th>
-                                            <th class="text-right" v-if="!is_summary">Weighbridge Number</th>
+                                            <th :class="is_summary ? 'text-right' : ''">{{ is_summary ? 'Fuel Vouchers' : 'Fueling Date' }}</th>
+                                            <th class="text-right">Before Fueling</th>
+                                            <th class="text-right">Requested</th>
+                                            <th class="text-right">Issued</th>
+                                            <th class="text-right">After Fueling</th>
+                                            <th class="text-right">Station</th>
                                         </tr>
                                     </thead>
                                     <tbody v-if="is_grouped">
@@ -78,19 +79,21 @@
                                                 <td :colspan="is_summary ? 8 : 3">
                                                     <strong>{{ index }} Totals</strong>
                                                 </td>
-                                                <td v-if="! is_summary" class="text-right">{{ getSum(group, 'offloading_gross_weight') }}</td>
-                                                <td v-if="! is_summary" class="text-right">{{ getSum(group, 'offloading_tare_weight') }}</td>
-                                                <td v-if="! is_summary" class="text-right">{{ getSum(group, 'offloading_net_weight') }}</td>
+                                                <td v-if="! is_summary" class="text-right">{{ getSum(group, 'current_fuel') }}</td>
+                                                <td v-if="! is_summary" class="text-right">{{ getSum(group, 'fuel_requested') }}</td>
+                                                <td v-if="! is_summary" class="text-right">{{ getSum(group, 'fuel_issued') }}</td>
+                                                <td v-if="! is_summary" class="text-right">{{ getSum(group, 'fuel_total') }}</td>
                                                 <td v-if="! is_summary" class="text-right"></td>
                                             </tr>
                                             <tr v-for="delivery in group">
                                                 <td>{{ delivery.index }}</td>
-                                                <td :class="is_summary ? 'text-right' : ''">{{ is_summary ? delivery.total : formatDateTime(delivery.offloading_time) }}</td>
+                                                <td :class="is_summary ? 'text-right' : ''">{{ is_summary ? delivery.total : formatDateTime(delivery.date) }}</td>
                                                 <td v-if="!is_summary">{{ delivery.plate_number }}</td>
-                                                <td class="text-right">{{ formatNumber(delivery.offloading_gross_weight) }}</td>
-                                                <td class="text-right">{{ formatNumber(delivery.offloading_tare_weight) }}</td>
-                                                <td class="text-right">{{ formatNumber(delivery.offloading_net_weight) }}</td>
-                                                <td class="text-right" v-if="!is_summary">{{ delivery.offloading_weighbridge_number }}</td>
+                                                <td class="text-right">{{ formatNumber(delivery.current_fuel) }}</td>
+                                                <td class="text-right">{{ formatNumber(delivery.fuel_requested) }}</td>
+                                                <td class="text-right">{{ formatNumber(delivery.fuel_issued) }}</td>
+                                                <td class="text-right">{{ formatNumber(delivery.fuel_total) }}</td>
+                                                <td class="text-right">{{ delivery.station_name }}</td>
                                             </tr>
                                         </template>
                                     </tbody>
@@ -99,11 +102,12 @@
                                             <td>{{ delivery.index }}</td>
                                             <td>{{ delivery.name }}</td>
                                             <td v-if="!is_summary">{{ delivery.plate_number }}</td>
-                                            <td :class="is_summary ? 'text-right' : ''">{{ is_summary ? delivery.total : formatDateTime(delivery.offloading_time) }}</td>
-                                            <td class="text-right">{{ formatNumber(delivery.offloading_gross_weight) }}</td>
-                                            <td class="text-right">{{ formatNumber(delivery.offloading_tare_weight) }}</td>
-                                            <td class="text-right">{{ formatNumber(delivery.offloading_net_weight) }}</td>
-                                            <td class="text-right" v-if="!is_summary">{{ delivery.offloading_weighbridge_number }}</td>
+                                            <td :class="is_summary ? 'text-right' : ''">{{ is_summary ? delivery.total : formatDateTime(delivery.loading_time) }}</td>
+                                            <td class="text-right">{{ formatNumber(delivery.current_fuel) }}</td>
+                                            <td class="text-right">{{ formatNumber(delivery.fuel_requested) }}</td>
+                                            <td class="text-right">{{ formatNumber(delivery.fuel_issued) }}</td>
+                                            <td class="text-right">{{ formatNumber(delivery.fuel_total) }}</td>
+                                            <td class="text-right">{{ delivery.station_name }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -147,6 +151,7 @@
                 .catch(() => this.$root.isLoading = false)
                 .then(() => this.$root.isLoading = false);
         },
+
         mounted() {
             $('#end_date').datepicker({
                 endDate: '0d',
@@ -170,7 +175,7 @@
         methods: {
             generateReport() {
                 this.$root.isLoading = true;
-                http.post('/api/reports/offloading', this.report).then(response => {
+                http.post('/api/reports/fuel', this.report).then(response => {
                     this.is_grouped = this.report.group_contract;
                     this.is_summary = this.report.summary;
                     this.deliveries = this.mapFields(response.deliveries);
@@ -207,7 +212,7 @@
                 return items;
             },
 
-            formatDateTime(dateTime, noTime = false) {
+            formatDateTime(dateTime, noTime = true) {
                 return moment(dateTime).format(noTime ? "MMMM Do YYYY" : "MMMM Do YYYY, h:mm a");
             },
 

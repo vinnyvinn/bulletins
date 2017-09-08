@@ -118,4 +118,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('lsfuelindex', '\SmoDav\Controllers\API\LocalShunting\LSFuelController@lsfuelindex');
     Route::get('ls/approvefuel/{id}', '\SmoDav\Controllers\API\LocalShunting\LSFuelController@approveLSFuel');
     Route::post('reports/loading', 'ReportController@loading');
+    Route::post('reports/offloading', 'ReportController@offloading');
+    Route::post('reports/fuel', 'ReportController@fuel');
+    Route::post('reports/mileage', 'ReportController@mileage');
+    Route::get('reports/init', 'ReportController@init');
 });

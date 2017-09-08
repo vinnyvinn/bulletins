@@ -16,14 +16,33 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <tr>
+                                    <td>Fuel Issue</td>
+                                    <td>
+                                        <router-link to="/reports/fuel" class="btn btn-primary btn-xs">GENERATE</router-link>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>Mileage Issue</td>
+                                    <td>
+                                        <router-link to="/reports/mileage" class="btn btn-primary btn-xs">GENERATE</router-link>
+                                    </td>
+                                </tr>
                                 <tr v-if="$root.can('create-delivery') || $root.can('view-delivery') || $root.can('edit-delivery') || $root.can('approve-delivery') || $root.can('delete-delivery')">
                                     <td>Loading</td>
-                                    <td><router-link to="/reports/loading" class="btn btn-primary btn-xs">GENERATE</router-link></td>
+                                    <td>
+                                        <router-link to="/reports/loading" class="btn btn-primary btn-xs">GENERATE</router-link>
+                                    </td>
                                 </tr>
-                                <!-- <tr>
+
+                                <tr>
                                     <td>Offloading</td>
-                                    <td><router-link to="/reports/off-loading" class="btn btn-primary btn-xs">GENERATE</router-link></td>
-                                </tr> -->
+                                    <td>
+                                        <router-link to="/reports/off-loading" class="btn btn-primary btn-xs">GENERATE</router-link>
+                                    </td>
+                                </tr>
+
                             </tbody>
                         </table>
                     </div>

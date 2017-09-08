@@ -16,14 +16,28 @@
                                     <label for="end_date">End Date</label>
                                     <input required type="text" v-model="report.end_date" id="end_date" name="end_date" class="input-sm form-control datepicker">
                                 </div>
+                                <div class="form-group">
+                                    <label for="contract_id">Contract</label>
+                                    <select v-model="report.contract_id" id="contract_id" name="contract_id" class="input-sm form-control">
+                                        <option :value="null">All Contracts</option>
+                                        <option v-for="contract in contracts" :key="contract.id" :value="contract.id">{{ contract.name }}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="station_id">Station</label>
+                                    <select v-model="report.station_id" id="station_id" name="station_id" class="input-sm form-control">
+                                        <option :value="null">All Stations</option>
+                                        <option v-for="station in stations" :key="station.id" :value="station.id">{{ station.name }}</option>
+                                    </select>
+                                </div>
                                 <div class="checkbox">
                                     <label>
-                                      <input v-model="report.group_contract" type="checkbox"> Group by contract
+                                        <input v-model="report.group_contract" type="checkbox"> Group by contract
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                      <input v-model="report.summary" type="checkbox"> Display as summary
+                                        <input v-model="report.summary" type="checkbox"> Display as summary
                                     </label>
                                 </div>
 
@@ -48,10 +62,10 @@
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
+                                            <th>#</th>
                                             <th v-if="!is_grouped">Contract</th>
                                             <th v-if="!is_summary">Plate Number</th>
                                             <th :class="is_summary ? 'text-right' : ''">{{ is_summary ? 'Total Trips' : 'Loading Time' }}</th>
-                                            <th class="text-right">Total Bags</th>
                                             <th class="text-right">Gross Weight</th>
                                             <th class="text-right">Tare Weight</th>
                                             <th class="text-right">Net Weight</th>
@@ -61,19 +75,18 @@
                                     <tbody v-if="is_grouped">
                                         <template v-for="(group, index) in deliveries">
                                             <tr class="rowHead">
-                                                <td :colspan="is_summary ? 7 : 2">
+                                                <td :colspan="is_summary ? 8 : 3">
                                                     <strong>{{ index }} Totals</strong>
                                                 </td>
-                                                <td v-if="! is_summary" class="text-right">{{ is_summary ? '' : getSum(group, 'bags_loaded') }}</td>
                                                 <td v-if="! is_summary" class="text-right">{{ getSum(group, 'loading_gross_weight') }}</td>
                                                 <td v-if="! is_summary" class="text-right">{{ getSum(group, 'loading_tare_weight') }}</td>
                                                 <td v-if="! is_summary" class="text-right">{{ getSum(group, 'loading_net_weight') }}</td>
                                                 <td v-if="! is_summary" class="text-right"></td>
                                             </tr>
                                             <tr v-for="delivery in group">
+                                                <td>{{ delivery.index }}</td>
                                                 <td :class="is_summary ? 'text-right' : ''">{{ is_summary ? delivery.total : formatDateTime(delivery.loading_time) }}</td>
                                                 <td v-if="!is_summary">{{ delivery.plate_number }}</td>
-                                                <td class="text-right">{{ formatNumber(delivery.bags_loaded) }}</td>
                                                 <td class="text-right">{{ formatNumber(delivery.loading_gross_weight) }}</td>
                                                 <td class="text-right">{{ formatNumber(delivery.loading_tare_weight) }}</td>
                                                 <td class="text-right">{{ formatNumber(delivery.loading_net_weight) }}</td>
@@ -83,10 +96,10 @@
                                     </tbody>
                                     <tbody v-else>
                                         <tr v-for="delivery in deliveries">
+                                            <td>{{ delivery.index }}</td>
                                             <td>{{ delivery.name }}</td>
                                             <td v-if="!is_summary">{{ delivery.plate_number }}</td>
                                             <td :class="is_summary ? 'text-right' : ''">{{ is_summary ? delivery.total : formatDateTime(delivery.loading_time) }}</td>
-                                            <td class="text-right">{{ formatNumber(delivery.bags_loaded) }}</td>
                                             <td class="text-right">{{ formatNumber(delivery.loading_gross_weight) }}</td>
                                             <td class="text-right">{{ formatNumber(delivery.loading_tare_weight) }}</td>
                                             <td class="text-right">{{ formatNumber(delivery.loading_net_weight) }}</td>
@@ -107,6 +120,8 @@
         data() {
             return {
                 report: {
+                    contract_id: null,
+                    station_id: null,
                     start_date: null,
                     end_date: null,
                     group_contract: false,
@@ -115,11 +130,22 @@
                 is_grouped: false,
                 is_summary: false,
                 deliveries: [],
+                contracts: [],
+                stations: [],
             };
         },
         created() {
+            this.$root.isLoading = true;
             this.report.start_date = moment().format('YYYY-MM-DD');
             this.report.end_date = moment().format('YYYY-MM-DD');
+            http.get('/api/reports/init').then(response => {
+                this.contracts = response.contracts;
+                this.stations = response.stations;
+
+                return response;
+            })
+                .catch(() => this.$root.isLoading = false)
+                .then(() => this.$root.isLoading = false);
         },
         mounted() {
             $('#end_date').datepicker({
@@ -147,12 +173,38 @@
                 http.post('/api/reports/loading', this.report).then(response => {
                     this.is_grouped = this.report.group_contract;
                     this.is_summary = this.report.summary;
-                    this.deliveries = response.deliveries;
+                    this.deliveries = this.mapFields(response.deliveries);
 
                     return response;
                 })
                     .then(() => this.$root.isLoading = false)
                     .catch(() => this.$root.isLoading = false);
+            },
+
+            mapFields(items) {
+                let first = 1;
+
+                if (!this.is_grouped) {
+                    return items.map(item => {
+                        item.index = first;
+                        first++;
+
+                        return item;
+                    });
+                }
+
+                let keys = Object.keys(items);
+
+                for (let i = 0; i < keys.length; i++) {
+                    items[keys[i]] = items[keys[i]].map(item => {
+                        item.index = first;
+                        first++;
+
+                        return item;
+                    });
+                }
+
+                return items;
             },
 
             formatDateTime(dateTime, noTime = false) {
