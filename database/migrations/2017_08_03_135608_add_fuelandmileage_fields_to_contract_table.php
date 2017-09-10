@@ -12,10 +12,10 @@ class AddFuelandmileageFieldsToContractTable extends Migration
     public function up()
     {
         Schema::table('contracts', function (Blueprint $table) {
-            $table->integer('lsfuel')->nullable();
-            $table->integer('lsmileage')->nullable();
-            $table->integer('fuel')->nullable();
-            $table->integer('mileage')->nullable();
+            $table->integer('lsfuel')->default(0);
+            $table->integer('lsmileage')->default(0);
+            $table->integer('fuel')->default(0);
+            $table->integer('mileage')->default(0);
         });
     }
 

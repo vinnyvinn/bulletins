@@ -76,7 +76,7 @@
 
         created() {
           this.$root.isLoading = true;
-          http.get('/api/lsfuelindex').then( response => {
+          http.get('/api/lsfuelindex?contract=' + window.Laravel.contract_id).then( response => {
             this.lsfuels = response.lsfuels;
             prepareTable();
             this.$root.isLoading = false;
