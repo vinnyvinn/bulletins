@@ -7,7 +7,7 @@
                 </div>
 
                 <div class="panel-body">
-                    <h4 class="text-center">Please select a station</h4>
+                    <h4 class="text-center">Please select a contract</h4>
                     <form action="/contract-selection" method="post" role="form">
                         <input type="hidden" name="_token" :value="$root.csrf">
                         <div class="col-sm-12">
