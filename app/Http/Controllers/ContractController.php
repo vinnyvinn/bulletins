@@ -375,8 +375,13 @@ class ContractController extends Controller
     public function lscontracts()
     {
         return Response::json([
-        'contracts' => Contract::where('status', Constants::STATUS_APPROVED)->with('client')->get()
-      ]);
+            'contracts' => Contract::where('status', Constants::STATUS_APPROVED)
+                ->when(request('contract_id'), function ($builder) {
+                    return $builder->where('id', request('contract_id'));
+                })
+                ->with('client')
+                ->get()
+        ]);
     }
 
     public function lscontractShow($id)

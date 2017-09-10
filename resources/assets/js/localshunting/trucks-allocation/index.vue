@@ -55,7 +55,7 @@
     export default {
         created() {
           this.$root.isLoading = true;
-          http.get('/api/lscontracts').then( response => {
+          http.get('/api/lscontracts?contract_id=' + window.Laravel.contract_id).then( response => {
             this.contracts = response.contracts;
             this.$root.isLoading = false;
           });

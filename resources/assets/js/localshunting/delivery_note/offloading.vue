@@ -51,7 +51,7 @@ export default {
   },
   created () {
     this.$root.isLoading = true;
-    http.get('/api/lsdelivery').then((response) => {
+    http.get('/api/lsdelivery?contract=' + window.Laravel.contract_id).then((response) => {
       this.deliveries = response.deliveries;
       this.$root.isLoading = false;
     })

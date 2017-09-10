@@ -19,7 +19,8 @@
             'csrfToken' => csrf_token(),
             'appname' => config('app.name'),
             'user' => Auth::id(),
-            'station_id' => session('station_id', 0)
+            'station_id' => session('station_id', 0),
+            'contract_id' => session('contract_id', 0)
         ]) !!};
     </script>
 </head>

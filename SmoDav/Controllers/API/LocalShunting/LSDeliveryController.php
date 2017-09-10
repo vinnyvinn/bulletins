@@ -18,12 +18,17 @@ class LSDeliveryController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
         return Response::json([
-          'deliveries' => LSDelivery::with('vehicle', 'vehicle.driver')->where('status', Constants::LOADED)->get()
+            'deliveries' => LSDelivery::with('vehicle', 'vehicle.driver')
+                ->when(\request('contract'), function ($builder) {
+                    return $builder->where('contract_id', \request('contract'));
+                })
+                ->where('status', Constants::LOADED)
+                ->get(),
         ]);
     }
 
@@ -36,9 +41,9 @@ class LSDeliveryController extends Controller
     {
         if (request('id')) {
             return Response::json([
-          'vehicle' => Vehicle::where('id', request('id'))->with('contract', 'driver', 'trailer')->first(),
-          'drivers' => Driver::unassigned()->orderBy('first_name')->get()
-        ]);
+                'vehicle' => Vehicle::where('id', request('id'))->with('contract', 'driver', 'trailer')->first(),
+                'drivers' => Driver::unassigned()->orderBy('first_name')->get(),
+            ]);
         }
     }
 
@@ -53,21 +58,21 @@ class LSDeliveryController extends Controller
     {
         $this->validate($request, [
             'loading_weighbridge_number' => 'bail|required|unique:l_s_deliveries',
-         ]);
+        ]);
         $data = $request->all();
 
         //Detach vehicle from gatepass
-        $vehicle = Vehicle::findOrFail($data['vehicle_id']);
+        Vehicle::findOrFail($data['vehicle_id']);
         $lsgatepass = LSGatepass::where('vehicle_id', $data['vehicle_id'])->first();
         $lsgatepass->delete();
 
         $data['user_id'] = Auth::id();
         $data['loading_time'] = Carbon::now();
-        $lsdelivery = LSDelivery::create($data);
+        LSDelivery::create($data);
 
         return Response::json([
-          'status' => 'success',
-          'message' => 'Successfully created delivery note'
+            'status'  => 'success',
+            'message' => 'Successfully created delivery note',
         ]);
     }
 
@@ -81,8 +86,8 @@ class LSDeliveryController extends Controller
     public function show($id)
     {
         return Response::json([
-        'delivery' => LSDelivery::where('id', $id)->with('vehicle', 'vehicle.driver', 'vehicle.trailer')->first()
-      ]);
+            'delivery' => LSDelivery::where('id', $id)->with('vehicle', 'vehicle.driver', 'vehicle.trailer')->first(),
+        ]);
     }
 
     /**
@@ -101,7 +106,7 @@ class LSDeliveryController extends Controller
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param int                      $id
+     * @param int $id
      *
      * @return \Illuminate\Http\Response
      */
@@ -124,8 +129,8 @@ class LSDeliveryController extends Controller
         $delivery->update($data);
 
         return Response::json([
-          'message' => 'Successfully offloaded'
-      ]);
+            'message' => 'Successfully offloaded',
+        ]);
     }
 
     /**

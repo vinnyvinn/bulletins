@@ -53,7 +53,7 @@
 <script>
     export default {
         created() {
-          http.get('/api/lscontracts').then( response => {
+          http.get('/api/lscontracts?contract_id=' + window.Laravel.contract_id).then( response => {
             this.contracts = response.contracts;
           });
         },

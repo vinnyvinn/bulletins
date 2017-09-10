@@ -14,31 +14,26 @@ class GatePassController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
         return Response::json([
-        'gatepasses' => LSGatePass::with('vehicle', 'vehicle.driver', 'user')->get()
-      ]);
+            'gatepasses' => $this->getGatepasses(),
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function create()
     {
         return Response::json([
-        'vehicles' => Vehicle::has('contract')
-                  ->doesntHave('lsgatepass')
-                  ->whereDoesntHave('lsdelivery', function ($q) {
-                      return $q->where('status', 'Loaded');
-                  })
-                  ->get(),
-        'gatepasses' => LSGatePass::with('vehicle', 'user')->get()
-      ]);
+            'vehicles'   => $this->getVehicles(),
+            'gatepasses' => $this->getGatepasses(),
+        ]);
     }
 
     /**
@@ -46,28 +41,23 @@ class GatePassController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         $this->validate($request, [
-          'vehicle_id' => 'required|unique:l_s_gate_passes'
+            'vehicle_id' => 'required|unique:l_s_gate_passes',
         ]);
         $data = $request->all();
         $data['user_id'] = Auth::id();
 
-        $gatepass = LSGatePass::create($data);
+        LSGatePass::create($data);
 
         return Response::json([
-          'status' => 'success',
-          'message' => 'Successfully created gatepass inwards',
-          'gatepasses' => LSGatePass::with('vehicle', 'user')->get(),
-          'vehicles' => Vehicle::has('contract')
-                    ->doesntHave('lsgatepass')
-                    ->whereDoesntHave('lsdelivery', function ($q) {
-                        return $q->where('status', 'Loaded');
-                    })
-                    ->get(),
+            'status'     => 'success',
+            'message'    => 'Successfully created gatepass inwards',
+            'gatepasses' => $this->getGatepasses(),
+            'vehicles'   => $this->getVehicles(),
         ]);
     }
 
@@ -99,7 +89,7 @@ class GatePassController extends Controller
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param int                      $id
+     * @param int $id
      *
      * @return \Illuminate\Http\Response
      */
@@ -118,5 +108,28 @@ class GatePassController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function getVehicles()
+    {
+        return Vehicle::has('contract')
+            ->doesntHave('lsgatepass')
+            ->whereDoesntHave('lsdelivery', function ($q) {
+                return $q->where('status', 'Loaded');
+            })
+            ->when(\request('contract'), function ($builder) {
+                return $builder->whereRaw('vehicles.contract_id = ' . \request('contract'));
+            })
+            ->get();
+    }
+
+    private function getGatepasses()
+    {
+        return LSGatePass::with('vehicle', 'user')
+            ->join('vehicles', 'vehicles.id', '=', 'l_s_gate_passes.vehicle_id')
+            ->when(\request('contract'), function ($builder) {
+                return $builder->whereRaw('vehicles.contract_id = ' . \request('contract'));
+            })
+            ->get(['l_s_gate_passes.*']);
     }
 }

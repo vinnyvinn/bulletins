@@ -11,6 +11,10 @@ function authMiddleware(to, from, next) {
         return next({path: '/station-selection'});
     }
 
+    if (! window.Laravel.contract_id && to.path !== '/ls/contract-selection' && to.path !== '/station-selection') {
+        return next({path: '/ls/contract-selection'});
+    }
+
     return next();
 }
 
@@ -97,6 +101,7 @@ module.exports = [
     { path: '/ls/loadingreports/:id', component: require('./reports/LoadingUnloading.vue'), beforeEnter: authMiddleware },
 
     { path: '/station-selection', component: require('./station.vue'), beforeEnter: authMiddleware },
+    { path: '/ls/contract-selection', component: require('./contract.vue'), beforeEnter: authMiddleware },
 
     { path: '/ls/offloading', component: require('./delivery_note/offloading.vue'), beforeEnter: authMiddleware },
 

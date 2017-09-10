@@ -17,7 +17,8 @@ Route::group(['middleware' => 'auth'], function () {
     include(__DIR__ . '/workshop.php');
     Route::get('integration/payroll/{id}', '\SmoDav\Controllers\APIIntegrationController@finalize');
 
-    Route::post('station-selection',  'HomeController@selectStation');
+    Route::post('station-selection', 'HomeController@selectStation');
+    Route::post('contract-selection', 'HomeController@selectContract');
 
     // include(__DIR__ .'/localshunting.php');
     Route::any('/ls/{a?}/{b?}/{c?}', 'HomeController@localshunting');

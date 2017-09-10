@@ -16,6 +16,7 @@
                     </div>
                   </div>
                   <div class="col-sm-6">
+                    <label>&nbsp;</label>
                     <button type="submit" name="button" class="btn btn-sm btn-success">Check In</button>
                   </div>
                 </form>
@@ -63,7 +64,7 @@
       },
       created() {
         this.$root.isLoading = true;
-        http.get('/api/lsgatepass/create').then((response) => {
+        http.get('/api/lsgatepass/create?contract=' + window.Laravel.contract_id).then((response) => {
           this.vehicles = response.vehicles;
           this.gatepasses = response.gatepasses;
 

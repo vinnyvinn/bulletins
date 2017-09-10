@@ -44,6 +44,13 @@ class HomeController extends Controller
         return redirect('/');
     }
 
+    public function selectContract(Request $request)
+    {
+        session()->put('contract_id', $request->get('contract'));
+
+        return redirect('/ls');
+    }
+
     public function localshunting()
     {
         return view('localshunting');

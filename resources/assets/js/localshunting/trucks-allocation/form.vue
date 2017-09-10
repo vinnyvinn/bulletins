@@ -183,7 +183,7 @@
                             <td>{{ allocatedEmployee.id }}</td>
                             <td>{{ allocatedEmployee.first_name }} {{ allocatedEmployee.last_name }}</td>
                             <td>
-                              <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+                              <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">Open Modal</button>
                               <button type="button" @click="removeEmployee(allocatedEmployee)" name="button" class="btn btn-sm btn-danger">Remove</button>
                             </td>
                         </tr>

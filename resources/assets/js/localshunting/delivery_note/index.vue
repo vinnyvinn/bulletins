@@ -53,7 +53,7 @@ export default {
   },
   created () {
     this.$root.isLoading = true;
-    http.get('/api/lsgatepass').then((response) => {
+    http.get('/api/lsgatepass?contract=' + window.Laravel.contract_id).then((response) => {
       this.gatepasses = response.gatepasses;
       this.$root.isLoading = false;
     })
