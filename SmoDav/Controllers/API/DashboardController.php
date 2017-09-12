@@ -22,7 +22,8 @@ class DashboardController extends Controller
             'open_journeys' => $openJourneys,
             'not_loaded' => $unloadedJourneys,
             'not_fueled' => $notFueledJourneys,
-            'not_paid' => $notPaidJourneys
+            'not_paid' => $notPaidJourneys,
+            'not_approved_paid' => $this->getUnapprovedUnpaidJourneys()
         ]);
     }
 
@@ -133,6 +134,36 @@ class DashboardController extends Controller
         })
             ->doesntHave('mileage')
             ->open()
+            ->when(! request('month'), function ($builder) {
+                $today = Carbon::now();
+
+                return $builder->whereMonth('job_date', $today->month)->whereYear('job_date', $today->year);
+            })
+            ->when(request('month'), function ($builder) {
+                $dates = \explode('-', request('month'));
+                if (\count($dates) < 2) {
+                    return $builder;
+                }
+
+                return $builder->whereMonth('job_date', $dates[0])->whereYear('job_date', $dates[1]);
+            })
+            ->get([
+                'id', 'is_contract_related', 'journey_type', 'job_date', 'ref_no', 'status', 'created_at'
+            ]);
+
+        return $journeys;
+    }
+
+    private function getUnapprovedUnpaidJourneys()
+    {
+        $journeys = Journey::with(['mileage' => function ($builder) {
+            return $builder->select(['journey_id', 'id']);
+        }])->when(request('s'), function ($builder) {
+            return $builder->where('station_id', request('s'));
+        })
+            ->whereDoesntHave('mileage', function ($builder) {
+                $builder->where('status', 'Approved');
+            })
             ->when(! request('month'), function ($builder) {
                 $today = Carbon::now();
 

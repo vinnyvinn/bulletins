@@ -154,9 +154,11 @@
             },
 
             checkState() {
+                this.$root.isLoading = true;
                 http.get('/api/mileage/' + this.$route.params.id).then((response) => {
                     this.journey = response.journey;
                     this.mileage = response.mileage;
+                    this.$root.isLoading = false;
                 });
             },
 

@@ -23,22 +23,24 @@
                         <div class="table-responsive">
                             <table class="table nowrap datatable">
                                 <thead>
-                                <tr>
-                                    <th>Journey #</th>
-                                    <th>Contract Related</th>
-                                    <th>Journey Type</th>
-                                    <th>Job Date</th>
-                                    <th>Ref. No.</th>
-                                </tr>
+                                    <tr>
+                                        <th>Journey #</th>
+                                        <th>Contract Related</th>
+                                        <th>Journey Type</th>
+                                        <th>Job Date</th>
+                                        <th>Ref. No.</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="journey in open_journeys">
-                                    <td><router-link :to="'/journey/' + journey.id">JRNY-{{ journey.id }}</router-link></td>
-                                    <td>{{ journey.is_contract_related ? 'Yes' : 'No' }}</td>
-                                    <td>{{ journey.journey_type }}</td>
-                                    <td>{{ date2(journey.job_date) }}</td>
-                                    <td>{{ journey.ref_no }}</td>
-                                </tr>
+                                    <tr v-for="journey in open_journeys">
+                                        <td>
+                                            <router-link :to="'/journey/' + journey.id">JRNY-{{ journey.id }}</router-link>
+                                        </td>
+                                        <td>{{ journey.is_contract_related ? 'Yes' : 'No' }}</td>
+                                        <td>{{ journey.journey_type }}</td>
+                                        <td>{{ date2(journey.job_date) }}</td>
+                                        <td>{{ journey.ref_no }}</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -53,22 +55,24 @@
                         <div class="table-responsive">
                             <table class="table nowrap datatable">
                                 <thead>
-                                <tr>
-                                    <th>Journey #</th>
-                                    <th>Contract Related</th>
-                                    <th>Journey Type</th>
-                                    <th>Job Date</th>
-                                    <th>Ref. No.</th>
-                                </tr>
+                                    <tr>
+                                        <th>Journey #</th>
+                                        <th>Contract Related</th>
+                                        <th>Journey Type</th>
+                                        <th>Job Date</th>
+                                        <th>Ref. No.</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="journey in not_fueled">
-                                    <td><router-link :to="'/journey/' + journey.id">JRNY-{{ journey.id }}</router-link></td>
-                                    <td>{{ journey.is_contract_related ? 'Yes' : 'No' }}</td>
-                                    <td>{{ journey.journey_type }}</td>
-                                    <td>{{ date2(journey.job_date) }}</td>
-                                    <td>{{ journey.ref_no }}</td>
-                                </tr>
+                                    <tr v-for="journey in not_fueled">
+                                        <td>
+                                            <router-link :to="'/journey/' + journey.id">JRNY-{{ journey.id }}</router-link>
+                                        </td>
+                                        <td>{{ journey.is_contract_related ? 'Yes' : 'No' }}</td>
+                                        <td>{{ journey.journey_type }}</td>
+                                        <td>{{ date2(journey.job_date) }}</td>
+                                        <td>{{ journey.ref_no }}</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -86,22 +90,24 @@
                         <div class="table-responsive">
                             <table class="table nowrap datatable">
                                 <thead>
-                                <tr>
-                                    <th>Journey #</th>
-                                    <th>Contract Related</th>
-                                    <th>Journey Type</th>
-                                    <th>Job Date</th>
-                                    <th>Ref. No.</th>
-                                </tr>
+                                    <tr>
+                                        <th>Journey #</th>
+                                        <th>Contract Related</th>
+                                        <th>Journey Type</th>
+                                        <th>Job Date</th>
+                                        <th>Ref. No.</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="journey in not_loaded">
-                                    <td><router-link :to="'/journey/' + journey.id">JRNY-{{ journey.id }}</router-link></td>
-                                    <td>{{ journey.is_contract_related ? 'Yes' : 'No' }}</td>
-                                    <td>{{ journey.journey_type }}</td>
-                                    <td>{{ date2(journey.job_date) }}</td>
-                                    <td>{{ journey.ref_no }}</td>
-                                </tr>
+                                    <tr v-for="journey in not_loaded">
+                                        <td>
+                                            <router-link :to="'/journey/' + journey.id">JRNY-{{ journey.id }}</router-link>
+                                        </td>
+                                        <td>{{ journey.is_contract_related ? 'Yes' : 'No' }}</td>
+                                        <td>{{ journey.journey_type }}</td>
+                                        <td>{{ date2(journey.job_date) }}</td>
+                                        <td>{{ journey.ref_no }}</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -116,22 +122,60 @@
                         <div class="table-responsive">
                             <table class="table nowrap datatable">
                                 <thead>
-                                <tr>
-                                    <th>Journey #</th>
-                                    <th>Contract Related</th>
-                                    <th>Journey Type</th>
-                                    <th>Job Date</th>
-                                    <th>Ref. No.</th>
-                                </tr>
+                                    <tr>
+                                        <th>Journey #</th>
+                                        <th>Contract Related</th>
+                                        <th>Journey Type</th>
+                                        <th>Job Date</th>
+                                        <th>Ref. No.</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="journey in not_paid">
-                                    <td><router-link :to="'/journey/' + journey.id">JRNY-{{ journey.id }}</router-link></td>
-                                    <td>{{ journey.is_contract_related ? 'Yes' : 'No' }}</td>
-                                    <td>{{ journey.journey_type }}</td>
-                                    <td>{{ date2(journey.job_date) }}</td>
-                                    <td>{{ journey.ref_no }}</td>
-                                </tr>
+                                    <tr v-for="journey in not_paid">
+                                        <td>
+                                            <router-link :to="'/journey/' + journey.id">JRNY-{{ journey.id }}</router-link>
+                                        </td>
+                                        <td>{{ journey.is_contract_related ? 'Yes' : 'No' }}</td>
+                                        <td>{{ journey.journey_type }}</td>
+                                        <td>{{ date2(journey.job_date) }}</td>
+                                        <td>{{ journey.ref_no }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>Pending Mileage Approval.</strong>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table nowrap datatable">
+                                <thead>
+                                    <tr>
+                                        <th>Mileage #</th>
+                                        <th>Journey #</th>
+                                        <th>Contract Related</th>
+                                        <th>Journey Type</th>
+                                        <th>Job Date</th>
+                                        <th>Ref. No.</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="journey in not_approved_paid">
+                                        <td>
+                                            <router-link :to="'/mileage/' + journey.mileage.id">MLG-{{ journey.mileage.id }}</router-link>
+                                        </td>
+                                        <td>
+                                            <router-link :to="'/journey/' + journey.id">JRNY-{{ journey.id }}</router-link>
+                                        </td>
+                                        <td>{{ journey.is_contract_related ? 'Yes' : 'No' }}</td>
+                                        <td>{{ journey.journey_type }}</td>
+                                        <td>{{ date2(journey.job_date) }}</td>
+                                        <td>{{ journey.ref_no }}</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -163,6 +207,7 @@
                 delivery_notes: [],
                 months: [],
                 month: '',
+                not_approved_paid: [],
             }
         },
 
@@ -184,14 +229,15 @@
             },
 
             mapFetchedData(response) {
-//                $('.datatable').dataTable().fnDestroy();
+                //                $('.datatable').dataTable().fnDestroy();
                 this.open_journeys = response.open_journeys;
                 this.not_fueled = response.not_fueled;
                 this.not_loaded = response.not_loaded;
                 this.not_paid = response.not_paid;
                 this.months = response.months;
+                this.not_approved_paid = response.not_approved_paid;
                 setTimeout(() => {
-//                    $('.datatable').dataTable();
+                    //                    $('.datatable').dataTable();
                     this.$root.isLoading = false;
                 }, 1000);
             }
