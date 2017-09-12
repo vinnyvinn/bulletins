@@ -28,7 +28,8 @@ class ReportController extends Controller
 
         $columns = [
             'contracts.name', 'loading_gross_weight', 'loading_tare_weight', 'loading_net_weight',
-            'loading_weighbridge_number', 'loading_time', 'plate_number'
+            'loading_weighbridge_number', 'loading_time', 'plate_number', 'Client.Name as client_name',
+            'drivers.first_name', 'drivers.last_name'
         ];
 
         if ($request->get('summary') == 1) {
@@ -42,7 +43,9 @@ class ReportController extends Controller
             ->where('loading_time', '<=', $end)
             ->join('journeys', 'journeys.id', '=', 'deliveries.journey_id')
             ->join('contracts', 'journeys.contract_id', '=', 'contracts.id')
+            ->join('Client', 'contracts.client_id', '=', 'Client.DCLink')
             ->join('vehicles', 'journeys.truck_id', '=', 'vehicles.id')
+            ->join('drivers', 'journeys.driver_id', '=', 'drivers.id')
             ->when($request->get('contract_id'), function ($builder) use ($request) {
                 return $builder->where('contracts.id', $request->get('contract_id'));
             })
@@ -53,6 +56,7 @@ class ReportController extends Controller
                 return $builder
                     ->select(\DB::raw(
                         '
+                        Client.Name as client_name,
                         contracts.name,
                         count(deliveries.id) as total,
                         sum(loading_gross_weight) as loading_gross_weight,
@@ -60,7 +64,8 @@ class ReportController extends Controller
                         sum(loading_net_weight) as loading_net_weight
                         '
                     ))
-                    ->groupBy('contracts.name');
+                    ->groupBy('contracts.name')
+                    ->groupBy('Client.Name');
             })
             ->get($columns);
 
@@ -81,7 +86,8 @@ class ReportController extends Controller
 
         $columns = [
             'contracts.name', 'offloading_gross_weight', 'offloading_tare_weight', 'offloading_net_weight',
-            'offloading_weighbridge_number', 'offloading_time', 'plate_number'
+            'offloading_weighbridge_number', 'offloading_time', 'plate_number', 'Client.Name as client_name',
+            'drivers.first_name', 'drivers.last_name'
         ];
 
         if ($request->get('summary') == 1) {
@@ -95,7 +101,9 @@ class ReportController extends Controller
             ->where('offloading_time', '<=', $end)
             ->join('journeys', 'journeys.id', '=', 'deliveries.journey_id')
             ->join('contracts', 'journeys.contract_id', '=', 'contracts.id')
+            ->join('Client', 'contracts.client_id', '=', 'Client.DCLink')
             ->join('vehicles', 'journeys.truck_id', '=', 'vehicles.id')
+            ->join('drivers', 'journeys.driver_id', '=', 'drivers.id')
             ->when($request->get('contract_id'), function ($builder) use ($request) {
                 return $builder->where('contracts.id', $request->get('contract_id'));
             })
@@ -106,6 +114,7 @@ class ReportController extends Controller
                 return $builder
                     ->select(\DB::raw(
                         '
+                        Client.Name as client_name,
                         contracts.name,
                         count(deliveries.id) as total,
                         sum(offloading_gross_weight) as offloading_gross_weight,
@@ -113,7 +122,8 @@ class ReportController extends Controller
                         sum(offloading_net_weight) as offloading_net_weight
                         '
                     ))
-                    ->groupBy('contracts.name');
+                    ->groupBy('contracts.name')
+                    ->groupBy('Client.Name');
             })
             ->get($columns);
 
@@ -135,7 +145,8 @@ class ReportController extends Controller
         $columns = [
             'date', 'fuels.current_fuel', 'fuel_requested', 'fuel_issued', 'fuel_total', 'tank',
             'pump', 'top_up', 'top_up_reason', 'top_up_quantity', 'stations.name as station_name',
-            'contracts.name', 'vehicles.plate_number'
+            'contracts.name', 'vehicles.plate_number', 'drivers.first_name', 'drivers.last_name',
+            'Client.Name as client_name',
         ];
 
         if ($request->get('summary') == 1) {
@@ -151,6 +162,8 @@ class ReportController extends Controller
             ->join('contracts', 'journeys.contract_id', '=', 'contracts.id')
             ->join('vehicles', 'journeys.truck_id', '=', 'vehicles.id')
             ->join('stations', 'fuels.station_id', '=', 'stations.id')
+            ->join('drivers', 'journeys.driver_id', '=', 'drivers.id')
+            ->join('Client', 'contracts.client_id', '=', 'Client.DCLink')
             ->when($request->get('contract_id'), function ($builder) use ($request) {
                 return $builder->where('contracts.id', $request->get('contract_id'));
             })
@@ -161,6 +174,7 @@ class ReportController extends Controller
                 return $builder
                     ->select(\DB::raw(
                         '
+                        Client.Name as client_name,
                         stations.name as station_name,
                         contracts.name,
                         count(fuels.id) as total,
@@ -171,6 +185,7 @@ class ReportController extends Controller
                         '
                     ))
                     ->groupBy('contracts.name')
+                    ->groupBy('Client.name')
                     ->groupBy('stations.name');
             })
             ->where('fuels.status', 'Approved')
@@ -194,13 +209,16 @@ class ReportController extends Controller
         $columns = [
             'mileage_type', 'requested_amount', 'approved_amount', 'balance_amount',
             'standard_amount', 'top_up_amount', 'contracts.name', 'vehicles.plate_number',
-            'journeys.job_date as date', 'stations.name as station_name'
+            'journeys.job_date as date', 'stations.name as station_name',
+            'drivers.first_name', 'drivers.last_name', 'Client.Name as client_name',
         ];
 
         $deliveries = Mileage::join('journeys', 'journeys.id', '=', 'mileages.journey_id')
             ->join('contracts', 'journeys.contract_id', '=', 'contracts.id')
             ->join('vehicles', 'journeys.truck_id', '=', 'vehicles.id')
             ->join('stations', 'mileages.station_id', '=', 'stations.id')
+            ->join('drivers', 'journeys.driver_id', '=', 'drivers.id')
+            ->join('Client', 'contracts.client_id', '=', 'Client.DCLink')
             ->where('journeys.job_date', '>=', $start)
             ->where('journeys.job_date', '<=', $end)
             ->when($request->get('contract_id'), function ($builder) use ($request) {
@@ -213,6 +231,7 @@ class ReportController extends Controller
                 return $builder
                     ->select(\DB::raw(
                         '
+                        Client.Name as client_name,
                         stations.name as station_name,
                         contracts.name,
                         mileage_type,
@@ -224,6 +243,7 @@ class ReportController extends Controller
                         sum(top_up_amount) as top_up_amount
                         '
                     ))
+                    ->groupBy('Client.name')
                     ->groupBy('contracts.name')
                     ->groupBy('stations.name')
                     ->groupBy('mileage_type');

@@ -45,6 +45,33 @@
                                     <button class="btn btn-success btn-block">Generate</button>
                                 </div>
                             </form>
+
+                            <div v-if="(trucks.length || clients.lenght) && !is_summary">
+                                <h4>Filters</h4>
+                                <div class="form-group" v-if="trucks.length">
+                                    <label for="station_id">Truck</label>
+                                    <select v-model="selected_truck" class="input-sm form-control">
+                                        <option :value="null">All Trucks</option>
+                                        <option v-for="(truck, index) in trucks" :key="truck" :value="truck">{{ truck }}</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group" v-if="clients.length">
+                                    <label for="station_id">Client</label>
+                                    <select v-model="selected_client" class="input-sm form-control">
+                                        <option :value="null">All Clients</option>
+                                        <option v-for="(client, index) in clients" :key="client" :value="client">{{ client }}</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group" v-if="drivers.length">
+                                    <label for="station_id">Driver</label>
+                                    <select v-model="selected_driver" class="input-sm form-control">
+                                        <option :value="null">All Drivers</option>
+                                        <option v-for="(driver, index) in drivers" :key="driver" :value="driver">{{ driver }}</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -58,6 +85,12 @@
                             <div id="reportBody">
                                 <h4 class="text-center">Offloading Report</h4>
                                 <h5 class="text-center">From: {{ formatDateTime(report.start_date, true) }} To: {{ formatDateTime(report.end_date, true) }}</h5>
+                                <h5 class="text-center" v-if="selected_truck">
+                                    <strong>Vehicle:</strong> {{ selected_truck }} </h5>
+                                <h5 class="text-center" v-if="selected_client">
+                                    <strong>Client:</strong> {{ selected_client }} </h5>
+                                <h5 class="text-center" v-if="selected_driver">
+                                    <strong>Driver:</strong> {{ selected_driver }} </h5>
                                 <hr>
                                 <table class="table table-striped">
                                     <thead>
@@ -129,10 +162,135 @@
                 },
                 is_grouped: false,
                 is_summary: false,
-                deliveries: [],
+                all_deliveries: [],
                 contracts: [],
                 stations: [],
+                selected_truck: null,
+                selected_client: null,
+                selected_driver: null,
             };
+        },
+        computed: {
+            deliveries() {
+                let deliveries = this.is_grouped ? Object.assign({}, this.all_deliveries) : this.all_deliveries.concat([]);
+
+                if (!this.is_grouped) {
+                    if (this.selected_truck) {
+                        deliveries = deliveries.filter(del => this.selected_truck == del.plate_number);
+                    }
+
+                    if (this.selected_client) {
+                        deliveries = deliveries.filter(del => this.selected_client == del.client_name);
+                    }
+                    if (this.selected_driver) {
+                        deliveries = deliveries.filter(del => (
+                            this.selected_driver == del.first_name + ' ' + del.last_name
+                        ));
+                    }
+
+                    return this.mapFields(deliveries);
+                }
+
+                let keys = Object.keys(deliveries);
+
+                for (let i = 0; i < keys.length; i++) {
+                    if (this.selected_truck) {
+                        deliveries[keys[i]] = deliveries[keys[i]].filter(del => this.selected_truck == del.plate_number);
+                    }
+
+                    if (this.selected_client) {
+                        deliveries[keys[i]] = deliveries[keys[i]].filter(del => this.selected_client == del.client_name);
+                    }
+
+                    if (this.selected_driver) {
+                        deliveries[keys[i]] = deliveries[keys[i]].filter(del => (
+                            this.selected_driver == del.first_name + ' ' + del.last_name
+                        ));
+                    }
+
+                    if (!deliveries[keys[i]].length) {
+                        delete deliveries[keys[i]];
+                    }
+                }
+
+
+                return this.mapFields(deliveries);
+            },
+            clients() {
+                let clients = [];
+
+                if (!this.is_grouped) {
+                    this.all_deliveries.forEach(item => {
+                        if (clients.indexOf(item.client_name) === -1) {
+                            clients.push(item.client_name);
+                        }
+                    });
+                } else {
+                    let keys = Object.keys(this.all_deliveries);
+
+                    for (let i = 0; i < keys.length; i++) {
+                        this.all_deliveries[keys[i]].forEach(item => {
+                            if (clients.indexOf(item.client_name) === -1) {
+                                clients.push(item.client_name);
+                            }
+                        });
+                    }
+                }
+
+                clients.sort();
+
+                return clients;
+            },
+            trucks() {
+                let trucks = [];
+
+                if (!this.is_grouped) {
+                    this.all_deliveries.forEach(item => {
+                        if (trucks.indexOf(item.plate_number) === -1) {
+                            trucks.push(item.plate_number);
+                        }
+                    });
+                } else {
+                    let keys = Object.keys(this.all_deliveries);
+
+                    for (let i = 0; i < keys.length; i++) {
+                        this.all_deliveries[keys[i]].forEach(item => {
+                            if (trucks.indexOf(item.plate_number) === -1) {
+                                trucks.push(item.plate_number);
+                            }
+                        });
+                    }
+                }
+
+                trucks.sort();
+
+                return trucks;
+            },
+            drivers() {
+                let drivers = [];
+
+                if (!this.is_grouped) {
+                    this.all_deliveries.forEach(item => {
+                        if (drivers.indexOf(item.first_name + ' ' + item.last_name) === -1) {
+                            drivers.push(item.first_name + ' ' + item.last_name);
+                        }
+                    });
+                } else {
+                    let keys = Object.keys(this.all_deliveries);
+
+                    for (let i = 0; i < keys.length; i++) {
+                        this.all_deliveries[keys[i]].forEach(item => {
+                            if (drivers.indexOf(item.first_name + ' ' + item.last_name) === -1) {
+                                drivers.push(item.first_name + ' ' + item.last_name);
+                            }
+                        });
+                    }
+                }
+
+                drivers.sort();
+
+                return drivers;
+            },
         },
         created() {
             this.$root.isLoading = true;
@@ -167,13 +325,18 @@
                     .datepicker('setStartDate', e.target.value);
             });
         },
+
         methods: {
             generateReport() {
                 this.$root.isLoading = true;
                 http.post('/api/reports/offloading', this.report).then(response => {
+                    this.selected_truck = null;
+                    this.selected_client = null;
+                    this.selected_driver = null;
                     this.is_grouped = this.report.group_contract;
                     this.is_summary = this.report.summary;
-                    this.deliveries = this.mapFields(response.deliveries);
+                    this.all_deliveries = response.deliveries;
+
 
                     return response;
                 })
