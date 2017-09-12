@@ -23,4 +23,5 @@ mix
     .js('resources/assets/js/plain.js', 'public/js')
     .js('resources/assets/js/localshunting/localshunting.js', 'public/js')
     .sass('resources/assets/sass/app.scss', 'public/css')
+    .sourceMaps()
     .version();

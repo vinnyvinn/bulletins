@@ -90,7 +90,6 @@
                     </div>
                 </div>
 
-
                 <div class="row">
                     <div class="col-sm-6">
                         <fieldset class="wizag-fieldset-border">
@@ -100,19 +99,17 @@
                                     <label>Standard Mileage Amount</label>
                                 </div>
                                 <div class="col-sm-6">
-                                    <h5><strong>{{ formatNumber(standardMileage) }}</strong></h5>
+                                    <h5>
+                                        <strong>{{ formatNumber(standardMileage) }}</strong>
+                                    </h5>
                                 </div>
 
                                 <div class="col-sm-6">
                                     <label>Amount Requested</label>
                                 </div>
                                 <div class="col-sm-6">
-                                    <input min="1" :max="standardMileage"
-                                           v-model="mileage.requested_amount" @change="validateRequestedAmount"
-                                           type="number" class="form-control input-sm" id="requested_amount"
-                                           name="requested_amount">
+                                    <input min="1" :max="standardMileage" v-model="mileage.requested_amount" @change="validateRequestedAmount" type="number" class="form-control input-sm" id="requested_amount" name="requested_amount">
                                 </div>
-
 
                                 <div class="col-sm-6">
                                     <label>Top Up?</label>
@@ -126,8 +123,7 @@
                                         <label>Top Up Amount</label>
                                     </div>
                                     <div class="col-sm-6" v-if="mileage.top_up">
-                                        <input type="number" name="top_up_amount" id="top_up_amount"
-                                               v-model="mileage.top_up_amount">
+                                        <input type="number" name="top_up_amount" id="top_up_amount" v-model="mileage.top_up_amount">
                                     </div>
 
                                     <div class="col-sm-6" v-if="mileage.top_up">
@@ -138,13 +134,14 @@
                                     </div>
                                 </div>
 
-
                                 <div class="col-sm-6">
                                     <label>Total Request Amount</label>
                                 </div>
                                 <div class="col-sm-6">
-                                    <h4><strong>{{ parseInt(mileage.requested_amount) + parseInt(mileage.top_up_amount)
-                                        }}</strong></h4>
+                                    <h4>
+                                        <strong>{{ parseInt(mileage.requested_amount) + parseInt(mileage.top_up_amount) }}
+                                        </strong>
+                                    </h4>
                                 </div>
 
                                 <div class="col-sm-6" v-if="$route.params.id">
@@ -154,7 +151,6 @@
                                     <input min="0" v-model="mileage.approved_amount" type="number" class="form-control input-sm" id="approved_amount" name="approved_amount">
                                 </div>
                             </div>
-
 
                             <div class="form-group">
                                 <label class="col-sm-6"></label>
@@ -169,8 +165,7 @@
                         <div class="form-group">
                             <div class="col-sm-10">
                                 <label>Narration</label>
-                                <textarea v-model="mileage.narration" name="narration" id="narration" rows="5"
-                                          class="form-control input-sm"></textarea>
+                                <textarea v-model="mileage.narration" name="narration" id="narration" rows="5" class="form-control input-sm"></textarea>
                             </div>
                         </div>
                     </div>
@@ -234,7 +229,7 @@
                 if (this.mileage.mileage_type == 'Return Mileage') return this.journey.route.return_mileage;
 
                 let selected = this.mileageTypes.filter(type => type.name === this.mileage.mileage_type);
-                if (! selected.length) return 0;
+                if (!selected.length) return 0;
 
                 return this.journey.route[selected[0].slug];
             }
@@ -280,7 +275,7 @@
         },
 
         mounted() {
-            $('input[type="number"]').on('focus', function () {
+            $('input[type="number"]').on('focus', function() {
                 this.select();
             });
         },
@@ -299,7 +294,7 @@
                 }
             },
 
-            toggleTop_Up(){
+            toggleTop_Up() {
                 this.mileage.top_up = !this.mileage.top_up;
                 return this.mileage.top_up_amount = 0;
             },
@@ -340,6 +335,18 @@
                 let request = null;
                 this.mileage.standard_amount = parseInt(this.standardMileage);
 
+                let requested = parseInt(this.mileage.requested_amount);
+                this.mileage.requested_amount = requested;
+                if (requested <= this.mileage.standard_amount) {
+                    this.mileage.status = 'Approved';
+                    this.mileage.approved_amount = requested;
+                    this.mileage.balance_amount = this.mileage.standard_amount - requested;
+                }
+
+                if (parseInt(this.mileage.top_up_amount)) {
+                    delete this.mileage['status'];
+                }
+
                 let data = mapToFormData(this.mileage, this.uploads, typeof this.$route.params.id === 'string' || typeof this.$route.params.approve === 'string');
 
                 if (this.$route.params.id) {
@@ -353,7 +360,7 @@
                 request.then((response) => {
                     this.$root.isLoading = false;
                     alert2(this.$root, [response.message], 'success');
-                    window._router.push({path: '/mileage'});
+                    window._router.push({ path: '/mileage' });
                 }).catch((error) => {
                     this.$root.isLoading = false;
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
@@ -364,20 +371,20 @@
 </script>
 
 <style media="screen" scoped>
-    fieldset.wizag-fieldset-border {
-        border: 1px groove #ddd !important;
-        padding: 0 1.4em 1.4em 1.4em !important;
-        margin: 0 0 1.5em 0 !important;
-        -webkit-box-shadow: 0px 0px 0px 0px #000;
-        box-shadow: 0px 0px 0px 0px #000;
-    }
+fieldset.wizag-fieldset-border {
+    border: 1px groove #ddd !important;
+    padding: 0 1.4em 1.4em 1.4em !important;
+    margin: 0 0 1.5em 0 !important;
+    -webkit-box-shadow: 0px 0px 0px 0px #000;
+    box-shadow: 0px 0px 0px 0px #000;
+}
 
-    legend.wizag-fieldset-border {
-        font-size: 1.2em !important;
-        font-weight: bold !important;
-        text-align: left !important;
-        width: auto;
-        padding: 0 10px;
-        border-bottom: none;
-    }
+legend.wizag-fieldset-border {
+    font-size: 1.2em !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    width: auto;
+    padding: 0 10px;
+    border-bottom: none;
+}
 </style>

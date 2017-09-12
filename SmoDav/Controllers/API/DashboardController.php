@@ -161,8 +161,8 @@ class DashboardController extends Controller
         }])->when(request('s'), function ($builder) {
             return $builder->where('station_id', request('s'));
         })
-            ->whereDoesntHave('mileage', function ($builder) {
-                $builder->where('status', 'Approved');
+            ->whereHas('mileage', function ($builder) {
+                $builder->where('status', '<>', 'Approved');
             })
             ->when(! request('month'), function ($builder) {
                 $today = Carbon::now();
