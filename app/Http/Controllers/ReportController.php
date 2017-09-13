@@ -52,6 +52,9 @@ class ReportController extends Controller
             ->when($request->get('station_id'), function ($builder) use ($request) {
                 return $builder->where('deliveries.station_id', $request->get('station_id'));
             })
+            ->when($request->get('summary') != 1, function ($builder) {
+                return $builder->orderBy('loading_time', 'desc');
+            })
             ->when($request->get('summary') == 1, function ($builder) use ($columns) {
                 return $builder
                     ->select(\DB::raw(
@@ -91,13 +94,6 @@ class ReportController extends Controller
             'offloading_net_weight', 'offloading_weighbridge_number', 'offloading_time',
         ];
 
-        if ($request->get('summary') == 1) {
-            unset(
-                $columns['loading_weighbridge_number'],
-                $columns['loading_time']
-            );
-        }
-
         $deliveries = Delivery::where('loading_time', '>=', $start)
             ->where('loading_time', '<=', $end)
             ->join('journeys', 'journeys.id', '=', 'deliveries.journey_id')
@@ -110,6 +106,9 @@ class ReportController extends Controller
             })
             ->when($request->get('station_id'), function ($builder) use ($request) {
                 return $builder->where('deliveries.station_id', $request->get('station_id'));
+            })
+            ->when($request->get('summary') != 1, function ($builder) {
+                return $builder->orderBy('loading_time', 'desc');
             })
             ->when($request->get('summary') == 1, function ($builder) use ($columns) {
                 return $builder
@@ -172,6 +171,9 @@ class ReportController extends Controller
             ->when($request->get('station_id'), function ($builder) use ($request) {
                 return $builder->where('deliveries.station_id', $request->get('station_id'));
             })
+            ->when($request->get('summary') != 1, function ($builder) {
+                return $builder->orderBy('offloading_time', 'desc');
+            })
             ->when($request->get('summary') == 1, function ($builder) use ($columns) {
                 return $builder
                     ->select(\DB::raw(
@@ -211,13 +213,6 @@ class ReportController extends Controller
             'Client.Name as client_name',
         ];
 
-        if ($request->get('summary') == 1) {
-            unset(
-                $columns['offloading_weighbridge_number'],
-                $columns['offloading_time']
-            );
-        }
-
         $deliveries = Fuel::where('date', '>=', $start)
             ->where('date', '<=', $end)
             ->join('journeys', 'journeys.id', '=', 'fuels.journey_id')
@@ -231,6 +226,9 @@ class ReportController extends Controller
             })
             ->when($request->get('station_id'), function ($builder) use ($request) {
                 return $builder->where('fuels.station_id', $request->get('station_id'));
+            })
+            ->when($request->get('summary') != 1, function ($builder) {
+                return $builder->orderBy('date', 'desc');
             })
             ->when($request->get('summary') == 1, function ($builder) use ($columns) {
                 return $builder
@@ -288,6 +286,9 @@ class ReportController extends Controller
             })
             ->when($request->get('station_id'), function ($builder) use ($request) {
                 return $builder->where('mileages.station_id', $request->get('station_id'));
+            })
+            ->when($request->get('summary') != 1, function ($builder) {
+                return $builder->orderBy('journeys.job_date', 'desc');
             })
             ->when($request->get('summary') == 1, function ($builder) use ($columns) {
                 return $builder

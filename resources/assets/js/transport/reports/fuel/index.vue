@@ -136,7 +136,7 @@
                                             <td>{{ delivery.index }}</td>
                                             <td>{{ delivery.name }}</td>
                                             <td v-if="!is_summary">{{ delivery.plate_number }}</td>
-                                            <td :class="is_summary ? 'text-right' : ''">{{ is_summary ? delivery.total : formatDateTime(delivery.loading_time) }}</td>
+                                            <td :class="is_summary ? 'text-right' : ''">{{ is_summary ? delivery.total : formatDateTime(delivery.date) }}</td>
                                             <td class="text-right">{{ formatNumber(delivery.current_fuel) }}</td>
                                             <td class="text-right">{{ formatNumber(delivery.fuel_requested) }}</td>
                                             <td class="text-right">{{ formatNumber(delivery.fuel_issued) }}</td>

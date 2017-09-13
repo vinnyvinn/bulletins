@@ -83,7 +83,7 @@
                         </div>
                         <div class="panel-body">
                             <div id="reportBody">
-                                <h4 class="text-center">Loading Report</h4>
+                                <h4 class="text-center">Loading &amp; Offloading Report</h4>
                                 <h5 class="text-center">From: {{ formatDateTime(report.start_date, true) }} To: {{ formatDateTime(report.end_date, true) }}</h5>
                                 <h5 class="text-center" v-if="selected_truck">
                                     <strong>Vehicle:</strong> {{ selected_truck }} </h5>
@@ -106,6 +106,8 @@
                                                 <th class="text-right">Offloading G/W</th>
                                                 <th class="text-right">Offloading T/W</th>
                                                 <th class="text-right">Offloading N/W</th>
+                                                <th>Offloading Time</th>
+                                                <th>Time Difference</th>
                                                 <!-- <th class="text-right" v-if="!is_summary">Loading W/B #</th> -->
                                                 <!-- <th class="text-right" v-if="!is_summary">Offloading W/B #</th> -->
                                             </tr>
@@ -122,6 +124,8 @@
                                                     <td v-if="! is_summary" class="text-right">{{ getSum(group, 'offloading_gross_weight') }}</td>
                                                     <td v-if="! is_summary" class="text-right">{{ getSum(group, 'offloading_tare_weight') }}</td>
                                                     <td v-if="! is_summary" class="text-right">{{ getSum(group, 'offloading_net_weight') }}</td>
+                                                    <td></td>
+                                                    <td></td>
                                                     <!-- <td v-if="! is_summary" class="text-right"></td> -->
                                                     <!-- <td v-if="! is_summary" class="text-right"></td> -->
                                                 </tr>
@@ -135,6 +139,8 @@
                                                     <td class="text-right">{{ formatNumber(delivery.offloading_gross_weight) }}</td>
                                                     <td class="text-right">{{ formatNumber(delivery.offloading_tare_weight) }}</td>
                                                     <td class="text-right">{{ formatNumber(delivery.offloading_net_weight) }}</td>
+                                                    <td>{{ is_summary ? '' : formatDateTime(delivery.offloading_time) }}</td>
+                                                    <td>{{ is_summary ? '' : getLoadingTimes(delivery) }}</td>
                                                     <!-- <td class="text-right" v-if="!is_summary">{{ delivery.loading_weighbridge_number }}</td> -->
                                                     <!-- <td class="text-right" v-if="!is_summary">{{ delivery.offloading_weighbridge_number }}</td> -->
                                                 </tr>
@@ -152,6 +158,9 @@
                                                 <td class="text-right">{{ formatNumber(delivery.offloading_gross_weight) }}</td>
                                                 <td class="text-right">{{ formatNumber(delivery.offloading_tare_weight) }}</td>
                                                 <td class="text-right">{{ formatNumber(delivery.offloading_net_weight) }}</td>
+                                                <td>{{ is_summary ? '' : (delivery.offloading_time && formatDateTime(delivery.offloading_time)) }}</td>
+                                                <td>{{ is_summary ? '' : getLoadingTimes(delivery) }}</td>
+
                                                 <!-- <td class="text-right" v-if="!is_summary">{{ delivery.loading_weighbridge_number }}</td> -->
                                                 <!-- <td class="text-right" v-if="!is_summary">{{ delivery.offloading_weighbridge_number }}</td> -->
                                             </tr>
@@ -165,6 +174,8 @@
                                                 <th class="text-right">{{ getSum(deliveries, 'offloading_gross_weight') }}</th>
                                                 <th class="text-right">{{ getSum(deliveries, 'offloading_tare_weight') }}</th>
                                                 <th class="text-right">{{ getSum(deliveries, 'offloading_net_weight') }}</th>
+                                                <th></th>
+                                                <th></th>
                                                 <!-- <th></th> -->
                                                 <!-- <th></th> -->
                                             </tr>
@@ -426,6 +437,10 @@
 
                     return a + b;
                 }).toLocaleString();
+            },
+
+            getLoadingTimes(delivery) {
+                return delivery.offloading_time && moment(delivery.offloading_time).from(delivery.loading_time, true);
             }
         }
     }

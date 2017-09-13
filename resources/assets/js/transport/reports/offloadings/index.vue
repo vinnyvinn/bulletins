@@ -98,7 +98,7 @@
                                             <th>#</th>
                                             <th v-if="!is_grouped">Contract</th>
                                             <th v-if="!is_summary">Plate Number</th>
-                                            <th :class="is_summary ? 'text-right' : ''">{{ is_summary ? 'Total Trips' : 'Loading Time' }}</th>
+                                            <th :class="is_summary ? 'text-right' : ''">{{ is_summary ? 'Total Trips' : 'Offloading Time' }}</th>
                                             <th class="text-right">Gross Weight</th>
                                             <th class="text-right">Tare Weight</th>
                                             <th class="text-right">Net Weight</th>
