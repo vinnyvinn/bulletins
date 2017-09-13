@@ -79,6 +79,68 @@ class ReportController extends Controller
         ]);
     }
 
+    public function deliveries(Request $request)
+    {
+        $start = Carbon::parse($request->get('start_date'))->startOfDay();
+        $end = Carbon::parse($request->get('end_date'))->endOfDay();
+
+        $columns = [
+            'contracts.name', 'loading_gross_weight', 'loading_tare_weight', 'loading_net_weight',
+            'loading_weighbridge_number', 'loading_time', 'plate_number', 'Client.Name as client_name',
+            'drivers.first_name', 'drivers.last_name', 'offloading_gross_weight', 'offloading_tare_weight',
+            'offloading_net_weight', 'offloading_weighbridge_number', 'offloading_time',
+        ];
+
+        if ($request->get('summary') == 1) {
+            unset(
+                $columns['loading_weighbridge_number'],
+                $columns['loading_time']
+            );
+        }
+
+        $deliveries = Delivery::where('loading_time', '>=', $start)
+            ->where('loading_time', '<=', $end)
+            ->join('journeys', 'journeys.id', '=', 'deliveries.journey_id')
+            ->join('contracts', 'journeys.contract_id', '=', 'contracts.id')
+            ->join('Client', 'contracts.client_id', '=', 'Client.DCLink')
+            ->join('vehicles', 'journeys.truck_id', '=', 'vehicles.id')
+            ->join('drivers', 'journeys.driver_id', '=', 'drivers.id')
+            ->when($request->get('contract_id'), function ($builder) use ($request) {
+                return $builder->where('contracts.id', $request->get('contract_id'));
+            })
+            ->when($request->get('station_id'), function ($builder) use ($request) {
+                return $builder->where('deliveries.station_id', $request->get('station_id'));
+            })
+            ->when($request->get('summary') == 1, function ($builder) use ($columns) {
+                return $builder
+                    ->select(\DB::raw(
+                        '
+                        Client.Name as client_name,
+                        contracts.name,
+                        count(deliveries.id) as total,
+                        sum(loading_gross_weight) as loading_gross_weight,
+                        sum(loading_tare_weight) as loading_tare_weight,
+                        sum(loading_net_weight) as loading_net_weight,
+                        sum(offloading_gross_weight) as offloading_gross_weight,
+                        sum(offloading_tare_weight) as offloading_tare_weight,
+                        sum(offloading_net_weight) as offloading_net_weight
+                        '
+                    ))
+                    ->groupBy('contracts.name')
+                    ->groupBy('Client.Name');
+            })
+            ->get($columns);
+
+        if ($request->get('group_contract') == 1) {
+            $deliveries = $deliveries->groupBy('name');
+        }
+
+        return \Response::json([
+            'status' => 'success',
+            'deliveries' => $deliveries
+        ]);
+    }
+
     public function offloading(Request $request)
     {
         $start = Carbon::parse($request->get('start_date'))->startOfDay();

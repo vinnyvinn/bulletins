@@ -45,7 +45,6 @@
                                     <button class="btn btn-success btn-block">Generate</button>
                                 </div>
                             </form>
-
                             <div v-if="(trucks.length || clients.lenght) && !is_summary">
                                 <h4>Filters</h4>
                                 <div class="form-group" v-if="trucks.length">
@@ -84,7 +83,7 @@
                         </div>
                         <div class="panel-body">
                             <div id="reportBody">
-                                <h4 class="text-center">Mileage Issue Report</h4>
+                                <h4 class="text-center">Loading Report</h4>
                                 <h5 class="text-center">From: {{ formatDateTime(report.start_date, true) }} To: {{ formatDateTime(report.end_date, true) }}</h5>
                                 <h5 class="text-center" v-if="selected_truck">
                                     <strong>Vehicle:</strong> {{ selected_truck }} </h5>
@@ -93,72 +92,85 @@
                                 <h5 class="text-center" v-if="selected_driver">
                                     <strong>Driver:</strong> {{ selected_driver }} </h5>
                                 <hr>
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th v-if="!is_grouped">Contract</th>
-                                            <th v-if="!is_summary">Plate Number</th>
-                                            <th :class="is_summary ? 'text-right' : ''">{{ is_summary ? 'Mileage Vouchers' : 'Mileage Date' }}</th>
-                                            <th>Type</th>
-                                            <th class="text-right">Standard</th>
-                                            <th class="text-right">Requested</th>
-                                            <th class="text-right">Approved</th>
-                                            <th class="text-right">Top Up</th>
-                                            <th class="text-right">Station</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody v-if="is_grouped">
-                                        <template v-for="(group, index) in deliveries">
-                                            <tr class="rowHead">
-                                                <td :colspan="is_summary ? 9 : 3">
-                                                    <strong>{{ index }} Totals</strong>
-                                                </td>
-                                                <td v-if="! is_summary" class="text-right"></td>
-                                                <td v-if="! is_summary" class="text-right">{{ getSum(group, 'standard_amount') }}</td>
-                                                <td v-if="! is_summary" class="text-right">{{ getSum(group, 'requested_amount') }}</td>
-                                                <td v-if="! is_summary" class="text-right">{{ getSum(group, 'approved_amount') }}</td>
-                                                <td v-if="! is_summary" class="text-right">{{ getSum(group, 'top_up_amount') }}</td>
-                                                <td v-if="! is_summary" class="text-right"></td>
+                                <div>
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th v-if="!is_grouped">Contract</th>
+                                                <th v-if="!is_summary">Plate Number</th>
+                                                <th :class="is_summary ? 'text-right' : ''">{{ is_summary ? 'Total Trips' : 'Loading Time' }}</th>
+                                                <th class="text-right">Loading G/W</th>
+                                                <th class="text-right">Loading T/W</th>
+                                                <th class="text-right">Loading N/W</th>
+                                                <th class="text-right">Offloading G/W</th>
+                                                <th class="text-right">Offloading T/W</th>
+                                                <th class="text-right">Offloading N/W</th>
+                                                <!-- <th class="text-right" v-if="!is_summary">Loading W/B #</th> -->
+                                                <!-- <th class="text-right" v-if="!is_summary">Offloading W/B #</th> -->
                                             </tr>
-                                            <tr v-for="delivery in group">
+                                        </thead>
+                                        <tbody v-if="is_grouped">
+                                            <template v-for="(group, index) in deliveries">
+                                                <tr class="rowHead">
+                                                    <td :colspan="is_summary ? 8 : 3">
+                                                        <strong>{{ index }} Totals</strong>
+                                                    </td>
+                                                    <td v-if="! is_summary" class="text-right">{{ getSum(group, 'loading_gross_weight') }}</td>
+                                                    <td v-if="! is_summary" class="text-right">{{ getSum(group, 'loading_tare_weight') }}</td>
+                                                    <td v-if="! is_summary" class="text-right">{{ getSum(group, 'loading_net_weight') }}</td>
+                                                    <td v-if="! is_summary" class="text-right">{{ getSum(group, 'offloading_gross_weight') }}</td>
+                                                    <td v-if="! is_summary" class="text-right">{{ getSum(group, 'offloading_tare_weight') }}</td>
+                                                    <td v-if="! is_summary" class="text-right">{{ getSum(group, 'offloading_net_weight') }}</td>
+                                                    <!-- <td v-if="! is_summary" class="text-right"></td> -->
+                                                    <!-- <td v-if="! is_summary" class="text-right"></td> -->
+                                                </tr>
+                                                <tr v-for="delivery in group">
+                                                    <td>{{ delivery.index }}</td>
+                                                    <td :class="is_summary ? 'text-right' : ''">{{ is_summary ? delivery.total : formatDateTime(delivery.loading_time) }}</td>
+                                                    <td v-if="!is_summary">{{ delivery.plate_number }}</td>
+                                                    <td class="text-right">{{ formatNumber(delivery.loading_gross_weight) }}</td>
+                                                    <td class="text-right">{{ formatNumber(delivery.loading_tare_weight) }}</td>
+                                                    <td class="text-right">{{ formatNumber(delivery.loading_net_weight) }}</td>
+                                                    <td class="text-right">{{ formatNumber(delivery.offloading_gross_weight) }}</td>
+                                                    <td class="text-right">{{ formatNumber(delivery.offloading_tare_weight) }}</td>
+                                                    <td class="text-right">{{ formatNumber(delivery.offloading_net_weight) }}</td>
+                                                    <!-- <td class="text-right" v-if="!is_summary">{{ delivery.loading_weighbridge_number }}</td> -->
+                                                    <!-- <td class="text-right" v-if="!is_summary">{{ delivery.offloading_weighbridge_number }}</td> -->
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                        <tbody v-else>
+                                            <tr v-for="delivery in deliveries">
                                                 <td>{{ delivery.index }}</td>
+                                                <td>{{ delivery.name }}</td>
                                                 <td v-if="!is_summary">{{ delivery.plate_number }}</td>
-                                                <td :class="is_summary ? 'text-right' : ''">{{ is_summary ? delivery.total : formatDateTime(delivery.date) }}</td>
-                                                <td>{{ delivery.mileage_type }}</td>
-                                                <td class="text-right">{{ formatNumber(delivery.standard_amount) }}</td>
-                                                <td class="text-right">{{ formatNumber(delivery.requested_amount) }}</td>
-                                                <td class="text-right">{{ formatNumber(delivery.approved_amount) }}</td>
-                                                <td class="text-right">{{ formatNumber(delivery.top_up_amount) }}</td>
-                                                <td class="text-right">{{ delivery.station_name }}</td>
+                                                <td :class="is_summary ? 'text-right' : ''">{{ is_summary ? delivery.total : formatDateTime(delivery.loading_time) }}</td>
+                                                <td class="text-right">{{ formatNumber(delivery.loading_gross_weight) }}</td>
+                                                <td class="text-right">{{ formatNumber(delivery.loading_tare_weight) }}</td>
+                                                <td class="text-right">{{ formatNumber(delivery.loading_net_weight) }}</td>
+                                                <td class="text-right">{{ formatNumber(delivery.offloading_gross_weight) }}</td>
+                                                <td class="text-right">{{ formatNumber(delivery.offloading_tare_weight) }}</td>
+                                                <td class="text-right">{{ formatNumber(delivery.offloading_net_weight) }}</td>
+                                                <!-- <td class="text-right" v-if="!is_summary">{{ delivery.loading_weighbridge_number }}</td> -->
+                                                <!-- <td class="text-right" v-if="!is_summary">{{ delivery.offloading_weighbridge_number }}</td> -->
                                             </tr>
-                                        </template>
-                                    </tbody>
-                                    <tbody v-else>
-                                        <tr v-for="delivery in deliveries">
-                                            <td>{{ delivery.index }}</td>
-                                            <td>{{ delivery.name }}</td>
-                                            <td v-if="!is_summary">{{ delivery.plate_number }}</td>
-                                            <td :class="is_summary ? 'text-right' : ''">{{ is_summary ? delivery.total : formatDateTime(delivery.date) }}</td>
-                                            <td>{{ delivery.mileage_type }}</td>
-                                            <td class="text-right">{{ formatNumber(delivery.standard_amount) }}</td>
-                                            <td class="text-right">{{ formatNumber(delivery.requested_amount) }}</td>
-                                            <td class="text-right">{{ formatNumber(delivery.approved_amount) }}</td>
-                                            <td class="text-right">{{ formatNumber(delivery.top_up_amount) }}</td>
-                                            <td class="text-right">{{ delivery.station_name }}</td>
-                                        </tr>
-                                        <tr v-if="deliveries.length">
-                                            <th :colspan="is_summary ? 4 : 5">
-                                                <strong>Totals</strong>
-                                            </th>
-                                            <th class="text-right">{{ getSum(deliveries, 'standard_amount') }}</th>
-                                            <th class="text-right">{{ getSum(deliveries, 'requested_amount') }}</th>
-                                            <th class="text-right">{{ getSum(deliveries, 'approved_amount') }}</th>
-                                            <th class="text-right">{{ getSum(deliveries, 'top_up_amount') }}</th>
-                                            <th></th>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                            <tr v-if="deliveries.length">
+                                                <th colspan="4">
+                                                    <strong>Totals</strong>
+                                                </th>
+                                                <th class="text-right">{{ getSum(deliveries, 'loading_gross_weight') }}</th>
+                                                <th class="text-right">{{ getSum(deliveries, 'loading_tare_weight') }}</th>
+                                                <th class="text-right">{{ getSum(deliveries, 'loading_net_weight') }}</th>
+                                                <th class="text-right">{{ getSum(deliveries, 'offloading_gross_weight') }}</th>
+                                                <th class="text-right">{{ getSum(deliveries, 'offloading_tare_weight') }}</th>
+                                                <th class="text-right">{{ getSum(deliveries, 'offloading_net_weight') }}</th>
+                                                <!-- <th></th> -->
+                                                <!-- <th></th> -->
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -188,6 +200,39 @@
                 selected_client: null,
                 selected_driver: null,
             };
+        },
+        created() {
+            this.$root.isLoading = true;
+            this.report.start_date = moment().format('YYYY-MM-DD');
+            this.report.end_date = moment().format('YYYY-MM-DD');
+            http.get('/api/reports/init').then(response => {
+                this.contracts = response.contracts;
+                this.stations = response.stations;
+
+                return response;
+            })
+                .catch(() => this.$root.isLoading = false)
+                .then(() => this.$root.isLoading = false);
+        },
+        mounted() {
+            $('#end_date').datepicker({
+                endDate: '0d',
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayBtn: true
+            }).on('change', (e) => this.report.end_date = e.target.value);
+
+            $('#start_date').datepicker({
+                endDate: '0d',
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayBtn: true
+            }).on('change', (e) => {
+                this.report.start_date = e.target.value;
+                $('#end_date')
+                    .datepicker('setDate', e.target.value)
+                    .datepicker('setStartDate', e.target.value);
+            });
         },
         computed: {
             deliveries() {
@@ -311,41 +356,24 @@
                 return drivers;
             },
         },
-        created() {
-            this.$root.isLoading = true;
-            this.report.start_date = moment().format('YYYY-MM-DD');
-            this.report.end_date = moment().format('YYYY-MM-DD');
-            http.get('/api/reports/init').then(response => {
-                this.contracts = response.contracts;
-                this.stations = response.stations;
-
-                return response;
-            })
-                .catch(() => this.$root.isLoading = false)
-                .then(() => this.$root.isLoading = false);
-        },
-
-        mounted() {
-            $('#end_date').datepicker({
-                endDate: '0d',
-                format: 'yyyy-mm-dd',
-                autoclose: true,
-                todayBtn: true
-            }).on('change', (e) => this.report.end_date = e.target.value);
-
-            $('#start_date').datepicker({
-                endDate: '0d',
-                format: 'yyyy-mm-dd',
-                autoclose: true,
-                todayBtn: true
-            }).on('change', (e) => {
-                this.report.start_date = e.target.value;
-                $('#end_date')
-                    .datepicker('setDate', e.target.value)
-                    .datepicker('setStartDate', e.target.value);
-            });
-        },
         methods: {
+
+            generateReport() {
+                this.$root.isLoading = true;
+                http.post('/api/reports/deliveries', this.report).then(response => {
+                    this.selected_truck = null;
+                    this.selected_client = null;
+                    this.selected_driver = null;
+                    this.is_grouped = this.report.group_contract;
+                    this.is_summary = this.report.summary;
+                    this.all_deliveries = response.deliveries;
+
+                    return response;
+                })
+                    .then(() => this.$root.isLoading = false)
+                    .catch(() => this.$root.isLoading = false);
+            },
+
             mapFields(items) {
                 let first = 1;
 
@@ -371,23 +399,8 @@
 
                 return items;
             },
-            generateReport() {
-                this.$root.isLoading = true;
-                http.post('/api/reports/mileage', this.report).then(response => {
-                    this.selected_truck = null;
-                    this.selected_client = null;
-                    this.selected_driver = null;
-                    this.is_grouped = this.report.group_contract;
-                    this.is_summary = this.report.summary;
-                    this.all_deliveries = response.deliveries;
 
-                    return response;
-                })
-                    .then(() => this.$root.isLoading = false)
-                    .catch(() => this.$root.isLoading = false);
-            },
-
-            formatDateTime(dateTime, noTime = true) {
+            formatDateTime(dateTime, noTime = false) {
                 return moment(dateTime).format(noTime ? "MMMM Do YYYY" : "MMMM Do YYYY, h:mm a");
             },
 

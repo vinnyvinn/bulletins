@@ -138,6 +138,17 @@
                                             <td class="text-right">{{ formatNumber(delivery.offloading_net_weight) }}</td>
                                             <td class="text-right" v-if="!is_summary">{{ delivery.offloading_weighbridge_number }}</td>
                                         </tr>
+
+                                        <tr v-if="deliveries.length">
+                                            <th :colspan="is_summary ? 2 : 3">
+                                                <strong>Totals</strong>
+                                            </th>
+                                            <th class="text-right">{{ getSum(deliveries, 'offloading_gross_weight') }}</th>
+                                            <th class="text-right">{{ getSum(deliveries, 'offloading_tare_weight') }}</th>
+                                            <th class="text-right">{{ getSum(deliveries, 'offloading_net_weight') }}</th>
+                                            <th class="text-right">{{ getSum(deliveries, 'offloading_net_weight') }}</th>
+                                            <th></th>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>

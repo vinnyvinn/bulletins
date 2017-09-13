@@ -122,4 +122,5 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('reports/fuel', 'ReportController@fuel');
     Route::post('reports/mileage', 'ReportController@mileage');
     Route::get('reports/init', 'ReportController@init');
+    Route::post('reports/deliveries', 'ReportController@deliveries');
 });

@@ -43,6 +43,13 @@
                                     </td>
                                 </tr>
 
+                                <tr>
+                                    <td>Deliveries</td>
+                                    <td>
+                                        <router-link to="/reports/deliveries" class="btn btn-primary btn-xs">GENERATE</router-link>
+                                    </td>
+                                </tr>
+
                             </tbody>
                         </table>
                     </div>

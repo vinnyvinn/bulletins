@@ -162,6 +162,7 @@ module.exports = [
     { path: '/reports/off-loading', component: require('./transport/reports/offloadings/index.vue'), beforeEnter: authMiddleware },
     { path: '/reports/mileage', component: require('./transport/reports/mileage/index.vue'), beforeEnter: authMiddleware },
     { path: '/reports/fuel', component: require('./transport/reports/fuel/index.vue'), beforeEnter: authMiddleware },
+    { path: '/reports/deliveries', component: require('./transport/reports/loading_offloading/index.vue'), beforeEnter: authMiddleware },
 
 
     { path: '*', component: require('./transport/404.vue'), beforeEnter: authMiddleware },

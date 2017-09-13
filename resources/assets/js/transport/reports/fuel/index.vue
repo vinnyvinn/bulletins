@@ -143,6 +143,16 @@
                                             <td class="text-right">{{ formatNumber(delivery.fuel_total) }}</td>
                                             <td class="text-right">{{ delivery.station_name }}</td>
                                         </tr>
+                                        <tr v-if="deliveries.length">
+                                            <th :colspan="is_summary ? 3 : 4">
+                                                <strong>Totals</strong>
+                                            </th>
+                                            <th class="text-right">{{ getSum(deliveries, 'current_fuel') }}</th>
+                                            <th class="text-right">{{ getSum(deliveries, 'fuel_requested') }}</th>
+                                            <th class="text-right">{{ getSum(deliveries, 'fuel_issued') }}</th>
+                                            <th class="text-right">{{ getSum(deliveries, 'fuel_total') }}</th>
+                                            <th></th>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
