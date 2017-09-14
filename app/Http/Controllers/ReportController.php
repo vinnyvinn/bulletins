@@ -53,7 +53,7 @@ class ReportController extends Controller
                 return $builder->where('deliveries.station_id', $request->get('station_id'));
             })
             ->when($request->get('summary') != 1, function ($builder) {
-                return $builder->orderBy('loading_time', 'desc');
+                return $builder->orderBy('loading_time', 'asc');
             })
             ->when($request->get('summary') == 1, function ($builder) use ($columns) {
                 return $builder
@@ -108,7 +108,7 @@ class ReportController extends Controller
                 return $builder->where('deliveries.station_id', $request->get('station_id'));
             })
             ->when($request->get('summary') != 1, function ($builder) {
-                return $builder->orderBy('loading_time', 'desc');
+                return $builder->orderBy('loading_time', 'asc');
             })
             ->when($request->get('summary') == 1, function ($builder) use ($columns) {
                 return $builder
@@ -172,7 +172,7 @@ class ReportController extends Controller
                 return $builder->where('deliveries.station_id', $request->get('station_id'));
             })
             ->when($request->get('summary') != 1, function ($builder) {
-                return $builder->orderBy('offloading_time', 'desc');
+                return $builder->orderBy('offloading_time', 'asc');
             })
             ->when($request->get('summary') == 1, function ($builder) use ($columns) {
                 return $builder
@@ -228,7 +228,7 @@ class ReportController extends Controller
                 return $builder->where('fuels.station_id', $request->get('station_id'));
             })
             ->when($request->get('summary') != 1, function ($builder) {
-                return $builder->orderBy('date', 'desc');
+                return $builder->orderBy('date', 'asc');
             })
             ->when($request->get('summary') == 1, function ($builder) use ($columns) {
                 return $builder
@@ -288,7 +288,7 @@ class ReportController extends Controller
                 return $builder->where('mileages.station_id', $request->get('station_id'));
             })
             ->when($request->get('summary') != 1, function ($builder) {
-                return $builder->orderBy('journeys.job_date', 'desc');
+                return $builder->orderBy('journeys.job_date', 'asc');
             })
             ->when($request->get('summary') == 1, function ($builder) use ($columns) {
                 return $builder

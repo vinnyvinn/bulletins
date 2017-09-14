@@ -440,7 +440,9 @@
             },
 
             getLoadingTimes(delivery) {
-                return delivery.offloading_time && moment(delivery.offloading_time).from(delivery.loading_time, true);
+                let time = delivery.offloading_time ? moment(delivery.offloading_time).from(delivery.loading_time, true) : '';
+
+                return time.indexOf('a') === 0 ? time.replace('a', '1') : time;
             }
         }
     }
