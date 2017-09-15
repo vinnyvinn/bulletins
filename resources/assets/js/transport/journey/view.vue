@@ -2,410 +2,392 @@
     <div>
         <div class="panel panel-default" v-if="! showModal">
             <div class="panel-heading">
-            <div class="row">
-                <div class="col-sm-6">
-                    <h4><strong>Journey Details: JRNY-{{ $route.params.id }} ({{ status }})</strong></h4>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group pull-right" v-if="$root.can('approve-journey')">
-                        <button @click.prevent="approveJourney" class="btn btn-success"
-                                v-if="status == 'Pending Approval'">Approve Journey
-                        </button>
-                        <!-- <button @click.prevent="closeJourney" class="btn btn-danger" v-if="(status == 'Pending Approval') || (status == 'Approved')">Close Journey</button> -->
-                        <button @click.prevent="showModal = true" class="btn btn-danger"
-                                v-if="(status == 'Approved') && journey_close.mileage && journey_delivery_status != 'Loaded'">Close Journey
-                        </button>
-                        <!-- <button @click.prevent="reopenJourney" class="btn btn-primary" v-if="status == 'Closed'">Reopen Journey</button> -->
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h4>
+                            <strong>Journey Details: JRNY-{{ $route.params.id }} ({{ status }})</strong>
+                        </h4>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group pull-right" v-if="$root.can('approve-journey')">
+                            <button @click.prevent="approveJourney" class="btn btn-success" v-if="status == 'Pending Approval'">Approve Journey
+                            </button>
+                            <!-- <button @click.prevent="closeJourney" class="btn btn-danger" v-if="(status == 'Pending Approval') || (status == 'Approved')">Close Journey</button> -->
+                            <button @click.prevent="showModal = true" class="btn btn-danger" v-if="(status == 'Approved') && journey_close.mileage && journey_delivery_status != 'Loaded'">Close Journey
+                            </button>
+                            <!-- <button @click.prevent="reopenJourney" class="btn btn-primary" v-if="status == 'Closed'">Reopen Journey</button> -->
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <div class="panel-body">
+                <form action="#" role="form" @submit.prevent="store">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="is_contract_related">Contract Related?</label>
+                                <select disabled v-model="journey.is_contract_related" @change="fetchContracts" class="form-control input-sm" id="is_contract_related" name="is_contract_related" required>
+                                    <option value="0">No</option>
+                                    <option value="1">Yes</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group" v-if="journey.is_contract_related == '1'">
+                                <label for="contract_id">Contract</label>
+                                <input disabled id="contract_id" type="text" class="form-control input-sm" :value="'CNTR-' + contract.id">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="job_description">Job Description</label>
+                                <textarea disabled v-model="journey.job_description" name="job_description" id="job_description" rows="5" class="form-control input-sm"></textarea>
+                            </div>
+
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="journey_type">Job Type</label>
+                                <select disabled v-model="journey.journey_type" class="form-control input-sm" id="journey_type" name="journey_type" required>
+                                    <option value="Local">Local</option>
+                                    <option value="International">International</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="route_id">Route</label>
+                                <select disabled name="route_id" id="route_id" v-model="journey.route_id" class="form-control input-sm select2" required>
+                                    <option v-for="route in routes" :value="route.id">{{ route.source }} - {{ route.destination }} ({{ route.distance }} KM)
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="driver_id">Driver</label>
+                                <h5>{{ journey_close.driver.first_name }} {{ journey_close.driver.last_name }} ({{ journey_close.driver.mobile_phone }})</h5>
+                            </div>
+
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="truck_id">Vehicle Reg. No</label>
+                                <input disabled class="form-control" v-model="journey.truck_plate_number">
+                                <!-- <select hidden disabled v-model="journey.truck_id" class="form-control input-sm" id="truck_id" name="truck_id" required>
+                                    <option v-for="truck in trucks" :value="truck.id">{{ truck.plate_number }}</option>
+                                </select> -->
+                            </div>
+
+                            <div class="form-group">
+                                <label for="enquiry_from">Enquiry from</label>
+                                <input disabled type="text" v-model="journey.enquiry_from" class="form-control input-sm datepicker" id="enquiry_from" name="enquiry_from">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="job_date">Job Date</label>
+                                <input disabled type="text" v-model="journey.job_date" class="form-control input-sm datepicker" id="job_date" name="job_date" required>
+                            </div>
+
+                            <!--<div class="form-group">-->
+                            <!--<label for="ref_no">Ref No</label>-->
+                            <!--<input disabled type="text" v-model="journey.ref_no" class="form-control input-sm" id="ref_no" name="ref_no">-->
+                            <!--</div>-->
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="row" v-if="journey.is_contract_related == '1'">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="name">Contract Name</label>
+                                <input disabled v-model="contract.name" type="text" class="form-control input-sm" id="name" name="name" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cargo_classification_id">Cargo Classification</label>
+                                <select disabled v-model="contract.cargo_classification_id" name="cargo_classification_id" id="cargo_classification_id" class="form-control input-sm select2" required>
+                                    <option v-for="classification in classifications" :value="classification.id">
+                                        {{ classification.name }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="client_id">Client</label>
+                                <select disabled v-model="contract.client_id" name="client_id" id="client_id" class="form-control input-sm select2" required>
+                                    <option v-for="client in clients" :value="client.DCLink">{{ client.Name }} ({{ client.Account }})
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cargo_type_id">Cargo Type</label>
+                                <select disabled v-model="contract.cargo_type_id" name="cargo_type_id" id="cargo_type_id" class="form-control input-sm select2" required>
+                                    <option v-for="type in viableCargoTypes" :value="type.id">{{ type.name }}</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="start_date">Contract Start</label>
+                                <input disabled v-model="contract.start_date" type="text" class="datepicker form-control input-sm" id="start_date" name="start_date" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="quantity">Quantity</label>
+                                <div class="input-group">
+                                    <input disabled v-model="contract.quantity" min="0" type="number" class="form-control input-sm" id="quantity" name="quantity" describedby="quantity-addon" required>
+                                    <span class="input-group-addon" id="quantity-addon">KGs</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="route_id">Route</label>
+                                <select disabled v-model="contract.route_id" class="form-control input-sm select2" required>
+                                    <option v-for="route in routes" :value="route.id">{{ route.source }} - {{ route.destination }} ({{ route.distance }} KM)
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="loading_point_id">Loading Point</label>
+                                <select disabled v-model="contract.loading_point_id" name="loading_point_id" id="loading_point_id" class="form-control input-sm select2" required>
+                                    <option v-for="point in carriage_points" :value="point.id">{{ point.name }}</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="row" v-if="journey.is_contract_related == '0'">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Sub-Contracts</label>
+                                <div class="checkbox">
+                                    <label>
+                                        <input disabled v-model="journey.subcontracted" type="checkbox"> Check if the trucks have been subcontracted by another company. Note that the delivery note will be processed in the name of the other company.
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" v-if="journey.subcontracted && journey.is_contract_related == '0'">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="sub_company_name">Company Name</label>
+                                <input disabled required v-model="journey.sub_company_name" type="text" class="form-control input-sm" id="sub_company_name" name="sub_company_name">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="sub_address_3">Address Line 3</label>
+                                <input disabled v-model="journey.sub_address_3" type="text" class="form-control input-sm" id="sub_address_3" name="sub_address_3">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="sub_address_1">Address Line 1</label>
+                                <input disabled required v-model="journey.sub_address_1" type="text" class="form-control input-sm" id="sub_address_1" name="sub_address_1">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="sub_address_4">Address Line 4</label>
+                                <input disabled v-model="journey.sub_address_4" type="text" class="form-control input-sm" id="sub_address_4" name="sub_address_4">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="sub_address_2">Address Line 2</label>
+                                <input disabled required v-model="journey.sub_address_2" type="text" class="form-control input-sm" id="sub_address_2" name="sub_address_2">
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="form-group">
+                        <router-link to="/journey" class="btn btn-danger">Back</router-link>
+                    </div>
+                </form>
+            </div>
         </div>
-
-        <div class="panel-body">
-            <form action="#" role="form" @submit.prevent="store">
-                <div class="row">
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="is_contract_related">Contract Related?</label>
-                            <select disabled v-model="journey.is_contract_related" @change="fetchContracts"
-                                    class="form-control input-sm" id="is_contract_related" name="is_contract_related"
-                                    required>
-                                <option value="0">No</option>
-                                <option value="1">Yes</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group" v-if="journey.is_contract_related == '1'">
-                            <label for="contract_id">Contract</label>
-                            <input disabled id="contract_id" type="text" class="form-control input-sm"
-                                   :value="'CNTR-' + contract.id">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="job_description">Job Description</label>
-                            <textarea disabled v-model="journey.job_description" name="job_description" id="job_description" rows="5" class="form-control input-sm"></textarea>
-                        </div>
-
-                    </div>
-
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="journey_type">Job Type</label>
-                            <select disabled v-model="journey.journey_type" class="form-control input-sm"
-                                    id="journey_type" name="journey_type" required>
-                                <option value="Local">Local</option>
-                                <option value="International">International</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="route_id">Route</label>
-                            <select disabled name="route_id" id="route_id" v-model="journey.route_id"
-                                    class="form-control input-sm select2" required>
-                                <option v-for="route in routes" :value="route.id">{{ route.source
-                                    }} - {{ route.destination }} ({{ route.distance }} KM)
-                                </option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="driver_id">Driver</label>
-                            <h5>{{ journey_close.driver.first_name }} {{ journey_close.driver.last_name
-                                }} ({{ journey_close.driver.mobile_phone }})</h5>
-                        </div>
-
-                    </div>
-
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="truck_id">Vehicle Reg. No</label>
-                            <select disabled v-model="journey.truck_id" class="form-control input-sm" id="truck_id"
-                                    name="truck_id" required>
-                                <option v-for="truck in trucks" :value="truck.id">{{ truck.plate_number }}</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="enquiry_from">Enquiry from</label>
-                            <input disabled type="text" v-model="journey.enquiry_from"
-                                   class="form-control input-sm datepicker" id="enquiry_from" name="enquiry_from">
-                        </div>
-                    </div>
-
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="job_date">Job Date</label>
-                            <input disabled type="text" v-model="journey.job_date"
-                                   class="form-control input-sm datepicker" id="job_date" name="job_date" required>
-                        </div>
-
-                        <!--<div class="form-group">-->
-                        <!--<label for="ref_no">Ref No</label>-->
-                        <!--<input disabled type="text" v-model="journey.ref_no" class="form-control input-sm" id="ref_no" name="ref_no">-->
-                        <!--</div>-->
-                    </div>
-
+        <div v-if="showModal">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>Return Mileage Allocation</strong>
                 </div>
 
-                <hr>
-
-                <div class="row" v-if="journey.is_contract_related == '1'">
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="name">Contract Name</label>
-                            <input disabled v-model="contract.name" type="text" class="form-control input-sm" id="name"
-                                   name="name" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="cargo_classification_id">Cargo Classification</label>
-                            <select disabled v-model="contract.cargo_classification_id" name="cargo_classification_id"
-                                    id="cargo_classification_id" class="form-control input-sm select2" required>
-                                <option v-for="classification in classifications" :value="classification.id">
-                                    {{ classification.name }}
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="client_id">Client</label>
-                            <select disabled v-model="contract.client_id" name="client_id" id="client_id" class="form-control input-sm select2" required>
-                                <option v-for="client in clients" :value="client.DCLink">{{ client.Name
-                                    }} ({{ client.Account }})
-                                </option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="cargo_type_id">Cargo Type</label>
-                            <select disabled v-model="contract.cargo_type_id" name="cargo_type_id" id="cargo_type_id"
-                                    class="form-control input-sm select2" required>
-                                <option v-for="type in viableCargoTypes" :value="type.id">{{ type.name }}</option>
-                            </select>
-                        </div>
-
-                    </div>
-
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="start_date">Contract Start</label>
-                            <input disabled v-model="contract.start_date" type="text"
-                                   class="datepicker form-control input-sm" id="start_date" name="start_date" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="quantity">Quantity</label>
-                            <div class="input-group">
-                                <input disabled v-model="contract.quantity" min="0" type="number"
-                                       class="form-control input-sm" id="quantity" name="quantity"
-                                       describedby="quantity-addon" required>
-                                <span class="input-group-addon" id="quantity-addon">KGs</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label for="route_id">Route</label>
-                            <select disabled v-model="contract.route_id" class="form-control input-sm select2" required>
-                                <option v-for="route in routes" :value="route.id">{{ route.source }} - {{ route.destination }} ({{ route.distance }} KM)
-                                </option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="loading_point_id">Loading Point</label>
-                            <select disabled v-model="contract.loading_point_id" name="loading_point_id"
-                                    id="loading_point_id" class="form-control input-sm select2" required>
-                                <option v-for="point in carriage_points" :value="point.id">{{ point.name }}</option>
-                            </select>
-                        </div>
-
-                    </div>
-                </div>
-
-                <hr>
-
-                <div class="row" v-if="journey.is_contract_related == '0'">
-                    <div class="col-sm-12">
-                        <div class="form-group">
-                            <label>Sub-Contracts</label>
-                            <div class="checkbox">
-                                <label>
-                                    <input disabled v-model="journey.subcontracted" type="checkbox">
-                                    Check if the trucks have been subcontracted by another company.
-                                    Note that the delivery note will be processed in the name of the other company.
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row" v-if="journey.subcontracted && journey.is_contract_related == '0'">
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="sub_company_name">Company Name</label>
-                            <input disabled required v-model="journey.sub_company_name" type="text" class="form-control input-sm" id="sub_company_name" name="sub_company_name">
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="sub_address_3">Address Line 3</label>
-                            <input disabled v-model="journey.sub_address_3" type="text" class="form-control input-sm"
-                                   id="sub_address_3" name="sub_address_3">
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="sub_address_1">Address Line 1</label>
-                            <input disabled required v-model="journey.sub_address_1" type="text" class="form-control input-sm" id="sub_address_1" name="sub_address_1">
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="sub_address_4">Address Line 4</label>
-                            <input disabled v-model="journey.sub_address_4" type="text" class="form-control input-sm" id="sub_address_4" name="sub_address_4">
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="sub_address_2">Address Line 2</label>
-                            <input disabled required v-model="journey.sub_address_2" type="text"
-                                   class="form-control input-sm" id="sub_address_2" name="sub_address_2">
-                        </div>
-                    </div>
-                </div>
-
-                <hr>
-
-                <div class="form-group">
-                    <router-link to="/journey" class="btn btn-danger">Back</router-link>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div v-if="showModal">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <strong>Return Mileage Allocation</strong>
-                    </div>
-
-                    <div class="panel-body">
-                        <form action="#" role="form" @submit.prevent="closeJourney">
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <fieldset class="wizag-fieldset-border">
-                                        <legend class="wizag-fieldset-border">Journey Details</legend>
-                                        <div class="form-group">
-                                            <label for="journey_id" class="col-sm-6">Journey Number</label>
-                                            <div class="col-sm-6">
-                                                <input type="text" class="form-control" disabled :value="'JRNY-' + journey_close.id">
-                                                <!--<select v-model="mileage.journey_id" class="form-control input-sm" id="journey_id" name="journey_id" required>-->
-                                                <!--<option v-for="journey in journeys" :value="journey.id">JRNY-{{ journey.id }}</option>-->
-                                                <!--</select>-->
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="col-sm-6">Document Date</label>
-                                            <div class="col-sm-6">
-                                                <h5>{{ new Date().toLocaleDateString('en-GB') }}</h5>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="mileage_type" class="col-sm-6">Mileage Type</label>
-                                            <div class="col-sm-6">
-                                                <select disabled v-model="mileage.mileage_type" class="form-control input-sm" id="mileage_type" name="mileage_type" required>
-                                                    <option value="Return Mileage">Return Mileage</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                </div>
-
-                                <div class="col-sm-4">
-                                    <fieldset class="wizag-fieldset-border">
-                                        <legend class="wizag-fieldset-border">Vehicle Details</legend>
-                                        <div class="form-group">
-                                            <label class="col-sm-6">Vehicle Number</label>
-                                            <div class="col-sm-6">
-                                                <h5>{{ journey_close.truck.plate_number }}</h5>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="col-sm-6">Trailer Attached</label>
-                                            <div class="col-sm-6">
-                                                <h5>{{ journey_close.truck.trailer.plate_number }}</h5>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="col-sm-6">Trailer Type</label>
-                                            <div class="col-sm-6">
-                                                <h5>{{ journey_close.truck.trailer.type }}</h5>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                </div>
-
-                                <div class="col-sm-4">
-                                    <fieldset class="wizag-fieldset-border">
-                                        <legend class="wizag-fieldset-border">Driver Details</legend>
-                                        <div class="col-sm-3">
-                                            <div class="form-group">
-                                                <img :src="getSource()" class="img-responsive">
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-9">
-                                            <div class="form-group">
-                                                <label class="col-sm-6">Full Name</label>
-                                                <h5 class="col-sm-6">{{ journey_close.driver.first_name }} {{ journey_close.driver.last_name }}</h5>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="col-sm-6">License #:</label>
-                                                <h5 class="col-sm-6">{{ journey_close.driver.dl_number }}</h5>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="col-sm-6">National ID:</label>
-                                                <h5 class="col-sm-6">{{ journey_close.driver.identification_number }}</h5>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <fieldset class="wizag-fieldset-border">
-                                        <legend class="wizag-fieldset-border">Payment Details</legend>
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label for="current_km">Truck Current Km reading:</label>
-                                                    <input min="0" type="number" name="current_km" class="form-control input-sm" v-model="journey_close.current_km" @change="validateKms" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div :class="{'form-group': true, 'has-error': belowReserve}">
-                                                    <label class="control-label" for="current_km">Truck Current fuel reading:</label>
-                                                    <input min="0" type="number" id="current_fuel" name="current_fuel" class="form-control input-sm" v-model="journey_close.current_fuel" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-12">
-                                                <p v-if="belowReserve">
-                                                    <i style="color: red;">
-                                                        Fuel in truck ({{journey_close.current_fuel}} ltrs) is below reserve by {{ fuelDifference }} ltrs.
-                                                        Driver to pay Ksh. {{ fuelDifference * parseInt(journey_close.fuel_price) }}
-                                                    </i>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <label>Standard Mileage Amount</label>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <h5 class="text-right"><strong>{{ formatNumber(journey_close.route.return_mileage) }}</strong></h5>
-                                            </div>
-
-                                            <div class="col-sm-6">
-                                                <label>Total Return Mileage Amount</label>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <h4 class="text-right"><strong>{{ parseInt(mileage.requested_amount).toLocaleString() }}</strong></h4>
-                                            </div>
-
-                                            <div class="col-sm-6" v-if="$route.params.id">
-                                                <label>Approved Amount</label>
-                                            </div>
-                                            <div class="col-sm-6"  v-if="$route.params.id">
-                                                <input min="0" :max="mileage.requested_amount" v-model="mileage.approved_amount" type="number" class="form-control input-sm" id="approved_amount" name="approved_amount">
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                </div>
-
-                                <div class="col-sm-6">
+                <div class="panel-body">
+                    <form action="#" role="form" @submit.prevent="closeJourney">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <fieldset class="wizag-fieldset-border">
+                                    <legend class="wizag-fieldset-border">Journey Details</legend>
                                     <div class="form-group">
-                                        <div class="col-sm-10">
-                                            <label>Narration</label>
-                                            <textarea v-model="mileage.narration" name="narration" id="narration" rows="5" class="form-control input-sm"></textarea>
+                                        <label for="journey_id" class="col-sm-6">Journey Number</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control" disabled :value="'JRNY-' + journey_close.id">
+                                            <!--<select v-model="mileage.journey_id" class="form-control input-sm" id="journey_id" name="journey_id" required>-->
+                                            <!--<option v-for="journey in journeys" :value="journey.id">JRNY-{{ journey.id }}</option>-->
+                                            <!--</select>-->
                                         </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-6">Document Date</label>
+                                        <div class="col-sm-6">
+                                            <h5>{{ new Date().toLocaleDateString('en-GB') }}</h5>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="mileage_type" class="col-sm-6">Mileage Type</label>
+                                        <div class="col-sm-6">
+                                            <select disabled v-model="mileage.mileage_type" class="form-control input-sm" id="mileage_type" name="mileage_type" required>
+                                                <option value="Return Mileage">Return Mileage</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <fieldset class="wizag-fieldset-border">
+                                    <legend class="wizag-fieldset-border">Vehicle Details</legend>
+                                    <div class="form-group">
+                                        <label class="col-sm-6">Vehicle Number</label>
+                                        <div class="col-sm-6">
+                                            <h5>{{ journey_close.truck.plate_number }}</h5>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-6">Trailer Attached</label>
+                                        <div class="col-sm-6">
+                                            <h5>{{ journey_close.truck.trailer.plate_number }}</h5>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-6">Trailer Type</label>
+                                        <div class="col-sm-6">
+                                            <h5>{{ journey_close.truck.trailer.type }}</h5>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <fieldset class="wizag-fieldset-border">
+                                    <legend class="wizag-fieldset-border">Driver Details</legend>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <img :src="getSource()" class="img-responsive">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <div class="form-group">
+                                            <label class="col-sm-6">Full Name</label>
+                                            <h5 class="col-sm-6">{{ journey_close.driver.first_name }} {{ journey_close.driver.last_name }}</h5>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-6">License #:</label>
+                                            <h5 class="col-sm-6">{{ journey_close.driver.dl_number }}</h5>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-6">National ID:</label>
+                                            <h5 class="col-sm-6">{{ journey_close.driver.identification_number }}</h5>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <fieldset class="wizag-fieldset-border">
+                                    <legend class="wizag-fieldset-border">Payment Details</legend>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="current_km">Truck Current Km reading:</label>
+                                                <input min="0" type="number" name="current_km" class="form-control input-sm" v-model="journey_close.current_km" @change="validateKms" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div :class="{'form-group': true, 'has-error': belowReserve}">
+                                                <label class="control-label" for="current_km">Truck Current fuel reading:</label>
+                                                <input min="0" type="number" id="current_fuel" name="current_fuel" class="form-control input-sm" v-model="journey_close.current_fuel" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <p v-if="belowReserve">
+                                                <i style="color: red;">
+                                                    Fuel in truck ({{journey_close.current_fuel}} ltrs) is below reserve by {{ fuelDifference }} ltrs. Driver to pay Ksh. {{ fuelDifference * parseInt(journey_close.fuel_price) }}
+                                                </i>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label>Standard Mileage Amount</label>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <h5 class="text-right">
+                                                <strong>{{ formatNumber(journey_close.route.return_mileage) }}</strong>
+                                            </h5>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <label>Total Return Mileage Amount</label>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <h4 class="text-right">
+                                                <strong>{{ parseInt(mileage.requested_amount).toLocaleString() }}</strong>
+                                            </h4>
+                                        </div>
+
+                                        <div class="col-sm-6" v-if="$route.params.id">
+                                            <label>Approved Amount</label>
+                                        </div>
+                                        <div class="col-sm-6" v-if="$route.params.id">
+                                            <input min="0" :max="mileage.requested_amount" v-model="mileage.approved_amount" type="number" class="form-control input-sm" id="approved_amount" name="approved_amount">
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <div class="col-sm-10">
+                                        <label>Narration</label>
+                                        <textarea v-model="mileage.narration" name="narration" id="narration" rows="5" class="form-control input-sm"></textarea>
                                     </div>
                                 </div>
                             </div>
-                            <hr>
-                            <div class="form-group">
-                                <button class="btn btn-success">Process</button>
-                                <button class="btn btn-danger" @click.prevent="showModal = false">Back</button>
-                            </div>
-                        </form>
-                    </div>
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <button class="btn btn-success">Process</button>
+                            <button class="btn btn-danger" @click.prevent="showModal = false">Back</button>
+                        </div>
+                    </form>
                 </div>
             </div>
+        </div>
     </div>
 </template>
 
@@ -423,10 +405,10 @@
                 this.drivers = response.drivers;
                 this.contract = response.contract;
 
-
                 this.journey = response.journey.raw;
-                if(response.journey.delivery) {
-                  this.journey_delivery_status = response.journey.delivery.status;
+
+                if (response.journey.delivery) {
+                    this.journey_delivery_status = response.journey.delivery.status;
                 }
 
 
@@ -450,8 +432,8 @@
             });
         },
         mounted() {
-            $(document).ready(function () {
-                $('input[type=number]').on('focus', function () {
+            $(document).ready(function() {
+                $('input[type=number]').on('focus', function() {
                     this.select();
                 });
             });
@@ -568,7 +550,7 @@
 
             mileageAmount() {
                 let defaultAmount = parseInt(this.journey_close.route.return_mileage);
-                if (! this.fuelDifference) return defaultAmount;
+                if (!this.fuelDifference) return defaultAmount;
 
                 defaultAmount = defaultAmount - (parseInt(this.journey_close.fuel_price) * this.fuelDifference);
 
@@ -587,7 +569,7 @@
 
         methods: {
             getSource() {
-                if(this.journey_close.driver.avatar){
+                if (this.journey_close.driver.avatar) {
                     return this.journey_close.driver.avatar;
                 }
 
@@ -602,7 +584,7 @@
             },
 
             formatNumber(number) {
-                if (! number) {
+                if (!number) {
                     return '';
                 }
 
@@ -671,7 +653,7 @@
                 this.journey_close.returnMileage = this.mileage;
                 http.post('/api/journey/' + this.$route.params.id + '/close', this.journey_close).then((response) => {
                     alert2(this.$root, [response.message], 'success');
-                    window._router.push({path: '/journey'});
+                    window._router.push({ path: '/journey' });
                 }).catch((error) => {
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                 });
@@ -688,11 +670,11 @@
                     .then((response) => {
                         this.$root.isLoading = false;
                         alert2(this.$root, [response.message], 'success');
-                        window._router.push({path: '/journey'});
+                        window._router.push({ path: '/journey' });
                     }).catch((error) => {
-                    this.$root.isLoading = false;
-                    alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
-                });
+                        this.$root.isLoading = false;
+                        alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
+                    });
             },
             validateKms() {
                 if (parseInt(this.journey_close.current_km) < parseInt(this.journey_close.truck.current_km)) {

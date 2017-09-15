@@ -11,6 +11,7 @@
               <table class="table nowrap">
                 <thead>
                   <tr>
+                    <th>#</th>
                     <th>Gatepass No.</th>
                     <th>Print</th>
                     <th>Vehicle</th>
@@ -24,6 +25,7 @@
                 </thead>
                 <tbody>
                   <tr v-for="gatepass in gatepasses">
+                    <td>{{ gatepass.id }}</td>
                     <td v-if="$root.can('view-gatepass')"><router-link :to="'/gatepass/' + gatepass.id">PASS-{{ gatepass.id }}</router-link></td>
                     <td v-else>PASS-{{ gatepass.id }}</td>
                     <td><button class="btn btn-success btn-xs" @click.prevent="printPass(gatepass.id)">PRINT</button></td>
@@ -43,6 +45,7 @@
                 </tbody>
                 <tfoot>
                   <tr>
+                    <th>#</th>
                     <th>Gatepass No.</th>
                     <th>Print</th>
                     <th>Vehicle</th>
@@ -65,87 +68,96 @@
 </template>
 
 <script>
-export default {
-  created() {
-    http.get('/api/gatepass/?s=' + window.Laravel.station_id).then(response => {
+  export default {
+    created() {
+      http.get('/api/gatepass/?s=' + window.Laravel.station_id).then(response => {
         this.gatepasses = response.gatepasses;
         this.setupConfirm();
-        prepareTable();
-    });
-  },
+        prepareTable(false, [], {
+          "columnDefs": [
+            {
+              "targets": [0],
+              "visible": false,
+              "searchable": false
+            },
+          ],
+          "orderFixed": [0, "desc"],
+        });
+      });
+    },
 
-  data() {
+    data() {
       return {
-          gatepasses: [],
-          printout: '',
+        gatepasses: [],
+        printout: '',
       };
-  },
+    },
 
-  methods: {
-        printPass(id) {
-          this.$root.isLoading = true;
-          http.get('/api/gatepass/print/' + id).then(response => {
-              this.printout = response.printout;
-              this.$root.isLoading = false;
-              setTimeout(() => {
-                  if (response.shouldPrint) {
-                      window.print();
-                  }
-              }, 500);
-          }).catch(() => this.$root.isLoading = false);
+    methods: {
+      printPass(id) {
+        this.$root.isLoading = true;
+        http.get('/api/gatepass/print/' + id).then(response => {
+          this.printout = response.printout;
+          this.$root.isLoading = false;
+          setTimeout(() => {
+            if (response.shouldPrint) {
+              window.print();
+            }
+          }, 500);
+        }).catch(() => this.$root.isLoading = false);
       },
       setupConfirm() {
-          $('.btn-destroy').off();
-          confirm2('.btn-destroy', (element) => {
-              this.destroy(element.dataset.item);
-          });
+        $('.btn-destroy').off();
+        confirm2('.btn-destroy', (element) => {
+          this.destroy(element.dataset.item);
+        });
       },
       date2(value) {
-          return window._date2(value);
+        return window._date2(value);
       },
 
       edit(gatepass) {
-          window._router.push({path: '/gatepass/' + gatepass.id + '/edit'})
+        window._router.push({ path: '/gatepass/' + gatepass.id + '/edit' })
       },
       destroy(id) {
-          this.$root.isLoading = true;
+        this.$root.isLoading = true;
 
-          http.destroy('/api/gatepass/' + id + '/?s=' + window.Laravel.station_id).then(response => {
-              if (response.status != 'success') {
-                  this.$root.isLoading = false;
-                  alert2(this.$root, [response.message], 'danger');
-                  return;
-              }
-              $('table').dataTable().fnDestroy();
-              this.gatepasses = response.gatepasses;
-              prepareTable();
-              this.$root.isLoading = false;
-              alert2(this.$root, [response.message], 'success');
-          }).catch((error) => {
-              this.$root.isLoading = false;
-              alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
-          });
-      },
-      approveFuel(id) {
-        http.get('/api/approve/' + id).then(response => {
+        http.destroy('/api/gatepass/' + id + '/?s=' + window.Laravel.station_id).then(response => {
           if (response.status != 'success') {
-              this.$root.isLoading = false;
-              alert2(this.$root, [response.message], 'danger');
-              return;
+            this.$root.isLoading = false;
+            alert2(this.$root, [response.message], 'danger');
+            return;
           }
-
-          http.get('/api/fuel/?s=' + window.Laravel.station_id).then(response => {
-              this.fuels = response.fuel;
-              this.setupConfirm();              
-          });
-
+          $('table').dataTable().fnDestroy();
+          this.gatepasses = response.gatepasses;
+          prepareTable();
           this.$root.isLoading = false;
           alert2(this.$root, [response.message], 'success');
-          }).catch((error) => {
+        }).catch((error) => {
           this.$root.isLoading = false;
           alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
         });
       },
+      approveFuel(id) {
+        http.get('/api/approve/' + id).then(response => {
+          if (response.status != 'success') {
+            this.$root.isLoading = false;
+            alert2(this.$root, [response.message], 'danger');
+            return;
+          }
+
+          http.get('/api/fuel/?s=' + window.Laravel.station_id).then(response => {
+            this.fuels = response.fuel;
+            this.setupConfirm();
+          });
+
+          this.$root.isLoading = false;
+          alert2(this.$root, [response.message], 'success');
+        }).catch((error) => {
+          this.$root.isLoading = false;
+          alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
+        });
+      },
+    }
   }
-}
 </script>
