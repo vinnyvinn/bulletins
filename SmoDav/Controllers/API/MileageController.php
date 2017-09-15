@@ -26,9 +26,17 @@ class MileageController extends Controller
         $mileages = Mileage::when(request('s'), function ($builder) {
             return $builder->where('station_id', request('s'));
         })
-            ->with(['journey' => function ($builder) {
-                return $builder->select(['id', 'status']);
-            }])
+            ->with([
+                'journey' => function ($builder) {
+                    return $builder->select(['id', 'status', 'truck_id', 'driver_id']);
+                },
+                'journey.truck' => function ($builder) {
+                    return $builder->select('id', 'plate_number');
+                },
+                'journey.driver' => function ($builder) {
+                    return $builder->select('id', 'first_name', 'last_name');
+                }
+            ])
             ->get([
                 'id', 'journey_id', 'mileage_type', 'standard_amount', 'requested_amount', 'approved_amount', 'status'
             ]);

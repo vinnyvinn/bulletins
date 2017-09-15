@@ -11,59 +11,64 @@
                         <div class="table-responsive">
                             <table class="table no-wrap">
                                 <thead>
-                                <tr>
-                                    <th>Del. Note #</th>
-                                    <th>Journey #</th>
-                                    <th>Vehicle #</th>
-                                    <th>Loading GW</th>
-                                    <th>Loading TW</th>
-                                    <th>Loading NW</th>
-                                    <th>Offloading GW</th>
-                                    <th>Offloading TW</th>
-                                    <th>Offloading NW</th>
-                                    <th></th>
-                                </tr>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Del. Note #</th>
+                                        <th>Journey #</th>
+                                        <th>Vehicle #</th>
+                                        <th>Loading GW</th>
+                                        <th>Loading TW</th>
+                                        <th>Loading NW</th>
+                                        <th>Offloading GW</th>
+                                        <th>Offloading TW</th>
+                                        <th>Offloading NW</th>
+                                        <th></th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="delivery in deliveries">
-                                    <td>
-                                        <router-link v-if="$root.can('view-delivery')" :to="'/delivery/' + delivery.id">RKS-{{ delivery.id }}</router-link>
-                                        <span v-else>RKS-{{ delivery.id }}</span>
-                                    </td>
-                                    <td>
-                                        <router-link v-if="$root.can('view-journey')" :to="'/journey/' + delivery.journey_id">JRNY-{{ delivery.journey_id }}</router-link>
-                                        <span v-else>JRNY-{{ delivery.journey_id }}</span>
-                                    </td>
-                                    <td>{{ delivery.journey.truck.plate_number }}</td>
-                                    <td class="text-right">{{ formatNumber(delivery.loading_gross_weight) }}</td>
-                                    <td class="text-right">{{ formatNumber(delivery.loading_tare_weight) }}</td>
-                                    <td class="text-right">{{ formatNumber(delivery.loading_net_weight) }}</td>
-                                    <td class="text-right">{{ formatNumber(delivery.offloading_gross_weight) }}</td>
-                                    <td class="text-right">{{ formatNumber(delivery.offloading_tare_weight) }}</td>
-                                    <td class="text-right">{{ formatNumber(delivery.offloading_net_weight) }}</td>
-                                    <td class="text-center">
-                                        <span @click="unload(delivery)" v-if="(delivery.status == 'Loaded') && $root.can('create-delivery')" class="btn btn-xs btn-success">Offload</span>
-                                        <span @click="edit(delivery)" v-if="$root.can('edit-delivery')" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
-                                        <button v-if="$root.can('delete-delivery')" data-toggle="popover" :data-item="delivery.id" class="btn btn-xs btn-danger btn-destroy">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
+                                    <tr v-for="delivery in deliveries">
+                                        <td>{{ delivery.id }}</td>
+                                        <td>
+                                            <router-link v-if="$root.can('view-delivery')" :to="'/delivery/' + delivery.id">RKS-{{ delivery.id }}</router-link>
+                                            <span v-else>RKS-{{ delivery.id }}</span>
+                                        </td>
+                                        <td>
+                                            <router-link v-if="$root.can('view-journey')" :to="'/journey/' + delivery.journey_id">JRNY-{{ delivery.journey_id }}</router-link>
+                                            <span v-else>JRNY-{{ delivery.journey_id }}</span>
+                                        </td>
+                                        <td>{{ delivery.journey.truck.plate_number }}</td>
+                                        <td class="text-right">{{ formatNumber(delivery.loading_gross_weight) }}</td>
+                                        <td class="text-right">{{ formatNumber(delivery.loading_tare_weight) }}</td>
+                                        <td class="text-right">{{ formatNumber(delivery.loading_net_weight) }}</td>
+                                        <td class="text-right">{{ formatNumber(delivery.offloading_gross_weight) }}</td>
+                                        <td class="text-right">{{ formatNumber(delivery.offloading_tare_weight) }}</td>
+                                        <td class="text-right">{{ formatNumber(delivery.offloading_net_weight) }}</td>
+                                        <td class="text-center">
+                                            <span @click="unload(delivery)" v-if="(delivery.status == 'Loaded') && $root.can('create-delivery')" class="btn btn-xs btn-success">Offload</span>
+                                            <span @click="edit(delivery)" v-if="$root.can('edit-delivery')" class="btn btn-xs btn-info">
+                                                <i class="fa fa-pencil"></i>
+                                            </span>
+                                            <button v-if="$root.can('delete-delivery')" data-toggle="popover" :data-item="delivery.id" class="btn btn-xs btn-danger btn-destroy">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
                                 </tbody>
 
                                 <tfoot>
-                                <tr>
-                                    <th>Del. Note #</th>
-                                    <th>Journey #</th>
-                                    <th>Vehicle #</th>
-                                    <th>Loading GW</th>
-                                    <th>Loading TW</th>
-                                    <th>Loading NW</th>
-                                    <th>Offloading GW</th>
-                                    <th>Offloading TW</th>
-                                    <th>Offloading NW</th>
-                                    <th></th>
-                                </tr>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Del. Note #</th>
+                                        <th>Journey #</th>
+                                        <th>Vehicle #</th>
+                                        <th>Loading GW</th>
+                                        <th>Loading TW</th>
+                                        <th>Loading NW</th>
+                                        <th>Offloading GW</th>
+                                        <th>Offloading TW</th>
+                                        <th>Offloading NW</th>
+                                        <th></th>
+                                    </tr>
                                 </tfoot>
                             </table>
                         </div>
@@ -80,7 +85,16 @@
             http.get('/api/delivery/?s=' + window.Laravel.station_id).then(response => {
                 this.deliveries = response.deliveries;
                 this.setupConfirm();
-                prepareTable();
+                prepareTable(false, [], {
+                    "columnDefs": [
+                        {
+                            "targets": [0],
+                            "visible": false,
+                            "searchable": false
+                        },
+                    ],
+                    "orderFixed": [0, "desc"],
+                });
             });
         },
 
@@ -92,7 +106,7 @@
 
         methods: {
             formatNumber(number) {
-                if (! number) {
+                if (!number) {
                     return '';
                 }
 
@@ -109,11 +123,11 @@
             },
 
             edit(delivery) {
-                window._router.push({path: '/delivery/' + delivery.id + '/edit'})
+                window._router.push({ path: '/delivery/' + delivery.id + '/edit' })
             },
 
             unload(delivery) {
-                window._router.push({path: '/delivery/' + delivery.id + '/unload'})
+                window._router.push({ path: '/delivery/' + delivery.id + '/unload' })
             },
 
             destroy(id) {

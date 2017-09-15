@@ -74,7 +74,12 @@ class JourneyController extends Controller
             })
             ->toArray();
 
-        $ls = Vehicle::whereNotNull('contract_id')->get(['id']);
+        $ls = Vehicle::whereNotNull('contract_id')
+            ->get(['id'])
+            ->map(function ($item) {
+                return $item->id;
+            })
+            ->toArray();
 
         $trucks = Vehicle::typeTruck()
             ->has('trailer')

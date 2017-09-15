@@ -9,60 +9,79 @@
                     </div>
                     <div class="panel-body">
                         <div class="table-responsive">
-                            <table class="table no-wrap">
+                            <table class="table nowrap">
                                 <thead>
-                                <tr>
-                                    <th>Mileage #</th>
-                                    <th>Status</th>
-                                    <th>Journey #</th>
-                                    <th>Mileage Type</th>
-                                    <th class="text-right">Std Amount</th>
-                                    <th class="text-right">Requested Amount</th>
-                                    <th class="text-right">Approved Amount</th>
-                                    <th></th>
-                                </tr>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Mileage #</th>
+                                        <th>Status</th>
+                                        <th>Journey #</th>
+                                        <th>Truck</th>
+                                        <th>Driver</th>
+                                        <th>Mileage Type</th>
+                                        <th class="text-right">Std Amount</th>
+                                        <th class="text-right">Requested Amount</th>
+                                        <th class="text-right">Approved Amount</th>
+                                        <th></th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="mileage in mileages">
-                                    <td>
-                                        <router-link v-if="$root.can('view-mileage')" :to="'/mileage/' + mileage.id">MLG-{{ mileage.id }}</router-link>
-                                        <span v-else>MLG-{{ mileage.id }}</span>
-                                    </td>
-                                    <td>
-                                        <span v-if="mileage.status == 'Approved'" class="label label-success">Approved</span>
-                                        <span v-else class="label label-info">Pending</span>
-                                    </td>
-                                    <td>
-                                        <router-link v-if="$root.can('create-journey')" :to="'/journey/' + mileage.journey_id">JRNY-{{ mileage.journey_id }}</router-link>
-                                        <span v-else>JRNY-{{ mileage.journey_id }}</span>
-                                    </td>
-                                    <td>{{ mileage.mileage_type }}</td>
-                                    <td class="text-right">{{ formatNumber(mileage.standard_amount) }}</td>
-                                    <td class="text-right">{{ formatNumber(mileage.requested_amount) }}</td>
-                                    <td class="text-right">{{ formatNumber(mileage.approved_amount) }}</td>
-                                    <td class="text-right">
-                                        <router-link  class="btn btn-success btn-xs" :to="'/mileage/create/'+ mileage.journey_id" v-if="$root.can('create-mileage') && (mileage.journey.status != 'Closed')">
-                                          ADD MILEAGE
-                                        </router-link>
-                                        <span @click="edit(mileage)" v-if="$root.can('edit-mileage')" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
-                                        <button v-if="$root.can('delete-mileage')" data-toggle="popover" :data-item="mileage.id" class="btn btn-xs btn-danger btn-destroy">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
+                                    <tr v-for="mileage in mileages">
+                                        <td>{{ mileage.id }}</td>
+                                        <td>
+                                            <router-link v-if="$root.can('view-mileage')" :to="'/mileage/' + mileage.id">MLG-{{ mileage.id }}</router-link>
+                                            <span v-else>MLG-{{ mileage.id }}</span>
+                                        </td>
+                                        <td>
+                                            <span v-if="mileage.status == 'Approved'" class="label label-success">Approved</span>
+                                            <span v-else class="label label-info">Pending</span>
+                                        </td>
+                                        <td>
+                                            <router-link v-if="$root.can('create-journey')" :to="'/journey/' + mileage.journey_id">JRNY-{{ mileage.journey_id }}</router-link>
+                                            <span v-else>JRNY-{{ mileage.journey_id }}</span>
+                                        </td>
+                                        <td>
+                                            <span v-if="mileage.journey.truck">
+                                                {{ mileage.journey.truck.plate_number }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span v-if="mileage.journey.driver">
+                                                {{ mileage.journey.driver.first_name }} {{ mileage.journey.driver.last_name }}
+                                            </span>
+                                        </td>
+                                        <td>{{ mileage.mileage_type }}</td>
+                                        <td class="text-right">{{ formatNumber(mileage.standard_amount) }}</td>
+                                        <td class="text-right">{{ formatNumber(mileage.requested_amount) }}</td>
+                                        <td class="text-right">{{ formatNumber(mileage.approved_amount) }}</td>
+                                        <td class="text-right">
+                                            <router-link class="btn btn-success btn-xs" :to="'/mileage/create/'+ mileage.journey_id" v-if="$root.can('create-mileage') && (mileage.journey.status != 'Closed')">
+                                                ADD MILEAGE
+                                            </router-link>
+                                            <span @click="edit(mileage)" v-if="$root.can('edit-mileage')" class="btn btn-xs btn-info">
+                                                <i class="fa fa-pencil"></i>
+                                            </span>
+                                            <button v-if="$root.can('delete-mileage')" data-toggle="popover" :data-item="mileage.id" class="btn btn-xs btn-danger btn-destroy">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
                                 </tbody>
 
                                 <tfoot>
-                                <tr>
-                                    <th>Mileage #</th>
-                                    <th>Status</th>
-                                    <th>Journey #</th>
-                                    <th>Mileage Type</th>
-                                    <th class="text-right">Std Amount</th>
-                                    <th class="text-right">Requested Amount</th>
-                                    <th class="text-right">Approved Amount</th>
-                                    <th></th>
-                                </tr>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Mileage #</th>
+                                        <th>Status</th>
+                                        <th>Journey #</th>
+                                        <th>Truck</th>
+                                        <th>Driver</th>
+                                        <th>Mileage Type</th>
+                                        <th class="text-right">Std Amount</th>
+                                        <th class="text-right">Requested Amount</th>
+                                        <th class="text-right">Approved Amount</th>
+                                        <th></th>
+                                    </tr>
                                 </tfoot>
                             </table>
                         </div>
@@ -79,7 +98,16 @@
             http.get('/api/mileage/?s=' + window.Laravel.station_id).then(response => {
                 this.mileages = response.mileages;
                 this.setupConfirm();
-                prepareTable();
+                prepareTable(false, [], {
+                    "columnDefs": [
+                        {
+                            "targets": [0],
+                            "visible": false,
+                            "searchable": false
+                        },
+                    ],
+                    "orderFixed": [0, "desc"],
+                });
             });
         },
 
@@ -91,7 +119,7 @@
 
         methods: {
             formatNumber(number) {
-                if (! number) {
+                if (!number) {
                     return '';
                 }
 
@@ -108,11 +136,11 @@
             },
 
             edit(journey) {
-                window._router.push({path: '/mileage/' + journey.id + '/edit'})
+                window._router.push({ path: '/mileage/' + journey.id + '/edit' })
             },
 
             approve(journey) {
-                window._router.push({path: '/mileage/' + journey.id + '/approve'})
+                window._router.push({ path: '/mileage/' + journey.id + '/approve' })
             },
 
             destroy(id) {

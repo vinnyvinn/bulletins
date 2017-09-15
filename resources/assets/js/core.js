@@ -75,7 +75,7 @@ export class http {
         };
 
         if (body) {
-            if (! hasUpload) {
+            if (!hasUpload) {
                 body._token = window.Laravel.csrfToken;
                 body = JSON.stringify(body);
                 options.headers['Content-Type'] = 'application/json';
@@ -160,11 +160,16 @@ function flatten(arr) {
     return arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? flatten(val) : val), []);
 }
 
-export function prepareTable(includeFilters = false, ignoreColumns = []) {
+export function prepareTable(includeFilters = false, ignoreColumns = [], extra = {}) {
     setTimeout(() => {
         let config = {
-            "order": [[ 0, "desc" ]],
-            "lengthMenu": [ [-1, 10, 25, 50, 100, 200], ["All", 10, 25, 50, 100, 200] ],
+            "order": [
+                [0, "desc"]
+            ],
+            "lengthMenu": [
+                [-1, 10, 25, 50, 100, 200],
+                ["All", 10, 25, 50, 100, 200]
+            ],
             dom: '<".pull-right"f>l<".pull-right"B>rtip',
             buttons: [
                 'colvis',
@@ -195,6 +200,8 @@ export function prepareTable(includeFilters = false, ignoreColumns = []) {
             ],
         };
 
+        config = Object.assign(config, extra);
+
         if (includeFilters) {
             config.initComplete = function() {
                 let cols = this.api().columns();
@@ -204,7 +211,7 @@ export function prepareTable(includeFilters = false, ignoreColumns = []) {
                     let column = this;
                     let selectControl = $('<br/><select class="form-control input-sm select2 dt_filter"></select>')
 
-                        .appendTo($(column.header()))
+                    .appendTo($(column.header()))
                         .on('change', function() {
                             let selected = $(this).val();
                             let query = $.fn.dataTable.util.escapeRegex(selected);
@@ -264,15 +271,15 @@ export function confirmPopup(selector, success, cancel = () => {}, destroy = fal
 
     setTimeout(() => {
         $(selector).popover({
-            content: template,
-            html: true,
-            placement: 'bottom',
-            title: 'Delete?',
-            trigger: 'focus'
-        })
-            .on('shown.bs.popover', function () {
+                content: template,
+                html: true,
+                placement: 'bottom',
+                title: 'Delete?',
+                trigger: 'focus'
+            })
+            .on('shown.bs.popover', function() {
                 let trigger = this;
-                $('.confirm-accept').off().on('click', function () {
+                $('.confirm-accept').off().on('click', function() {
                     success(trigger);
                 });
 
@@ -285,7 +292,7 @@ export function confirmPopup(selector, success, cancel = () => {}, destroy = fal
 
 export function hasPermission(permission) {
     let user = localStorage.getItem('fewuia32rfwe');
-    if (! user) { return false; }
+    if (!user) { return false; }
 
     user = JSON.parse(user);
     let permissions = JSON.parse(user.permissions);
