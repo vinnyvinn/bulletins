@@ -187,6 +187,7 @@
       groupArrayObjects(myArray) {
         var groups = {};
         for (var i = 0; i < myArray.length; i++) {
+          if (! myArray[i].vehicle) continue;
           var groupName = myArray[i].vehicle.plate_number;
           if (!groups[groupName]) {
             groups[groupName] = [];

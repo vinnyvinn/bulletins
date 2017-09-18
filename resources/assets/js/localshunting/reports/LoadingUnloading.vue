@@ -42,13 +42,13 @@
             </div>
             <div class="row">
                 <div class="col-sm-3">
-                  Contract Allocated: <b class="pull-right">{{ contract.quantity }}</b>
+                  Contract Allocated: <b class="pull-right">{{ parseFloat(contract.quantity).toLocaleString() }}</b>
                 </div>
                 <div class="col-sm-3">
-                  Total Offloaded: <b class="pull-right">{{ myarraySum(lsdeliveries, 'offloading_net_weight') }}</b>
+                  Total Offloaded: <b class="pull-right">{{ parseFloat(myarraySum(lsdeliveries, 'offloading_net_weight')).toLocaleString() }}</b>
                 </div>
                 <div class="col-sm-3">
-                  Pending Offloading: <b class="pull-right">{{ myarraySum(lsdeliveries, 'loading_net_weight') - myarraySum(lsdeliveries, 'offloading_net_weight')  }}</b>
+                  Pending Offloading: <b class="pull-right">{{ parseFloat(parseFloat(contract.quantity) - myarraySum(lsdeliveries, 'offloading_net_weight')).toLocaleString()  }}</b>
                 </div>
                 <div class="col-sm-3">
                   <div class="progress">
@@ -75,8 +75,8 @@
                           <th>SNo</th>
                           <th>Truck</th>
                           <th>DNote</th>
-                          <th>Load QTY</th>
-                          <th>Offload QTY</th>
+                          <th class="text-right">Load QTY</th>
+                          <th class="text-right">Offload QTY</th>
                           <th>Driver</th>
                           <th>WB Loading</th>
                           <th>Date</th>
@@ -85,10 +85,12 @@
                       <tbody>
                         <tr v-for="(delivery, index) in lsdeliveries">
                           <td>{{ index + 1 }}</td>
-                          <td>{{ delivery.vehicle.plate_number }}</td>
+                          <td>
+                            <span v-if="delivery.vehicle">{{ delivery.vehicle.plate_number }}</span>
+                          </td>
                           <td>RKS - {{ delivery.id }}</td>
-                          <td>{{ delivery.loading_net_weight }}</td>
-                          <td>{{ delivery.offloading_net_weight }}</td>
+                          <td class="text-right">{{ delivery.loading_net_weight }}</td>
+                          <td class="text-right">{{ delivery.offloading_net_weight }}</td>
                           <td>
                               <span v-if="delivery.temporary_driver">{{ delivery.temporary_driver.first_name }} {{ delivery.temporary_driver.last_name }}</span>
                               <span v-else-if="delivery.vehicle.driver">{{ delivery.vehicle.driver.first_name }} {{ delivery.vehicle.driver.last_name }}</span>
@@ -148,7 +150,8 @@
       },
 
       progress() {
-        return (this.myarraySum(this.lsdeliveries, 'offloading_net_weight') / this.contract.quantity) * 100;
+        return parseFloat((this.myarraySum(this.lsdeliveries, 'offloading_net_weight') / this.contract.quantity) * 100)
+          .toLocaleString();
       },
 
       styleProgress() {
