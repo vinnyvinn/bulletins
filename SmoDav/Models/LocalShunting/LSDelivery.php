@@ -48,4 +48,9 @@ class LSDelivery extends Model
     {
         return $this->belongsTo(Driver::class, 'temporary_driver', 'id');
     }
+
+    public function temporaryDriver()
+    {
+        return $this->belongsTo(Driver::class, 'temporary_driver', 'id');
+    }
 }

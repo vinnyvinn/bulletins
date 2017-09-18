@@ -24,9 +24,10 @@ class LSReportController extends Controller
     public function show($id)
     {
         return Response::json([
-          'contract' => Contract::where('id', $id)->with('client')
+          'contract' => Contract::where('id', $id)
+              ->with('client')
               ->with('lsdeliveries','lsdeliveries.vehicle','lsdeliveries.vehicle.driver',
-              'lsfuels','lsfuels.vehicle','lsfuels.vehicle.driver',
+              'lsfuels','lsfuels.vehicle','lsdeliveries.temporaryDriver',
               'lsgatepasses', 'lsgatepasses.vehicle', 'lsgatepasses.vehicle.driver')
               ->first()
         ]);
@@ -36,7 +37,7 @@ class LSReportController extends Controller
     {
         return Response::json([
         'lsdeliveries' => LSDelivery::where('contract_id', $id)
-              ->with('vehicle', 'vehicle.driver')
+              ->with('vehicle', 'temporaryDriver', 'vehicle.driver')
               ->get(),
         'contract' => Contract::where('id', $id)
               ->with('client', 'route')

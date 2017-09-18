@@ -89,7 +89,10 @@
                           <td>RKS - {{ delivery.id }}</td>
                           <td>{{ delivery.loading_net_weight }}</td>
                           <td>{{ delivery.offloading_net_weight }}</td>
-                          <td>{{ delivery.vehicle.driver.first_name}} {{ delivery.vehicle.driver.last_name}}</td>
+                          <td>
+                              <span v-if="delivery.temporary_driver">{{ delivery.temporary_driver.first_name }} {{ delivery.temporary_driver.last_name }}</span>
+                              <span v-else-if="delivery.vehicle.driver">{{ delivery.vehicle.driver.first_name }} {{ delivery.vehicle.driver.last_name }}</span>
+                          </td>
                           <td>{{ delivery.loading_weighbridge_number }}</td>
                           <td>{{ humanDate(delivery.created_at) }}</td>
                         </tr>
@@ -104,58 +107,59 @@
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      lsdeliveries: [],
-      contract: {
-        client: {
-          Name: '',
+  export default {
+    data() {
+      return {
+        lsdeliveries: [],
+        contract: {
+          client: {
+            Name: '',
+          },
+          route: {
+
+          }
         },
-        route: {
+      }
+    },
+    created() {
+      this.$root.isLoading = true;
+      http.get('/api/lsloadingunloading/' + this.$route.params.id).then((response) => {
+        this.lsdeliveries = response.lsdeliveries;
+        this.contract = response.contract;
+        prepareTable();
+        this.$root.isLoading = false;
+      })
+    },
 
-        }
+    methods: {
+      humanDate(date) {
+        return moment(date).format('ll');
       },
+
+      daysSince(startdate) {
+        return moment().diff(moment(startdate), 'days');
+      },
+
+      myarraySum(items, prop) {
+        return items.reduce(function(a, b) {
+          var b = parseInt(b[prop]);
+          return a + b;
+        }, 0);
+      },
+
+      progress() {
+        return (this.myarraySum(this.lsdeliveries, 'offloading_net_weight') / this.contract.quantity) * 100;
+      },
+
+      styleProgress() {
+        return 'width:' + this.progress() + '%';
+      }
     }
-  },
-  created() {
-    this.$root.isLoading = true;
-    http.get('/api/lsloadingunloading/' + this.$route.params.id).then( (response) => {
-      this.lsdeliveries = response.lsdeliveries;
-      this.contract = response.contract;
-      prepareTable();
-      this.$root.isLoading = false;
-    })
-  },
 
-  methods: {
-    humanDate(date) {
-      return moment(date).format('ll');
-    },
 
-    daysSince(startdate) {
-      return moment().diff(moment(startdate), 'days');
-    },
-
-    myarraySum(items, prop){
-      return items.reduce( function(a, b){
-        var b = parseInt(b[prop]);
-        return a + b;
-      }, 0);
-    },
-
-    progress() {
-      return (this.myarraySum(this.lsdeliveries, 'offloading_net_weight') / this.contract.quantity) * 100;
-    },
-
-    styleProgress() {
-      return 'width:' + this.progress() +'%';
-    }
   }
-
-
-}
 </script>
 
 <style lang="css">
+
 </style>

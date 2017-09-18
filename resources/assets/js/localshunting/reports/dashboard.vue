@@ -52,7 +52,10 @@
                             <td>{{ index + 1 }}</td>
                             <td>RKS-{{ delivery.id}}</td>
                             <td>{{ delivery.vehicle.plate_number }}</td>
-                            <td>{{ delivery.vehicle.driver.first_name }}</td>
+                            <td>
+                              <span v-if="delivery.temporary_driver">{{ delivery.temporary_driver.first_name }} {{ delivery.temporary_driver.last_name }}</span>
+                              <span v-else-if="delivery.vehicle.driver">{{ delivery.vehicle.driver.first_name }} {{ delivery.vehicle.driver.last_name }}</span>
+                          </td>
                           </tr>
                         </tbody>
                       </table>
@@ -137,7 +140,7 @@
 
 <script>
 
-export default {
+  export default {
     data() {
       return {
         contracts: [],
@@ -147,9 +150,9 @@ export default {
       }
     },
 
-    created () {
+    created() {
       this.$root.isLoading = true;
-      http.get('/api/lsreport').then( (response) => {
+      http.get('/api/lsreport').then((response) => {
         this.contracts = response.contracts;
 
         this.$root.isLoading = false;
@@ -157,9 +160,9 @@ export default {
     },
 
     methods: {
-      fetchContract () {
+      fetchContract() {
         this.$root.isLoading = true;
-        http.get('/api/lsreport/' + this.contract_id).then( (response) => {
+        http.get('/api/lsreport/' + this.contract_id).then((response) => {
           this.contract = response.contract;
           this.groupArrayObjects(this.contract.lsfuels);
           this.$root.isLoading = false;
@@ -174,25 +177,25 @@ export default {
         return moment.duration(moment().diff(moment(created_at))).humanize();
       },
 
-      myarraySum(items, prop){
-        return items.reduce( function(a, b){
+      myarraySum(items, prop) {
+        return items.reduce(function(a, b) {
           var b = parseInt(b[prop]);
           return a + b;
         }, 0);
       },
 
-      groupArrayObjects (myArray) {
+      groupArrayObjects(myArray) {
         var groups = {};
         for (var i = 0; i < myArray.length; i++) {
           var groupName = myArray[i].vehicle.plate_number;
-          if(!groups[groupName]) {
+          if (!groups[groupName]) {
             groups[groupName] = [];
           }
-          groups[groupName].push({'fuel': myArray[i].fuel_issued});
+          groups[groupName].push({ 'fuel': myArray[i].fuel_issued });
         }
         myArray = [];
         for (var groupName in groups) {
-          myArray.push({vehicle: groupName, fuel_issued: groups[groupName]});
+          myArray.push({ vehicle: groupName, fuel_issued: groups[groupName] });
         }
         this.fuelsgrouped = myArray;
       },
@@ -200,8 +203,8 @@ export default {
       countInstances(value) {
         var count = 0;
         var deliveries = this.contract.lsdeliveries
-        for(var i = 0; i < deliveries.length; i++) {
-          if(deliveries[i].vehicle.plate_number == value) {
+        for (var i = 0; i < deliveries.length; i++) {
+          if (deliveries[i].vehicle.plate_number == value) {
             count = count + 1;
           }
         }
@@ -218,13 +221,11 @@ export default {
 
 
     }
-}
+  }
 </script>
 
 <style lang="css" scoped>
-
-table{
+table {
   height: 150px !important;
 }
-
 </style>
