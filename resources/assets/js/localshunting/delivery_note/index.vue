@@ -4,6 +4,7 @@
       <div class="panel-heading">
           Trucks Awaiting Loading
           <button v-if="$root.can('ls-create-delivery')" type="button" class="btn btn-success btn-xs pull-right" name="button" @click="offload">Offloading</button>
+          <router-link to="/ls/all-deliveries" class="btn btn-primary btn-xs pull-right">All Deliveries</router-link>
       </div>
       <div class="panel-body">
         <table class="table no-wrap">
@@ -45,29 +46,30 @@
 </template>
 
 <script>
-export default {
-  data () {
-    return {
-      gatepasses: []
-    }
-  },
-  created () {
-    this.$root.isLoading = true;
-    http.get('/api/lsgatepass?contract=' + window.Laravel.contract_id).then((response) => {
-      this.gatepasses = response.gatepasses;
-      this.$root.isLoading = false;
-    })
-  },
-  methods: {
-    createDelivery(id) {
-      this.$router.push('/ls/delivery/create/' + id);
+  export default {
+    data() {
+      return {
+        gatepasses: []
+      }
     },
-    offload () {
-      this.$router.push('/ls/offloading');
+    created() {
+      this.$root.isLoading = true;
+      http.get('/api/lsgatepass?contract=' + window.Laravel.contract_id).then((response) => {
+        this.gatepasses = response.gatepasses;
+        this.$root.isLoading = false;
+      })
+    },
+    methods: {
+      createDelivery(id) {
+        this.$router.push('/ls/delivery/create/' + id);
+      },
+      offload() {
+        this.$router.push('/ls/offloading');
+      }
     }
   }
-}
 </script>
 
 <style lang="css">
+
 </style>

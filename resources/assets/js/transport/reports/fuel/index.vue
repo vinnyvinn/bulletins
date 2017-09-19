@@ -400,7 +400,7 @@
             },
 
             getSum(records, entry) {
-                if (records.length < 2) return records.length[0][entry];
+                if (records.length < 2) return records[0][entry];
 
                 return records.map(a => a[entry]).reduce((a, b) => {
                     a = parseFloat(a);
@@ -409,7 +409,7 @@
                     b = isNaN(b) ? 0 : b;
 
                     return a + b;
-                }).toLocaleString();
+                }, 0).toLocaleString();
             }
         }
     }

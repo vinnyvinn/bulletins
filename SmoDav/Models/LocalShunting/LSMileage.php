@@ -9,13 +9,13 @@ use SmoDav\Models\Vehicle;
 class LSMileage extends Model
 {
     protected $fillable = [
-    'contract_id',
-    'vehicle_id',
-    'amount',
-    'is_advance',
-    'narration',
-    'user_id'
-  ];
+        'contract_id',
+        'vehicle_id',
+        'amount',
+        'is_advance',
+        'narration',
+        'user_id',
+    ];
 
     public function user()
     {

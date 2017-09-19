@@ -81,12 +81,15 @@ class LSDeliveryController extends Controller
      *
      * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
+        $delivery = LSDelivery::where('id', $id)->with('vehicle', 'vehicle.driver', 'vehicle.trailer')->first();
+
         return Response::json([
-            'delivery' => LSDelivery::where('id', $id)->with('vehicle', 'vehicle.driver', 'vehicle.trailer')->first(),
+            'delivery' => $delivery,
+            'drivers' => Driver::unassigned()->orWhere('id', $delivery->temporary_driver)->orderBy('first_name')->get(),
         ]);
     }
 

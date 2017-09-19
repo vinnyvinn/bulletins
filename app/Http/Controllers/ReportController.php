@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use SmoDav\Models\Delivery;
+use SmoDav\Models\LocalShunting\LSFuel;
+use SmoDav\Models\LocalShunting\LSMileage;
 use SmoDav\Models\Mileage;
 use SmoDav\Models\Station;
 use App\Contract;
@@ -261,6 +263,61 @@ class ReportController extends Controller
         ]);
     }
 
+    public function LsFuel(Request $request)
+    {
+        $start = Carbon::parse($request->get('start_date'))->startOfDay();
+        $end = Carbon::parse($request->get('end_date'))->endOfDay();
+
+        $columns = [
+            'l_s_fuels.created_at as date', 'l_s_fuels.current_km', 'fuel_issued', 'total_in_tank as fuel_total',
+            'under_trips', 'stations.name as station_name', 'contracts.name', 'vehicles.plate_number',
+            'Client.Name as client_name', 'l_s_fuels.status'
+        ];
+
+        $deliveries = LSFuel::where('l_s_fuels.created_at', '>=', $start)
+            ->where('l_s_fuels.created_at', '<=', $end)
+            ->join('contracts', 'l_s_fuels.contract_id', '=', 'contracts.id')
+            ->join('vehicles', 'l_s_fuels.vehicle_id', '=', 'vehicles.id')
+            ->join('stations', 'l_s_fuels.station_id', '=', 'stations.id')
+            ->join('Client', 'contracts.client_id', '=', 'Client.DCLink')
+            ->when($request->get('contract_id'), function ($builder) use ($request) {
+                return $builder->where('contracts.id', $request->get('contract_id'));
+            })
+            ->when($request->get('station_id'), function ($builder) use ($request) {
+                return $builder->where('l_s_fuels.station_id', $request->get('station_id'));
+            })
+            ->when($request->get('summary') != 1, function ($builder) {
+                return $builder->orderBy('l_s_fuels.created_at', 'asc');
+            })
+            ->when($request->get('summary') == 1, function ($builder) use ($columns) {
+                return $builder
+                    ->select(\DB::raw(
+                        '
+                        Client.Name as client_name,
+                        stations.name as station_name,
+                        contracts.name,
+                        count(l_s_fuels.id) as total,
+                        sum(fuel_issued) as fuel_issued,
+                        sum(total_in_tank) as fuel_total
+                        '
+                    ))
+                    ->groupBy('contracts.name')
+                    ->groupBy('Client.name')
+                    ->groupBy('stations.name');
+            })
+//            ->where('l_s_fuels.status', 'Approved')
+            ->get($columns);
+
+        if ($request->get('group_contract') == 1) {
+            $deliveries = $deliveries->groupBy('name');
+        }
+
+        return \Response::json([
+            'status' => 'success',
+            'deliveries' => $deliveries
+        ]);
+    }
+
     public function mileage(Request $request)
     {
         $start = Carbon::parse($request->get('start_date'))->startOfDay();
@@ -312,6 +369,52 @@ class ReportController extends Controller
                     ->groupBy('mileage_type');
             })
             ->where('mileages.status', 'Approved')
+            ->get($columns);
+
+        if ($request->get('group_contract') == 1) {
+            $deliveries = $deliveries->groupBy('name');
+        }
+
+        return \Response::json([
+            'status' => 'success',
+            'deliveries' => $deliveries
+        ]);
+    }
+
+    public function lsMileage(Request $request)
+    {
+        $start = Carbon::parse($request->get('start_date'))->startOfDay();
+        $end = Carbon::parse($request->get('end_date'))->endOfDay();
+
+        $columns = [
+            'l_s_mileages.amount', 'contracts.name', 'vehicles.plate_number', 'is_advance',
+            'l_s_mileages.created_at as date', 'Client.Name as client_name',
+        ];
+
+        $deliveries = LSMileage::join('contracts', 'l_s_mileages.contract_id', '=', 'contracts.id')
+            ->join('vehicles', 'l_s_mileages.vehicle_id', '=', 'vehicles.id')
+            ->join('Client', 'contracts.client_id', '=', 'Client.DCLink')
+            ->where('l_s_mileages.created_at', '>=', $start)
+            ->where('l_s_mileages.created_at', '<=', $end)
+            ->when($request->get('contract_id'), function ($builder) use ($request) {
+                return $builder->where('contracts.id', $request->get('contract_id'));
+            })
+            ->when($request->get('summary') != 1, function ($builder) {
+                return $builder->orderBy('l_s_mileages.created_at', 'asc');
+            })
+            ->when($request->get('summary') == 1, function ($builder) use ($columns) {
+                return $builder
+                    ->select(\DB::raw(
+                        '
+                        Client.Name as client_name,
+                        contracts.name,
+                        count(l_s_mileages.id) as total,
+                        sum(l_s_mileages.amount) as amount,
+                        '
+                    ))
+                    ->groupBy('Client.name')
+                    ->groupBy('contracts.name');
+            })
             ->get($columns);
 
         if ($request->get('group_contract') == 1) {

@@ -1,18 +1,18 @@
 function authMiddleware(to, from, next) {
-    if (! localStorage.getItem('foeiwafwfuwe')) {
-        return next({path: '/login'});
+    if (!localStorage.getItem('foeiwafwfuwe')) {
+        return next({ path: '/login' });
     }
 
-    if (! localStorage.getItem('fewuia32rfwe')) {
-        return next({path: '/login'});
+    if (!localStorage.getItem('fewuia32rfwe')) {
+        return next({ path: '/login' });
     }
 
-    if (! window.Laravel.station_id && to.path !== '/station-selection') {
-        return next({path: '/station-selection'});
+    if (!window.Laravel.station_id && to.path !== '/station-selection') {
+        return next({ path: '/station-selection' });
     }
 
-    if (! window.Laravel.contract_id && to.path !== '/ls/contract-selection' && to.path !== '/station-selection') {
-        return next({path: '/ls/contract-selection'});
+    if (!window.Laravel.contract_id && to.path !== '/ls/contract-selection' && to.path !== '/station-selection') {
+        return next({ path: '/ls/contract-selection' });
     }
 
     return next();
@@ -88,6 +88,7 @@ module.exports = [
     // { path: '/route-card/create', component: require('../transport/routecard/form.vue'), beforeEnter: authMiddleware },
 
     { path: '/ls/delivery', component: require('./delivery_note/index.vue'), beforeEnter: authMiddleware },
+    { path: '/ls/all-deliveries', component: require('./delivery_note/all_deliveries.vue'), beforeEnter: authMiddleware },
     { path: '/ls/delivery/create/:new', component: require('./delivery_note/form.vue'), beforeEnter: authMiddleware },
     { path: '/ls/delivery/:id', component: require('./delivery_note/view.vue'), beforeEnter: authMiddleware },
     { path: '/ls/delivery/:unload/unload', component: require('./delivery_note/form.vue'), beforeEnter: authMiddleware },
@@ -97,7 +98,10 @@ module.exports = [
     { path: '/allocation/create', component: require('../components/allocation/form.vue'), beforeEnter: authMiddleware },
     { path: '/allocation/:id/edit', component: require('../components/allocation/form.vue'), beforeEnter: authMiddleware },
 
-    { path: '/ls/reports', component: require('./reports/dashboard.vue'), beforeEnter: authMiddleware },
+    { path: '/ls/reports', component: require('./reports/index.vue'), beforeEnter: authMiddleware },
+    { path: '/ls/reports/dashboard', component: require('./reports/dashboard.vue'), beforeEnter: authMiddleware },
+    { path: '/ls/reports/fuel', component: require('./reports/fuel/index.vue'), beforeEnter: authMiddleware },
+    { path: '/ls/reports/mileage', component: require('./reports/mileage/index.vue'), beforeEnter: authMiddleware },
     { path: '/ls/loadingreports/:id', component: require('./reports/LoadingUnloading.vue'), beforeEnter: authMiddleware },
 
     { path: '/station-selection', component: require('./station.vue'), beforeEnter: authMiddleware },
@@ -109,15 +113,16 @@ module.exports = [
 
 
 
-    { path: '/login',
+    {
+        path: '/login',
         component: require('../components/auth/login.vue'),
         beforeEnter: (to, from, next) => {
             if (localStorage.getItem('foeiwafwfuwe')) {
-                return next({path: '/ls/dashboard'});
+                return next({ path: '/ls/dashboard' });
             }
 
             if (localStorage.getItem('fewuia32rfwe')) {
-                return next({path: '/ls/dashboard'});
+                return next({ path: '/ls/dashboard' });
             }
 
             return next();

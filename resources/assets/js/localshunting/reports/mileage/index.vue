@@ -71,6 +71,7 @@
                                         <option v-for="(driver, index) in drivers" :key="driver" :value="driver">{{ driver }}</option>
                                     </select>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -83,7 +84,7 @@
                         </div>
                         <div class="panel-body">
                             <div id="reportBody">
-                                <h4 class="text-center">Offloading Report</h4>
+                                <h4 class="text-center">Mileage Issue Report</h4>
                                 <h5 class="text-center">From: {{ formatDateTime(report.start_date, true) }} To: {{ formatDateTime(report.end_date, true) }}</h5>
                                 <h5 class="text-center" v-if="selected_truck">
                                     <strong>Vehicle:</strong> {{ selected_truck }} </h5>
@@ -98,32 +99,28 @@
                                             <th>#</th>
                                             <th v-if="!is_grouped">Contract</th>
                                             <th v-if="!is_summary">Plate Number</th>
-                                            <th :class="is_summary ? 'text-right' : ''">{{ is_summary ? 'Total Trips' : 'Offloading Time' }}</th>
-                                            <th class="text-right">Gross Weight</th>
-                                            <th class="text-right">Tare Weight</th>
-                                            <th class="text-right">Net Weight</th>
-                                            <th class="text-right" v-if="!is_summary">Weighbridge Number</th>
+                                            <th :class="is_summary ? 'text-right' : ''">{{ is_summary ? 'Mileage Vouchers' : 'Mileage Date' }}</th>
+                                            <th>Is Advance</th>
+                                            <th class="text-right">Amount</th>
                                         </tr>
                                     </thead>
                                     <tbody v-if="is_grouped">
                                         <template v-for="(group, index) in deliveries">
                                             <tr class="rowHead">
-                                                <td :colspan="is_summary ? 8 : 3">
+                                                <td :colspan="is_summary ? 5 : 0">
                                                     <strong>{{ index }} Totals</strong>
                                                 </td>
-                                                <td v-if="! is_summary" class="text-right">{{ getSum(group, 'offloading_gross_weight') }}</td>
-                                                <td v-if="! is_summary" class="text-right">{{ getSum(group, 'offloading_tare_weight') }}</td>
-                                                <td v-if="! is_summary" class="text-right">{{ getSum(group, 'offloading_net_weight') }}</td>
                                                 <td v-if="! is_summary" class="text-right"></td>
+                                                <td v-if="! is_summary" class="text-right"></td>
+                                                <td v-if="! is_summary" class="text-right"></td>
+                                                <td v-if="! is_summary" class="text-right">{{ getSum(group, 'amount') }}</td>
                                             </tr>
                                             <tr v-for="delivery in group">
                                                 <td>{{ delivery.index }}</td>
-                                                <td :class="is_summary ? 'text-right' : ''">{{ is_summary ? delivery.total : formatDateTime(delivery.offloading_time) }}</td>
                                                 <td v-if="!is_summary">{{ delivery.plate_number }}</td>
-                                                <td class="text-right">{{ formatNumber(delivery.offloading_gross_weight) }}</td>
-                                                <td class="text-right">{{ formatNumber(delivery.offloading_tare_weight) }}</td>
-                                                <td class="text-right">{{ formatNumber(delivery.offloading_net_weight) }}</td>
-                                                <td class="text-right" v-if="!is_summary">{{ delivery.offloading_weighbridge_number }}</td>
+                                                <td :class="is_summary ? 'text-right' : ''">{{ is_summary ? delivery.total : formatDateTime(delivery.date) }}</td>
+                                                <td>{{ delivery.is_advance ? 'Yes' : 'No' }}</td>
+                                                <td class="text-right">{{ formatNumber(delivery.amount) }}</td>
                                             </tr>
                                         </template>
                                     </tbody>
@@ -132,21 +129,15 @@
                                             <td>{{ delivery.index }}</td>
                                             <td>{{ delivery.name }}</td>
                                             <td v-if="!is_summary">{{ delivery.plate_number }}</td>
-                                            <td :class="is_summary ? 'text-right' : ''">{{ is_summary ? delivery.total : formatDateTime(delivery.offloading_time) }}</td>
-                                            <td class="text-right">{{ formatNumber(delivery.offloading_gross_weight) }}</td>
-                                            <td class="text-right">{{ formatNumber(delivery.offloading_tare_weight) }}</td>
-                                            <td class="text-right">{{ formatNumber(delivery.offloading_net_weight) }}</td>
-                                            <td class="text-right" v-if="!is_summary">{{ delivery.offloading_weighbridge_number }}</td>
+                                            <td :class="is_summary ? 'text-right' : ''">{{ is_summary ? delivery.total : formatDateTime(delivery.date) }}</td>
+                                            <td>{{ delivery.is_advance ? 'Yes' : 'No' }}</td>
+                                            <td class="text-right">{{ formatNumber(delivery.amount) }}</td>
                                         </tr>
-
                                         <tr v-if="deliveries.length">
-                                            <th :colspan="is_summary ? 2 : 3">
+                                            <th :colspan="is_summary ? 1 : 2">
                                                 <strong>Totals</strong>
                                             </th>
-                                            <th class="text-right">{{ getSum(deliveries, 'offloading_gross_weight') }}</th>
-                                            <th class="text-right">{{ getSum(deliveries, 'offloading_tare_weight') }}</th>
-                                            <th class="text-right">{{ getSum(deliveries, 'offloading_net_weight') }}</th>
-                                            <th class="text-right">{{ getSum(deliveries, 'offloading_net_weight') }}</th>
+                                            <th class="text-right">{{ getSum(deliveries, 'amount') }}</th>
                                             <th></th>
                                         </tr>
                                     </tbody>
@@ -316,6 +307,7 @@
                 .catch(() => this.$root.isLoading = false)
                 .then(() => this.$root.isLoading = false);
         },
+
         mounted() {
             $('#end_date').datepicker({
                 endDate: '0d',
@@ -336,25 +328,7 @@
                     .datepicker('setStartDate', e.target.value);
             });
         },
-
         methods: {
-            generateReport() {
-                this.$root.isLoading = true;
-                http.post('/api/reports/offloading', this.report).then(response => {
-                    this.selected_truck = null;
-                    this.selected_client = null;
-                    this.selected_driver = null;
-                    this.is_grouped = this.report.group_contract;
-                    this.is_summary = this.report.summary;
-                    this.all_deliveries = response.deliveries;
-
-
-                    return response;
-                })
-                    .then(() => this.$root.isLoading = false)
-                    .catch(() => this.$root.isLoading = false);
-            },
-
             mapFields(items) {
                 let first = 1;
 
@@ -380,8 +354,23 @@
 
                 return items;
             },
+            generateReport() {
+                this.$root.isLoading = true;
+                http.post('/api/reports/ls-mileage', this.report).then(response => {
+                    this.selected_truck = null;
+                    this.selected_client = null;
+                    this.selected_driver = null;
+                    this.is_grouped = this.report.group_contract;
+                    this.is_summary = this.report.summary;
+                    this.all_deliveries = response.deliveries;
 
-            formatDateTime(dateTime, noTime = false) {
+                    return response;
+                })
+                    .then(() => this.$root.isLoading = false)
+                    .catch(() => this.$root.isLoading = false);
+            },
+
+            formatDateTime(dateTime, noTime = true) {
                 return moment(dateTime).format(noTime ? "MMMM Do YYYY" : "MMMM Do YYYY, h:mm a");
             },
 

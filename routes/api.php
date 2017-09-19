@@ -120,7 +120,11 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('reports/loading', 'ReportController@loading');
     Route::post('reports/offloading', 'ReportController@offloading');
     Route::post('reports/fuel', 'ReportController@fuel');
+    Route::post('reports/ls-fuel', 'ReportController@LsFuel');
     Route::post('reports/mileage', 'ReportController@mileage');
+    Route::post('reports/ls-mileage', 'ReportController@lsMileage');
     Route::get('reports/init', 'ReportController@init');
     Route::post('reports/deliveries', 'ReportController@deliveries');
+
+    Route::resource('ls-delivery', '\SmoDav\Controllers\API\LocalShunting\DeliveryController');
 });

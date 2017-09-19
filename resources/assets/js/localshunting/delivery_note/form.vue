@@ -195,6 +195,7 @@
                 return http.get('/api/lsdelivery/' + id).then((response) => {
                     this.deliveryNote = response.delivery;
                     this.vehicle = response.delivery.vehicle;
+                    this.drivers = response.drivers;
                     this.$root.isLoading = false;
                 });
             },
