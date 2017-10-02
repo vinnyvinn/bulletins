@@ -7,14 +7,14 @@
                 <h3>DELIVERY NOTE</h3>
             </div>
             <div class="col-xs-4 text-center">
-                <h1><strong style="color: red !important;">{{ $copyHeader }} Copy</strong></h1>
-                <h1><strong style="color: red !important;">KBS - {{ str_pad($trip->id, 5, '0', STR_PAD_LEFT) }}</strong></h1>
+                <h2><strong>{{ $copyHeader }} Copy</strong></h2>
             </div>
             <div class="col-xs-4 text-right">
                 <h3>{{ config('app.name') }}</h3>
                 <h5>{{ config('app.telephone') }}</h5>
                 <h5>{{ config('app.email') }}</h5>
                 <h5>{{ config('app.location') }}</h5>
+                <h4 class="text-right"><strong style="color: red !important;">KBS - {{ str_pad($trip->id, 5, '0', STR_PAD_LEFT) }}</strong></h4>
             </div>
         </div>
 
@@ -22,19 +22,19 @@
 
         <div class="row">
             <div class="col-xs-6">
-                <h5><strong>Client Name: </strong> {{ $trip->contract->client->Name }}</h5>
-                <h5><strong>Address: </strong> {{ $trip->contract->client->Address }}</h5>
-                <h5><strong>Client Contact: </strong> {{ $trip->contract->client->Telephone }}</h5>
-                <h5><strong>LPO No: </strong> </h5>
-                <h5><strong>Route: </strong> {{ $trip->route->source }} <strong>TO</strong> {{ $trip->route->destination }}</h5>
+                <h4 class="text-left"><strong>Client Name: </strong> {{ $trip->contract->client->Name }}</h4>
+                <h4 class="text-left"><strong>Address: </strong> {{ $trip->contract->client->Address }}</h4>
+                <h4 class="text-left"><strong>Client Contact: </strong> {{ $trip->contract->client->Telephone }}</h4>
+                <h4 class="text-left"><strong>LPO No: </strong> </h4>
+                <h4 class="text-left"><strong>Route: </strong> {{ $trip->route->source }} <strong>TO</strong> {{ $trip->route->destination }}</h4>
             </div>
             <div class="col-xs-6">
                 <div class="pull-right">
-                    <h5><strong>Delivery Date: </strong> {{ Carbon\Carbon::parse($trip->loading_time)->format('d F Y') }}</h5>
-                    <h5><strong>Journey No: </strong> JRNY-{{ $trip->journey->id }}</h5>
-                    <h5><strong>Delivery To: </strong> {{ $trip->route->destination }}</h5>
-                    <h5><strong>Weighbridge Ticket No: </strong> {{ $trip->loading_weighbridge_number }}</h5>
-                    <h5><strong>Delivery: </strong> {{ $trip->route->destination }}</h5>
+                    <h4 class="text-right"><strong>Delivery Date: </strong> {{ Carbon\Carbon::parse($trip->loading_time)->format('d F Y') }}</h4>
+                    <h4 class="text-right"><strong>Journey No: </strong> JRNY-{{ $trip->journey->id }}</h4>
+                    <h4 class="text-right"><strong>Delivery To: </strong> {{ $trip->route->destination }}</h4>
+                    <h4 class="text-right"><strong>Weighbridge Ticket No: </strong> {{ $trip->loading_weighbridge_number }}</h4>
+                    <h4 class="text-right"><strong>Delivery: </strong> {{ $trip->route->destination }}</h4>
                 </div>
             </div>
 
@@ -49,42 +49,44 @@
                         <th class="text-uppercase text-left"><h4><strong>Offloading Date: {{ $trip->offloading_time ? Carbon\Carbon::parse($trip->offloading_time)->format('d F Y') : '' }}</strong></h4></th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody style="font-size: 16px !important;">
                     <tr>
                         <td><strong>Weighbridge Ticket No</strong></td>
-                        <td>{{ $trip->loading_weighbridge_number }}</td>
+                        <td class="text-right">{{ $trip->loading_weighbridge_number }}</td>
                         <td><strong>Weighbridge Ticket No</strong></td>
-                        <td>{{ $trip->offloading_weighbridge_number ? $trip->offloading_weighbridge_number : '' }}</td>
+                        <td class="text-right">{{ $trip->offloading_weighbridge_number ? $trip->offloading_weighbridge_number : '' }}</td>
                     </tr>
                     <tr>
                         <td><strong>Product</strong></td>
-                        <td><strong>{{ $trip->bags_loaded ? 'No. of Packages' : '' }}</strong></td>
+                        <td class="text-right">{{ $trip->contract->cargoType->name }}</td>
                         <td><strong>Product</strong></td>
+                        <td class="text-right">{{ $trip->contract->cargoType->name }}</td>
+                    </tr>
+                    @if($trip->bags_loaded)
+                    <tr>
                         <td><strong>{{ $trip->bags_loaded ? 'No. of Packages' : '' }}</strong></td>
+                        <td class="text-right">{{ $trip->bags_loaded ?: '' }}</td>
+                        <td><strong>{{ $trip->bags_loaded ? 'No. of Packages' : '' }}</strong></td>
+                        <td class="text-right">{{ $trip->bags_loaded ?: '' }}</td>
                     </tr>
-                    <tr>
-                        <td>{{ $trip->contract->cargoType->name }}</td>
-                        <td>{{ $trip->bags_loaded ?: '' }}</td>
-                        <td>{{ $trip->contract->cargoType->name }}</td>
-                        <td>{{ $trip->bags_loaded ?: '' }}</td>
-                    </tr>
+                    @endif
                     <tr>
                         <td><strong>Gross Weight</strong></td>
-                        <td>{{ number_format($trip->loading_gross_weight, 2) }} KGs</td>
+                        <td class="text-right">{{ number_format($trip->loading_gross_weight, 2) }} KGs</td>
                         <td><strong>Gross Weight</strong></td>
-                        <td>{{ $trip->offloading_gross_weight != 0.00 ? number_format($trip->offloading_gross_weight, 2) . ' KGs' : '' }}</td>
+                        <td class="text-right">{{ $trip->offloading_gross_weight != 0.00 ? number_format($trip->offloading_gross_weight, 2) . ' KGs' : '' }}</td>
                     </tr>
                     <tr>
                         <td><strong>Tare Weight</strong></td>
-                        <td>{{ number_format($trip->loading_tare_weight, 2) }} KGs</td>
+                        <td class="text-right">{{ number_format($trip->loading_tare_weight, 2) }} KGs</td>
                         <td><strong>Tare Weight</strong></td>
-                        <td>{{ $trip->offloading_tare_weight != 0.00 ? number_format($trip->offloading_tare_weight, 2) . ' KGs' : '' }}</td>
+                        <td class="text-right">{{ $trip->offloading_tare_weight != 0.00 ? number_format($trip->offloading_tare_weight, 2) . ' KGs' : '' }}</td>
                     </tr>
                     <tr>
                         <td><strong>Net Weight</strong></td>
-                        <td>{{ number_format($trip->loading_net_weight, 2) }} KGs</td>
+                        <td class="text-right">{{ number_format($trip->loading_net_weight, 2) }} KGs</td>
                         <td><strong>Net Weight</strong></td>
-                        <td>{{ $trip->offloading_net_weight != 0.00 ? number_format($trip->offloading_net_weight, 2) . ' KGs' : '' }}</td>
+                        <td class="text-right">{{ $trip->offloading_net_weight != 0.00 ? number_format($trip->offloading_net_weight, 2) . ' KGs' : '' }}</td>
                     </tr>
                     </tbody>
                 </table>
