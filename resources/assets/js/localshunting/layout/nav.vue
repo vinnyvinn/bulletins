@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="hidden-print">
         <div class="top-nav">
             <h4 class="pull-left brand"><strong>{{ app }}</strong></h4>
             <router-link style="margin-right: 30px;margin-top: 3px" to="/ls/contract-selection" class="pull-right btn btn-success">
