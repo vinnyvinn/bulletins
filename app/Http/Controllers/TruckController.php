@@ -258,7 +258,7 @@ class TruckController extends Controller
             'activity' => 'Delivery Note Issue',
             'date' => $journey->delivery->created_at,
             'time' => $journey->delivery->created_at,
-            'document_number' => 'RKS-' . $journey->delivery->id,
+            'document_number' => 'KBS-' . $journey->delivery->id,
             'posted_by' => $journey->delivery->user->name
           ];
                 \array_push($activities, $activity);

@@ -7,7 +7,7 @@
                 <h3>DELIVERY NOTE</h3>
             </div>
             <div class="col-xs-4 text-center">
-                <h1><strong style="color: red !important;">RKS - {{ str_pad($trip->id, 5, '0', STR_PAD_LEFT) }}</strong></h1>
+                <h1><strong style="color: red !important;">KBS - {{ str_pad($trip->id, 5, '0', STR_PAD_LEFT) }}</strong></h1>
             </div>
             <div class="col-xs-4 text-right">
                 <h3>{{ config('app.name') }}</h3>

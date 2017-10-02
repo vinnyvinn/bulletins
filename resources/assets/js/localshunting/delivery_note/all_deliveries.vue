@@ -28,7 +28,7 @@
                                     <tr v-for="delivery in deliveries">
                                         <td>{{ delivery.id }}</td>
                                         <td>
-                                            <span>RKS-{{ delivery.id }}</span>
+                                            <span>KBS-{{ delivery.id }}</span>
                                         </td>
                                         <td>{{ delivery.vehicle.plate_number }}</td>
                                         <td class="text-right">{{ formatNumber(delivery.loading_gross_weight) }}</td>
