@@ -1,4 +1,10 @@
 @foreach(['Customer\'s', 'Mombasa Office', 'Nairobi Account\'s'] as $copyHeader)
-    @include('printouts.deliverynote-raw')
+    <div style="clear: both; display: block; float: none;">
+
+        <div style="display: block; float: none;">
+            @include('printouts.deliverynote-raw')
+        </div>
+    </div>
+
     <div class="page-break"></div>
 @endforeach
