@@ -52,41 +52,41 @@
                     <tbody style="font-size: 16px !important;">
                     <tr>
                         <td><strong>Weighbridge Ticket No</strong></td>
-                        <td class="text-right">{{ $trip->loading_weighbridge_number }}</td>
+                        <td class="text-right" style="border-right: 1px solid #e5e5e5;">{{ $trip->loading_weighbridge_number }}</td>
                         <td><strong>Weighbridge Ticket No</strong></td>
                         <td class="text-right">{{ $trip->offloading_weighbridge_number ? $trip->offloading_weighbridge_number : '' }}</td>
                     </tr>
                     <tr>
                         <td><strong>Product</strong></td>
-                        <td class="text-right">{{ $trip->contract->cargoType->name }}</td>
+                        <td class="text-right" style="border-right: 1px solid #e5e5e5;">{{ $trip->contract->cargoType->name }}</td>
                         <td><strong>Product</strong></td>
                         <td class="text-right">{{ $trip->contract->cargoType->name }}</td>
                     </tr>
                     @if($trip->bags_loaded)
                     <tr>
                         <td><strong>{{ $trip->bags_loaded ? 'No. of Packages' : '' }}</strong></td>
-                        <td class="text-right">{{ $trip->bags_loaded ?: '' }}</td>
+                        <td class="text-right" style="border-right: 1px solid #e5e5e5;">{{ $trip->bags_loaded ?: '' }}</td>
                         <td><strong>{{ $trip->bags_loaded ? 'No. of Packages' : '' }}</strong></td>
                         <td class="text-right">{{ $trip->bags_loaded ?: '' }}</td>
                     </tr>
                     @endif
                     <tr>
                         <td><strong>Gross Weight</strong></td>
-                        <td class="text-right">{{ number_format($trip->loading_gross_weight, 2) }} KGs</td>
+                        <td class="text-right" style="border-right: 1px solid #e5e5e5;">{{ number_format($trip->loading_gross_weight, 2) }} KGs</td>
                         <td><strong>Gross Weight</strong></td>
                         <td class="text-right">{{ $trip->offloading_gross_weight != 0.00 ? number_format($trip->offloading_gross_weight, 2) . ' KGs' : '' }}</td>
                     </tr>
                     <tr>
                         <td><strong>Tare Weight</strong></td>
-                        <td class="text-right">{{ number_format($trip->loading_tare_weight, 2) }} KGs</td>
+                        <td class="text-right" style="border-right: 1px solid #e5e5e5;">{{ number_format($trip->loading_tare_weight, 2) }} KGs</td>
                         <td><strong>Tare Weight</strong></td>
                         <td class="text-right">{{ $trip->offloading_tare_weight != 0.00 ? number_format($trip->offloading_tare_weight, 2) . ' KGs' : '' }}</td>
                     </tr>
                     <tr>
-                        <td><strong>Net Weight</strong></td>
-                        <td class="text-right">{{ number_format($trip->loading_net_weight, 2) }} KGs</td>
-                        <td><strong>Net Weight</strong></td>
-                        <td class="text-right">{{ $trip->offloading_net_weight != 0.00 ? number_format($trip->offloading_net_weight, 2) . ' KGs' : '' }}</td>
+                        <td style="border-bottom: 1px solid #e5e5e5;"><strong>Net Weight</strong></td>
+                        <td class="text-right" style="border-right: 1px solid #e5e5e5;border-bottom: 1px solid #e5e5e5">{{ number_format($trip->loading_net_weight, 2) }} KGs</td>
+                        <td style="border-bottom: 1px solid #e5e5e5;"><strong>Net Weight</strong></td>
+                        <td style="border-bottom: 1px solid #e5e5e5;" class="text-right">{{ $trip->offloading_net_weight != 0.00 ? number_format($trip->offloading_net_weight, 2) . ' KGs' : '' }}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -96,7 +96,7 @@
             <div class="col-xs-8">
                 <br>
                 <h5>
-                    <strong>Driver's Sign: __________________________________</strong>
+                    <strong>Driver's Sign: ____________________________________</strong>
                 </h5>
                 <h5>
                     <strong>Driver: </strong> {{ $trip->driver->first_name }}
@@ -106,7 +106,7 @@
                     <strong>Supervisor's Sign: _______________________________</strong>
                 </h5>
                 <h5>
-                    <strong>Supervisor Name: </strong> {{ $trip->user->first_name }} {{ $trip->user->last_name }}
+                    <strong>Processed By: </strong> {{ $trip->user->first_name }} {{ $trip->user->last_name }}
                 </h5>
                 <br>
 
@@ -135,16 +135,19 @@
             </div>
 
             <div class="col-xs-8">
-                <strong>Remarks: </strong>_____________________________________________________________________________
-                <br>______________________________________________________________________________________
-                <br>______________________________________________________________________________________
+                <strong>Remarks: </strong>__________________________________________________________________________________
+                <br>
+                <br>_____________________________________________________________________________________________
+                <br>
+                <br>_____________________________________________________________________________________________
+                <br>
                 <br>
                 <div class="row">
                     <div class="col-xs-6">
-                        <h5><strong>Name: </strong>_________________________</h5>
+                        <h5><strong>Name: </strong>_______________________________</h5>
                     </div>
                     <div class="col-xs-6">
-                        <h5><strong>Date: </strong>_________________________</h5>
+                        <h5><strong>Date: </strong>_______________________________</h5>
                     </div>
                 </div>
             </div>
