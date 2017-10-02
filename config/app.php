@@ -12,8 +12,8 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'app_name' => 'R.K SANGHANI',
-    'name' => 'R.K SANGHANI',
+    'app_name' => 'K.B. SANGHANI',
+    'name' => 'K.B. SANGHANI',
     'telephone' => 'Tel: +254202612441/2 Fax: +2542012440/4',
     'email' => 'Email: info@sanghani',
     'location' => 'Nairobi - Kenya',
