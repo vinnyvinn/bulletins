@@ -36,7 +36,9 @@ class LSReportController extends Controller
     public function loadingUnloading($id)
     {
         return Response::json([
-        'lsdeliveries' => LSDelivery::where('contract_id', $id)
+        'lsdeliveries' => LSDelivery::with(['station' => function ($builder) {
+            return $builder->select('name','id');
+        }])->where('contract_id', $id)
               ->with('vehicle', 'temporaryDriver', 'vehicle.driver')
               ->get(),
         'contract' => Contract::where('id', $id)

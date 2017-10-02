@@ -75,10 +75,12 @@
                           <th>SNo</th>
                           <th>Truck</th>
                           <th>DNote</th>
+                          <th>Station</th>
                           <th class="text-right">Load QTY</th>
                           <th class="text-right">Offload QTY</th>
                           <th>Driver</th>
-                          <th>WB Loading</th>
+                          <th class="text-right">WB Loading</th>
+                          <th class="text-right">WB Offloading</th>
                           <th>Date</th>
                         </tr>
                       </thead>
@@ -88,14 +90,16 @@
                           <td>
                             <span v-if="delivery.vehicle">{{ delivery.vehicle.plate_number }}</span>
                           </td>
-                          <td>RKS - {{ delivery.id }}</td>
+                          <td>KBS - {{ delivery.id }}</td>
+                          <td><span v-if="delivery.station">{{ delivery.station.name }}</span></td>
                           <td class="text-right">{{ delivery.loading_net_weight }}</td>
                           <td class="text-right">{{ delivery.offloading_net_weight }}</td>
                           <td>
                               <span v-if="delivery.temporary_driver">{{ delivery.temporary_driver.first_name }} {{ delivery.temporary_driver.last_name }}</span>
                               <span v-else-if="delivery.vehicle.driver">{{ delivery.vehicle.driver.first_name }} {{ delivery.vehicle.driver.last_name }}</span>
                           </td>
-                          <td>{{ delivery.loading_weighbridge_number }}</td>
+                          <td class="text-right">{{ delivery.loading_weighbridge_number }}</td>
+                          <td class="text-right">{{ delivery.offloading_weighbridge_number }}</td>
                           <td>{{ humanDate(delivery.created_at) }}</td>
                         </tr>
                       </tbody>

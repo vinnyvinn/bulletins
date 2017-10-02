@@ -100,7 +100,7 @@ class DeliveryController extends Controller
      */
     public function show($id)
     {
-        $delivery = Delivery::findOrFail($id);
+        $delivery = Delivery::with(['user'])->findOrFail($id);
         $journey = Journey::with(['driver', 'truck.trailer', 'route', 'contract'])
             ->where('id', $delivery->journey_id)
             ->firstOrFail();
