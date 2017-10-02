@@ -123,6 +123,11 @@ a.active:not(.btn) {
     }
     .page-break {
         page-break-after: always;
+        page-break-inside: avoid;
+    }
+    .page-break-b {
+        page-break-before: always;
+        page-break-inside: avoid;
     }
     #printable,
     #printable * {

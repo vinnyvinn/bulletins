@@ -1,10 +1,13 @@
 <template>
     <div>
+        <div class="visible-print-block" v-html="printout" style="float: none;"></div>
         <div class="panel panel-default hidden-print">
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h4><strong>Delivery Note</strong></h4>
+                        <h4>
+                            <strong>Delivery Note</strong>
+                        </h4>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group pull-right">
@@ -22,7 +25,7 @@
                                 <label for="journey_id">Journey Number</label>
                                 <input disabled type="text" class="form-control" id="journey_id" :value="'JRN-' + journey.id">
                                 <!--<select disabled v-model="deliveryNote.journey_id" class="form-control input-sm" id="journey_id" name="journey_id" required>-->
-                                    <!--<option v-for="journey in journeys" :value="journey.id">JRNY-{{ journey.id }}</option>-->
+                                <!--<option v-for="journey in journeys" :value="journey.id">JRNY-{{ journey.id }}</option>-->
                                 <!--</select>-->
                             </div>
 
@@ -30,7 +33,6 @@
                                 <label>Route From</label>
                                 <h5>{{ journey.route.source }}</h5>
                             </div>
-
 
                         </div>
 
@@ -93,7 +95,9 @@
 
                     <div class="row">
                         <div class="col-sm-5">
-                            <h4><strong>Loading Details</strong></h4>
+                            <h4>
+                                <strong>Loading Details</strong>
+                            </h4>
                             <hr>
                             <div class="form-group">
                                 <label for="bags_loaded">Bags Loaded</label>
@@ -119,7 +123,9 @@
                         </div>
 
                         <div class="col-sm-5">
-                            <h4><strong>Offloading Details</strong></h4>
+                            <h4>
+                                <strong>Offloading Details</strong>
+                            </h4>
                             <hr>
 
                             <div class="form-group">
@@ -141,7 +147,9 @@
                         </div>
 
                         <div class="col-sm-2">
-                            <h4><strong>Narration</strong></h4>
+                            <h4>
+                                <strong>Narration</strong>
+                            </h4>
                             <hr>
                             <div class="form-group">
                                 <label for="narration">Narration</label>
@@ -157,7 +165,6 @@
 
             </div>
         </div>
-        <div class="visible-print-block" id="printable" v-html="printout"></div>
     </div>
 </template>
 
@@ -197,7 +204,7 @@
         },
 
         mounted() {
-            $('input[type="number"]').on('focus', function () {
+            $('input[type="number"]').on('focus', function() {
                 this.select();
             });
         },
