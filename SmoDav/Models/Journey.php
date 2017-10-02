@@ -84,6 +84,16 @@ class Journey extends SmoDavModel
         return $this->belongsTo(User::class);
     }
 
+    public function opener()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function closer()
+    {
+        return $this->belongsTo(User::class, 'closed_by');
+    }
+
     public function gatepass()
     {
         return $this->hasOne(GatePass::class);

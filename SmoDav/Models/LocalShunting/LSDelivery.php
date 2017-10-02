@@ -3,6 +3,7 @@
 namespace SmoDav\Models\LocalShunting;
 
 use Illuminate\Database\Eloquent\Model;
+use SmoDav\Models\Station;
 use SmoDav\Models\Vehicle;
 use App\RouteCard;
 use App\User;
@@ -52,5 +53,10 @@ class LSDelivery extends Model
     public function temporaryDriver()
     {
         return $this->belongsTo(Driver::class, 'temporary_driver', 'id');
+    }
+
+    public function station()
+    {
+        return $this->belongsTo(Station::class);
     }
 }

@@ -38,13 +38,13 @@
                                         <td class="text-right">{{ formatNumber(delivery.offloading_tare_weight) }}</td>
                                         <td class="text-right">{{ formatNumber(delivery.offloading_net_weight) }}</td>
                                         <td class="text-center">
-                                            <span @click="unload(delivery)" v-if="(delivery.status == 'Loaded') && $root.can('create-delivery')" class="btn btn-xs btn-success">Offload</span>
-                                            <span @click="edit(delivery)" v-if="$root.can('edit-delivery')" class="btn btn-xs btn-info">
+                                            <span @click="unload(delivery)" v-if="(delivery.status == 'Loaded') && $root.can('ls-create-delivery')" class="btn btn-xs btn-success">Offload</span>
+                                            <span @click="edit(delivery)" v-if="$root.can('ls-edit-delivery')" class="btn btn-xs btn-info">
                                                 <i class="fa fa-pencil"></i>
                                             </span>
                                             <!-- <button v-if="$root.can('delete-delivery')" data-toggle="popover" :data-item="delivery.id" class="btn btn-xs btn-danger btn-destroy">
-                                                        <i class="fa fa-trash"></i>
-                                                    </button> -->
+                                                            <i class="fa fa-trash"></i>
+                                                        </button> -->
                                         </td>
                                     </tr>
                                 </tbody>

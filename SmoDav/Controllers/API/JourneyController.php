@@ -39,8 +39,10 @@ class JourneyController extends Controller
                 'driver',
                 'contract.client',
             ])
+            ->where('status', '<>', 'Closed')
             ->get([
-                'id', 'driver_id', 'is_contract_related', 'truck_id', 'contract_id', 'journey_type', 'job_date', 'ref_no', 'status',
+                'id', 'driver_id', 'is_contract_related', 'truck_id', 'contract_id', 'journey_type', 'job_date',
+                'ref_no', 'status',
             ]);
 
         return Response::json([
@@ -158,7 +160,16 @@ class JourneyController extends Controller
      */
     public function show($id)
     {
-        $journey = Journey::with(['contract', 'route', 'driver', 'truck.trailer', 'mileage', 'fuel','delivery'])->findOrFail($id);
+        $journey = Journey::with([
+            'contract', 'route', 'driver', 'truck.trailer', 'mileage', 'fuel','delivery',
+            'closer' => function ($builder) {
+                return $builder->select('id', 'first_name', 'last_name');
+            },
+            'opener' => function ($builder) {
+                return $builder->select('id', 'first_name', 'last_name');
+            }
+        ])->findOrFail($id);
+
         $journey->raw = \json_decode($journey->raw);
         $contract = $journey->contract ? \json_decode($journey->contract->raw) : new \stdClass();
         $contract->id = $journey->contract ? $journey->contract->id : '';

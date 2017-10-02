@@ -8,6 +8,10 @@
                         <h4>
                             <strong>Delivery Note</strong>
                         </h4>
+
+                        <div v-if="deliveryNote.user">
+                            <strong>Created By: </strong> {{ deliveryNote.user.first_name }} {{ deliveryNote.user.last_name }}
+                        </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group pull-right">

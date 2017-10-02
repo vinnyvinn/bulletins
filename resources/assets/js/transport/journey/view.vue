@@ -7,6 +7,12 @@
                         <h4>
                             <strong>Journey Details: JRNY-{{ $route.params.id }} ({{ status }})</strong>
                         </h4>
+                        <div v-if="journey.opener">
+                            <strong>Created By: </strong> {{ journey.opener.first_name }} {{ journey.opener.last_name }}
+                        </div>
+                        <div v-if="journey.closer">
+                            <strong>Closed By: </strong> {{ journey.closer.first_name }} {{ journey.closer.last_name }}
+                        </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group pull-right" v-if="$root.can('approve-journey')">
@@ -406,6 +412,8 @@
                 this.contract = response.contract;
 
                 this.journey = response.journey.raw;
+                this.journey.opener = response.journey.opener;
+                this.journey.closer = response.journey.closer;
 
                 if (response.journey.delivery) {
                     this.journey_delivery_status = response.journey.delivery.status;

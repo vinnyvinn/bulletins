@@ -37,7 +37,9 @@
 
                 <div class="row">
                     <div class="col-sm-5">
-                        <h4><strong>Loading Details</strong></h4>
+                        <h4>
+                            <strong>Loading Details</strong>
+                        </h4>
                         <hr>
                         <div class="form-group">
                             <label for="bags_loaded">Bags Loaded</label>
@@ -63,7 +65,9 @@
                     </div>
 
                     <div class="col-sm-5">
-                        <h4><strong>Offloading Details</strong></h4>
+                        <h4>
+                            <strong>Offloading Details</strong>
+                        </h4>
                         <hr>
 
                         <div class="form-group">
@@ -83,16 +87,18 @@
                             <input :disabled="(typeof $route.params.unload !== 'string') && (typeof $route.params.id !== 'string')" id="offloading_weighbridge_number" v-model="deliveryNote.offloading_weighbridge_number" type="text" class="form-control input-sm" required>
                         </div>
                         <div class="form-group" v-if="!$route.params.unload">
-                          <label for="temporary_driver">Temporary Driver</label>
-                          <select id="temporary_driver" class="form-control input-sm select2" v-model="deliveryNote.temporary_driver">
-                            <option value="" disabled> Select A driver</option>
-                            <option v-for="driver in drivers":value="driver.id">{{ driver.first_name }} {{ driver.last_name }}</option>
-                          </select>
-                         </div>
+                            <label for="temporary_driver">Temporary Driver</label>
+                            <select id="temporary_driver" class="form-control input-sm select2" v-model="deliveryNote.temporary_driver">
+                                <option value="" disabled> Select A driver</option>
+                                <option v-for="driver in drivers" :value="driver.id">{{ driver.first_name }} {{ driver.last_name }}</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div class="col-sm-2">
-                        <h4><strong>Narration</strong></h4>
+                        <h4>
+                            <strong>Narration</strong>
+                        </h4>
                         <hr>
                         <div class="form-group">
                             <label for="narration">Narration</label>
@@ -116,9 +122,9 @@
             return {
                 unloading: false,
                 vehicle: {
-                  trailer: {},
-                  driver: {},
-                  contract: {}
+                    trailer: {},
+                    driver: {},
+                    contract: {}
                 },
                 deliveryNote: {
                     station_id: window.Laravel.station_id,
@@ -136,17 +142,17 @@
                     offloading_weighbridge_number: '',
                     temporary_driver: ''
                 },
-                drivers:[]
+                drivers: []
             };
         },
 
         created() {
-            if (! this.$route.params.id && ! this.$route.params.unload &&  ! this.$root.can('create-delivery')) {
+            if (!this.$route.params.id && !this.$route.params.unload && !this.$root.can('ls-create-delivery')) {
                 this.$router.push('/403');
                 return false;
             }
 
-            if (this.$route.params.id && ! this.$root.can('edit-delivery')) {
+            if (this.$route.params.id && !this.$root.can('ls-edit-delivery')) {
                 this.$router.push('/403');
                 return false;
             }
@@ -166,7 +172,7 @@
         },
 
         mounted() {
-            $('input[type="number"]').on('focus', function () {
+            $('input[type="number"]').on('focus', function() {
                 this.select();
             });
             this.setupUI()
@@ -174,17 +180,17 @@
 
         methods: {
             setupUI() {
-              $('#temporary_driver').select2().on('change', e => this.deliveryNote.temporary_driver = e.target.value);
+                $('#temporary_driver').select2().on('change', e => this.deliveryNote.temporary_driver = e.target.value);
             },
 
             updateNote() {
-              if(parseFloat(this.deliveryNote.loading_gross_weight) >= parseFloat(this.deliveryNote.loading_tare_weight)) {
-                this.deliveryNote.loading_net_weight = parseFloat(this.deliveryNote.loading_gross_weight) - parseFloat(this.deliveryNote.loading_tare_weight);
-                this.deliveryNote.offloading_net_weight = parseFloat(this.deliveryNote.offloading_gross_weight) - parseFloat(this.deliveryNote.offloading_tare_weight);
-              } else {
-                alert2(this.$root, ['Tare Weight cannot be more than the gross weight'], 'danger');
-                this.deliveryNote.loading_tare_weight = 0;
-              }
+                if (parseFloat(this.deliveryNote.loading_gross_weight) >= parseFloat(this.deliveryNote.loading_tare_weight)) {
+                    this.deliveryNote.loading_net_weight = parseFloat(this.deliveryNote.loading_gross_weight) - parseFloat(this.deliveryNote.loading_tare_weight);
+                    this.deliveryNote.offloading_net_weight = parseFloat(this.deliveryNote.offloading_gross_weight) - parseFloat(this.deliveryNote.offloading_tare_weight);
+                } else {
+                    alert2(this.$root, ['Tare Weight cannot be more than the gross weight'], 'danger');
+                    this.deliveryNote.loading_tare_weight = 0;
+                }
 
             },
 
