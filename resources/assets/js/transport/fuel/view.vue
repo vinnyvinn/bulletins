@@ -65,6 +65,22 @@
                     <strong>Fuel Qty: </strong> <span class="text-uppercase">{{ fuel.fuel_issued }} Litres</span>
                 </div>
             </div>
+            <div class="row" v-if="parseFloat(fuel.top_up)">
+                <div class="col-xs-4">
+                    <strong>Top Up Reason: </strong> {{ fuel.top_up_reason }}
+                </div>
+                <div class="col-xs-4">
+                    <strong>Top Up Amount: </strong> {{ fuel.top_up_quantity }} Litres
+                </div>
+                <div class="col-xs-4">
+                    <h5><strong>Total Issued: {{ parseFloat(fuel.top_up_quantity) + parseFloat(fuel.fuel_issued) }}</strong> Litres</h5>
+                </div>
+            </div>
+            <div class="row" v-else>
+                <div class="col-xs-4 col-xs-offset-8">
+                    <h5><strong>Total Issued: {{ parseFloat(fuel.top_up_quantity) + parseFloat(fuel.fuel_issued) }}</strong> Litres</h5>
+                </div>
+            </div>
             <br>
             <div class="row">
                 <div class="col-xs-12">
@@ -155,7 +171,7 @@
 
                 <div class="row text-left">
                     <div class="col-xs-12">
-                        <h4><strong>Amount Approved: </strong> {{ parseFloat(mileage.approved_amount).toLocaleString() }}</h4>
+                        <h4><strong>Amount Approved: </strong> {{ isNaN(parseFloat(mileage.approved_amount)) ? '' : parseFloat(mileage.approved_amount).toLocaleString() }}</h4>
                     </div>
                 </div>
                 <br>
@@ -244,6 +260,22 @@
             </div>
             <div class="col-xs-4">
                 <strong>Fuel Qty: </strong> <span class="text-uppercase">{{ fuel.fuel_issued }} Litres</span>
+            </div>
+        </div>
+        <div class="row" v-if="parseFloat(fuel.top_up)">
+            <div class="col-xs-4">
+                <strong>Top Up Reason: </strong> {{ fuel.top_up_reason }}
+            </div>
+            <div class="col-xs-4">
+                <strong>Top Up Amount: </strong> {{ fuel.top_up_quantity }} Litres
+            </div>
+            <div class="col-xs-4">
+                <h5><strong>Total Issued: {{ parseFloat(fuel.top_up_quantity) + parseFloat(fuel.fuel_issued) }}</strong> Litres</h5>
+            </div>
+        </div>
+        <div class="row" v-else>
+            <div class="col-xs-4 col-xs-offset-8">
+                <h5><strong>Total Issued: {{ parseFloat(fuel.top_up_quantity) + parseFloat(fuel.fuel_issued) }}</strong> Litres</h5>
             </div>
         </div>
         <div class="row">
@@ -439,7 +471,7 @@ import axios from 'axios';
 
         methods: {
           calculateTotal() {
-            return this.fuel.fuel_total = parseInt(this.fuel.fuel_issued) + parseInt(this.fuel.current_fuel);
+            return this.fuel.fuel_total = parseFloat(fuel.fuel_issued) + parseFloat(fuel.top_up_quantity) + parseInt(this.fuel.current_fuel);
           },
 
           calculateKms() {

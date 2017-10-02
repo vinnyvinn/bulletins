@@ -580,7 +580,8 @@
             },
 
             setBoolState(key) {
-                this.contract[key] = this.contract[key] == 'true';
+                console.log(this.contract[key]);
+                this.contract[key] = this.contract[key] == 'true' || this.contract[key] == '1';
             },
 
             addUnloadingPoint() {
