@@ -1,7 +1,9 @@
 <template>
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h4><strong>Delivery Note</strong></h4>
+            <h4>
+                <strong>Delivery Note</strong>
+            </h4>
         </div>
 
         <div class="panel-body">
@@ -12,7 +14,7 @@
                             <label for="journey_id">Journey Number</label>
                             <input disabled type="text" class="form-control" id="journey_id" :value="'JRN-' + journey.id">
                             <!--<select :disabled="typeof $route.params.unload === 'string'" v-model="deliveryNote.journey_id" @change="journey" class="form-control input-sm" id="journey_id" name="journey_id" required>-->
-                                <!--<option v-for="journey in journeys" :value="journey.id">JRNY-{{ journey.id }}</option>-->
+                            <!--<option v-for="journey in journeys" :value="journey.id">JRNY-{{ journey.id }}</option>-->
                             <!--</select>-->
                         </div>
 
@@ -31,8 +33,8 @@
                             <h5>{{ journey.route.source }}</h5>
                         </div>
                         <!--<div class="form-group">-->
-                            <!--<label>Journey Ref No.</label>-->
-                            <!--<h5>{{ journey.ref_no }}</h5>-->
+                        <!--<label>Journey Ref No.</label>-->
+                        <!--<h5>{{ journey.ref_no }}</h5>-->
                         <!--</div>-->
                     </div>
 
@@ -75,7 +77,9 @@
 
                 <div class="row">
                     <div class="col-sm-5">
-                        <h4><strong>Loading Details</strong></h4>
+                        <h4>
+                            <strong>Loading Details</strong>
+                        </h4>
                         <hr>
                         <div class="form-group">
                             <label for="bags_loaded">Bags Loaded</label>
@@ -101,7 +105,9 @@
                     </div>
 
                     <div class="col-sm-5">
-                        <h4><strong>Offloading Details</strong></h4>
+                        <h4>
+                            <strong>Offloading Details</strong>
+                        </h4>
                         <hr>
 
                         <div class="form-group">
@@ -123,7 +129,9 @@
                     </div>
 
                     <div class="col-sm-2">
-                        <h4><strong>Narration</strong></h4>
+                        <h4>
+                            <strong>Narration</strong>
+                        </h4>
                         <hr>
                         <div class="form-group">
                             <label for="narration">Narration</label>
@@ -172,12 +180,12 @@
         },
 
         created() {
-            if (! this.$route.params.id && ! this.$route.params.unload &&  ! this.$root.can('create-delivery')) {
+            if (!this.$route.params.id && !this.$route.params.unload && !this.$root.can('create-delivery')) {
                 this.$router.push('/403');
                 return false;
             }
 
-            if (this.$route.params.id && ! this.$root.can('edit-delivery')) {
+            if (this.$route.params.id && !this.$root.can('edit-delivery')) {
                 this.$router.push('/403');
                 return false;
             }
@@ -194,7 +202,7 @@
         },
 
         mounted() {
-            $('input[type="number"]').on('focus', function () {
+            $('input[type="number"]').on('focus', function() {
                 this.select();
             });
         },
@@ -205,7 +213,7 @@
                 let journey = this.journeys.filter(e => e.id == this.deliveryNote.journey_id);
                 if (journey.length) {
                     return journey[0];
-                    this.deliveryNote.loading_weighbridge_number = 'JRNY-'+journey[0].id;
+                    this.deliveryNote.loading_weighbridge_number = 'JRNY-' + journey[0].id;
                 }
 
                 return {
@@ -220,13 +228,13 @@
 
         methods: {
             updateNote() {
-              if(parseFloat(this.deliveryNote.loading_gross_weight) >= parseFloat(this.deliveryNote.loading_tare_weight)) {
-                this.deliveryNote.loading_net_weight = parseFloat(this.deliveryNote.loading_gross_weight) - parseFloat(this.deliveryNote.loading_tare_weight);
-                this.deliveryNote.offloading_net_weight = parseFloat(this.deliveryNote.offloading_gross_weight) - parseFloat(this.deliveryNote.offloading_tare_weight);
-              } else {
-                alert2(this.$root, ['Tare Weight cannot be more than the gross weight'], 'danger');
-                this.deliveryNote.loading_tare_weight = 0;
-              }
+                if (parseFloat(this.deliveryNote.loading_gross_weight) >= parseFloat(this.deliveryNote.loading_tare_weight)) {
+                    this.deliveryNote.loading_net_weight = parseFloat(this.deliveryNote.loading_gross_weight) - parseFloat(this.deliveryNote.loading_tare_weight);
+                    this.deliveryNote.offloading_net_weight = parseFloat(this.deliveryNote.offloading_gross_weight) - parseFloat(this.deliveryNote.offloading_tare_weight);
+                } else {
+                    alert2(this.$root, ['Tare Weight cannot be more than the gross weight'], 'danger');
+                    this.deliveryNote.loading_tare_weight = 0;
+                }
 
             },
 
@@ -242,6 +250,10 @@
                 });
             },
             store() {
+                if (parseInt(this.deliveryNote.loading_net_weight) > 32000 || parseInt(this.deliveryNote.offloading_net_weight) > 32000) {
+                    alert2(this.$root, ['Please check the weights. You cannot have a net weight of more than 32,000KGs'], 'danger');
+                    return;
+                }
                 this.$root.isLoading = true;
                 let request = null;
 
@@ -250,11 +262,11 @@
                 if (this.$route.params.id) {
                     request = http.put('/api/delivery/' + this.$route.params.id, data, true);
                 } else if (this.$route.params.unload) {
-                  if(this.journey.contract.capture_offloading_weights && this.deliveryNote.offloading_net_weight == 0) {
-                    alert2(this.$root, ['This delivery requires capture of offloading weight'], 'danger');
-                    this.$root.isLoading = false;
-                    return;
-                  }
+                    if (this.journey.contract.capture_offloading_weights && this.deliveryNote.offloading_net_weight == 0) {
+                        alert2(this.$root, ['This delivery requires capture of offloading weight'], 'danger');
+                        this.$root.isLoading = false;
+                        return;
+                    }
                     request = http.put('/api/delivery/' + this.$route.params.unload, data, true);
                 } else {
                     request = http.post('/api/delivery', data, true);

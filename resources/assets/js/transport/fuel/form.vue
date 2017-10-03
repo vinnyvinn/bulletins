@@ -22,20 +22,26 @@
                         </div>
                     </div>
                     <div class="col-sm-3">
-                        <h5><strong>Vehicle Reg.No:</strong>{{ journey.truck.plate_number }}</h5>
-                        <h5><strong>Model:</strong> {{ journey.truck.make }} 
+                        <h5>
+                            <strong>Vehicle Reg.No:</strong>{{ journey.truck.plate_number }}</h5>
+                        <h5>
+                            <strong>Model:</strong> {{ journey.truck.model.name }}
                         </h5>
                         <div v-if="journey.truck.trailer">
-                            <h5><strong>Trailer: </strong>{{ journey.truck.trailer.plate_number }}</h5>
+                            <h5>
+                                <strong>Trailer: </strong>{{ journey.truck.trailer.plate_number }}</h5>
                         </div>
                     </div>
 
                     <div class="col-sm-2">
-                        <h5><strong>Route: RT-{{ journey.route.id}}</strong></h5>
-                        <h5><strong>From:</strong> {{ journey.route.source }}</h5>
-                        <h5><strong>To:</strong> {{ journey.route.destination }}</h5>
+                        <h5>
+                            <strong>Route: RT-{{ journey.route.id}}</strong>
+                        </h5>
+                        <h5>
+                            <strong>From:</strong> {{ journey.route.source }}</h5>
+                        <h5>
+                            <strong>To:</strong> {{ journey.route.destination }}</h5>
                     </div>
-
 
                     <div class="col-sm-4">
                         <div class="row">
@@ -43,10 +49,14 @@
                                 <img :src="getSource()" alt="" width="100%" height="100%"> <br>
                             </div>
                             <div class="col-sm-8">
-                                <h5><strong>Name:</strong> {{ journey.driver.first_name }}  {{ journey.driver.last_name }}</h5>
-                                <h5><strong>ID No:</strong> {{ journey.driver.identification_number }}</h5>
-                                <h5><strong>DL number:</strong> {{ journey.driver.dl_number }}</h5>
-                                <h5><strong>Mobile No:</strong> {{ journey.driver.mobile_phone }}</h5>
+                                <h5>
+                                    <strong>Name:</strong> {{ journey.driver.first_name }} {{ journey.driver.last_name }}</h5>
+                                <h5>
+                                    <strong>ID No:</strong> {{ journey.driver.identification_number }}</h5>
+                                <h5>
+                                    <strong>DL number:</strong> {{ journey.driver.dl_number }}</h5>
+                                <h5>
+                                    <strong>Mobile No:</strong> {{ journey.driver.mobile_phone }}</h5>
                             </div>
                         </div>
                     </div>
@@ -121,7 +131,7 @@
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label for="top_up_quantity">Top Up quantity:</label>
-                                <input type="number" class="form-control" id="top_up_quantity" v-model="fuel.top_up_quantity">
+                                <input @keyup="calculateTotal" type="number" class="form-control" id="top_up_quantity" v-model="fuel.top_up_quantity">
                             </div>
                         </div>
 
@@ -157,9 +167,12 @@
                     </div>
 
                     <div class="col-sm-3">
-                        <h5><strong>KM Covered:</strong> {{ isNaN(km_covered) ? '' : km_covered }}</h5>
-                        <h5><strong>Fuel Used:</strong> {{ isNaN(fuel_used) ? '' : fuel_used }}</h5>
-                        <h5><strong>KM/Ltr:</strong> {{ isNaN(km_per_litre) ? '' : km_per_litre.toFixed(2) }}</h5>
+                        <h5>
+                            <strong>KM Covered:</strong> {{ isNaN(km_covered) ? '' : km_covered }}</h5>
+                        <h5>
+                            <strong>Fuel Used:</strong> {{ isNaN(fuel_used) ? '' : fuel_used }}</h5>
+                        <h5>
+                            <strong>KM/Ltr:</strong> {{ isNaN(km_per_litre) ? '' : km_per_litre.toFixed(2) }}</h5>
                     </div>
 
                 </div>
@@ -176,47 +189,47 @@
 
 <script>
     export default {
-      data() {
-          return {
-              fuel_reserve: 25,
-              journey: {
-                  driver: {},
-                  truck: {
-                      trailer: {},
-                      model: { make: {} }
-                  },
-                  route: {},
-              },
-              fuelRoute: {},
-              journeys: [],
-              fuelRoutes: [],
-              km_covered: 0,
-              fuel_used: 0,
-              km_per_litre: 0,
-              fuel: {
-                  station_id: window.Laravel.station_id,
-                  journey_id: '',
-                  date: '',
-                  current_fuel: 0,
-                  fuel_requested: 0,
-                  fuel_issued: 0,
-                  fuel_total: 0,
-                  narration: '',
-                  previous_km: 0,
-                  previous_fuel: 0,
-                  current_km: 0,
-                  status: 'Awaiting Approval',
-                  tank: '',
-                  pump: '',
-                  top_up: false,
-                  top_up_reason: '',
-                  top_up_quantity: 0,
-              },
-              can_save: true,
-              below_reserve: false,
-              deficit: ''
-          };
-      },
+        data() {
+            return {
+                fuel_reserve: 25,
+                journey: {
+                    driver: {},
+                    truck: {
+                        trailer: {},
+                        model: { make: {} }
+                    },
+                    route: {},
+                },
+                fuelRoute: {},
+                journeys: [],
+                fuelRoutes: [],
+                km_covered: 0,
+                fuel_used: 0,
+                km_per_litre: 0,
+                fuel: {
+                    station_id: window.Laravel.station_id,
+                    journey_id: '',
+                    date: '',
+                    current_fuel: 0,
+                    fuel_requested: 0,
+                    fuel_issued: 0,
+                    fuel_total: 0,
+                    narration: '',
+                    previous_km: 0,
+                    previous_fuel: 0,
+                    current_km: 0,
+                    status: 'Awaiting Approval',
+                    tank: '',
+                    pump: '',
+                    top_up: false,
+                    top_up_reason: '',
+                    top_up_quantity: 0,
+                },
+                can_save: true,
+                below_reserve: false,
+                deficit: ''
+            };
+        },
         created() {
             if (!this.$route.params.id && !this.$route.params.unload && !this.$root.can('create-fuel')) {
                 this.$router.push('/403');
@@ -234,40 +247,41 @@
             if (this.$route.params.id) {
                 return http.get('/api/fuel/' + this.$route.params.id).then((response) => {
                     this.journey = response.fuel.journey;
-                    this.fuelRoute = response.fuelRoute ? response.fuelRoute : { amount: 0};
+                    this.fuelRoute = response.fuelRoute ? response.fuelRoute : { amount: 0 };
                     this.fuel = response.fuel;
                     this.fuel.top_up = this.fuel.top_up != '0';
                     this.setupUI();
-//                    this.calculateKms();
+                    //                    this.calculateKms();
                     this.$root.isLoading = false;
                 });
             }
 
             http.get('/api/fuel/create/?id=' + this.$route.params.new + '&s=' + window.Laravel.station_id).then((response) => {
                 this.journey = response.journey;
-                this.fuelRoute = response.fuelRoute ? response.fuelRoute : { amount: 0};
+                this.fuelRoute = response.fuelRoute ? response.fuelRoute : { amount: 0 };
+                this.fuel_requested = this.fuelRoute.amount;
                 this.fuel.journey_id = response.journey.id;
                 this.setupUI();
             }).then(() => {
-//                this.calculateKms();
+                //                this.calculateKms();
                 this.$root.isLoading = false;
             });
         },
 
         mounted() {
-            $('input[type="number"]').on('focus', function () {
+            $('input[type="number"]').on('focus', function() {
                 this.select();
             });
         },
 
 
         computed: {
-            minimumKm () {
+            minimumKm() {
                 return this.fuel.previous_km;
             },
 
             fuelAmount() {
-                if (! this.fuelRoute.amount) return 0;
+                if (!this.fuelRoute.amount) return 0;
 
                 return parseInt(this.fuelRoute.amount);
             },
@@ -293,6 +307,12 @@
                 let reserve = parseInt(this.fuel_reserve);
                 let current_fuel = parseInt(this.fuel.current_fuel);
                 let route_fuel_required = parseInt(this.fuelAmount);
+                let topup = this.fuel.top_up ? parseInt(this.fuel.top_up_quantity) : 0;
+
+                reserve = isNaN(reserve) ? 0 : reserve;
+                current_fuel = isNaN(current_fuel) ? 0 : current_fuel;
+                route_fuel_required = isNaN(route_fuel_required) ? 0 : route_fuel_required;
+                topup = isNaN(topup) ? 0 : topup;
 
                 if (parseInt(this.fuel.current_fuel) < reserve) {
                     this.deficit = reserve - current_fuel;
@@ -301,7 +321,7 @@
                     this.below_reserve = false;
                 }
 
-                this.fuel.fuel_requested = route_fuel_required + reserve - current_fuel;
+                this.fuel.fuel_requested = (route_fuel_required + reserve + topup) - current_fuel;
 
                 return this.fuel.fuel_total = parseInt(this.fuel.fuel_issued) + parseInt(this.fuel.current_fuel);
             },
@@ -332,7 +352,7 @@
                 return '/images/default_avatar.png';
             },
             store() {
-                if (! this.calculateKms()) return;
+                if (!this.calculateKms()) return;
                 this.$root.isLoading = true;
                 let request = null;
 
@@ -347,7 +367,7 @@
                 request.then((response) => {
                     this.$root.isLoading = false;
                     alert2(this.$root, [response.data.message], 'success');
-                    window._router.push({path: '/fuel'});
+                    window._router.push({ path: '/fuel' });
                 }).catch((error) => {
                     this.$root.isLoading = false;
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');

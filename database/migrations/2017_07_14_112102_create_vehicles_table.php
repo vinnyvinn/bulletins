@@ -27,7 +27,7 @@ class CreateVehiclesTable extends Migration
             $table->integer('truck_id')->unsigned()->nullable();
             $table->integer('driver_id')->unsigned()->nullable();
             $table->integer('current_fuel')->default(0);
-            $table->integer('current_km')->default(0);
+            $table->double('current_km')->default(0);
 
             $table->softDeletes();
             $table->timestamps();

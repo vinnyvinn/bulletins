@@ -1,6 +1,104 @@
 <template>
     <div>
-        <div class="panel panel-default" v-if="! showModal">
+        <div class="visible-print-block">
+            <div class="pm50 visible-print" v-if="submitted">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <h3>
+                            <img style='display:block' src="/images/logo.jpg" alt="Sanghani">
+                            <strong>MILEAGE</strong>
+                            <span>
+                                <small>TOP UP</small>
+                            </span>
+                        </h3>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="text-right">
+                            <h3>{{ config.name }}</h3>
+                            <h5>{{ config.telephone }}</h5>
+                            <h5>{{ config.email }}</h5>
+                            <h5>{{ config.location }}</h5>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <hr>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <strong>Voucher No: </strong> MLG-{{ mileage.id }}
+                        </div>
+                        <div class="col-xs-4">
+                            <strong>Truck No: </strong>
+                            <span class="text-uppercase">{{ mileage.journey.truck.plate_number }}</span>
+                        </div>
+                        <div class="col-xs-4">
+                            <strong>Date to be issued: </strong> {{ mapDate(mileage.created_at) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <strong>Journey No: </strong> JRN-{{ mileage.journey_id }}
+                        </div>
+                        <div class="col-xs-4">
+                            <strong>Mileage Type: </strong>
+                            <span class="text-uppercase">{{ mileage.mileage_current_type }}</span>
+                        </div>
+                        <div class="col-xs-4">
+                        </div>
+                    </div>
+
+                    <div class="row" v-if="parseInt(mileage.top_up)">
+                        <div class="col-xs-4">
+                            <strong>Top Up Amount: </strong> {{ mileage.top_up_amount }}
+                        </div>
+                        <div class="col-xs-4">
+                            <strong>Top Up Reason: </strong> {{ mileage.top_up_reason }}
+                        </div>
+                        <div class="col-xs-4">
+                            &nbsp;
+                        </div>
+                    </div>
+
+                    <div class="row text-left">
+                        <div class="col-xs-12">
+                            <h5>
+                                <strong>Amount Approved: </strong> {{ parseFloat(mileage.approved_amount).toLocaleString() }}</h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <strong>Supervisors Comment</strong>
+                            <p>{{ mileage.narration }}</p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <strong>Voucher Approved By:</strong>
+                            <br>
+                            <span v-if="mileage.user">
+                                {{ mileage.user.first_name }} {{ mileage.user.last_name }}
+                            </span>
+                        </div>
+                        <div class="col-xs-4">
+                            <strong>Voucher Processed By: </strong>
+                            <br>
+                            <span v-if="mileage.user">
+                                {{ mileage.user.first_name }} {{ mileage.user.last_name }}
+                            </span>
+                        </div>
+                        <div class="col-xs-4">
+                            <strong>Recipient Sign: </strong>
+                            <br> .....................................................................
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default hidden-print" v-if="! showModal">
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-sm-6">
@@ -80,8 +178,8 @@
                                 <label for="truck_id">Vehicle Reg. No</label>
                                 <input disabled class="form-control" v-model="journey.truck_plate_number">
                                 <!-- <select hidden disabled v-model="journey.truck_id" class="form-control input-sm" id="truck_id" name="truck_id" required>
-                                    <option v-for="truck in trucks" :value="truck.id">{{ truck.plate_number }}</option>
-                                </select> -->
+                                                    <option v-for="truck in trucks" :value="truck.id">{{ truck.plate_number }}</option>
+                                                </select> -->
                             </div>
 
                             <div class="form-group">
@@ -231,7 +329,7 @@
                 </form>
             </div>
         </div>
-        <div v-if="showModal">
+        <div class="hidden-print" v-if="showModal">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <strong>Return Mileage Allocation</strong>
@@ -446,11 +544,11 @@
                 });
             });
         },
-
         data() {
-
             return {
                 showModal: false,
+                submitted: false,
+                config: {},
                 mileage: {
                     station_id: window.Laravel.station_id,
                     journey_id: '',
@@ -560,11 +658,11 @@
                 let defaultAmount = parseInt(this.journey_close.route.return_mileage);
                 if (!this.fuelDifference) return defaultAmount;
 
-                defaultAmount = defaultAmount - (parseInt(this.journey_close.fuel_price) * this.fuelDifference);
+                let finalAmount = defaultAmount - (parseInt(this.journey_close.fuel_price) * this.fuelDifference);
 
-                if (defaultAmount < 1) return 0;
+                if (finalAmount < 1) return 0;
 
-                return defaultAmount;
+                return finalAmount > defaultAmount ? defaultAmount : finalAmount;
             },
 
         },
@@ -597,6 +695,10 @@
                 }
 
                 return parseFloat(number).toLocaleString();
+            },
+
+            mapDate(date) {
+                return moment(date).format('DD-MM-Y');
             },
 
             closeModal() {
@@ -660,8 +762,17 @@
                 this.mileage.standard_amount = this.journey_close.route.return_mileage;
                 this.journey_close.returnMileage = this.mileage;
                 http.post('/api/journey/' + this.$route.params.id + '/close', this.journey_close).then((response) => {
-                    alert2(this.$root, [response.message], 'success');
-                    window._router.push({ path: '/journey' });
+                    this.mileage = response.mileage;
+                    this.mileage.mileage_current_type = response.mileage.mileage_type;
+                    this.config = response.config;
+                    this.submitted = true;
+                    setTimeout(() => {
+                        window.print();
+                        this.submitted = false;
+                        alert2(this.$root, [response.message], 'success');
+                        
+                        window._router.push({ path: '/journey' });
+                    }, 200);
                 }).catch((error) => {
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                 });

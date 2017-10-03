@@ -3,7 +3,7 @@
                 enter-active-class="animated slideInLeft"
                 leave-active-class="animated slideOutLeft"
     >
-        <div id="smo-alert">
+        <div id="smo-alert" class="hidden-print">
             <div :class="getErrorClass()">
                 <h3 v-if="level == 'danger'">Whoops!</h3>
                 <ul>
