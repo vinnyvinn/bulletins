@@ -3,7 +3,7 @@
                 enter-active-class="animated fadeIn"
                 leave-active-class="animated fadeOut"
     >
-        <div class="loaderContainer">
+        <div class="loaderContainer hidden-print">
             <div class="spinner">
                 <div class="dot1"></div>
                 <div class="dot2"></div>

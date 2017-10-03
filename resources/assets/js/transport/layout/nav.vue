@@ -62,6 +62,11 @@ $root.can('create-contract-template') || $root.can('view-contract-template') || 
                 <div class="caption">Reports</div>
             </router-link>
 
+            <a href="/ls" class="nav-items">
+                <img src="/images/switch.png" alt="logout" class="img-responsive">
+                <div class="caption">Local Shunting</div>
+            </a>
+
             <div @click.prevent="logout" class="nav-items">
                 <img src="/images/logout.png" alt="logout" class="img-responsive">
                 <div class="caption">Logout</div>

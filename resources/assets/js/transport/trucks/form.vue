@@ -72,6 +72,11 @@
                                 </div>
                             </div>
 
+                            <div class="form-group" v-if="truck.type = 'Truck'">
+                                <label for="current_km">Current KM Reading</label>
+                                <input v-model="truck.current_km" type="number" step="0.1" class="form-control text-uppercase" id="current_km" name="current_km">
+                            </div>
+
                             <div class="form-group">
                                 <label for="status">Truck Status</label>
                                 <select v-model="truck.status" name="status" id="status" class="form-control" required>
@@ -140,10 +145,10 @@
 
         computed: {
             models() {
-                if (! this.truck.make_id) return [];
+                if (!this.truck.make_id) return [];
 
                 let filtered = this.makes.filter(e => e.id == this.truck.make_id);
-                if (! filtered.length) return [];
+                if (!filtered.length) return [];
 
                 return filtered[0].models;
             }
@@ -187,8 +192,8 @@
                 });
             },
 
-            addUdfToObject (slug) {
-              Vue.set(this.truck,slug,'');
+            addUdfToObject(slug) {
+                Vue.set(this.truck, slug, '');
             }
         }
     }

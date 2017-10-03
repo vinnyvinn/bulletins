@@ -309,8 +309,9 @@ class JourneyController extends Controller
         $returnMileage['top_up_reason'] = '';
         $returnMileage['user_id'] = Auth::id();
         $returnMileage['raw'] = \json_encode($returnMileage);
+        $returnMileage['status'] = 'Approved';
 
-        \DB::transaction(function () use ($id, $request, $returnMileage) {
+        $mileage = \DB::transaction(function () use ($id, $request, $returnMileage) {
             $journey = Journey::findOrFail($id);
             $data = $request->all();
             $journey->update([
@@ -319,13 +320,27 @@ class JourneyController extends Controller
                 'closed_by' => Auth::id(),
             ]);
 
-            Mileage::create($returnMileage);
+            $mileage = Mileage::create($returnMileage);
 
             $truck = $journey->truck;
             $truck->current_km = $data['current_km'];
             $truck->current_fuel = $data['current_fuel'];
             $truck->update();
+
+            return $mileage;
         });
+
+        return Response::json([
+            'status' => 'success',
+            'message' => 'Successfully closed journey.',
+            'config' => [
+                'name' => config('app.name'),
+                'telephone' => config('app.telephone'),
+                'email' => config('app.email'),
+                'location' => config('app.location'),
+            ],
+            'mileage' => Mileage::with(['user', 'journey.truck'])->find($mileage->id)
+        ]);
 
         return Response::json([
             'status' => 'success',
