@@ -326,7 +326,7 @@ class ReportController extends Controller
         $columns = [
             'mileage_type', 'requested_amount', 'approved_amount', 'balance_amount',
             'standard_amount', 'top_up_amount', 'contracts.name', 'vehicles.plate_number',
-            'journeys.job_date as date', 'stations.name as station_name',
+            'mileages.created_at as date', 'stations.name as station_name',
             'drivers.first_name', 'drivers.last_name', 'Client.Name as client_name',
         ];
 
@@ -336,8 +336,8 @@ class ReportController extends Controller
             ->join('stations', 'mileages.station_id', '=', 'stations.id')
             ->join('drivers', 'journeys.driver_id', '=', 'drivers.id')
             ->join('Client', 'contracts.client_id', '=', 'Client.DCLink')
-            ->where('journeys.job_date', '>=', $start)
-            ->where('journeys.job_date', '<=', $end)
+            ->where('mileages.created_at', '>=', $start)
+            ->where('mileages.created_at', '<=', $end)
             ->when($request->get('contract_id'), function ($builder) use ($request) {
                 return $builder->where('contracts.id', $request->get('contract_id'));
             })
@@ -345,7 +345,7 @@ class ReportController extends Controller
                 return $builder->where('mileages.station_id', $request->get('station_id'));
             })
             ->when($request->get('summary') != 1, function ($builder) {
-                return $builder->orderBy('journeys.job_date', 'asc');
+                return $builder->orderBy('mileages.created_at', 'asc');
             })
             ->when($request->get('summary') == 1, function ($builder) use ($columns) {
                 return $builder

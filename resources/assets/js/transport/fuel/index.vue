@@ -34,16 +34,16 @@
                       <button type="button" name="button" v-if="fuel.status == 'Awaiting Approval'" class="btn btn-xs btn-success" @click="approveFuel(fuel.id)">Approve</button>
                     </td>
                     <td v-else>{{ fuel.status }}</td>
-                    <td>{{ fuel.journey.truck.plate_number }}</td>
+                    <td><span v-if="fuel.journey">{{ fuel.journey.truck.plate_number }}</span></td>
                     <td>
                         <router-link v-if="$root.can('view-fuel')" :to="'/fuel/' + fuel.id">FUEL-{{ fuel.id }}</router-link>
                         <span v-else>FUEL-{{ fuel.id }}</span>
                     </td>
                     <td>JRNY-{{ fuel.journey_id }}</td>
                     <td>{{ fuel.date }}</td>
-                    <td>{{ fuel.journey.driver.first_name }} {{ fuel.journey.driver.last_name }}</td>
-                    <td>{{ fuel.journey.route.source }} - {{ fuel.journey.route.destination }}</td>
-                    <td>{{ fuel.journey.route.distance }}</td>
+                    <td><span v-if="fuel.journey">{{ fuel.journey.driver.first_name }} {{ fuel.journey.driver.last_name }}</span></td>
+                    <td><span v-if="fuel.journey">{{ fuel.journey.route.source }} - {{ fuel.journey.route.destination }}</span></td>
+                    <td><span v-if="fuel.journey">{{ fuel.journey.route.distance }}</span></td>
                     <td>{{ fuel.current_fuel }}</td>
                     <td>{{ fuel.fuel_requested }}</td>
                     <td>{{ fuel.fuel_issued }}</td>
