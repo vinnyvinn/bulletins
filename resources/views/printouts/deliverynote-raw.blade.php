@@ -25,8 +25,8 @@
                 <h2><strong>DELIVERY NOTE</strong></h2>
             </div>
             <div class="col-xs-4 text-right">
-                <h4 class="text-right">{{ config('app.telephone') }}</h4>
                 <h4 class="text-right">{{ config('app.postal') }}</h4>
+                <h4 class="text-right">{{ config('app.telephone') }}</h4>
                 <h4 class="text-right">{{ config('app.email') }}</h4>
                 <h4 class="text-right">{{ config('app.location') }}</h4>
                 <h3 class="text-right"><strong style="color: red !important;">KBS - {{ str_pad($trip->id, 5, '0', STR_PAD_LEFT) }}</strong></h3>
