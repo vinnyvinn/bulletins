@@ -13,7 +13,7 @@ return [
     */
 
     'app_name' => 'K.B. SANGHANI',
-    'name' => 'K.B. SANGHANI',
+    'name' => 'K.B. SANGHANI & SONS',
     'telephone' => 'Tel: +254202612441/2',
     'postal' => 'P.O. BOX 26239-00504',
     'email' => 'Email: info@sanghani.co.ke',
