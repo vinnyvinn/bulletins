@@ -13,14 +13,14 @@
         </div>
         <div class="row">
             <div class="col-xs-4">
-                <h4 class="text-left"><strong>Client Name: </strong> {{ $trip->contract->client->Name }}</h4>
-                <h4 class="text-left"><strong>Address: </strong> {{ $trip->contract->client->Address }}</h4>
-                <h4 class="text-left"><strong>Client Contact: </strong> {{ $trip->contract->client->Telephone }}</h4>
-                <h4 class="text-left"><strong>LPO No: </strong> </h4>
-                <h4 class="text-left"><strong>Route: </strong> {{ $trip->route->source }} <strong>TO</strong> {{ $trip->route->destination }}</h4>
+                <h4 style="font-size: 20px !important;" class="text-left"><strong>Name: </strong> {{ $trip->contract->client->Name }}</h4>
+                <h4 style="font-size: 20px !important;" class="text-left"><strong>Address: </strong> {{ $trip->contract->client->Address }}</h4>
+                <h4 style="font-size: 20px !important;" class="text-left"><strong>Client Contact: </strong> {{ $trip->contract->client->Telephone }}</h4>
+                <h4 style="font-size: 20px !important;" class="text-left"><strong>LPO No: </strong> </h4>
+                <h4 style="font-size: 20px !important;" class="text-left"><strong>Route: </strong> {{ $trip->route->source }} <strong>TO</strong> {{ $trip->route->destination }}</h4>
             </div>
             <div class="col-xs-4 text-center">
-                <h2><strong>{{ config('app.name') }}</strong></h2>
+                <h1><strong>{{ config('app.name') }}</strong></h1>
                 <img style='display:block; margin: 0 auto;' src="{{ asset('/images/logo.jpg') }}" alt="Sanghani">
                 <h2><strong>DELIVERY NOTE</strong></h2>
             </div>
@@ -39,26 +39,24 @@
             </div>
         </div>
 
-        <br>
 
-        <div class="row">
-            <div class="col-xs-12" style="border: 1px solid #e5e5e5; border-style: solid;">
-                <div class="row">
+        <div class="row"  style="padding: 16px">
+            <div class="col-xs-12">
+                <div class="row" style="border: 1px solid #e5e5e5; border-style: solid;">
                     <div class="col-xs-4">
-                        <h4 class="text-left">
-                            <strong>Vehicle Number: </strong> {{ $trip->truck->plate_number }} - {{ $trip->truck->trailer->plate_number }}
-                        </h4>
-                    </div>
-
-                    <div class="col-xs-4">
-                        <h4 class="text-left">
-                            <strong>Lot No: {{ $trip->contract->lot_number }}</strong>
-                        </h4>
+                        <h3 class="text-left">
+                            <strong>Vehicle Number: </strong><br>{{ $trip->truck->plate_number }} - {{ $trip->truck->trailer->plate_number }}
+                        </h3>
                     </div>
                     <div class="col-xs-4">
-                        <h4 class="text-left">
-                            <strong>Vessel Name: {{ $trip->contract->vessel_name }} </strong>
-                        </h4>
+                        <h3 class="text-left">
+                            <strong>Lot No: </strong><br>{{ $trip->contract->lot_number }}
+                        </h3>
+                    </div>
+                    <div class="col-xs-4">
+                        <h3 class="text-left">
+                            <strong>Vessel Name:</strong><br>{{ $trip->contract->vessel_name }}
+                        </h3>
                     </div>
                 </div>
             </div>
@@ -66,7 +64,6 @@
 
         <div class="row">
             <div class="col-xs-12">
-                <br>
                 <table class="table">
                     <thead>
                     <tr>
@@ -76,9 +73,7 @@
                     </thead>
                     <tbody style="font-size: 20px !important;">
                     <tr>
-                        <td><strong>Product</strong></td>
-                        <td class="text-right" style="border-right: 1px solid #e5e5e5;">{{ $trip->contract->cargoType->name }}</td>
-                        <td><strong>Product</strong></td>
+                        <td colspan="3"><strong>Product</strong></td>
                         <td class="text-right">{{ $trip->contract->cargoType->name }}</td>
                     </tr>
                     <tr>
@@ -163,11 +158,11 @@
                 <br>
                 <br>
                 <div class="row">
-                    <div class="col-xs-6">
-                        <h5 class="text-left"><strong>Client's Name: </strong>_______________________________</h5>
+                    <div class="col-xs-7">
+                        <h5 class="text-left"><strong>Client's Name: </strong>_____________________________________</h5>
                     </div>
-                    <div class="col-xs-6">
-                        <h5 class="text-left"><strong>Date: </strong>_______________________________</h5>
+                    <div class="col-xs-5">
+                        <h5 class="text-left"><strong>Date: </strong>___________________________</h5>
                     </div>
                 </div>
             </div>
@@ -176,7 +171,7 @@
                     <h5 class="text-left"><strong>Client's Stamp:</strong></h5>
                 </div>
                 <br>
-                <h5 class="text-left"><strong>Client's Signature</strong>_______________________</h5>
+                <h5 class="text-left"><strong>Client's Signature</strong> __________________________________</h5>
             </div>
 
 
