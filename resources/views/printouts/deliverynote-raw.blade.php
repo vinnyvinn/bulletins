@@ -5,6 +5,7 @@
             </div>
             <div class="col-xs-6 text-center">
                 <h2><strong><em style="color: red !important;">Jay Shree Swaminarayan</em></strong></h2>
+                <h1><strong>{{ config('app.name') }}</strong></h1>
             </div>
             <div class="col-xs-3">
                 <h4 class="text-right"><strong style="color: red !important;">SWAMIBAPA</strong></h4>
@@ -19,21 +20,18 @@
                 <h4 style="font-size: 20px !important;" class="text-left"><strong>Route: </strong> {{ $trip->route->source }} <strong>TO</strong> {{ $trip->route->destination }}</h4>
             </div>
             <div class="col-xs-4 text-center">
-                <h1><strong>{{ config('app.name') }}</strong></h1>
                 <img style='display:block; margin: 0 auto;' src="{{ asset('/images/logo.jpg') }}" alt="Sanghani">
                 <h2><strong>DELIVERY NOTE</strong></h2>
             </div>
             <div class="col-xs-4 text-right">
-                <h4 class="text-right">{{ config('app.postal') }}</h4>
-                <h4 class="text-right">{{ config('app.telephone') }}</h4>
-                <h4 class="text-right">{{ config('app.email') }}</h4>
-                <h4 class="text-right">{{ config('app.location') }}</h4>
+                <h4 style="font-size: 20px !important;" class="text-right">{{ config('app.postal') }}</h4>
+                <h4 style="font-size: 20px !important;" class="text-right">{{ config('app.telephone') }}</h4>
+                <h4 style="font-size: 20px !important;" class="text-right">{{ config('app.email') }}</h4>
+                <h4 style="font-size: 20px !important;" class="text-right">{{ config('app.location') }}</h4>
                 <h3 class="text-right"><strong style="color: red !important;">RKS - {{ str_pad($trip->id, 5, '0', STR_PAD_LEFT) }}</strong></h3>
 
                 <div class="pull-right">
-                    <h4 class="text-right"><strong>Delivery Date: </strong> {{ Carbon\Carbon::parse($trip->loading_time)->format('d F Y') }}</h4>
                     <h4 class="text-right"><strong>Journey No: </strong> JRNY-{{ $trip->journey->id }}</h4>
-                    <h4 class="text-right"><strong>Delivery To: </strong> {{ $trip->route->destination }}</h4>
                 </div>
             </div>
         </div>
@@ -44,17 +42,17 @@
                 <div class="row" style="border: 1px solid #e5e5e5; border-style: solid;">
                     <div class="col-xs-4">
                         <h3 class="text-left">
-                            <strong>Vehicle Number: </strong><br>{{ $trip->truck->plate_number }} - {{ $trip->truck->trailer->plate_number }}
+                            <strong>Vehicle Number: </strong><br><br>{{ $trip->truck->plate_number }} - {{ $trip->truck->trailer->plate_number }}
                         </h3>
                     </div>
                     <div class="col-xs-4">
                         <h3 class="text-left">
-                            <strong>Lot No: </strong><br>{{ $trip->contract->lot_number }}
+                            <strong>Lot No: </strong><br><br>{{ $trip->contract->lot_number }}
                         </h3>
                     </div>
                     <div class="col-xs-4">
                         <h3 class="text-left">
-                            <strong>Vessel Name:</strong><br>{{ $trip->contract->vessel_name }}
+                            <strong>Vessel Name:</strong><br><br>{{ $trip->contract->vessel_name }}
                         </h3>
                     </div>
                 </div>
