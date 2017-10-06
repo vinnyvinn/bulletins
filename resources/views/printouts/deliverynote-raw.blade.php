@@ -1,66 +1,69 @@
-
-
     <div class="container" style="font-size: 1.1em">
         <div class="row">
-            <div class="col-xs-4">
-                <img style='display:block' src="/images/logo.jpg" alt="Sanghani">
-                <h3>DELIVERY NOTE</h3>
+            <div class="col-xs-3">
+                <h4 class="text-left"><strong style="color: red !important;">SHREEJIBAPA</strong></h4>
             </div>
-            <div class="col-xs-4 text-center">
-                <h2><strong>{{ $copyHeader }} Copy</strong></h2>
+            <div class="col-xs-6 text-center">
+                <h2><strong><em style="color: red !important;">Jay Shree Swaminarayan</em></strong></h2>
             </div>
-            <div class="col-xs-4 text-right">
-                <h3>{{ config('app.name') }}</h3>
-                <h5>{{ config('app.telephone') }}</h5>
-                <h5>{{ config('app.email') }}</h5>
-                <h5>{{ config('app.location') }}</h5>
-                <h4 class="text-right"><strong style="color: red !important;">KBS - {{ str_pad($trip->id, 5, '0', STR_PAD_LEFT) }}</strong></h4>
+
+            <div class="col-xs-3">
+                <h4 class="text-right"><strong style="color: red !important;">SWAMIBAPA</strong></h4>
             </div>
         </div>
-
-        <br>
-
         <div class="row">
-            <div class="col-xs-6">
+            <div class="col-xs-4">
                 <h4 class="text-left"><strong>Client Name: </strong> {{ $trip->contract->client->Name }}</h4>
                 <h4 class="text-left"><strong>Address: </strong> {{ $trip->contract->client->Address }}</h4>
                 <h4 class="text-left"><strong>Client Contact: </strong> {{ $trip->contract->client->Telephone }}</h4>
                 <h4 class="text-left"><strong>LPO No: </strong> </h4>
                 <h4 class="text-left"><strong>Route: </strong> {{ $trip->route->source }} <strong>TO</strong> {{ $trip->route->destination }}</h4>
             </div>
-            <div class="col-xs-6">
+            <div class="col-xs-4 text-center">
+                <h3>{{ config('app.name') }}</h3>
+                <img style='display:block; margin: 0 auto;' src="{{ asset('/images/logo.jpg') }}" alt="Sanghani">
+                <h3>DELIVERY NOTE</h3>
+            </div>
+            <div class="col-xs-4 text-right">
+                <h4 class="text-right">{{ config('app.telephone') }}</h4>
+                <h4 class="text-right">{{ config('app.email') }}</h4>
+                <h4 class="text-right">{{ config('app.location') }}</h4>
+                <h3 class="text-right"><strong style="color: red !important;">KBS - {{ str_pad($trip->id, 5, '0', STR_PAD_LEFT) }}</strong></h3>
+
                 <div class="pull-right">
                     <h4 class="text-right"><strong>Delivery Date: </strong> {{ Carbon\Carbon::parse($trip->loading_time)->format('d F Y') }}</h4>
                     <h4 class="text-right"><strong>Journey No: </strong> JRNY-{{ $trip->journey->id }}</h4>
                     <h4 class="text-right"><strong>Delivery To: </strong> {{ $trip->route->destination }}</h4>
-                    <h4 class="text-right"><strong>Weighbridge Ticket No: </strong> {{ $trip->loading_weighbridge_number }}</h4>
-                    <h4 class="text-right"><strong>Delivery: </strong> {{ $trip->route->destination }}</h4>
                 </div>
             </div>
+        </div>
 
+        <br>
+
+        <div class="row">
             <div class="col-xs-12">
                 <br>
                 <table class="table">
                     <thead>
                     <tr>
                         <th class="text-uppercase text-left"><h4><strong>Loading Details</strong></h4></th>
-                        <th class="text-uppercase text-left"><h4><strong>Loading Date: {{ Carbon\Carbon::parse($trip->loading_time)->format('d F Y') }}</strong></h4></th>
+                        <th class="text-uppercase text-left"><h4><strong>Loading Date: {{ Carbon\Carbon::parse($trip->loading_time)->format('d-m-Y') }}</strong></h4></th>
                         <th class="text-uppercase text-left"><h4><strong>Offloading Details</strong></h4></th>
-                        <th class="text-uppercase text-left"><h4><strong>Offloading Date: {{ $trip->offloading_time ? Carbon\Carbon::parse($trip->offloading_time)->format('d F Y') : '' }}</strong></h4></th>
+                        <th class="text-uppercase text-left"><h4><strong>Offloading Date: {{ $trip->offloading_time ? Carbon\Carbon::parse($trip->offloading_time)->format('d-m-Y') : '' }}</strong></h4></th>
                     </tr>
                     </thead>
-                    <tbody style="font-size: 16px !important;">
-                    <tr>
-                        <td><strong>Weighbridge Ticket No</strong></td>
-                        <td class="text-right" style="border-right: 1px solid #e5e5e5;">{{ $trip->loading_weighbridge_number }}</td>
-                        <td><strong>Weighbridge Ticket No</strong></td>
-                        <td class="text-right">{{ $trip->offloading_weighbridge_number ? $trip->offloading_weighbridge_number : '' }}</td>
-                    </tr>
+                    <tbody style="font-size: 20px !important;">
                     <tr>
                         <td><strong>Product</strong></td>
                         <td class="text-right" style="border-right: 1px solid #e5e5e5;">{{ $trip->contract->cargoType->name }}</td>
                         <td><strong>Product</strong></td>
                         <td class="text-right">{{ $trip->contract->cargoType->name }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Weighbridge Ticket No</strong></td>
+                        <td class="text-right" style="border-right: 1px solid #e5e5e5;">{{ $trip->loading_weighbridge_number }}</td>
+                        <td><strong>Weighbridge Ticket No</strong></td>
+                        <td class="text-right">{{ $trip->offloading_weighbridge_number ? $trip->offloading_weighbridge_number : '' }}</td>
                     </tr>
                     @if($trip->bags_loaded)
                     <tr>
@@ -95,35 +98,35 @@
 
             <div class="col-xs-8">
                 <br>
-                <h5>
+                <h4 class="text-left">
                     <strong>Driver's Sign: ____________________________________</strong>
-                </h5>
-                <h5>
+                </h4>
+                <h4 class="text-left">
                     <strong>Driver: </strong> {{ $trip->driver->first_name }}
-                </h5>
+                </h4>
                 <br>
-                <h5>
+                <h4 class="text-left">
                     <strong>Supervisor's Sign: _______________________________</strong>
-                </h5>
-                <h5>
+                </h4>
+                <h4 class="text-left">
                     <strong>Processed By: </strong> {{ $trip->user->first_name }} {{ $trip->user->last_name }}
-                </h5>
+                </h4>
                 <br>
 
             </div>
             <div class="col-xs-4" style="border: 1px; border-style: solid;">
-              <h5>
+              <h4 class="text-left">
                   <strong>Vehicle Number: </strong> {{ $trip->truck->plate_number }}
-              </h5>
-              <h5>
+              </h4>
+              <h4 class="text-left">
                   <strong>Attached Trailer: {{ $trip->truck->trailer->plate_number }}</strong>
-              </h5>
-              <h5>
+              </h4>
+              <h4 class="text-left">
                   <strong>Lot No: {{ $trip->contract->lot_number }}</strong>
-              </h5>
-              <h5>
+              </h4>
+              <h4 class="text-left">
                   <strong>Vessel Name: {{ $trip->contract->vessel_name }} </strong>
-              </h5>
+              </h4>
             </div>
 
             <div class="col-xs-12">
@@ -144,19 +147,19 @@
                 <br>
                 <div class="row">
                     <div class="col-xs-6">
-                        <h5><strong>Name: </strong>_______________________________</h5>
+                        <h5 class="text-left"><strong>Client's Name: </strong>_______________________________</h5>
                     </div>
                     <div class="col-xs-6">
-                        <h5><strong>Date: </strong>_______________________________</h5>
+                        <h5 class="text-left"><strong>Date: </strong>_______________________________</h5>
                     </div>
                 </div>
             </div>
             <div class="col-xs-4">
                 <div class="" style="border: 1px; border-style: solid;  height: 100px;">
-                    <h5><strong>Stamp:</strong></h5>
+                    <h5 class="text-left"><strong>Client's Stamp:</strong></h5>
                 </div>
                 <br>
-                <h5><strong>Signature</strong>_______________________</h5>
+                <h5 class="text-left"><strong>Client's Signature</strong>_______________________</h5>
             </div>
 
 
@@ -172,6 +175,12 @@
                         goods due to collision, overturning, robbery, theft, civil commotion, riots or disturbances, war or inherent.</li>
                     <li>The company shall have a general as well as particular lien on all goods for unpaid accounts.</li>
                 </ul>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-4 col-xs-offset-4 text-center">
+                <h2><strong>{{ $copyHeader }} Copy</strong></h2>
             </div>
         </div>
     </div>

@@ -14,7 +14,7 @@ return [
 
     'app_name' => 'K.B. SANGHANI',
     'name' => 'K.B. SANGHANI',
-    'telephone' => 'Tel: +254202612441/2 Fax: +2542012440/4',
+    'telephone' => 'Tel: +254202612441/2',
     'email' => 'Email: info@sanghani.co.ke',
     'location' => 'Nairobi - Kenya',
 
