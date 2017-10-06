@@ -19,12 +19,13 @@
                 <h4 class="text-left"><strong>Route: </strong> {{ $trip->route->source }} <strong>TO</strong> {{ $trip->route->destination }}</h4>
             </div>
             <div class="col-xs-4 text-center">
-                <h3>{{ config('app.name') }}</h3>
+                <h2><strong>{{ config('app.name') }}</strong></h2>
                 <img style='display:block; margin: 0 auto;' src="{{ asset('/images/logo.jpg') }}" alt="Sanghani">
-                <h3>DELIVERY NOTE</h3>
+                <h2><strong>DELIVERY NOTE</strong></h2>
             </div>
             <div class="col-xs-4 text-right">
                 <h4 class="text-right">{{ config('app.telephone') }}</h4>
+                <h4 class="text-right">{{ config('app.postal') }}</h4>
                 <h4 class="text-right">{{ config('app.email') }}</h4>
                 <h4 class="text-right">{{ config('app.location') }}</h4>
                 <h3 class="text-right"><strong style="color: red !important;">RKS - {{ str_pad($trip->id, 5, '0', STR_PAD_LEFT) }}</strong></h3>
@@ -40,15 +41,36 @@
         <br>
 
         <div class="row">
+            <div class="col-xs-12" style="border: 1px solid #e5e5e5; border-style: solid;">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <h4 class="text-left">
+                            <strong>Vehicle Number: </strong> {{ $trip->truck->plate_number }} - {{ $trip->truck->trailer->plate_number }}
+                        </h4>
+                    </div>
+
+                    <div class="col-xs-4">
+                        <h4 class="text-left">
+                            <strong>Lot No: {{ $trip->contract->lot_number }}</strong>
+                        </h4>
+                    </div>
+                    <div class="col-xs-4">
+                        <h4 class="text-left">
+                            <strong>Vessel Name: {{ $trip->contract->vessel_name }} </strong>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
             <div class="col-xs-12">
                 <br>
                 <table class="table">
                     <thead>
                     <tr>
-                        <th class="text-uppercase text-left"><h4><strong>Loading Details</strong></h4></th>
-                        <th class="text-uppercase text-left"><h4><strong>Loading Date: {{ Carbon\Carbon::parse($trip->loading_time)->format('d-m-Y') }}</strong></h4></th>
-                        <th class="text-uppercase text-left"><h4><strong>Offloading Details</strong></h4></th>
-                        <th class="text-uppercase text-left"><h4><strong>Offloading Date: {{ $trip->offloading_time ? Carbon\Carbon::parse($trip->offloading_time)->format('d-m-Y') : '' }}</strong></h4></th>
+                        <th colspan="2" class="text-uppercase text-left"><h4><strong>Loading Details</strong></h4></th>
+                        <th colspan="2" class="text-uppercase text-left"><h4><strong>Offloading Details</strong></h4></th>
                     </tr>
                     </thead>
                     <tbody style="font-size: 20px !important;">
@@ -90,42 +112,37 @@
                         <td style="border-bottom: 1px solid #e5e5e5;"><strong>Net Weight</strong></td>
                         <td style="border-bottom: 1px solid #e5e5e5;" class="text-right">{{ $trip->offloading_net_weight != 0.00 ? number_format($trip->offloading_net_weight, 2) . ' KGs' : '' }}</td>
                     </tr>
+                    <tr>
+                        <td style="border-bottom: 1px solid #e5e5e5;"><strong>Loading Date</strong></td>
+                        <td class="text-right" style="border-right: 1px solid #e5e5e5;border-bottom: 1px solid #e5e5e5">{{ Carbon\Carbon::parse($trip->loading_time)->format('d-m-Y') }}</td>
+                        <td style="border-bottom: 1px solid #e5e5e5;"><strong>Offloading Date</strong></td>
+                        <td style="border-bottom: 1px solid #e5e5e5;" class="text-right">{{ Carbon\Carbon::parse($trip->offloading_time)->format('d-m-Y') }}</td>
+                    </tr>
                     </tbody>
                 </table>
 
             </div>
 
-            <div class="col-xs-8">
+            <div class="col-xs-6">
                 <br>
                 <h4 class="text-left">
-                    <strong>Driver's Sign: ____________________________________</strong>
-                </h4>
-                <h4 class="text-left">
-                    <strong>Driver: </strong> {{ $trip->driver->first_name }}
-                </h4>
-                <br>
-                <h4 class="text-left">
-                    <strong>Supervisor's Sign: _______________________________</strong>
+                    <strong>Supervisor's Sign: ____________________________________________</strong>
                 </h4>
                 <h4 class="text-left">
                     <strong>Processed By: </strong> {{ $trip->user->first_name }} {{ $trip->user->last_name }}
                 </h4>
                 <br>
-
             </div>
-            <div class="col-xs-4" style="border: 1px; border-style: solid;">
-              <h4 class="text-left">
-                  <strong>Vehicle Number: </strong> {{ $trip->truck->plate_number }}
-              </h4>
-              <h4 class="text-left">
-                  <strong>Attached Trailer: {{ $trip->truck->trailer->plate_number }}</strong>
-              </h4>
-              <h4 class="text-left">
-                  <strong>Lot No: {{ $trip->contract->lot_number }}</strong>
-              </h4>
-              <h4 class="text-left">
-                  <strong>Vessel Name: {{ $trip->contract->vessel_name }} </strong>
-              </h4>
+            <div class="col-xs-6">
+                <br>
+
+                <h4 class="text-left">
+                    <strong>Driver's Sign: _________________________________________________</strong>
+                </h4>
+                <h4 class="text-left">
+                    <strong>Driver: </strong> {{ $trip->driver->first_name }}
+                </h4>
+                <br>
             </div>
 
             <div class="col-xs-12">

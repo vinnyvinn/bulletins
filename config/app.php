@@ -15,6 +15,7 @@ return [
     'app_name' => 'R.K SANGHANI',
     'name' => 'R.K SANGHANI',
     'telephone' => 'Tel: +254202612441/2',
+    'postal' => 'P.O. BOX 26239-00504',
     'email' => 'Email: info@sanghani.co.ke',
     'location' => 'Nairobi - Kenya',
 
