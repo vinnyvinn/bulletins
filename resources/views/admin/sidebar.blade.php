@@ -31,7 +31,6 @@
                     <li><a href="{{ route('workshop.mileage.index') }}"><i class="fa fa-list"></i> Mileage Types</a></li>
                     <li><a href="{{ url('/fuel-routes') }}"><i class="fa fa-list"></i> Fuel Per Model</a></li>
                     <li><a href="{{ route('workshop.checkpoint.index') }}"><i class="fa fa-list"></i> Checkpoints</a></li>
-                    <li><a href="{{ url('/fuel-routes') }}"><i class="fa fa-list"></i> Route Checkpoints</a></li>
 
                     <li class="dropdown-header">MAN POWER</li>
                     <li><a href="{{ url('/drivers') }}"><i class="fa fa-list"></i> Drivers</a></li>
