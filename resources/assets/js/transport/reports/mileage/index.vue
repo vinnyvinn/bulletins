@@ -373,6 +373,9 @@
             },
             generateReport() {
                 this.$root.isLoading = true;
+                if (this.$route.params.topup) {
+                    this.report.topup = true;
+                }
                 http.post('/api/reports/mileage', this.report).then(response => {
                     this.selected_truck = null;
                     this.selected_client = null;

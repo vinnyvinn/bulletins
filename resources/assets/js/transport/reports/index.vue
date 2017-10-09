@@ -22,11 +22,24 @@
                                         <router-link to="/reports/fuel" class="btn btn-primary btn-xs">GENERATE</router-link>
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>Fuel Top-Ups</td>
+                                    <td>
+                                        <router-link to="/reports/fuel/topup" class="btn btn-primary btn-xs">GENERATE</router-link>
+                                    </td>
+                                </tr>
 
                                 <tr>
                                     <td>Mileage Issue</td>
                                     <td>
                                         <router-link to="/reports/mileage" class="btn btn-primary btn-xs">GENERATE</router-link>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>Mileage Top-Ups</td>
+                                    <td>
+                                        <router-link to="/reports/mileage/topup" class="btn btn-primary btn-xs">GENERATE</router-link>
                                     </td>
                                 </tr>
                                 <tr v-if="$root.can('create-delivery') || $root.can('view-delivery') || $root.can('edit-delivery') || $root.can('approve-delivery') || $root.can('delete-delivery')">

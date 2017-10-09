@@ -5,6 +5,7 @@ namespace SmoDav\Models;
 use App\Contract;
 use App\Driver;
 use App\Route;
+use App\RouteCard;
 use App\Truck;
 use SmoDav\Support\Constants;
 use App\Fuel;
@@ -18,6 +19,15 @@ class Journey extends SmoDavModel
         'sub_address_2', 'sub_address_3', 'sub_address_4', 'raw','user_id','closed_by','mileage_balance', 'station_id',
         'ignore_delivery_note'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        self::deleted(function ($model) {
+            $model->delivery->delete();
+        });
+    }
 
     public function mileage()
     {
@@ -94,8 +104,18 @@ class Journey extends SmoDavModel
         return $this->belongsTo(User::class, 'closed_by');
     }
 
+    public function station()
+    {
+        return $this->belongsTo(Station::class);
+    }
+
     public function gatepass()
     {
         return $this->hasOne(GatePass::class);
+    }
+
+    public function routeCard()
+    {
+        return $this->hasOne(RouteCard::class);
     }
 }

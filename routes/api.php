@@ -127,4 +127,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('reports/deliveries', 'ReportController@deliveries');
 
     Route::resource('ls-delivery', '\SmoDav\Controllers\API\LocalShunting\DeliveryController');
+    Route::resource('checkpoints', 'CheckpointRouteController');
+    Route::resource('route-card', 'RouteCardController', ['except' => 'show']);
 });

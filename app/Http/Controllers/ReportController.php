@@ -223,6 +223,9 @@ class ReportController extends Controller
             ->join('stations', 'fuels.station_id', '=', 'stations.id')
             ->join('drivers', 'journeys.driver_id', '=', 'drivers.id')
             ->join('Client', 'contracts.client_id', '=', 'Client.DCLink')
+            ->when($request->has('topup'), function ($builder) {
+                return $builder->where('top_up_quantity', '>', 0);
+            })
             ->when($request->get('contract_id'), function ($builder) use ($request) {
                 return $builder->where('contracts.id', $request->get('contract_id'));
             })
@@ -336,6 +339,9 @@ class ReportController extends Controller
             ->join('stations', 'mileages.station_id', '=', 'stations.id')
             ->join('drivers', 'journeys.driver_id', '=', 'drivers.id')
             ->join('Client', 'contracts.client_id', '=', 'Client.DCLink')
+            ->when($request->has('topup'), function ($builder) {
+                return $builder->where('top_up_amount', '>', 0);
+            })
             ->where('mileages.created_at', '>=', $start)
             ->where('mileages.created_at', '<=', $end)
             ->when($request->get('contract_id'), function ($builder) use ($request) {

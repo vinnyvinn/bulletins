@@ -102,6 +102,7 @@
                                             <th :class="is_summary ? 'text-right' : ''">{{ is_summary ? 'Fuel Vouchers' : 'Fueling Date' }}</th>
                                             <th class="text-right">Before Fueling</th>
                                             <th class="text-right">Requested</th>
+                                            <th class="text-right">Top Up</th>
                                             <th class="text-right">Issued</th>
                                             <th class="text-right">After Fueling</th>
                                             <th class="text-right">Station</th>
@@ -115,6 +116,7 @@
                                                 </td>
                                                 <td v-if="! is_summary" class="text-right">{{ getSum(group, 'current_fuel') }}</td>
                                                 <td v-if="! is_summary" class="text-right">{{ getSum(group, 'fuel_requested') }}</td>
+                                                <td v-if="! is_summary" class="text-right">{{ getSum(group, 'top_up_quantity') }}</td>
                                                 <td v-if="! is_summary" class="text-right">{{ getSum(group, 'fuel_issued') }}</td>
                                                 <td v-if="! is_summary" class="text-right">{{ getSum(group, 'fuel_total') }}</td>
                                                 <td v-if="! is_summary" class="text-right"></td>
@@ -125,6 +127,7 @@
                                                 <td v-if="!is_summary">{{ delivery.plate_number }}</td>
                                                 <td class="text-right">{{ formatNumber(delivery.current_fuel) }}</td>
                                                 <td class="text-right">{{ formatNumber(delivery.fuel_requested) }}</td>
+                                                <td class="text-right">{{ formatNumber(delivery.top_up_quantity) }}</td>
                                                 <td class="text-right">{{ formatNumber(delivery.fuel_issued) }}</td>
                                                 <td class="text-right">{{ formatNumber(delivery.fuel_total) }}</td>
                                                 <td class="text-right">{{ delivery.station_name }}</td>
@@ -139,6 +142,7 @@
                                             <td :class="is_summary ? 'text-right' : ''">{{ is_summary ? delivery.total : formatDateTime(delivery.date) }}</td>
                                             <td class="text-right">{{ formatNumber(delivery.current_fuel) }}</td>
                                             <td class="text-right">{{ formatNumber(delivery.fuel_requested) }}</td>
+                                            <td class="text-right">{{ formatNumber(delivery.top_up_quantity) }}</td>
                                             <td class="text-right">{{ formatNumber(delivery.fuel_issued) }}</td>
                                             <td class="text-right">{{ formatNumber(delivery.fuel_total) }}</td>
                                             <td class="text-right">{{ delivery.station_name }}</td>
@@ -149,6 +153,7 @@
                                             </th>
                                             <th class="text-right">{{ getSum(deliveries, 'current_fuel') }}</th>
                                             <th class="text-right">{{ getSum(deliveries, 'fuel_requested') }}</th>
+                                            <th class="text-right">{{ getSum(deliveries, 'top_up_quantity') }}</th>
                                             <th class="text-right">{{ getSum(deliveries, 'fuel_issued') }}</th>
                                             <th class="text-right">{{ getSum(deliveries, 'fuel_total') }}</th>
                                             <th></th>
@@ -344,6 +349,9 @@
         methods: {
             generateReport() {
                 this.$root.isLoading = true;
+                if (this.$route.params.topup) {
+                    this.report.topup = true;
+                }
                 http.post('/api/reports/fuel', this.report).then(response => {
                     this.selected_truck = null;
                     this.selected_client = null;
