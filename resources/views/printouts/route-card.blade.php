@@ -268,7 +268,7 @@
     <h4 style="margin-top: 0" class="text-center"><strong>JOURNEY PLANNER</strong></h4>
 </section>
 
-<div class="container-fluid">
+<div style="margin-bottom: -10px;" class="container-fluid">
     <section>
         <h4 style="margin-top: 0">
             <strong>{{ $journey->route->destination }} - {{ $journey->route->source }}</strong>
@@ -360,8 +360,6 @@
         </h4>
     </section>
 </div>
-
-
 <script>
     window.print();
     setTimeout(function () {

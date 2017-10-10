@@ -101,7 +101,7 @@
                                             <th v-if="!is_summary">Plate Number</th>
                                             <th :class="is_summary ? 'text-right' : ''">{{ is_summary ? 'Fuel Vouchers' : 'Fueling Date' }}</th>
                                             <th class="text-right">Before Fueling</th>
-                                            <th class="text-right">Added Qty</th>
+                                            <th class="text-right">Reserve Topup</th>
                                             <th class="text-right">Top Up</th>
                                             <th class="text-right">Requested</th>
                                             <th class="text-right">Issued</th>
