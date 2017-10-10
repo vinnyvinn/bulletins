@@ -322,7 +322,6 @@
         <h3 class="line">&nbsp;</h3>
         <h3 class="line">&nbsp;</h3>
         <h3 class="line">&nbsp;</h3>
-        <h3>&nbsp;</h3>
     </section>
 
     <section>
