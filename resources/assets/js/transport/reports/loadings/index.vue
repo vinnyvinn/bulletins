@@ -71,6 +71,14 @@
                                     </select>
                                 </div>
 
+                                <div class="form-group" v-if="routes.length">
+                                    <label for="station_id">Routes</label>
+                                    <select v-model="selected_route" class="input-sm form-control">
+                                        <option :value="null">All Routes</option>
+                                        <option v-for="(route, index) in routes" :key="route" :value="route">{{ route }}</option>
+                                    </select>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -97,6 +105,7 @@
                                         <tr>
                                             <th>#</th>
                                             <th v-if="!is_grouped">Contract</th>
+                                            <th v-if="!is_grouped">Route</th>
                                             <th v-if="!is_summary">Plate Number</th>
                                             <th :class="is_summary ? 'text-right' : ''">{{ is_summary ? 'Total Trips' : 'Loading Time' }}</th>
                                             <th class="text-right">Gross Weight</th>
@@ -118,8 +127,8 @@
                                             </tr>
                                             <tr v-for="delivery in group">
                                                 <td>{{ delivery.index }}</td>
-                                                <td :class="is_summary ? 'text-right' : ''">{{ is_summary ? delivery.total : formatDateTime(delivery.loading_time) }}</td>
                                                 <td v-if="!is_summary">{{ delivery.plate_number }}</td>
+                                                <td :class="is_summary ? 'text-right' : ''">{{ is_summary ? delivery.total : formatDateTime(delivery.loading_time) }}</td>
                                                 <td class="text-right">{{ formatNumber(delivery.loading_gross_weight) }}</td>
                                                 <td class="text-right">{{ formatNumber(delivery.loading_tare_weight) }}</td>
                                                 <td class="text-right">{{ formatNumber(delivery.loading_net_weight) }}</td>
@@ -131,6 +140,7 @@
                                         <tr v-for="delivery in deliveries">
                                             <td>{{ delivery.index }}</td>
                                             <td>{{ delivery.name }}</td>
+                                            <td>{{ delivery.source }} - {{ delivery.destination }}</td>
                                             <td v-if="!is_summary">{{ delivery.plate_number }}</td>
                                             <td :class="is_summary ? 'text-right' : ''">{{ is_summary ? delivery.total : formatDateTime(delivery.loading_time) }}</td>
                                             <td class="text-right">{{ formatNumber(delivery.loading_gross_weight) }}</td>
@@ -139,7 +149,7 @@
                                             <td class="text-right" v-if="!is_summary">{{ delivery.loading_weighbridge_number }}</td>
                                         </tr>
                                         <tr v-if="deliveries.length">
-                                            <th :colspan="is_summary ? 2 : 3">
+                                            <th :colspan="is_summary ? 3 : 4">
                                                 <strong>Totals</strong>
                                             </th>
                                             <th :class="is_summary ? 'text-right' : ''">{{ is_summary ? getSum(deliveries, 'total') : '' }}</th>
@@ -178,6 +188,7 @@
                 selected_truck: null,
                 selected_client: null,
                 selected_driver: null,
+                selected_route: null,
             };
         },
         created() {
@@ -230,6 +241,11 @@
                             this.selected_driver == del.first_name + ' ' + del.last_name
                         ));
                     }
+                    if (this.selected_route) {
+                        deliveries = deliveries.filter(del => (
+                            this.selected_route == del.source + ' - ' + del.destination
+                        ));
+                    }
 
                     return this.mapFields(deliveries);
                 }
@@ -248,6 +264,12 @@
                     if (this.selected_driver) {
                         deliveries[keys[i]] = deliveries[keys[i]].filter(del => (
                             this.selected_driver == del.first_name + ' ' + del.last_name
+                        ));
+                    }
+
+                    if (this.selected_driver) {
+                        deliveries[keys[i]] = deliveries[keys[i]].filter(del => (
+                            this.selected_route == del.source + ' - ' + del.destination
                         ));
                     }
 
@@ -334,6 +356,31 @@
 
                 return drivers;
             },
+            routes() {
+                let routes = [];
+
+                if (!this.is_grouped) {
+                    this.all_deliveries.forEach(item => {
+                        if (routes.indexOf(item.source + ' - ' + item.destination) === -1) {
+                            routes.push(item.source + ' - ' + item.destination);
+                        }
+                    });
+                } else {
+                    let keys = Object.keys(this.all_deliveries);
+
+                    for (let i = 0; i < keys.length; i++) {
+                        this.all_deliveries[keys[i]].forEach(item => {
+                            if (routes.indexOf(item.source + ' - ' + item.destination) === -1) {
+                                routes.push(item.source + ' - ' + item.destination);
+                            }
+                        });
+                    }
+                }
+
+                routes.sort();
+
+                return routes;
+            },
         },
         methods: {
 
@@ -343,6 +390,7 @@
                     this.selected_truck = null;
                     this.selected_client = null;
                     this.selected_driver = null;
+                    this.selected_route = null;
                     this.is_grouped = this.report.group_contract;
                     this.is_summary = this.report.summary;
                     this.all_deliveries = response.deliveries;

@@ -90,7 +90,8 @@
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label for="fuel_issued">Fuel Issued (Litres)</label>
-                            <input type="number" min=0 :max="fuel.fuel_requested" id="fuel_issued" class="form-control input-sm" v-model="fuel.fuel_issued" @keyup="calculateTotal">
+                            <input v-if="$root.can('approve-fuel')" type="number" min=0 id="fuel_issued" class="form-control input-sm" v-model="fuel.fuel_issued" @keyup="calculateTotal">
+                            <input v-else type="number" min=0 :max="fuel.fuel_requested" id="fuel_issued" class="form-control input-sm" v-model="fuel.fuel_issued" @keyup="calculateTotal">
                         </div>
                     </div>
 
