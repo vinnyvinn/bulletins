@@ -50,7 +50,7 @@
                 <div class="caption">Mileage</div>
             </router-link>
 
-            <router-link to="/ls/reports" class="nav-items">
+            <router-link to="/ls/reports" class="nav-items" v-if="$root.can('reports')">
                 <img src="/images/report.png" alt="fuel" class="img-responsive">
                 <div class="caption">Reports</div>
             </router-link>

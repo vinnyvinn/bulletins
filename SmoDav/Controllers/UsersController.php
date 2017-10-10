@@ -83,7 +83,8 @@ class UsersController extends Controller
         $data = $request->all();
         $data['permissions'] = '[]';
         if (isset($data['permission'])) {
-            $data['permissions'] = \json_encode(\array_keys($request->get('permission')));
+            $permissions = $request->get('permission') ? \array_keys($request->get('permission')): [];
+            $data['permissions'] = \json_encode($permissions);
             unset($data['permission']);
         }
         $data['password'] = bcrypt($data['password']);
@@ -149,7 +150,8 @@ class UsersController extends Controller
         $user = User::findOrFail($id);
 
         $data = $request->all();
-        $data['permissions'] = \json_encode(\array_keys($request->get('permission')));
+        $permissions = $request->get('permission') ? \array_keys($request->get('permission')): [];
+        $data['permissions'] = \json_encode($permissions);
         unset($data['permission']);
         if ($request->get('password')) {
             $data['password'] = bcrypt($data['password']);

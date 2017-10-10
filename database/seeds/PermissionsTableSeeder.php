@@ -38,6 +38,12 @@ class PermissionsTableSeeder extends Seeder
         $permission = $this->mapTransportModules($transportModules, $permission, $hasApproval);
         $permission = $this->mapWorkshopModules($workshopModules, $permission, $hasApproval);
         $permission = $this->mapLocalShuntingModules($localShuntingModules, $permission, $hasApproval);
+        $permission[] = [
+            'name' => 'Reports',
+            'group' => null,
+            'slug' => 'reports',
+            'description' => 'Allow the user to view reports'
+        ];
 
         Permission::insert($permission);
     }
@@ -49,7 +55,7 @@ class PermissionsTableSeeder extends Seeder
      *
      * @return array
      */
-    private function mapCommonModules($commonModules, $permission, $hasApproval): array
+    private function mapCommonModules($commonModules, $permission, $hasApproval)
     {
         $permission[] = [
             'name' => 'All Rights',
@@ -109,7 +115,7 @@ class PermissionsTableSeeder extends Seeder
      *
      * @return array
      */
-    private function mapWorkshopModules($workshopModules, $permission, $hasApproval): array
+    private function mapWorkshopModules($workshopModules, $permission, $hasApproval)
     {
         foreach ($workshopModules as $module) {
             $title = \ucwords(\str_replace('-', ' ', $module));
@@ -162,7 +168,7 @@ class PermissionsTableSeeder extends Seeder
      *
      * @return array
      */
-    private function mapTransportModules($transportModules, $permission, $hasApproval): array
+    private function mapTransportModules($transportModules, $permission, $hasApproval)
     {
         foreach ($transportModules as $module) {
             $title = \ucwords(\str_replace('-', ' ', $module));
@@ -208,7 +214,7 @@ class PermissionsTableSeeder extends Seeder
         return $permission;
     }
 
-    private function mapLocalShuntingModules($localShuntingModules, $permission, $hasApproval): array
+    private function mapLocalShuntingModules($localShuntingModules, $permission, $hasApproval)
     {
         foreach ($localShuntingModules as $module) {
             $title = \ucwords(\str_replace('-', ' ', $module));
@@ -259,7 +265,7 @@ class PermissionsTableSeeder extends Seeder
      *
      * @return array
      */
-    private function mapDefaultModules($permission): array
+    private function mapDefaultModules($permission)
     {
         $permission[] = [
             'name' => 'Transport Module',
