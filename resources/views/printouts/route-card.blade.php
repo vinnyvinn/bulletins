@@ -268,7 +268,7 @@
     <h4 style="margin-top: 0" class="text-center"><strong>JOURNEY PLANNER</strong></h4>
 </section>
 
-<div style="margin-bottom: -10px;" class="container-fluid">
+<div style="margin-bottom: -10px;page-break-after: avoid;" class="container-fluid">
     <section>
         <h4 style="margin-top: 0">
             <strong>{{ $journey->route->destination }} - {{ $journey->route->source }}</strong>
@@ -355,7 +355,7 @@
     </section>
 
     <section>
-        <h4 style="margin-top: 0" class="text-center">
+        <h4 style="maring-bottom: 0;margin-top: 0" class="text-center">
             <strong>EMERGENCY CONTACTS 0722519444 / 0731339119 / 0731339100</strong>
         </h4>
     </section>
