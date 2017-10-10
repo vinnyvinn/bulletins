@@ -64,8 +64,22 @@ class RouteCardController extends Controller
     public function store(Request $request)
     {
         $journey = Journey::find($request->get('journey_id'));
+        $lastJourney = Journey::where('truck_id', $journey->truck_id)->orderBy('id', 'desc')
+            ->take(2)
+            ->get(['updated_at'])
+            ->toArray();
+
+        $arrival = Carbon::now();
+
+        if (count($lastJourney) > 1) {
+            if (isset($lastJourney[1]['updated_at'])) {
+                $arrival = Carbon::parse($lastJourney[1]['updated_at']);
+            }
+        }
+
         $data = $request->all();
-        $data['arrival_date'] = Carbon::parse($data['arrival_date']);
+        $data['arrival_date'] = $arrival;
+        $data['arrival_time'] = $arrival;
         $data['departure_date'] = Carbon::parse($data['departure_date']);
         $data['user_id'] = \Auth::id();
         $data['station_id'] = $journey->station_id;

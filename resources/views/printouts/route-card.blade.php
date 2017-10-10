@@ -41,13 +41,13 @@
                 <h5><strong>TRUCK DETAILS</strong></h5>
             </div>
             <div class="col-xs-3">
-                <h4><strong>TRUCK:</strong> {{ $journey->truck->plate_number }}</h4>
+                <h5><strong>TRUCK:</strong> {{ $journey->truck->plate_number }}</h5>
             </div>
             <div class="col-xs-3">
-                <h4><strong>TRAILER:</strong> {{ $journey->truck->trailer->plate_number }}</h4>
+                <h5><strong>TRAILER:</strong> {{ $journey->truck->trailer->plate_number }}</h5>
             </div>
             <div class="col-xs-6">
-                <h4><strong>DRIVER:</strong> {{ $journey->driver->first_name }}  {{ $journey->driver->last_name }}</h4>
+                <h5><strong>DRIVER:</strong> {{ $journey->driver->first_name }}  {{ $journey->driver->last_name }}</h5>
             </div>
 
         </div>
@@ -103,7 +103,8 @@
             <div class="col-xs-4">
                 <h5><strong>DEPARTURE TIME: </strong> {{ Carbon\Carbon::parse($card->departure_time)->format('h:i A') }}</h5>
             </div>
-            <div class="col-xs-4">
+            <div class="col-xs-4"></div>
+            <div class="col-xs-6">
                 <h5><strong>AUTHORIZATION:</strong> {{ $card->user->name }}</h5>
             </div>
             <div class="col-xs-6">
@@ -351,7 +352,6 @@
                 </table>
             </div>
         </div>
-        <br>
         <br>
 
     </section>

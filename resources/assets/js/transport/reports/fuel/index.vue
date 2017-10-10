@@ -101,8 +101,9 @@
                                             <th v-if="!is_summary">Plate Number</th>
                                             <th :class="is_summary ? 'text-right' : ''">{{ is_summary ? 'Fuel Vouchers' : 'Fueling Date' }}</th>
                                             <th class="text-right">Before Fueling</th>
-                                            <th class="text-right">Requested</th>
+                                            <th class="text-right">Added Qty</th>
                                             <th class="text-right">Top Up</th>
+                                            <th class="text-right">Requested</th>
                                             <th class="text-right">Issued</th>
                                             <th class="text-right">After Fueling</th>
                                             <th class="text-right">Station</th>
@@ -115,8 +116,9 @@
                                                     <strong>{{ index }} Totals</strong>
                                                 </td>
                                                 <td v-if="! is_summary" class="text-right">{{ getSum(group, 'current_fuel') }}</td>
-                                                <td v-if="! is_summary" class="text-right">{{ getSum(group, 'fuel_requested') }}</td>
+                                                <td v-if="! is_summary" class="text-right">{{ (group.length * 25) - getSum(group, 'current_fuel', false) }}</td>
                                                 <td v-if="! is_summary" class="text-right">{{ getSum(group, 'top_up_quantity') }}</td>
+                                                <td v-if="! is_summary" class="text-right">{{ getSum(group, 'fuel_requested') }}</td>
                                                 <td v-if="! is_summary" class="text-right">{{ getSum(group, 'fuel_issued') }}</td>
                                                 <td v-if="! is_summary" class="text-right">{{ getSum(group, 'fuel_total') }}</td>
                                                 <td v-if="! is_summary" class="text-right"></td>
@@ -126,8 +128,9 @@
                                                 <td :class="is_summary ? 'text-right' : ''">{{ is_summary ? delivery.total : formatDateTime(delivery.date) }}</td>
                                                 <td v-if="!is_summary">{{ delivery.plate_number }}</td>
                                                 <td class="text-right">{{ formatNumber(delivery.current_fuel) }}</td>
-                                                <td class="text-right">{{ formatNumber(delivery.fuel_requested) }}</td>
+                                                <td class="text-right">{{ formatNumber(25 - parseFloat(delivery.current_fuel)) }}</td>
                                                 <td class="text-right">{{ formatNumber(delivery.top_up_quantity) }}</td>
+                                                <td class="text-right">{{ formatNumber(delivery.fuel_requested) }}</td>
                                                 <td class="text-right">{{ formatNumber(delivery.fuel_issued) }}</td>
                                                 <td class="text-right">{{ formatNumber(delivery.fuel_total) }}</td>
                                                 <td class="text-right">{{ delivery.station_name }}</td>
@@ -141,8 +144,9 @@
                                             <td v-if="!is_summary">{{ delivery.plate_number }}</td>
                                             <td :class="is_summary ? 'text-right' : ''">{{ is_summary ? delivery.total : formatDateTime(delivery.date) }}</td>
                                             <td class="text-right">{{ formatNumber(delivery.current_fuel) }}</td>
-                                            <td class="text-right">{{ formatNumber(delivery.fuel_requested) }}</td>
+                                            <td class="text-right">{{ formatNumber(25 - parseFloat(delivery.current_fuel)) }}</td>
                                             <td class="text-right">{{ formatNumber(delivery.top_up_quantity) }}</td>
+                                            <td class="text-right">{{ formatNumber(delivery.fuel_requested) }}</td>
                                             <td class="text-right">{{ formatNumber(delivery.fuel_issued) }}</td>
                                             <td class="text-right">{{ formatNumber(delivery.fuel_total) }}</td>
                                             <td class="text-right">{{ delivery.station_name }}</td>
@@ -152,8 +156,9 @@
                                                 <strong>Totals</strong>
                                             </th>
                                             <th class="text-right">{{ getSum(deliveries, 'current_fuel') }}</th>
-                                            <th class="text-right">{{ getSum(deliveries, 'fuel_requested') }}</th>
+                                            <td class="text-right">{{ ((deliveries.length * 25) - getSum(deliveries, 'current_fuel', false)).toLocaleString() }}</td>
                                             <th class="text-right">{{ getSum(deliveries, 'top_up_quantity') }}</th>
+                                            <th class="text-right">{{ getSum(deliveries, 'fuel_requested') }}</th>
                                             <th class="text-right">{{ getSum(deliveries, 'fuel_issued') }}</th>
                                             <th class="text-right">{{ getSum(deliveries, 'fuel_total') }}</th>
                                             <th></th>
@@ -407,17 +412,21 @@
                 window.print();
             },
 
-            getSum(records, entry) {
+            getSum(records, entry, format = true) {
                 if (records.length < 2) return records[0][entry];
 
-                return records.map(a => a[entry]).reduce((a, b) => {
+                let formated = records.map(a => a[entry]).reduce((a, b) => {
                     a = parseFloat(a);
                     b = parseFloat(b);
                     a = isNaN(a) ? 0 : a;
                     b = isNaN(b) ? 0 : b;
 
                     return a + b;
-                }, 0).toLocaleString();
+                }, 0);
+
+                if (!format) return formated;
+
+                return formated.toLocaleString();
             }
         }
     }

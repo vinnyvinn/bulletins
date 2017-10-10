@@ -15,38 +15,49 @@
                                 <div class="col-sm-3">
                                     <div class="form-group">
                                         <label for="journey_id">Journey:
-                                        <h5><strong>{{ journey.id }}</strong></h5></label>
+                                            <h5>
+                                                <strong>{{ journey.id }}</strong>
+                                            </h5>
+                                        </label>
                                     </div>
                                 </div>
 
                                 <div class="col-sm-3">
                                     <div class="form-group">
-                                        <h5><strong>Vehicle: {{ journey.truck_plate_number }}</strong></h5>
-                                        <h5><strong>Trailer: {{ journey.truck.trailer ? journey.truck.trailer.plate_number : '' }}</strong></h5>
+                                        <h5>
+                                            <strong>Vehicle: {{ journey.truck_plate_number }}</strong>
+                                        </h5>
+                                        <h5>
+                                            <strong>Trailer: {{ journey.truck.trailer ? journey.truck.trailer.plate_number : '' }}</strong>
+                                        </h5>
                                     </div>
                                 </div>
 
                                 <div class="col-sm-3" v-if="journey.truck">
                                     <div class="form-group">
                                         <label>Driver</label>
-                                        <h5><strong>{{ journey.driver.first_name }} {{ journey.driver.last_name }}</strong></h5>
+                                        <h5>
+                                            <strong>{{ journey.driver.first_name }} {{ journey.driver.last_name }}</strong>
+                                        </h5>
                                     </div>
                                 </div>
 
                                 <div class="col-sm-3">
                                     <div class="form-group">
                                         <label>Route</label>
-                                        <h5 v-if="journey.route"><strong>{{ journey.route.source }} to {{ journey.route.destination }}</strong></h5>
+                                        <h5 v-if="journey.route">
+                                            <strong>{{ journey.route.source }} to {{ journey.route.destination }}</strong>
+                                        </h5>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label for="arrival_date">Truck Arrival Date</label>
-                                        <input type="text" class="form-control datepicker" id="arrival_date" v-model="card.arrival_date" required>
-                                    </div>
+                                    <!-- <div class="form-group">
+                                            <label for="arrival_date">Truck Arrival Date</label>
+                                            <input type="text" class="form-control datepicker" id="arrival_date" v-model="card.arrival_date" required>
+                                        </div> -->
                                     <div class="form-group">
                                         <label for="departure_date">Truck Depature Date</label>
                                         <input type="text" class="form-control datepicker" id="departure_date" v-model="card.departure_date" required>
@@ -54,17 +65,16 @@
                                 </div>
 
                                 <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label for="arrival_date">Truck Arrival Time</label>
-                                        <input type="time" class="form-control" id="arrival_time" v-model="card.arrival_time" required>
-                                    </div>
+                                    <!-- <div class="form-group">
+                                            <label for="arrival_date">Truck Arrival Time</label>
+                                            <input type="time" class="form-control" id="arrival_time" v-model="card.arrival_time" required>
+                                        </div> -->
                                     <div class="form-group">
                                         <label for="departure_time">Truck Depature Time</label>
                                         <input type="time" class="form-control" id="departure_time" v-model="card.departure_time" required>
                                     </div>
                                 </div>
                             </div>
-
 
                             <div class="form-group">
                                 <input type="submit" class="btn btn-success" value="Process Route Card">
@@ -84,37 +94,37 @@
 <script>
     export default {
         created() {
-            if (! this.$route.params.id && ! this.$root.can('create-route-card')) {
+            if (!this.$route.params.id && !this.$root.can('create-route-card')) {
                 this.$router.push('/403');
                 return false;
             }
 
-            if (this.$route.params.id && ! this.$root.can('edit-route-card')) {
+            if (this.$route.params.id && !this.$root.can('edit-route-card')) {
                 this.$router.push('/403');
                 return false;
             }
         },
 
-        mounted () {
+        mounted() {
             if (this.$route.params.journey) {
-              this.$root.isLoading = true;
-              http.get('/api/new_inspection/' + this.$route.params.journey + '?s=' + window.Laravel.station_id)
-                  .then( (response) => {
-                    this.journey = response.journey;
-                    this.card.journey_id = this.journey.id;
-                    this.card.station_id = this.journey.station_id;
-                    this.$root.isLoading = false;
+                this.$root.isLoading = true;
+                http.get('/api/new_inspection/' + this.$route.params.journey + '?s=' + window.Laravel.station_id)
+                    .then((response) => {
+                        this.journey = response.journey;
+                        this.card.journey_id = this.journey.id;
+                        this.card.station_id = this.journey.station_id;
+                        this.$root.isLoading = false;
 
-                    return;
-                  });
+                        return;
+                    });
             }
 
             if (this.$route.params.id) {
-              this.$root.isLoading = true;
+                this.$root.isLoading = true;
                 http.get('/api/route-card/' + this.$route.params.id + '?s=' + window.Laravel.station_id).then((response) => {
                     if (response.status !== 'success') return;
                     let card = response.card;
-                    card.arrival_time = this.formatTime(card.arrival_time);
+                    // card.arrival_time = this.formatTime(card.arrival_time);
                     card.depature_time = this.formatTime(card.depature_time);
                     this.card = card;
                     this.journey = response.card.journey;
@@ -131,11 +141,11 @@
                     startDate: '0d',
                 });
 
-                $('#arrival_date').datepicker().on('changeDate', (e) => {
-                    this.card.arrival_date = e.date.toLocaleDateString('en-GB');
-                }).on('change', function (e) {
-                    $('#departure_date').datepicker('setStartDate', e.target.value);
-                });
+                // $('#arrival_date').datepicker().on('changeDate', (e) => {
+                //     this.card.arrival_date = e.date.toLocaleDateString('en-GB');
+                // }).on('change', function (e) {
+                //     $('#departure_date').datepicker('setStartDate', e.target.value);
+                // });
                 $('#departure_date').datepicker().on('changeDate', (e) => {
                     this.card.departure_date = e.date.toLocaleDateString('en-GB');
                 });
@@ -146,8 +156,8 @@
             return {
                 card: {
                     journey_id: null,
-                    arrival_date: null,
-                    arrival_time: null,
+                    // arrival_date: null,
+                    // arrival_time: null,
                     departure_date: null,
                     departure_time: null,
                 },
@@ -189,7 +199,7 @@
                         window.open(response.printout, '_blank');
                     }
                     setTimeout(() => {
-                        window._router.push({path: '/route-cards'});
+                        window._router.push({ path: '/route-cards' });
                         alert2(this.$root, [response.message], 'success');
                     }, 500);
                 }).catch(() => {

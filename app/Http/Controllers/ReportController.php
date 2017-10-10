@@ -224,7 +224,9 @@ class ReportController extends Controller
             ->join('drivers', 'journeys.driver_id', '=', 'drivers.id')
             ->join('Client', 'contracts.client_id', '=', 'Client.DCLink')
             ->when($request->has('topup'), function ($builder) {
-                return $builder->where('top_up_quantity', '>', 0);
+                return $builder->where(function ($builder) {
+                    return $builder->where('top_up_quantity', '>', 0)->orWhere('fuels.current_fuel', '<', 25);
+                });
             })
             ->when($request->get('contract_id'), function ($builder) use ($request) {
                 return $builder->where('contracts.id', $request->get('contract_id'));
