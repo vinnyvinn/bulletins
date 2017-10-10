@@ -8,7 +8,6 @@
     }
     h4 { text-align: left}
     section h5 { margin-top: 0}
-    .pt5 {padding-top: 5px}
     .line {border-bottom: 1px solid #000}
     .table-bordered > thead > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > th, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > th, .table-bordered > tfoot > tr > td {border: 1px solid #000 !important;}
     @media print {.table-bordered > thead > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > th, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > th, .table-bordered > tfoot > tr > td {border: 1px solid #000 !important;} }
@@ -268,7 +267,7 @@
     <h4 style="margin-top: 0" class="text-center"><strong>JOURNEY PLANNER</strong></h4>
 </section>
 
-<div style="margin-bottom: -10px;page-break-after: avoid;" class="container-fluid">
+<div style="margin-bottom: -10px;page-break-after: auto;" class="container-fluid">
     <section>
         <h4 style="margin-top: 0">
             <strong>{{ $journey->route->destination }} - {{ $journey->route->source }}</strong>
@@ -318,7 +317,6 @@
     </section>
 
     <section>
-        <h3 class="line">&nbsp;</h3>
         <h3 class="line">&nbsp;</h3>
         <h3 class="line">&nbsp;</h3>
         <h3 class="line">&nbsp;</h3>
