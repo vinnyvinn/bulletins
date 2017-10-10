@@ -24,7 +24,7 @@
                                     <tr v-for="card in cards">
                                         <td>{{ card.id }}</td>
                                         <td>
-                                            <a v-if="$root.can('view-route-card')" :href="'/route-card/' + card.id">RTC-{{ card.id }}</a>
+                                            <a v-if="$root.can('view-route-card')" :href="'/route-card/print/' + card.id">RTC-{{ card.id }}</a>
                                             <span v-else>RTC-{{ card.id }}</span>
                                         </td>
                                         <td>JRNY-{{ card.journey_id }}</td>
