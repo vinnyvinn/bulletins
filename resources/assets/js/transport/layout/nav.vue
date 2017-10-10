@@ -1,7 +1,9 @@
 <template>
     <div>
         <div class="top-nav hidden-print">
-            <h4 class="pull-left brand"><strong>{{ app }}</strong></h4>
+            <h4 class="pull-left brand">
+                <strong>{{ app }}</strong>
+            </h4>
             <router-link style="margin-right: 30px;margin-top: 3px" to="/station-selection" class="pull-right btn btn-success" v-if="showSwitch">
                 Change Station
             </router-link>
@@ -15,7 +17,7 @@
             </router-link>
 
             <router-link to="/contracts" class="nav-items" v-if="$root.can('create-contract') || $root.can('view-contract') || $root.can('edit-contract') || $root.can('approve-contract') || $root.can('delete-contract') ||
-$root.can('create-contract-template') || $root.can('view-contract-template') || $root.can('edit-contract-template') || $root.can('delete-contract-template')">
+    $root.can('create-contract-template') || $root.can('view-contract-template') || $root.can('edit-contract-template') || $root.can('delete-contract-template')">
                 <img src="/images/contract.png" alt="contract" class="img-responsive">
                 <div class="caption">Contracts</div>
             </router-link>
@@ -45,7 +47,6 @@ $root.can('create-contract-template') || $root.can('view-contract-template') || 
                 <div class="caption">Fuel Allocation</div>
             </router-link>
 
-
             <router-link to="/route-cards/" class="nav-items" v-if="$root.can('create-route-card') || $root.can('view-route-card') || $root.can('edit-route-card') || $root.can('approve-route-card') || $root.can('delete-route-card')">
                 <img src="/images/card.png" alt="card" class="img-responsive">
                 <div class="caption">Route Card</div>
@@ -56,7 +57,7 @@ $root.can('create-contract-template') || $root.can('view-contract-template') || 
                 <div class="caption">Gate Pass</div>
             </router-link>
 
-            <router-link to="/reports" class="nav-items">
+            <router-link to="/reports" class="nav-items" v-if="$root.can('reports')">
                 <img src="/images/report.png" alt="card" class="img-responsive">
                 <div class="caption">Reports</div>
             </router-link>
