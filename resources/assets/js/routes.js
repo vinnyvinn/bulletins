@@ -37,6 +37,12 @@ module.exports = [
     { path: '/', redirect: '/login', beforeEnter: authMiddleware },
     { path: '/dashboard', component: require('./transport/dashboard/index.vue'), beforeEnter: authMiddleware },
 
+
+    { path: '/routes/checkpoints/create', component: require('./components/routes/checkpoints/form.vue'), beforeEnter: authMiddleware },
+    { path: '/routes/checkpoints/:id/edit', component: require('./components/routes/checkpoints/form.vue'), beforeEnter: authMiddleware },
+    { path: '/routes/checkpoints/:id', component: require('./components/routes/checkpoints/view.vue'), beforeEnter: authMiddleware },
+
+
     { path: '/routes', component: require('./components/routes/index.vue'), beforeEnter: authMiddleware },
     { path: '/routes/create', component: require('./components/routes/form.vue'), beforeEnter: authMiddleware },
     { path: '/routes/:id/edit', component: require('./components/routes/form.vue'), beforeEnter: authMiddleware },
@@ -160,12 +166,20 @@ module.exports = [
     { path: '/reports', component: require('./transport/reports/index.vue'), beforeEnter: authMiddleware },
     { path: '/reports/loading', component: require('./transport/reports/loadings/index.vue'), beforeEnter: authMiddleware },
     { path: '/reports/off-loading', component: require('./transport/reports/offloadings/index.vue'), beforeEnter: authMiddleware },
+    { path: '/reports/mileage/:topup', component: require('./transport/reports/mileage/index.vue'), beforeEnter: authMiddleware },
+    { path: '/reports/fuel/:topup', component: require('./transport/reports/fuel/index.vue'), beforeEnter: authMiddleware },
     { path: '/reports/mileage', component: require('./transport/reports/mileage/index.vue'), beforeEnter: authMiddleware },
     { path: '/reports/fuel', component: require('./transport/reports/fuel/index.vue'), beforeEnter: authMiddleware },
     { path: '/reports/deliveries', component: require('./transport/reports/loading_offloading/index.vue'), beforeEnter: authMiddleware },
 
+    { path: '/route-cards', component: require('./transport/route_cards/awaiting_inspection.vue'), beforeEnter: authMiddleware },
+    { path: '/route-carded', component: require('./transport/route_cards/index.vue'), beforeEnter: authMiddleware },
+    { path: '/route-cards/create/:journey', component: require('./transport/route_cards/form.vue'), beforeEnter: authMiddleware },
+    { path: '/route-cards/:id', component: require('./transport/route_cards/view.vue'), beforeEnter: authMiddleware },
+    { path: '/route-cards/:id/edit', component: require('./transport/route_cards/form.vue'), beforeEnter: authMiddleware },
 
     { path: '*', component: require('./transport/404.vue'), beforeEnter: authMiddleware },
+
 
 
     {

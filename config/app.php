@@ -18,6 +18,7 @@ return [
     'postal' => 'P.O. BOX 26239-00504',
     'email' => 'Email: info@sanghani.co.ke',
     'location' => 'Nairobi - Kenya',
+    'delivery_prefix' => 'KBS',
 
     /*
     |--------------------------------------------------------------------------

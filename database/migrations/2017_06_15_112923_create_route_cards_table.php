@@ -13,10 +13,14 @@ class CreateRouteCardsTable extends Migration
     {
         Schema::create('route_cards', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('station_id')->index()->unsigned()->nullable();
+            $table->integer('journey_id');
+            $table->integer('station_id');
+            $table->integer('user_id');
+            $table->date('arrival_date');
+            $table->time('arrival_time');
+            $table->date('departure_date');
+            $table->time('departure_time');
             $table->timestamps();
-
-            $table->foreign('station_id')->references('id')->on('stations')->onDelete('set null');
         });
     }
 

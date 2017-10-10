@@ -58,7 +58,7 @@
                                     <td class="text-right">KES {{ Number(route.allowance_amount).toLocaleString() }}</td>
                                     <td class="text-right">KES {{ Number(route.return_mileage).toLocaleString() }}</td>
                                     <td class="text-center">
-                                        <router-link :to="'/routes/checkpoints/' + route.id" class="btn btn-xs btn-warning">CHECKPOINTS</router-link>
+                                        <span @click="view(route)" class="btn btn-xs btn-warning">CHECKPOINTS</span>
                                         <span @click="view(route)" class="btn btn-xs btn-success">
                                             <i class="fa fa-eye"></i>
                                         </span>
