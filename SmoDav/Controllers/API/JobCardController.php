@@ -2,6 +2,7 @@
 
 namespace SmoDav\Controllers\API;
 
+use App\Employee;
 use App\Http\Controllers\Controller;
 use Auth;
 use Carbon\Carbon;
@@ -9,6 +10,7 @@ use DB;
 use Illuminate\Http\Request;
 use Response;
 use SmoDav\Factory\TruckFactory;
+use SmoDav\Factory\VehicleFactory;
 use SmoDav\Models\JobCard;
 use SmoDav\Models\JobCardInspection;
 use SmoDav\Models\JobCardTask;
@@ -27,25 +29,26 @@ class JobCardController extends Controller
      */
     public function index()
     {
-        $jobCards = JobCard::own()->with(['type' => function ($builder) {
+        $jobCards = JobCard::with(['type' => function ($builder) {
             return $builder->select(['id', 'name']);
         }])
+            ->when(! \Auth::user()->can('approve-job-card'), function ($builder) {
+                return $builder->own();
+            })
+            ->when(! \request('status'), function ($builder) {
+                return $builder->where('status', 'Pending Approval');
+            })
+            ->when(\request('status'), function ($builder) {
+                return $builder->where('status', \request('status'));
+            })
             ->get([
                 'id', 'job_description', 'vehicle_number', 'created_at', 'expected_completion',
                 'workshop_job_type_id', 'status'
             ]);
 
-        $requisitions = Requisition::own()
-            ->with(['jobCard' => function ($builder) {
-                return $builder->select(['id', 'vehicle_number']);
-            }])
-            ->get([
-                'id', 'job_card_id', 'created_at', 'status'
-            ]);
 
         return Response::json([
             'cards' => $jobCards,
-            'requisitions' => $requisitions,
         ]);
     }
 
@@ -56,13 +59,13 @@ class JobCardController extends Controller
      */
     public function create()
     {
-        $trucks = TruckFactory::all();
+        $trucks = VehicleFactory::all();
 
         return Response::json([
             'vehicles' => $trucks,
             'job_types' => WorkshopJobType::with(['operations.tasks'])->get(['id', 'name', 'service_type']),
             'checklist' => WorkshopInspectionCheckList::all(['name', 'id']),
-            'employees' => WorkshopEmployee::all(['id', 'first_name', 'last_name'])
+            'employees' => Employee::where('category', 'Mechanics')->get(['id', 'first_name', 'last_name'])
         ]);
     }
 

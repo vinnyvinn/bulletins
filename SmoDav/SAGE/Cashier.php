@@ -11,6 +11,10 @@ class Cashier
 {
     public static function invoice(Contract $contract, $unitPrice, $quantity, $projectId)
     {
+        if (! $contract->stock_item_id) {
+            return;
+        }
+
         DB::transaction(function () use ($contract, $unitPrice, $quantity, $projectId) {
             $invoiceId = DB::table('InvNum')
                 ->insertGetId(self::mapInvoice($contract, $unitPrice * $quantity, $projectId));
@@ -23,6 +27,7 @@ class Cashier
     {
         $reference = 'WEB' . \uniqid(Str::random(6));
         $transactionDate = Carbon::now();
+        $exclusive = (double) $totalAmount / 1.16;
 
         return [
             'iINVNUMAgentID' => 1,
@@ -47,8 +52,8 @@ class Cashier
             'InvTotExclDEx' => 0,
             'InvTotTaxDEx' => 0,
             'InvTotInclDEx' => $totalAmount,
-            'InvTotExcl' => 0,
-            'InvTotTax' => 0,
+            'InvTotExcl' => $exclusive,
+            'InvTotTax' => $totalAmount - $exclusive,
             'InvTotIncl' => $totalAmount,
             'OrdDiscAmnt' => 0,
             'InvDisc' => 0,
@@ -57,8 +62,8 @@ class Cashier
             'OrdTotExclDEx' => 0,
             'OrdTotTaxDEx' => 0,
             'OrdTotInclDEx' => $totalAmount,
-            'OrdTotExcl' => 0,
-            'OrdTotTax' => 0,
+            'OrdTotExcl' => $exclusive,
+            'OrdTotTax' => $totalAmount - $exclusive,
             'OrdTotIncl' => $totalAmount,
             'cTaxNumber' => null,
             'cAccountName' => '',
@@ -73,6 +78,14 @@ class Cashier
         $stockItem = DB::table('StkItem')->where('StockLink', $contract->stock_item_id)->first();
         $tax = DB::table('TaxRate')->where('idTaxRate', $stockItem->TTI)->first();
         $totalPrice = $unitPrice * $quantity;
+
+        if (! $tax) {
+            $tax = new \stdClass();
+            $tax->TaxRate = 16;
+        }
+
+        $exclusive = ((double) $totalPrice / (100 + $tax->TaxRate)) / 100;
+        $unitExclusive = ((double) $unitPrice / (100 + $tax->TaxRate)) / 100;
 
         return [
             'iWarehouseID' => 0,
@@ -163,29 +176,29 @@ class Cashier
             'fQuantity' => $quantity,
             'fQtyChange' => $quantity,
             'fQtyToProcess' => $quantity,
-            'fUnitPriceExcl' => 0,
+            'fUnitPriceExcl' => $unitExclusive,
             'fUnitPriceIncl' => $unitPrice,
             'iModule' => 0,
             'iStockCodeID' => (int) $stockItem->StockLink,
             'iTaxTypeID' => (int) $stockItem->TTI,
             'fQuantityLineTotIncl' => $totalPrice,
-            'fQuantityLineTotExcl' => 0,
+            'fQuantityLineTotExcl' => $exclusive,
             'fQuantityLineTotInclNoDisc' => $totalPrice,
-            'fQuantityLineTotExclNoDisc' => 0,
-            'fQuantityLineTaxAmount' => 0,
-            'fQuantityLineTaxAmountNoDisc' => 0,
+            'fQuantityLineTotExclNoDisc' => $exclusive,
+            'fQuantityLineTaxAmount' => $totalPrice - $exclusive,
+            'fQuantityLineTaxAmountNoDisc' => $totalPrice - $exclusive,
             'fQtyChangeLineTotIncl' => $totalPrice,
-            'fQtyChangeLineTotExcl' => 0,
+            'fQtyChangeLineTotExcl' => $exclusive,
             'fQtyChangeLineTotInclNoDisc' => $totalPrice,
-            'fQtyChangeLineTotExclNoDisc' => 0,
+            'fQtyChangeLineTotExclNoDisc' => $exclusive,
             'fQtyChangeLineTaxAmount' => 0,
             'fQtyChangeLineTaxAmountNoDisc' => 0,
             'fQtyToProcessLineTotIncl' => $totalPrice,
-            'fQtyToProcessLineTotExcl' => 0,
+            'fQtyToProcessLineTotExcl' => $exclusive,
             'fQtyToProcessLineTotInclNoDisc' => $totalPrice,
-            'fQtyToProcessLineTotExclNoDisc' => 0,
-            'fQtyToProcessLineTaxAmount' => 0,
-            'fQtyToProcessLineTaxAmountNoDisc' => 0,
+            'fQtyToProcessLineTotExclNoDisc' => $exclusive,
+            'fQtyToProcessLineTaxAmount' => $totalPrice - $exclusive,
+            'fQtyToProcessLineTaxAmountNoDisc' => $totalPrice - $exclusive,
         ];
     }
 }

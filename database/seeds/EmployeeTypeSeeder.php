@@ -14,5 +14,6 @@ class EmployeeTypeSeeder extends Seeder
     {
         EmployeeCategory::create(['category' => 'supervisor']);
         EmployeeCategory::create(['category' => 'casual']);
+        EmployeeCategory::create(['category' => 'Mechanics']);
     }
 }
