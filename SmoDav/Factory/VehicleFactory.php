@@ -8,6 +8,7 @@ use App\Trip;
 use App\Truck;
 use Carbon\Carbon;
 use DB;
+use SmoDav\Models\Journey;
 use SmoDav\Models\Vehicle;
 use SmoDav\SAGE\Cashier;
 
@@ -151,26 +152,24 @@ class VehicleFactory
             ->get(['id', 'plate_number', 'max_load', 'contract_id', 'location']);
     }
 
-    public static function createBilling(Trip $trip)
+    public static function createBilling(Journey $journey)
     {
-        $truck = $trip->truck;
-        $contract = $truck->contract;
-        $route = $contract->route;
+        $truck = $journey->truck;
+        $contract = $journey->contract;
+        $route = $journey->route;
         $quantity = $route->distance;
-        $delNote = $trip->deliveryNote;
-        $receiveNote = $trip->receiveNote;
-        $receiveNote->fields = \json_decode($receiveNote->fields);
+        $delNote = $journey->delivery;
 
         if ($contract->rate == Contract::PER_KM) {
-            $quantity = $route->distance;
+            $quantity = (double) $route->distance;
         }
 
         if ($contract->rate == Contract::PER_HR) {
-            $quantity = \round((Carbon::parse($delNote->createdAt)->diffInMinutes($receiveNote->createdAt)) / 60);
+            $quantity = \round((Carbon::parse($delNote->loading_time)->diffInMinutes($delNote->offloading_time)) / 60);
         }
 
         if ($contract->rate == Contract::PER_TONNE) {
-            $quantity = $receiveNote->fields->gross_weight - $receiveNote->fields->tare_weight;
+            $quantity = (double) $delNote->offloading_net_weight;
         }
 
         Cashier::invoice($contract, $contract->amount, $quantity, $truck->project_id);

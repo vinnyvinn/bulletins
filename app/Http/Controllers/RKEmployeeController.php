@@ -40,7 +40,7 @@ class RKEmployeeController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $employee = Employee::create($data);
+        Employee::create($data);
 
         return Response::json([
             'status'  => 'success',

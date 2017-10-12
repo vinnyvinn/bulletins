@@ -55,4 +55,9 @@ class HomeController extends Controller
     {
         return view('localshunting');
     }
+
+    public function workshop()
+    {
+        return view('workshop');
+    }
 }

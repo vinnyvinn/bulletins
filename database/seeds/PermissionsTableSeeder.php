@@ -24,11 +24,11 @@ class PermissionsTableSeeder extends Seeder
         ];
 
         $workshopModules = [
-            'job-card', 'parts-requisition',
+            'job-card', 'requisition',
         ];
 
         $hasApproval = [
-            'contract', 'journey', 'fuel', 'mileage'
+            'contract', 'journey', 'fuel', 'mileage', 'job-card', 'parts-requisition',
         ];
 
         $permission = [];

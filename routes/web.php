@@ -22,6 +22,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     // include(__DIR__ .'/localshunting.php');
     Route::any('/ls/{a?}/{b?}/{c?}', 'HomeController@localshunting');
+    Route::any('/wsh/{a?}/{b?}/{c?}', 'HomeController@workshop');
 
     Route::get('/route-card/print/{id}', 'RouteCardController@show')->name('route-card-print');
     Route::any('{a}/{b?}/{c?}', 'HomeController@home');

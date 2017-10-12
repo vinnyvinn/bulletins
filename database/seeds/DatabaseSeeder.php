@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call(CargoSeeder::class);
         $this->call(MakesAndModelsSeeder::class);
         $this->call(EmployeeTypeSeeder::class);
+        $this->call(WorkshopSeeder::class);
         //         $this->call(MileageTypeSeeder::class);
 //         $this->call(DevelopmentSeeder::class);
     }

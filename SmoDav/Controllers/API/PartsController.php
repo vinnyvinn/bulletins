@@ -25,8 +25,28 @@ class PartsController extends Controller
      */
     public function index()
     {
-        return Response::json([
+        $requisitions = Requisition::when(! \Auth::user()->can('approve-requisition'), function ($builder) {
+            return $builder->own();
+        })
+            ->with(['jobCard' => function ($builder) {
+                return $builder->select(['id', 'vehicle_number']);
+            }])
+            ->when(! \request('status'), function ($builder) {
+                return $builder->where('status', Constants::STATUS_PENDING);
+            })
+            ->when(\request('status') == 'all', function ($builder) {
+                return $builder->where('status', '<>', Constants::STATUS_PENDING)
+                    ->where('status', '<>', Constants::STATUS_CLOSED);
+            })
+            ->when(\request('status') == 'closed', function ($builder) {
+                return $builder->where('status', Constants::STATUS_CLOSED);
+            })
+            ->get([
+                'id', 'job_card_id', 'created_at', 'status'
+            ]);
 
+        return Response::json([
+            'requisitions' => $requisitions
         ]);
     }
 
@@ -134,11 +154,37 @@ class PartsController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param int                      $id
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
-        //
+        $requisition = Requisition::find($id);
+
+        $data = $request->all();
+        $data['raw_data'] = \json_encode($data);
+        $data['user_id'] = Auth::id();
+
+        DB::transaction(function () use ($data, $requisition) {
+            $requisition->update($data);
+            RequisitionLines::where('requisition_id', $requisition->id)->delete();
+
+            foreach ($data['lines'] as $line) {
+                $line['requisition_id'] = $requisition->id;
+                if ($line['approved_quantity'] == 'Pending') {
+                    unset($line['approved_quantity']);
+                }
+                if ($line['issued_quantity'] == 'Pending') {
+                    unset($line['issued_quantity']);
+                }
+
+                RequisitionLines::create($line);
+            }
+        });
+
+        return Response::json([
+            'status' => 'success',
+            'message' => 'Successfully updated requisition.'
+        ]);
     }
 
     /**
@@ -146,11 +192,25 @@ class PartsController extends Controller
      *
      * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
-        //
+        $requisition = Requisition::find($id);
+
+        if ($requisition->status != 'Pending Approval') {
+            return Response::json([
+                'status' => 'success',
+                'message' => 'You cannot delete a processed requisition.'
+            ]);
+        }
+
+        $requisition->delete();
+
+        return Response::json([
+            'status' => 'success',
+            'message' => 'Successfully deleted requisition.'
+        ]);
     }
 
     public function approve(Request $request, $id)

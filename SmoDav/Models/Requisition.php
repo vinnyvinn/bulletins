@@ -91,7 +91,7 @@ class Requisition extends SmoDavModel
             ->keyBy('StockLink');
 
         $jobCard = $this->jobCard;
-        $project = Truck::where('id', $jobCard->vehicle_id)->first();
+        $project = Vehicle::where('id', $jobCard->vehicle_id)->first();
         $project = $project ? $project->project_id : 0;
 
         foreach ($items as $itemId => $quantity) {

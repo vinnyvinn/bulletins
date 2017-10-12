@@ -19,8 +19,8 @@ class SettingsController extends Controller
     public function index()
     {
         $pageTitle = 'Settings';
-        $stkItemColumns = SAGEUDF::where('cTableName', 'LIKE', 'stkitem')
-            ->where('iFieldType', 5)
+        $stkItemColumns = SAGEUDF::where('cTableName', 'LIKE', 'STKITEM')
+//            ->where('iFieldType', 5)
             ->get([
                 'idUserDict', 'cFieldName', 'cFieldDescription'
             ]);

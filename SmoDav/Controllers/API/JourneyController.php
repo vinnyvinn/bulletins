@@ -12,6 +12,7 @@ use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Response;
+use SmoDav\Factory\VehicleFactory;
 use SmoDav\Models\CargoClassification;
 use SmoDav\Models\CargoType;
 use SmoDav\Models\CarriagePoint;
@@ -313,6 +314,7 @@ class JourneyController extends Controller
 
         $mileage = \DB::transaction(function () use ($id, $request, $returnMileage) {
             $journey = Journey::findOrFail($id);
+
             $data = $request->all();
             $journey->update([
                 'mileage_balance' => $request['mileage_balance'],
@@ -326,6 +328,8 @@ class JourneyController extends Controller
             $truck->current_km = $data['current_km'];
             $truck->current_fuel = $data['current_fuel'];
             $truck->update();
+
+            VehicleFactory::createBilling($journey);
 
             return $mileage;
         });
