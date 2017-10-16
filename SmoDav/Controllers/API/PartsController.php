@@ -2,11 +2,14 @@
 
 namespace SmoDav\Controllers\API;
 
+use App\ConsumptionLine;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\Helpers;
+use App\IssueLine;
 use App\Option;
 use App\SAGEUDF;
 use Auth;
+use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
 use Response;
@@ -25,7 +28,7 @@ class PartsController extends Controller
      */
     public function index()
     {
-        $requisitions = Requisition::when(! \Auth::user()->can('approve-requisition'), function ($builder) {
+        $requisitions = Requisition::when(! \Auth::user()->has('approve-requisition'), function ($builder) {
             return $builder->own();
         })
             ->with(['jobCard' => function ($builder) {
@@ -34,12 +37,8 @@ class PartsController extends Controller
             ->when(! \request('status'), function ($builder) {
                 return $builder->where('status', Constants::STATUS_PENDING);
             })
-            ->when(\request('status') == 'all', function ($builder) {
-                return $builder->where('status', '<>', Constants::STATUS_PENDING)
-                    ->where('status', '<>', Constants::STATUS_CLOSED);
-            })
-            ->when(\request('status') == 'closed', function ($builder) {
-                return $builder->where('status', Constants::STATUS_CLOSED);
+            ->when(\request('status'), function ($builder) {
+                return $builder->where('status', \request('status'));
             })
             ->get([
                 'id', 'job_card_id', 'created_at', 'status'
@@ -78,7 +77,6 @@ class PartsController extends Controller
             ->get();
 
         $jobCards = JobCard::select(['id', 'raw_data', 'vehicle_number'])
-            ->own()
             ->open()
             ->get();
 
@@ -220,6 +218,8 @@ class PartsController extends Controller
             $requisition = Requisition::with(['lines'])->where('id', $id)->first();
             $data = $request->all();
             $data['lines'] = [];
+            $toIssue = [];
+            $issued = true;
 
             foreach ($requisition->lines as $line) {
                 $itemLine = $lines->get($line->item_id);
@@ -228,6 +228,17 @@ class PartsController extends Controller
                 ];
 
                 if ($requisition->status == Constants::STATUS_APPROVED) {
+                    if ((int) $itemLine['issued_quantity']) {
+                        $toIssue [] = [
+                            'requisition_line_id' => $line->item_id,
+                            'issued' => $itemLine['issued_quantity'],
+                            'user_id' => \Auth::id(),
+                            'created_at' => Carbon::now(),
+                            'updated_at' => Carbon::now()
+                        ];
+                    }
+
+                    $itemLine['issued_quantity'] += $line->issued_quantity;
                     $fields = [
                         'issued_quantity' => $itemLine['issued_quantity']
                     ];
@@ -236,12 +247,21 @@ class PartsController extends Controller
                 $itemLine['old_consumed_quantity'] = 0;
                 $data['lines'][] = $itemLine;
                 $line->update($fields);
+                if ((int) $line->approved_quantity > $line->issued_quantity) {
+                    $issued = false;
+                }
             }
 
+            if (count($toIssue) && $requisition->status == Constants::STATUS_APPROVED) {
+                IssueLine::insert($toIssue);
+            }
+
+            $status = $requisition->status == Constants::STATUS_PENDING ?
+                Constants::STATUS_APPROVED :
+                ($issued ? Constants::STATUS_ISSUED : Constants::STATUS_APPROVED);
+
             $requisition->update([
-                'status' => $requisition->status == Constants::STATUS_PENDING ?
-                    Constants::STATUS_APPROVED :
-                    Constants::STATUS_ISSUED,
+                'status' => $status,
                 'raw_data' => \json_encode($data)
             ]);
 
@@ -252,7 +272,7 @@ class PartsController extends Controller
 
         return Response::json([
             'success' => 'true',
-            'message' => 'Successfully approved requisition.'
+            'message' => 'Successfully updated requisition.'
         ]);
     }
 
@@ -264,16 +284,31 @@ class PartsController extends Controller
             $data = $request->all();
             $data['lines'] = [];
             $consumed = [];
+            $toInsert = [];
             $fullyConsumed = true;
             foreach ($requisition->lines as $line) {
                 $itemLine = $lines->get($line->item_id);
+                $totalConsumed = $line->consumed_quantity + $itemLine['consumed_quantity'];
+                
+                if ($totalConsumed > $line->issued_quantity) {
+                    $itemLine['consumed_quantity'] = $line->issued_quantity - $line->consumed_quantity;
+                }
+
                 $fields = [
                     'consumed_quantity' => $line->consumed_quantity + $itemLine['consumed_quantity']
                 ];
+
                 if (\intval($itemLine['consumed_quantity'])) {
                     $consumed[$itemLine['item_id']] = $itemLine['consumed_quantity'];
                     $itemLine['old_consumed_quantity'] = $fields['consumed_quantity'];
                     $itemLine['consumed_quantity'] = 0;
+                    $toInsert [] = [
+                        'requisition_line_id' => $line->item_id,
+                        'consumed' => $itemLine['old_consumed_quantity'],
+                        'user_id' => \Auth::id(),
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now()
+                    ];
 
                     $line->update($fields);
                 }
@@ -283,6 +318,10 @@ class PartsController extends Controller
                 }
 
                 $data['lines'][] = $itemLine;
+            }
+
+            if (count($toInsert)) {
+                ConsumptionLine::insert($toInsert);
             }
 
             $requisition->makeJournal($consumed);

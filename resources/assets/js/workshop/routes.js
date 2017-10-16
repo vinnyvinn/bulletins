@@ -47,11 +47,13 @@ module.exports = [
     { path: '/wsh/job-card/:id/edit', component: require('./jobcard/form.vue'), beforeEnter: authMiddleware },
 
     { path: '/wsh/parts/', component: require('./parts/index.vue'), beforeEnter: authMiddleware },
+    { path: '/wsh/parts/issue', component: require('./parts/issue.vue'), beforeEnter: authMiddleware },
     { path: '/wsh/parts/open', component: require('./parts/open.vue'), beforeEnter: authMiddleware },
     { path: '/wsh/parts/closed', component: require('./parts/closed.vue'), beforeEnter: authMiddleware },
     { path: '/wsh/parts/create', component: require('./parts/form.vue'), beforeEnter: authMiddleware },
     { path: '/wsh/parts/:id', component: require('./parts/view.vue'), beforeEnter: authMiddleware },
     { path: '/wsh/parts/:id/edit', component: require('./parts/form.vue'), beforeEnter: authMiddleware },
+    { path: '/wsh/parts/:id/:issue', component: require('./parts/view.vue'), beforeEnter: authMiddleware },
 
 
 
