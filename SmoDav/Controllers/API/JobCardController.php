@@ -32,7 +32,7 @@ class JobCardController extends Controller
         $jobCards = JobCard::with(['type' => function ($builder) {
             return $builder->select(['id', 'name']);
         }])
-            ->when(! \Auth::user()->can('approve-job-card'), function ($builder) {
+            ->when(! \Auth::user()->has('approve-job-card'), function ($builder) {
                 return $builder->own();
             })
             ->when(! \request('status'), function ($builder) {

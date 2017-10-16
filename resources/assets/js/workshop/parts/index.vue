@@ -1,5 +1,4 @@
 <template>
-
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
@@ -7,16 +6,20 @@
                     <div class="panel-heading">
                         <strong>Parts Requisitions Approved, Not Issued</strong>
 
-                        <router-link to="/wsh/parts/create" class="btn btn-success btn-xs pull-right">
-                            <i class="fa fa-plus"></i> New
-                        </router-link>
-
                         <router-link to="/wsh/parts/closed" class="btn btn-danger btn-xs pull-right">
                             <i class="fa fa-plus"></i> Closed
                         </router-link>
 
-                        <router-link to="/wsh/parts/open" class="btn btn-primary btn-xs pull-right">
-                            <i class="fa fa-plus"></i> Open
+                        <router-link to="/wsh/parts/open" class="btn btn-warning btn-xs pull-right">
+                            <i class="fa fa-plus"></i> Issued
+                        </router-link>
+
+                        <router-link to="/wsh/parts/issue" class="btn btn-info btn-xs pull-right">
+                            <i class="fa fa-plus"></i> Pending Issue
+                        </router-link>
+
+                        <router-link to="/wsh/parts/create" class="btn btn-success btn-xs pull-right">
+                            <i class="fa fa-plus"></i> New
                         </router-link>
 
                     </div>
@@ -24,38 +27,44 @@
                         <div class="table-responsive">
                             <table class="table datatable nowrap">
                                 <thead>
-                                <tr>
-                                    <th>No.</th>
-                                    <th>Requisition #</th>
-                                    <th>Card #</th>
-                                    <th>Vehicle</th>
-                                    <th>Requested On</th>
-                                    <th></th>
-                                </tr>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Requisition #</th>
+                                        <th>Card #</th>
+                                        <th>Vehicle</th>
+                                        <th>Requested On</th>
+                                        <th></th>
+                                    </tr>
                                 </thead>
 
                                 <tbody>
-                                <tr v-for="(item, index) in requisitions">
-                                    <td>{{ index + 1 }}</td>
-                                    <td><a @click.prevent="viewRequisition(item.id)">PR-{{ item.id }}</a></td>
-                                    <td><a @click.prevent="viewCard(item.job_card_id)">JC-{{ item.job_card_id }}</a></td>
-                                    <td>{{ item.job_card.vehicle_number }}</td>
-                                    <td>{{ formatDate(item.created_at) }}</td>
-                                    <td class="text-center">
-                                        <button v-if="item.status == 'Pending Approval'" class="btn btn-xs btn-primary" @click="editRequisition(item.id)"><i class="fa fa-pencil"></i></button>
-                                    </td>
-                                </tr>
+                                    <tr v-for="(item, index) in requisitions">
+                                        <td>{{ index + 1 }}</td>
+                                        <td>
+                                            <a @click.prevent="viewRequisition(item.id)">PR-{{ item.id }}</a>
+                                        </td>
+                                        <td>
+                                            <a @click.prevent="viewCard(item.job_card_id)">JC-{{ item.job_card_id }}</a>
+                                        </td>
+                                        <td>{{ item.job_card.vehicle_number }}</td>
+                                        <td>{{ formatDate(item.created_at) }}</td>
+                                        <td class="text-center">
+                                            <button v-if="item.status == 'Pending Approval'" class="btn btn-xs btn-primary" @click="editRequisition(item.id)">
+                                                <i class="fa fa-pencil"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
                                 </tbody>
 
                                 <tfoot>
-                                <tr>
-                                    <th>No.</th>
-                                    <th>Requisition #</th>
-                                    <th>Card #</th>
-                                    <th>Vehicle</th>
-                                    <th>Requested On</th>
-                                    <th></th>
-                                </tr>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Requisition #</th>
+                                        <th>Card #</th>
+                                        <th>Vehicle</th>
+                                        <th>Requested On</th>
+                                        <th></th>
+                                    </tr>
                                 </tfoot>
                             </table>
                         </div>
@@ -95,7 +104,7 @@
             },
 
             editRequisition(record) {
-                window._router.push({path: '/wsh/parts/' + record + '/edit'})
+                window._router.push({ path: '/wsh/parts/' + record + '/edit' })
             },
 
             viewRequisition(record) {

@@ -4,14 +4,14 @@
             <div class="col-sm-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <strong>Closed Parts Requisitions</strong>
+                        <strong>Pending Issuance Parts Requisitions</strong>
+
+                        <router-link to="/wsh/parts/closed" class="btn btn-danger btn-xs pull-right">
+                            <i class="fa fa-plus"></i> Closed
+                        </router-link>
 
                         <router-link to="/wsh/parts/open" class="btn btn-warning btn-xs pull-right">
                             <i class="fa fa-plus"></i> Issued
-                        </router-link>
-
-                        <router-link to="/wsh/parts/issue" class="btn btn-info btn-xs pull-right">
-                            <i class="fa fa-plus"></i> Pending Issue
                         </router-link>
 
                         <router-link to="/wsh/parts" class="btn btn-primary btn-xs pull-right">
@@ -84,7 +84,7 @@
 <script>
     export default {
         created() {
-            http.get('/api/parts?status=Closed').then(response => {
+            http.get('/api/parts?status=Approved').then(response => {
                 this.requisitions = response.requisitions;
                 confirm2('.btn-destroy', (element) => {
                     this.destroy(element.dataset.item);

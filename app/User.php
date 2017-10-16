@@ -158,4 +158,15 @@ class User extends Authenticatable
     {
         return $this->hasOne(GatePass::class);
     }
+
+    public function has($permission)
+    {
+        $permissions = json_decode($this->permissions);
+
+        if (in_array('*', $permissions)) {
+            return true;
+        }
+
+        return in_array($permission, $permissions);
+    }
 }
