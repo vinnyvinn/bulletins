@@ -3,6 +3,8 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <strong>Job Card #JC-{{ card_number }}</strong>
+
+                <a :href="'/job-card/print/' + card_number" class="btn btn-xs btn-primary pull-right" target="_blank">PRINT</a>
             </div>
 
             <div class="panel-body">
@@ -10,15 +12,21 @@
 
                     <div class="row">
                         <div class="col-sm-4">
-                            <h4><strong>Job Card Number:</strong></h4>
+                            <h4>
+                                <strong>Job Card Number:</strong>
+                            </h4>
                             <h5>JC-{{ card_number }}</h5>
                         </div>
                         <div class="col-sm-4">
-                            <h4><strong>Requested By:</strong></h4>
+                            <h4>
+                                <strong>Requested By:</strong>
+                            </h4>
                             <h5>{{ user.first_name }} {{ user.last_name }}</h5>
                         </div>
                         <div class="col-sm-4">
-                            <h4><strong>Requested On:</strong></h4>
+                            <h4>
+                                <strong>Requested On:</strong>
+                            </h4>
                             <h5>{{ formatDate(requested_on) }}</h5>
                         </div>
                     </div>
@@ -34,14 +42,12 @@
                                 </select>
                             </div>
 
-
                             <div class="form-group input-group-sm">
                                 <label for="workshop_job_type_id">Job Type</label>
                                 <select disabled required v-model="card.workshop_job_type_id" name="workshop_job_type_id" id="workshop_job_type_id" class="form-control">
                                     <option v-for="type in jobTypes" :value="type.id">{{ type.name }}</option>
                                 </select>
                             </div>
-
 
                             <div class="form-group input-group-sm">
                                 <label for="job_description">Job Description</label>
@@ -64,15 +70,18 @@
 
                             <div class="form-group input-group-sm">
                                 <label for="vehicle_id">Driver</label>
-                                <h5><strong>{{ vehicle.driver.first_name }} {{ vehicle.driver.last_name }}, {{ vehicle.driver.mobile_phone }}</strong></h5>
+                                <h5>
+                                    <strong>{{ vehicle.driver.first_name }} {{ vehicle.driver.last_name }}, {{ vehicle.driver.mobile_phone }}</strong>
+                                </h5>
                             </div>
                         </div>
-
 
                         <div class="col-sm-4">
                             <div class="form-group input-group-sm">
                                 <label for="vehicle_id">Make &amp; Model</label>
-                                <h5><strong>{{ vehicle.make.name }}, {{ vehicle.model.name }}</strong></h5>
+                                <h5>
+                                    <strong>{{ vehicle.make.name }}, {{ vehicle.model.name }}</strong>
+                                </h5>
                             </div>
 
                             <div class="form-group input-group-sm">
@@ -97,30 +106,30 @@
                         <div class="col-sm-8">
                             <table class="table table-striped">
                                 <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Inspection</th>
-                                    <th>Done By</th>
-                                    <th>Status</th>
-                                </tr>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Inspection</th>
+                                        <th>Done By</th>
+                                        <th>Status</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="(item, index) in card.inspections">
-                                    <td>{{ index + 1}}</td>
-                                    <td>{{ item.inspection_name }}</td>
-                                    <td>
-                                        <select disabled v-model="item.employee_id" class="form-control input-sm">
-                                            <option v-for="employee in employees" :value="employee.id">{{ employee.first_name }} {{ employee.last_name }}</option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <select disabled v-model="item.status" class="form-control input-sm">
-                                            <option value="Not Started">Not Started</option>
-                                            <option value="In Progress">In Progress</option>
-                                            <option value="Completed">Completed</option>
-                                        </select>
-                                    </td>
-                                </tr>
+                                    <tr v-for="(item, index) in card.inspections">
+                                        <td>{{ index + 1}}</td>
+                                        <td>{{ item.inspection_name }}</td>
+                                        <td>
+                                            <select disabled v-model="item.employee_id" class="form-control input-sm">
+                                                <option v-for="employee in employees" :value="employee.id">{{ employee.first_name }} {{ employee.last_name }}</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select disabled v-model="item.status" class="form-control input-sm">
+                                                <option value="Not Started">Not Started</option>
+                                                <option value="In Progress">In Progress</option>
+                                                <option value="Completed">Completed</option>
+                                            </select>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -140,36 +149,36 @@
                             <div class="table-responsive">
                                 <table class="table table-striped">
                                     <thead>
-                                    <tr>
-                                        <th>Operation</th>
-                                        <th>Action</th>
-                                        <th>Allocated To</th>
-                                        <th>Start Date</th>
-                                        <th>Start Time</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
+                                        <tr>
+                                            <th>Operation</th>
+                                            <th>Action</th>
+                                            <th>Allocated To</th>
+                                            <th>Start Date</th>
+                                            <th>Start Time</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                    <tr v-for="task in card.tasks">
-                                        <td>{{ task.operation }}</td>
-                                        <td>{{ task.task_name }}</td>
-                                        <td>
-                                            <select disabled v-model="task.employee_id" class="form-control input-sm">
-                                                <option v-for="employee in employees" :value="employee.id">{{ employee.first_name }} {{ employee.last_name }}</option>
-                                            </select>
-                                        </td>
-                                        <td>{{ task.start_date }}</td>
-                                        <td>{{ task.start_time }}</td>
-                                        <td>
-                                            <select disabled v-model="task.status" class="form-control input-sm">
-                                                <option value="Not Started">Not Started</option>
-                                                <option value="In Progress">In Progress</option>
-                                                <option value="Completed">Completed</option>
-                                            </select>
-                                        </td>
-                                        <td></td>
-                                    </tr>
+                                        <tr v-for="task in card.tasks">
+                                            <td>{{ task.operation }}</td>
+                                            <td>{{ task.task_name }}</td>
+                                            <td>
+                                                <select disabled v-model="task.employee_id" class="form-control input-sm">
+                                                    <option v-for="employee in employees" :value="employee.id">{{ employee.first_name }} {{ employee.last_name }}</option>
+                                                </select>
+                                            </td>
+                                            <td>{{ task.start_date }}</td>
+                                            <td>{{ task.start_time }}</td>
+                                            <td>
+                                                <select disabled v-model="task.status" class="form-control input-sm">
+                                                    <option value="Not Started">Not Started</option>
+                                                    <option value="In Progress">In Progress</option>
+                                                    <option value="Completed">Completed</option>
+                                                </select>
+                                            </td>
+                                            <td></td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -229,8 +238,8 @@
 
         computed: {
             vehicle() {
-                let selected =  this.vehicles.filter((item) => (item.id == this.card.vehicle_id));
-                selected = selected.length ? selected[0]: { driver:{}, make: {}, model: {} };
+                let selected = this.vehicles.filter((item) => (item.id == this.card.vehicle_id));
+                selected = selected.length ? selected[0] : { driver: {}, make: {}, model: {} };
                 selected.driver = selected.driver ? selected.driver : { name: 'No Driver' };
 
                 return selected;
@@ -243,15 +252,15 @@
             },
 
             jobType() {
-                let selected =  this.job_types.filter((item) => item.id == this.card.workshop_job_type_id);
-                selected = selected.length ? selected[0]: { operations:[] };
+                let selected = this.job_types.filter((item) => item.id == this.card.workshop_job_type_id);
+                selected = selected.length ? selected[0] : { operations: [] };
 
                 return selected;
             },
 
             operation() {
-                let selected =  this.jobType.operations.filter((item) => item.id == this.task.operation_id);
-                selected = selected.length ? selected[0]: { tasks:[] };
+                let selected = this.jobType.operations.filter((item) => item.id == this.task.operation_id);
+                selected = selected.length ? selected[0] : { tasks: [] };
                 selected.tasks = selected.tasks ? selected.tasks : [];
 
                 return selected;

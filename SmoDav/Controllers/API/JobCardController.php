@@ -215,4 +215,23 @@ class JobCardController extends Controller
             'message' => 'Successfully closed job card.'
         ]);
     }
+
+    public function printCard($id)
+    {
+        $card = JobCard::with(['vehicle.make', 'vehicle.model', 'jobType'])->findOrFail($id);
+        $card->raw_data = json_decode($card->raw_data);
+        $employeeIds = [];
+
+        foreach ($card->raw_data->tasks as $task) {
+            if (! in_array($task->employee_id, $employeeIds)) {
+                $employeeIds[] = $task->employee_id;
+            }
+        }
+
+        $employees = Employee::whereIn('id', $employeeIds)->get(['id', 'first_name', 'last_name'])->keyBy('id');
+
+        return view('printouts.jobcard')
+            ->with('card', $card)
+            ->with('employees', $employees);
+    }
 }

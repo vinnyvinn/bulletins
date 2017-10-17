@@ -8,6 +8,7 @@ Route::group(['prefix' => 'super', 'as' => 'super.', 'middleware' => 'auth'], fu
 });
 
 Route::group(['middleware' => 'auth'], function () {
+    Route::get('job-card/print/{id}', '\SmoDav\Controllers\API\JobCardController@printCard');
     Route::get('delivery/print/{id}', '\SmoDav\Controllers\API\DeliveryController@printNote');
     Route::get('/home', 'HomeController@index');
 
