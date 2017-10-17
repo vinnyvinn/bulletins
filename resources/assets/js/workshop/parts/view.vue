@@ -1,117 +1,120 @@
 <template>
-    <div class="container">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <strong>Requisition Order #PR-{{ requisition_number }}</strong>
-            </div>
+    <div>
+        <div v-html="printout"></div>
+        <div class="container hidden-print">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>Requisition Order #PR-{{ requisition_number }}</strong>
+                </div>
 
-            <div class="panel-body">
-                <form action="#" role="form" id="viewForm">
+                <div class="panel-body">
+                    <form action="#" role="form" id="viewForm">
 
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <h4>
-                                <strong>Requisition Order Number:</strong>
-                            </h4>
-                            <h5>JC-{{ requisition_number }}</h5>
-                        </div>
-                        <div class="col-sm-4">
-                            <h4>
-                                <strong>Requested By:</strong>
-                            </h4>
-                            <h5>{{ user.first_name }} {{ user.last_name }}</h5>
-                        </div>
-                        <div class="col-sm-4">
-                            <h4>
-                                <strong>Requested On:</strong>
-                            </h4>
-                            <h5>{{ formatDate(requested_on) }}</h5>
-                        </div>
-                    </div>
-                    <hr>
-
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="job_card_id">Job Card</label>
-                                <input disabled :value="'JC-' + requisition.job_card_id" name="job_card_id" id="job_card_id" class="form-control input-sm">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <h4>
+                                    <strong>Requisition Order Number:</strong>
+                                </h4>
+                                <h5>JC-{{ requisition_number }}</h5>
                             </div>
-
-                            <div class="form-group">
-                                <label>Vehicle Number</label>
-                                <h5>{{ requisition.vehicle_number }}</h5>
+                            <div class="col-sm-4">
+                                <h4>
+                                    <strong>Requested By:</strong>
+                                </h4>
+                                <h5>{{ user.first_name }} {{ user.last_name }}</h5>
+                            </div>
+                            <div class="col-sm-4">
+                                <h4>
+                                    <strong>Requested On:</strong>
+                                </h4>
+                                <h5>{{ formatDate(requested_on) }}</h5>
                             </div>
                         </div>
+                        <hr>
 
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="mechanic_findings">Mechanic's Findings</label>
-                                <textarea disabled name="mechanic_findings" id="mechanic_findings" cols="20" rows="5" class="form-control input-sm">{{ requisition.mechanic_findings }}</textarea>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="job_card_id">Job Card</label>
+                                    <input disabled :value="'JC-' + requisition.job_card_id" name="job_card_id" id="job_card_id" class="form-control input-sm">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Vehicle Number</label>
+                                    <h5>{{ requisition.vehicle_number }}</h5>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="mechanic_findings">Mechanic's Findings</label>
+                                    <textarea disabled name="mechanic_findings" id="mechanic_findings" cols="20" rows="5" class="form-control input-sm">{{ requisition.mechanic_findings }}</textarea>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <hr>
+                        <hr>
 
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Item</th>
-                                        <th>Requested</th>
-                                        <th>Approved</th>
-                                        <th v-if="status == 'Approved'">Previous Issue</th>
-                                        <th>{{ status == 'Approved' ? 'To Issue' : 'Issued' }}</th>
-                                        <th>Previous Consumption</th>
-                                        <th>Consumed</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="(item, index) in requisition.lines">
-                                        <td>{{ index + 1}}</td>
-                                        <td>{{ item.item_name }}</td>
-                                        <td class="text-right">{{ item.requested_quantity }}</td>
-                                        <td class="text-right">
-                                            <input v-if="status == 'Pending Approval' && can('approve-requisition')" type="number" v-model="item.approved_quantity" class="form-control input-sm" min="0" number>
-                                            <span v-else>{{ item.approved_quantity }}</span>
-                                        </td>
-                                        <td v-if="status == 'Approved'" class="text-right">
-                                            {{ item.old_issued }}
-                                        </td>
-                                        <td class="text-right">
-                                            <input v-if="status == 'Approved' && can('issue-requisition') && (item.actual_old_issued < item.approved_quantity)" type="number" v-model="item.issued_quantity" class="form-control input-sm" min="0" :max="item.approved_quantity - item.actual_old_issued" number>
-                                            <span class="text-right" v-else>{{ item.issued_quantity }}</span>
-                                        </td>
-                                        <td class="text-right">{{ isNaN(parseInt(item.old_consumed_quantity)) ? 0 : item.old_consumed_quantity }}</td>
-                                        <td>
-                                            <input v-if="status == 'Issued' && can('create-requisition') && parseInt(item.issued_quantity) > parseInt(item.old_consumed_quantity)" type="number" onfocus="this.select()" :max="parseInt(item.issued_quantity) - parseInt(item.old_consumed_quantity)" min="0" v-model="item.consumed_quantity" class="form-control input-sm" number>
-                                        </td>
-                                        <td>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Item</th>
+                                            <th>Requested</th>
+                                            <th>Approved</th>
+                                            <th v-if="status == 'Approved'">Previous Issue</th>
+                                            <th>{{ status == 'Approved' ? 'To Issue' : 'Issued' }}</th>
+                                            <th>Previous Consumption</th>
+                                            <th>Consumed</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(item, index) in requisition.lines">
+                                            <td>{{ index + 1}}</td>
+                                            <td>{{ item.item_name }}</td>
+                                            <td class="text-right">{{ item.requested_quantity }}</td>
+                                            <td class="text-right">
+                                                <input v-if="status == 'Pending Approval' && can('approve-requisition')" type="number" v-model="item.approved_quantity" class="form-control input-sm" min="0" number>
+                                                <span v-else>{{ item.approved_quantity }}</span>
+                                            </td>
+                                            <td v-if="status == 'Approved'" class="text-right">
+                                                {{ item.old_issued }}
+                                            </td>
+                                            <td class="text-right">
+                                                <input v-if="status == 'Approved' && can('issue-requisition') && (item.actual_old_issued < item.approved_quantity)" type="number" v-model="item.issued_quantity" class="form-control input-sm" min="0" :max="item.approved_quantity - item.actual_old_issued" number>
+                                                <span class="text-right" v-else>{{ item.issued_quantity }}</span>
+                                            </td>
+                                            <td class="text-right">{{ isNaN(parseInt(item.old_consumed_quantity)) ? 0 : item.old_consumed_quantity }}</td>
+                                            <td>
+                                                <input v-if="status == 'Issued' && can('create-requisition') && parseInt(item.issued_quantity) > parseInt(item.old_consumed_quantity)" type="number" onfocus="this.select()" :max="parseInt(item.issued_quantity) - parseInt(item.old_consumed_quantity)" min="0" v-model="item.consumed_quantity" class="form-control input-sm" number>
+                                            </td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <span v-if="(status == 'Pending Approval' && can('approve-requisition'))">
-                            <input type="submit" name="approve" class="btn btn-success" @click.prevent="approve()" value="Approve Job Card">
-                            <input type="submit" name="disapprove" class="btn btn-danger" @click.prevent="disapprove()" value="Disapprove Job Card">
-                        </span>
-                        <span v-if="(status == 'Approved' && can('issue-requisition'))">
-                            <input type="submit" name="issue" class="btn btn-success" @click.prevent="approve()" value="Issue Parts">
-                        </span>
-                        <span v-if="status == 'Issued' && can('create-requisition')">
-                            <input type="submit" name="consumption" class="btn btn-success" @click.prevent="consume()" value="Update Card">
-                        </span>
-                        <router-link to="/wsh/parts" class="btn btn-danger">Back</router-link>
-                    </div>
-                </form>
+                        <div class="form-group">
+                            <span v-if="(status == 'Pending Approval' && can('approve-requisition'))">
+                                <input type="submit" name="approve" class="btn btn-success" @click.prevent="approve()" value="Approve Job Card">
+                                <input type="submit" name="disapprove" class="btn btn-danger" @click.prevent="disapprove()" value="Disapprove Job Card">
+                            </span>
+                            <span v-if="(status == 'Approved' && can('issue-requisition'))">
+                                <input type="submit" name="issue" class="btn btn-success" @click.prevent="approve()" value="Issue Parts">
+                            </span>
+                            <span v-if="status == 'Issued' && can('create-requisition')">
+                                <input type="submit" name="consumption" class="btn btn-success" @click.prevent="consume()" value="Update Card">
+                            </span>
+                            <router-link to="/wsh/parts" class="btn btn-danger">Back</router-link>
+                        </div>
+                    </form>
 
+                </div>
             </div>
         </div>
     </div>
@@ -121,6 +124,7 @@
     export default {
         data() {
             return {
+                printout: '',
                 status: '',
                 requisition_number: '',
                 user: {},
@@ -238,9 +242,15 @@
                 }
 
                 http.post('/api/parts/' + this.$route.params.id + '/approve', this.requisition).then((response) => {
-                    alert2(this.$root, [response.message], 'success');
+                    this.printout = response.printout;
                     this.$root.isLoading = false;
-                    window._router.push({ path: '/wsh/parts' });
+                    setTimeout(() => {
+                        window.print();
+                    }, 200);
+                    setTimeout(() => {
+                        alert2(this.$root, [response.message], 'success');
+                        window._router.push({ path: '/wsh/parts' });
+                    }, 1000);
                 }).catch((error) => {
                     this.$root.isLoading = false;
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');

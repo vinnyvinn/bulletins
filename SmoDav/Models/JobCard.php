@@ -14,6 +14,16 @@ class JobCard extends SmoDavModel
         'status', 'mechanic_findings', 'user_id', 'raw_data'
     ];
 
+    public function jobType()
+    {
+        return $this->belongsTo(WorkshopJobType::class, 'workshop_job_type_id');
+    }
+
+    public function vehicle()
+    {
+        return $this->belongsTo(Vehicle::class);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

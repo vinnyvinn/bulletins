@@ -213,7 +213,7 @@ class PartsController extends Controller
 
     public function approve(Request $request, $id)
     {
-        DB::transaction(function () use ($request, $id) {
+        $requisition = DB::transaction(function () use ($request, $id) {
             $lines = collect($request->get('lines'))->keyBy('item_id');
             $requisition = Requisition::with(['lines'])->where('id', $id)->first();
             $data = $request->all();
@@ -268,11 +268,21 @@ class PartsController extends Controller
             if ($requisition->status == Constants::STATUS_ISSUED) {
                 $requisition->transferToSite();
             }
+
+            return $requisition;
         });
+
+        $requisition = Requisition::with(['jobCard'])->orderBy('id', 'desc')->find($requisition->id);
+        $requisition->raw_data = json_decode($requisition->raw_data);
+
+        $printout = view('printouts.requisition')
+            ->with('requisition', $requisition)
+            ->render();
 
         return Response::json([
             'success' => 'true',
-            'message' => 'Successfully updated requisition.'
+            'message' => 'Successfully updated requisition.',
+            'printout' => $printout
         ]);
     }
 
