@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Response;
 use SmoDav\Models\Journey;
+use SmoDav\Support\Constants;
 
 class RouteCardController extends Controller
 {
@@ -20,6 +21,9 @@ class RouteCardController extends Controller
         $cards = RouteCard::with(['user' => function ($builder) {
             return $builder->select('first_name', 'last_name', 'id');
         }])
+            ->whereHas('journey', function ($builder) {
+                return $builder->where('status', Constants::STATUS_APPROVED);
+            })
             ->when(\request('s'), function ($builder) {
                 return $builder->where('station_id', \request('s'));
             })

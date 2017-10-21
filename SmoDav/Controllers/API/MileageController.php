@@ -37,6 +37,9 @@ class MileageController extends Controller
                     return $builder->select('id', 'first_name', 'last_name');
                 }
             ])
+            ->whereHas('journey', function ($builder) {
+                return $builder->where('status', Constants::STATUS_APPROVED);
+            })
             ->get([
                 'id', 'journey_id', 'mileage_type', 'standard_amount', 'requested_amount', 'approved_amount', 'status'
             ]);

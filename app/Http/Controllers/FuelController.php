@@ -26,6 +26,9 @@ class FuelController extends Controller
         $fuel = Fuel::when(request('s'), function ($builder) {
             return $builder->where('station_id', request('s'));
         })
+            ->whereHas('journey', function ($builder) {
+                return $builder->where('status', Constants::STATUS_APPROVED);
+            })
             ->with(['journey', 'journey.driver', 'journey.route', 'journey.truck','user'])
             ->get();
 

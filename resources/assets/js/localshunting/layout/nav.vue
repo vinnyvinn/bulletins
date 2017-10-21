@@ -84,7 +84,9 @@
             this.$root.user = JSON.parse(localStorage.getItem('fewuia32rfwe'));
         },
         data() {
-            return {}
+            return {
+                timer: null,
+            }
         },
 
         props: {
@@ -92,6 +94,16 @@
                 required: true,
                 default: ''
             }
+        },
+
+        computed: {
+            showSwitch() {
+                return this.$root.user.stations.length > 1;
+            }
+        },
+
+        mounted() {
+            this.idleTimer();
         },
 
         methods: {
@@ -104,10 +116,17 @@
             can(permission) {
                 return window.can(permission)
             },
-
-            showSwitch() {
-                return this.$root.user.stations.length > 1;
-            }
+            resetTimer() {
+                clearTimeout(this.timer);
+                this.timer = setTimeout(this.logout, 300000);
+            },
+            idleTimer() {
+                window.onmousemove = this.resetTimer(); // catches mouse movements
+                window.onmousedown = this.resetTimer(); // catches mouse movements
+                window.onclick = this.resetTimer();     // catches mouse clicks
+                window.onscroll = this.resetTimer();    // catches scrolling
+                window.onkeypress = this.resetTimer();  //catches keyboard actions
+            },
         }
     }
 </script>

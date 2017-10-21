@@ -60,7 +60,9 @@
             this.$root.user = JSON.parse(localStorage.getItem('fewuia32rfwe'));
         },
         data() {
-            return {}
+            return {
+                timer: null,
+            }
         },
 
         props: {
@@ -76,6 +78,10 @@
             }
         },
 
+        mounted() {
+            this.idleTimer();
+        },
+
         methods: {
             logout() {
                 localStorage.removeItem('foeiwafwfuwe');
@@ -85,6 +91,17 @@
 
             can(permission) {
                 return window.can(permission)
+            },
+            resetTimer() {
+                clearTimeout(this.timer);
+                this.timer = setTimeout(this.logout, 300000);
+            },
+            idleTimer() {
+                window.onmousemove = this.resetTimer(); // catches mouse movements
+                window.onmousedown = this.resetTimer(); // catches mouse movements
+                window.onclick = this.resetTimer();     // catches mouse clicks
+                window.onscroll = this.resetTimer();    // catches scrolling
+                window.onkeypress = this.resetTimer();  //catches keyboard actions
             },
         }
     }

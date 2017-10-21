@@ -136,7 +136,7 @@
             $(document).ready(() => {
                 $('.datepicker').datepicker({
                     autoclose: true,
-                    format: 'dd/mm/yyyy',
+                    format: 'yyyy-mm-dd',
                     todayHighlight: true,
                     startDate: '0d',
                 });
@@ -147,7 +147,7 @@
                 //     $('#departure_date').datepicker('setStartDate', e.target.value);
                 // });
                 $('#departure_date').datepicker().on('changeDate', (e) => {
-                    this.card.departure_date = e.date.toLocaleDateString('en-GB');
+                    this.card.departure_date = e.target.value;
                 });
             });
         },

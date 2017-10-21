@@ -29,6 +29,9 @@ class DeliveryController extends Controller
             'deliveries' => Delivery::when(request('s'), function ($builder) {
                 return $builder->where('station_id', request('s'));
             })
+            ->whereHas('journey', function ($builder) {
+                return $builder->where('status', Constants::STATUS_APPROVED);
+            })
             ->with(['journey','journey.truck'])
             ->get()
         ]);
