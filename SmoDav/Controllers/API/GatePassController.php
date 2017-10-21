@@ -8,6 +8,7 @@ use Auth;
 use Response;
 use SmoDav\Models\GatePass;
 use SmoDav\Models\Journey;
+use SmoDav\Support\Constants;
 
 class GatePassController extends Controller
 {
@@ -42,6 +43,9 @@ class GatePassController extends Controller
         $gatepasses = GatePass::when(request('s'), function ($builder) {
             return $builder->where('station_id', request('s'));
         })
+            ->whereHas('journey', function ($builder) {
+                return $builder->where('status', Constants::STATUS_APPROVED);
+            })
             ->with(['journey', 'journey.driver', 'journey.route', 'journey.truck'])
             ->get();
 

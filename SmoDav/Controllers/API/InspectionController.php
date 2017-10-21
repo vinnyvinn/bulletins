@@ -24,6 +24,9 @@ class InspectionController extends Controller
         $inspections = Inspection::when(request('s'), function ($builder) {
             return $builder->where('station_id', request('s'));
         })
+            ->whereHas('journey', function ($builder) {
+                return $builder->where('status', Constants::STATUS_APPROVED);
+            })
             ->with(['journey', 'journey.truck', 'journey.truck.trailer', 'journey.driver'])
             ->get([
                 'id', 'journey_id', 'status', 'from_station', 'to_station', 'created_at','suitable_for_loading'
