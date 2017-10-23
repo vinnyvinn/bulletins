@@ -38,6 +38,12 @@ module.exports = [
     { path: '/station-selection', component: require('../transport/station.vue'), beforeEnter: authMiddleware },
     { path: '/dashboard', component: require('./dashboard/index.vue'), beforeEnter: authMiddleware },
 
+    { path: '/wsh/breakdown', component: require('./breakdown/index.vue'), beforeEnter: authMiddleware },
+    { path: '/wsh/breakdown/create', component: require('./breakdown/form.vue'), beforeEnter: authMiddleware },
+    { path: '/wsh/breakdown/open', component: require('./breakdown/open.vue'), beforeEnter: authMiddleware },
+    { path: '/wsh/breakdown/closed', component: require('./breakdown/closed.vue'), beforeEnter: authMiddleware },
+    { path: '/wsh/breakdown/:id', component: require('./breakdown/view.vue'), beforeEnter: authMiddleware },
+    { path: '/wsh/breakdown/:id/edit', component: require('./breakdown/form.vue'), beforeEnter: authMiddleware },
 
     { path: '/wsh/job-card', component: require('./jobcard/index.vue'), beforeEnter: authMiddleware },
     { path: '/wsh/job-card/create', component: require('./jobcard/form.vue'), beforeEnter: authMiddleware },
