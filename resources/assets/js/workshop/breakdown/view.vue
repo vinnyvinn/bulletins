@@ -2,9 +2,7 @@
     <div class="container">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <strong>Job Card #JC-{{ card_number }}</strong>
-
-                <a :href="'/job-card/print/' + card_number" class="btn btn-xs btn-primary pull-right" target="_blank">PRINT</a>
+                <strong>Breakdown Incident #BRK-{{ breakdown.id }}</strong>
             </div>
 
             <div class="panel-body">
@@ -13,185 +11,235 @@
                     <div class="row">
                         <div class="col-sm-4">
                             <h4>
-                                <strong>Job Card Number:</strong>
+                                <strong>Breakdown Incident Number:</strong>
                             </h4>
-                            <h5>JC-{{ card_number }}</h5>
+                            <h5>BRK-{{ breakdown.id }}</h5>
                         </div>
+
                         <div class="col-sm-4">
                             <h4>
-                                <strong>Requested By:</strong>
+                                <strong>Logged On:</strong>
                             </h4>
-                            <h5>{{ user.first_name }} {{ user.last_name }}</h5>
-                        </div>
-                        <div class="col-sm-4">
-                            <h4>
-                                <strong>Requested On:</strong>
-                            </h4>
-                            <h5>{{ formatDate(requested_on) }}</h5>
+                            <h5>{{ formatDate(breakdown.created_at) }} {{ formatTime(breakdown.created_at) }}</h5>
                         </div>
                     </div>
                     <hr>
 
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <div class="form-group input-group-sm">
-                                <label for="service_type">Job/Service</label>
-                                <select disabled required v-model="card.service_type" name="service_type" id="service_type" class="form-control">
-                                    <option value="Normal Job">Normal Job</option>
-                                    <option value="Service Job">Service Job</option>
-                                </select>
-                            </div>
 
-                            <div class="form-group input-group-sm">
-                                <label for="workshop_job_type_id">Job Type</label>
-                                <select disabled required v-model="card.workshop_job_type_id" name="workshop_job_type_id" id="workshop_job_type_id" class="form-control">
-                                    <option v-for="type in jobTypes" :value="type.id">{{ type.name }}</option>
-                                </select>
-                            </div>
+                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
-                            <div class="form-group input-group-sm">
-                                <label for="job_description">Job Description</label>
-                                <textarea disabled required v-model="card.job_description" name="job_description" id="job_description" cols="20" rows="5" class="form-control"></textarea>
-                            </div>
+                      <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingOne">
+                          <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                              Breakdown Login
+                            </a>
+                          </h4>
                         </div>
 
-                        <div class="col-sm-4">
-                            <div class="form-group input-group-sm">
-                                <label for="vehicle_id">Vehicle/Chassis Number</label>
-                                <select disabled required v-model="card.vehicle_id" name="vehicle_id" id="vehicle_id" class="form-control select2">
-                                    <option v-for="vehicle in vehicles" :value="vehicle.id">{{ vehicle.plate_number }}</option>
-                                </select>
+                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                          <div class="panel-body">
+
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group input-group-sm">
+                                        <label for="vehicle_id">Vehicle/Chassis Number</label>
+                                        <select disabled required v-model="breakdown.vehicle_id" name="vehicle_id" id="vehicle_id" class="form-control select2">
+                                            <option v-for="vehicle in vehicles" :value="vehicle.id" :key="vehicle.id">{{ vehicle.plate_number }}</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group input-group-sm">
+                                        <label for="breakdown_area_id">Area</label>
+                                        <select disabled required v-model="breakdown.breakdown_area_id" name="breakdown_area_id" id="breakdown_area_id" class="form-control select2">
+                                            <option v-for="area in areas" :value="area.id" :key="area.id">{{ area.name }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="form-group input-group-sm">
+                                        <label for="driver_id">Driver</label>
+                                        <select disabled required v-model="breakdown.driver_id" name="driver_id" id="driver_id" class="form-control select2">
+                                            <option v-for="driver in drivers" :value="driver.id" :key="driver.id">{{ driver.first_name }} {{ driver.last_name }}</option>
+                                        </select>
+                                    </div>
+
+                                     <div class="form-group input-group-sm">
+                                        <label for="location">Location</label>
+                                        <input disabled required type="text" v-model="breakdown.location" name="location" id="location" class="form-control">
+                                    </div>
+                                </div>
+
+
+                                <div class="col-sm-4">
+                                    <div class="form-group input-group-sm">
+                                        <label for="description">Description</label>
+                                        <textarea disabled required v-model="breakdown.description" name="description" id="description" cols="20" rows="5" class="form-control"></textarea>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="form-group input-group-sm">
-                                <label for="expected_completion">Expected Completion Date</label>
-                                <input disabled required type="text" v-model="card.expected_completion" name="expected_completion" id="expected_completion" class="form-control datepicker">
+                            <div class="row">
+                              <div class="col-sm-12">
+                                  <h5><strong>INCEDENT DETAILS</strong></h5>
+                                  <hr>
+                              </div>
+                                <div class="col-sm-12">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Details</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr v-for="(item, index) in breakdown.incident_details">
+                                            <td>{{ index + 1}}</td>
+                                            <td>{{ item }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
 
-                            <div class="form-group input-group-sm">
-                                <label for="vehicle_id">Driver</label>
-                                <h5>
-                                    <strong>{{ vehicle.driver.first_name }} {{ vehicle.driver.last_name }}, {{ vehicle.driver.mobile_phone }}</strong>
-                                </h5>
-                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="panel panel-default" v-if="breakdown.status == 'Approved' || breakdown.status == 'Closed'">
+                        <div class="panel-heading" role="tab" id="headingTwo">
+                          <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                              Breakdown Recovered
+                            </a>
+                          </h4>
                         </div>
 
-                        <div class="col-sm-4">
-                            <div class="form-group input-group-sm">
-                                <label for="vehicle_id">Make &amp; Model</label>
-                                <h5>
-                                    <strong>{{ vehicle.make.name }}, {{ vehicle.model.name }}</strong>
-                                </h5>
-                            </div>
+                        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                          <div class="panel-body">
 
-                            <div class="form-group input-group-sm">
-                                <label for="time_in">Time In</label>
-                                <input disabled required type="time" v-model="card.time_in" name="time_in" id="time_in" class="form-control">
-                            </div>
-
-                            <div class="form-group input-group-sm">
-                                <label for="current_km_reading">Current KM Reading</label>
-                                <input disabled type="number" v-model="card.current_km_reading" name="current_km_reading" id="current_km_reading" class="form-control">
-                            </div>
-
-                            <div class="form-group input-group-sm">
-                                <label for="fuel_balance">Fuel Balance</label>
-                                <input disabled type="text" v-model="card.fuel_balance" name="fuel_balance" id="fuel_balance" class="form-control">
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-8">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Inspection</th>
-                                        <th>Done By</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="(item, index) in card.inspections">
-                                        <td>{{ index + 1}}</td>
-                                        <td>{{ item.inspection_name }}</td>
-                                        <td>
-                                            <select disabled v-model="item.employee_id" class="form-control input-sm">
-                                                <option v-for="employee in employees" :value="employee.id">{{ employee.first_name }} {{ employee.last_name }}</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <select disabled v-model="item.status" class="form-control input-sm">
-                                                <option value="Not Started">Not Started</option>
-                                                <option value="In Progress">In Progress</option>
-                                                <option value="Completed">Completed</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label for="mechanic_findings">Mechanic's Findings</label>
-                                <textarea disabled v-model="card.mechanic_findings" name="mechanic_findings" id="mechanic_findings" cols="20" rows="5" class="form-control input-sm"></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <hr>
-
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="table-responsive">
+                            <div class="row">
+                              <div class="col-sm-12">
                                 <table class="table table-striped">
                                     <thead>
-                                        <tr>
-                                            <th>Operation</th>
-                                            <th>Action</th>
-                                            <th>Allocated To</th>
-                                            <th>Start Date</th>
-                                            <th>Start Time</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
-                                        </tr>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Problem Area</th>
+                                        <th>Problem Cause</th>
+                                        <th>Action</th>
+                                        <th>Remarks</th>
+                                    </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="task in card.tasks">
-                                            <td>{{ task.operation }}</td>
-                                            <td>{{ task.task_name }}</td>
-                                            <td>
-                                                <select disabled v-model="task.employee_id" class="form-control input-sm">
-                                                    <option v-for="employee in employees" :value="employee.id">{{ employee.first_name }} {{ employee.last_name }}</option>
-                                                </select>
-                                            </td>
-                                            <td>{{ task.start_date }}</td>
-                                            <td>{{ task.start_time }}</td>
-                                            <td>
-                                                <select disabled v-model="task.status" class="form-control input-sm">
-                                                    <option value="Not Started">Not Started</option>
-                                                    <option value="In Progress">In Progress</option>
-                                                    <option value="Completed">Completed</option>
-                                                </select>
-                                            </td>
-                                            <td></td>
-                                        </tr>
+                                    <tr v-for="(item, index) in breakdown.break_down_recovered">
+                                        <td>{{ index + 1}}</td>
+                                        <td>{{ item.problem_area }}</td>
+                                        <td>{{ item.problem_cause }}</td>
+                                        <td>{{ item.problem_action }}</td>
+                                        <td>{{ item.problem_remarks }}</td>
+                                    </tr>
                                     </tbody>
                                 </table>
+                              </div>
                             </div>
+
+
+                            <div class="row">
+                              <div class="col-sm-12">
+                                <div class="form-group">
+                                  <label for="narration">Narration</label>
+                                  <textarea disabled name="narration" rows="8" id="narration" v-model="breakdown.narration" class="form-control"></textarea>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
+
+                      </div>
+
+                      <div class="panel panel-default" v-if="breakdown.status == 'Approved' || breakdown.status == 'Closed'">
+                        <div class="panel-heading" role="tab" id="headingThree">
+                          <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                              OIMS
+                            </a>
+                          </h4>
+                        </div>
+                        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                          <div class="panel-body">
+
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="panel panel-default" v-if="breakdown.status == 'Approved' || breakdown.status == 'Closed'">
+                        <div class="panel-heading" role="tab" id="headingFour">
+                          <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                              Job Cards
+                            </a>
+
+                            <a href="#" v-if="breakdown.status == 'Approved'" @click.prevent="jobCard()" class="pull-right btn btn-success btn-xs">New Job Card</a>
+                          </h4>
+                        </div>
+                        <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+                          <div class="panel-body">
+                              <table class="table datatable nowrap">
+                                  <thead>
+                                  <tr>
+                                      <th>No.</th>
+                                      <th>Card #</th>
+                                      <th>Job Type</th>
+                                      <th>Description</th>
+                                      <th>Created On</th>
+                                      <th>Expected Completion</th>
+                                      <th></th>
+                                  </tr>
+                                  </thead>
+
+                                  <tbody>
+                                  <tr v-for="(card, index) in breakdown.job_cards">
+                                      <td>{{ index + 1 }}</td>
+                                      <td><a @click.prevent="viewCard(card.id)">JC-{{ card.id }}</a></td>
+                                      <td>{{ card.type.name }}</td>
+                                      <td>{{ card.job_description }}</td>
+                                      <td>{{ formatDate(card.created_at) }}</td>
+                                      <td>{{ formatDate(card.expected_completion) }}</td>
+                                      <td class="text-center">
+                                          <span @click="editCard(card.id)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
+                                          <button data-toggle="popover" :data-item="card.id" class="btn btn-xs btn-danger btn-destroy"><i class="fa fa-trash"></i></button>
+                                      </td>
+                                  </tr>
+                                  </tbody>
+
+                                  <tfoot>
+                                  <tr>
+                                      <th>No.</th>
+                                      <th>Card #</th>
+                                      <th>Job Type</th>
+                                      <th>Description</th>
+                                      <th>Created On</th>
+                                      <th>Expected Completion</th>
+                                      <th></th>
+                                  </tr>
+                                  </tfoot>
+                              </table>
+                          </div>
+                        </div>
+                      </div>
                     </div>
 
+                    <hr>
+
+
                     <div class="form-group">
-                        <button v-if="status == 'Approved'" class="btn btn-warning" @click.prevent="closeCard">Close Job Card</button>
-                        <span v-if="status == 'Pending Approval'">
-                            <button class="btn btn-success" @click.prevent="approve()">Approve Job Card</button>
-                            <button class="btn btn-danger" @click.prevent="disapprove()">Disapprove Job Card</button>
+                        <button v-if="breakdown.status == 'Approved'" class="btn btn-warning" @click.prevent="closeCard">Close Incident</button>
+                        <span v-if="breakdown.status == 'Pending'">
+                            <button class="btn btn-success" @click.prevent="approve()">Approve Incident</button>
+                            <button class="btn btn-danger" @click.prevent="disapprove()">Disapprove Incident</button>
                         </span>
-                        <router-link to="/wsh/job-card" class="btn btn-danger">Back</router-link>
+                        <router-link to="/wsh/breakdown" class="btn btn-danger">Back</router-link>
                     </div>
                 </form>
 
@@ -202,156 +250,114 @@
 
 <script>
     export default {
-        data() {
-            return {
-                status: '',
-                card_number: '',
-                user: {},
-                requested_on: '',
-                vehicles: [],
-                job_types: [],
-                employees: [],
-                task: {
-                    operation_id: '',
-                    workshop_job_task_id: '',
-                    employee_id: '',
-                    start_date: '',
-                    start_time: '08:00',
-                    status: 'Not Started'
-                },
-                card: {
-                    service_type: 'Normal Job',
-                    vehicle_id: '',
-                    workshop_job_type_id: '',
-                    expected_completion: '',
-                    time_in: '08:00',
-                    job_description: '',
-                    current_km_reading: '',
-                    fuel_balance: '',
-                    has_trailer: '',
-                    inspections: [],
-                    mechanic_findings: '',
-                    tasks: [],
-                }
-            };
-        },
+      data() {
+        return {
+          vehicles: [],
+          drivers: [],
+          areas: [],
+          incedent: '',
+          breakdown: {
+            vehicle_id: null,
+            breakdown_area_id: null,
+            location: null,
+            description: null,
+            incident_details: [],
+            vehicle_sent: null,
+            attended_by: null,
+            break_down_recovered: null,
+            narration: null,
+            breakdown_approved: null,
+            breakdown_approved_by: null,
+            oims: null,
+            status: null,
+            vehicle_id: null,
+            jobCards: [],
+          },
 
-        computed: {
-            vehicle() {
-                let selected = this.vehicles.filter((item) => (item.id == this.card.vehicle_id));
-                selected = selected.length ? selected[0] : { driver: {}, make: {}, model: {} };
-                selected.driver = selected.driver ? selected.driver : { name: 'No Driver' };
+          editing: false,
+          status: null,
+        };
+      },
 
-                return selected;
-            },
+      created() {
+        this.$root.isLoading = true;
+        http.get("/api/breakdown/" + this.$route.params.id + '?full=t')
+          .then(response => {
+            this.vehicles = response.vehicles;
+            this.areas = response.areas;
+            this.drivers = response.drivers;
+            this.breakdown = response.breakdown;
+            this.$root.isLoading = false;
 
-            jobTypes() {
-                let selected = this.job_types.filter((t) => (t.service_type == this.card.service_type));
-
-                return selected.length ? selected : [];
-            },
-
-            jobType() {
-                let selected = this.job_types.filter((item) => item.id == this.card.workshop_job_type_id);
-                selected = selected.length ? selected[0] : { operations: [] };
-
-                return selected;
-            },
-
-            operation() {
-                let selected = this.jobType.operations.filter((item) => item.id == this.task.operation_id);
-                selected = selected.length ? selected[0] : { tasks: [] };
-                selected.tasks = selected.tasks ? selected.tasks : [];
-
-                return selected;
-            },
-        },
-
-        created() {
-            this.$root.isLoading = true;
-            http.get('/api/job-card/create').then((response) => {
-                this.vehicles = response.vehicles;
-                this.job_types = response.job_types;
-                this.employees = response.employees;
-                this.createCheckLists(response.checklist);
-                setTimeout(() => {
-                    this.$root.isLoading = false;
-                }, 500);
-
-                return response;
-            }).then(() => this.checkState());
-        },
+            setTimeout(() => prepareTable(), 500);
+          });
+      },
 
 
-        methods: {
-            formatDate(date) {
-                date = new Date(date);
-                let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      methods: {
+          formatDate(date) {
+              date = new Date(date);
+              let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-                let month = months[date.getMonth()];
-                let day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+              let month = months[date.getMonth()];
+              let day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
 
-                return day + ' ' + month + ' ' + date.getFullYear();
-            },
-            createCheckLists(lists) {
-                lists.forEach((item) => {
-                    this.card.inspections.push({
-                        workshop_inspection_check_list_id: item.id,
-                        inspection_name: item.name,
-                        employee_id: '',
-                        status: 'Not Started',
-                    });
-                });
-            },
+              return day + ' ' + month + ' ' + date.getFullYear();
+          },
 
-            checkState() {
-                if (this.$route.params.id) {
-                    http.get('/api/job-card/' + this.$route.params.id).then((response) => {
-                        this.card = response.card.raw_data;
-                        this.card_number = response.card.id;
-                        this.user = response.card.user;
-                        this.requested_on = response.card.created_at;
-                        this.status = response.card.status;
-                    });
-                }
-            },
+          formatTime(time) {
+            time = new Date(time);
+            return time.getHours() + ':' + time.getMinutes();
+          },
 
-            approve() {
-                this.$root.isLoading = true;
-                http.post('/api/job-card/' + this.$route.params.id + '/approve', {}).then((response) => {
-                    alert2(this.$root, [response.message], 'success');
-                    this.$root.isLoading = false;
-                    window._router.push({ path: '/wsh/job-card' });
-                }).catch((error) => {
-                    this.$root.isLoading = false;
-                    alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
-                });
-            },
 
-            disapprove() {
-                this.$root.isLoading = true;
-                http.post('/api/job-card/' + this.$route.params.id + '/disapprove', {}).then((response) => {
-                    alert2(this.$root, [response.message], 'success');
-                    this.$root.isLoading = false;
-                    window._router.push({ path: '/wsh/job-card' });
-                }).catch((error) => {
-                    this.$root.isLoading = false;
-                    alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
-                });
-            },
+          approve() {
+              this.$root.isLoading = true;
+              http.post('/api/breakdown/' + this.$route.params.id + '/approve', {}).then((response) => {
+                  alert2(this.$root, [response.message], 'success');
+                  this.$root.isLoading = false;
+                  window._router.push({ path: '/wsh/breakdown' });
+              }).catch((error) => {
+                  this.$root.isLoading = false;
+                  alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
+              });
+          },
 
-            closeCard() {
-                let request = null;
-                this.card.vehicle_number = this.vehicle.plate_number;
-                request = http.post('/api/job-card/' + this.$route.params.id + '/close', this.card);
+          jobCard() {
+              this.$root.isLoading = true;
+              http.post('/api/breakdown/' + this.$route.params.id + '/job-card', {}).then((response) => {
+                  alert2(this.$root, [response.message], 'success');
+                  this.$root.isLoading = false;
+                  window._router.push({ path: '/wsh/job-card/' + response.jobCard + '/edit' });
+              }).catch((error) => {
+                  this.$root.isLoading = false;
+                  alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
+              });
+          },
 
-                request.then((response) => {
-                    alert2(this.$root, [response.message], 'success');
-                    window._router.push({ path: '/wsh/job-card' });
-                }).catch((error) => {
-                    alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
-                });
-            },
-        }
+          disapprove() {
+              this.$root.isLoading = true;
+              http.post('/api/breakdown/' + this.$route.params.id + '/disapprove', {}).then((response) => {
+                  alert2(this.$root, [response.message], 'success');
+                  this.$root.isLoading = false;
+                  window._router.push({ path: '/wsh/breakdown' });
+              }).catch((error) => {
+                  this.$root.isLoading = false;
+                  alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
+              });
+          },
+
+          closeCard() {
+              let request = null;
+              request = http.post('/api/breakdown/' + this.$route.params.id + '/close', {});
+
+              request.then((response) => {
+                  alert2(this.$root, [response.message], 'success');
+                  window._router.push({ path: '/wsh/breakdown' });
+              }).catch((error) => {
+                  alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
+              });
+          },
+      }
     }
 </script>

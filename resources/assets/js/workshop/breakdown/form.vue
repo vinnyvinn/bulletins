@@ -2,221 +2,227 @@
     <div class="container">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <strong>New Job Card</strong>
+                <strong>Breakdown</strong>
             </div>
 
             <div class="panel-body">
                 <form action="#" role="form" @submit.prevent="store">
+                  <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <div class="form-group input-group-sm">
-                                <label for="service_type">Job/Service</label>
-                                <select :disabled="editing" required v-model="card.service_type" name="service_type" id="service_type" class="form-control">
-                                    <option value="Normal Job">Normal Job</option>
-                                    <option value="Service Job">Service Job</option>
-                                </select>
-                            </div>
+                    <div class="panel panel-default">
+                      <div class="panel-heading" role="tab" id="headingOne">
+                        <h4 class="panel-title">
+                          <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Breakdown Login
+                          </a>
+                        </h4>
+                      </div>
 
+                      <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                        <div class="panel-body">
 
-                            <div class="form-group input-group-sm">
-                                <label for="workshop_job_type_id">Job Type</label>
-                                <select :disabled="editing" required required v-model="card.workshop_job_type_id" name="workshop_job_type_id" id="workshop_job_type_id" class="form-control">
-                                    <option v-for="type in jobTypes" :value="type.id">{{ type.name }}</option>
-                                </select>
-                            </div>
+                          <div class="row">
+                              <div class="col-sm-4">
+                                  <div class="form-group input-group-sm">
+                                      <label for="vehicle_id">Vehicle/Chassis Number</label>
+                                      <select :disabled="editing" required v-model="breakdown.vehicle_id" name="vehicle_id" id="vehicle_id" class="form-control select2">
+                                          <option v-for="vehicle in vehicles" :value="vehicle.id" :key="vehicle.id">{{ vehicle.plate_number }}</option>
+                                      </select>
+                                  </div>
 
+                                  <div class="form-group input-group-sm">
+                                      <label for="breakdown_area_id">Area</label>
+                                      <select :disabled="breakdown.status != 'Pending' && breakdown.status != null" required v-model="breakdown.breakdown_area_id" name="breakdown_area_id" id="breakdown_area_id" class="form-control select2">
+                                          <option v-for="area in areas" :value="area.id" :key="area.id">{{ area.name }}</option>
+                                      </select>
+                                  </div>
+                              </div>
 
-                            <div class="form-group input-group-sm">
-                                <label for="job_description">Job Description</label>
-                                <textarea :disabled="editing" required v-model="card.job_description" name="job_description" id="job_description" cols="20" rows="5" class="form-control"></textarea>
-                            </div>
-                        </div>
+                              <div class="col-sm-4">
+                                  <div class="form-group input-group-sm">
+                                      <label for="driver_id">Driver</label>
+                                      <select :disabled="breakdown.status != 'Pending' && breakdown.status != null" required v-model="breakdown.driver_id" name="driver_id" id="driver_id" class="form-control select2">
+                                          <option v-for="driver in drivers" :value="driver.id" :key="driver.id">{{ driver.first_name }} {{ driver.last_name }}</option>
+                                      </select>
+                                  </div>
 
-                        <div class="col-sm-4">
-                            <div class="form-group input-group-sm">
-                                <label for="vehicle_id">Vehicle/Chassis Number</label>
-                                <h4 v-if="editing"><strong>{{ card.vehicle_number }}</strong></h4>
-                                <select v-else :disabled="editing" required v-model="card.vehicle_id" name="vehicle_id" id="vehicle_id" class="form-control select2">
-                                    <option v-for="vehicle in vehicles" :value="vehicle.id">{{ vehicle.plate_number }}</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group input-group-sm">
-                                <label for="expected_completion">Expected Completion Date</label>
-                                <input :disabled="editing" required type="text" v-model="card.expected_completion" name="expected_completion" id="expected_completion" class="form-control datepicker">
-                            </div>
-
-                            <div class="form-group input-group-sm">
-                                <label for="vehicle_id">Driver</label>
-                                <h4><strong>{{ vehicle.driver.first_name }} {{ vehicle.driver.last_name }}, {{ vehicle.driver.mobile_phone }}</strong></h4>
-                            </div>
-
-                        </div>
+                                   <div class="form-group input-group-sm">
+                                      <label for="location">Location</label>
+                                      <input :disabled="status != 'Pending' && breakdown.status != null" required type="text" v-model="breakdown.location" name="location" id="location" class="form-control">
+                                  </div>
+                              </div>
 
 
-                        <div class="col-sm-4">
-                            <div class="form-group input-group-sm">
-                                <label for="vehicle_id">Make &amp; Model</label>
-                                <h4><strong>{{ vehicle.make.name }}, {{ vehicle.model.name }}</strong></h4>
-                            </div>
+                              <div class="col-sm-4">
+                                  <div class="form-group input-group-sm">
+                                      <label for="description">Description</label>
+                                      <textarea :disabled="status != 'Pending' && breakdown.status != null" required v-model="breakdown.description" name="description" id="description" cols="20" rows="5" class="form-control"></textarea>
+                                  </div>
+                              </div>
+                          </div>
 
-                            <div class="form-group input-group-sm">
-                                <label for="time_in">Time In</label>
-                                <input :disabled="editing" required type="time" v-model="card.time_in" name="time_in" id="time_in" class="form-control">
-                            </div>
-
-                            <div class="form-group input-group-sm">
-                                <label for="current_km_reading">Current KM Reading</label>
-                                <input :disabled="status != 'Pending Approval' && status != null" required type="number" v-model="card.current_km_reading" name="current_km_reading" id="current_km_reading" class="form-control">
-                            </div>
-
-                            <div class="form-group input-group-sm">
-                                <label for="fuel_balance">Fuel Balance</label>
-                                <input :disabled="status != 'Pending Approval' && status != null" required type="text" v-model="card.fuel_balance" name="fuel_balance" id="fuel_balance" class="form-control">
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-8">
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Inspection</th>
-                                    <th>Done By</th>
-                                    <th>Status</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr v-for="(item, index) in card.inspections">
-                                    <td>{{ index + 1}}</td>
-                                    <td>{{ item.inspection_name }}</td>
-                                    <td>
-                                        <select :disabled="status != 'Pending Approval' && status != null" required v-model="item.employee_id" class="form-control input-sm">
-                                            <option v-for="employee in employees" :value="employee.id">{{ employee.first_name }} {{ employee.last_name }}</option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <select v-model="item.status" class="form-control input-sm">
-                                            <option value="Not Started">Not Started</option>
-                                            <option value="In Progress">In Progress</option>
-                                            <option value="Completed">Completed</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label for="mechanic_findings">Mechanic's Findings</label>
-                                <textarea :disabled="status != 'Pending Approval' && status != null" v-model="card.mechanic_findings" name="mechanic_findings" id="mechanic_findings" cols="20" rows="5" class="form-control input-sm"></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <hr>
-
-                    <div class="row" v-if="status == 'Pending Approval' || status == null">
-                        <div class="col-sm-5">
-                            <div class="form-group input-group-sm">
-                                <label for="operation_id">Operation Name</label>
-                                <select v-model="task.operation_id" name="operation_id" id="operation_id" class="form-control">
-                                    <option v-for="operation in jobType.operations" :value="operation.id">{{ operation.name }}</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group input-group-sm">
-                                <label for="employee_id">Assigned To</label>
-                                <select v-model="task.employee_id" name="employee_id" id="employee_id" class="form-control">
-                                    <option v-for="employee in employees" :value="employee.id">{{ employee.first_name }} {{ employee.last_name }}</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-5">
-                            <div class="form-group input-group-sm">
-                                <label for="workshop_job_task_id">Task</label>
-                                <select v-model="task.workshop_job_task_id" name="workshop_job_task_id" id="workshop_job_task_id" class="form-control">
-                                    <option v-for="task in filteredTasks" :value="task.id">{{ task.name }}</option>
-                                </select>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group input-group-sm">
-                                        <label for="task_start_date">Start Date</label>
-                                        <input type="text" v-model="task.start_date" name="task_start_date" id="task_start_date" class="form-control datepicker">
-                                    </div>
+                          <div class="row" v-if="breakdown.status == 'Pending' || breakdown.status == null">
+                              <div class="col-sm-10">
+                                <div class="form-group">
+                                    <label for="incedent">Incident Details</label>
+                                    <textarea v-model="incedent" name="incedent" rows="2" cols="80" class="form-control"></textarea>
                                 </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group input-group-sm">
-                                        <label for="task_start_time">Time In</label>
-                                        <input type="time" v-model="task.start_time" name="task_start_time" id="task_start_time" class="form-control">
-                                    </div>
-                                </div>
+                              </div>
+                              <div class="col-sm-2">
+                                <h5>&nbsp;</h5>
+                                <button @click.prevent="addIncedent()" type="button" name="button" class="btn btn-block btn-primary">ADD</button>
+                              </div>
+                          </div>
+
+                          <div class="row">
+                            <div class="col-sm-12">
+                                <h5><strong>INCEDENT DETAILS</strong></h5>
+                                <hr>
+                            </div>
+                              <div class="col-sm-12">
+                                  <table class="table table-striped">
+                                      <thead>
+                                      <tr>
+                                          <th>#</th>
+                                          <th>Details</th>
+                                          <th v-if="breakdown.status == 'Pending' || breakdown.status == null">Remove</th>
+                                      </tr>
+                                      </thead>
+                                      <tbody>
+                                      <tr v-for="(item, index) in breakdown.incident_details">
+                                          <td>{{ index + 1}}</td>
+                                          <td>{{ item }}</td>
+                                          <td v-if="breakdown.status == 'Pending' || breakdown.status == null">
+                                              <button @click.prevent="removeIncedent(item)" type="button" name="button" class="btn btn-xs btn-danger">
+                                                <i class="fa fa-trash"></i>
+                                              </button>
+                                          </td>
+                                      </tr>
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+
+
+
+                    <div class="panel panel-default" v-if="breakdown.status == 'Approved'">
+                      <div class="panel-heading" role="tab" id="headingTwo">
+                        <h4 class="panel-title">
+                          <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Breakdown Recovered
+                          </a>
+                        </h4>
+                      </div>
+
+                      <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                        <div class="panel-body">
+
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <div class="form-group">
+                                <label for="problem_area">Problem Area</label>
+                                <input type="text" name="problem_area" v-model="problem_area" class="form-control">
+                              </div>
+
+                              <div class="form-group">
+                                <label for="problem_cause">Problem Cause</label>
+                                <input type="text" name="problem_area" v-model="problem_cause" class="form-control">
+                              </div>
+
+                              <div class="form-group">
+                                <label for="problem_action">Action to be taken</label>
+                                <input type="text" name="problem_area" v-model="problem_action" class="form-control">
+                              </div>
                             </div>
 
-                        </div>
-                        <div class="col-sm-2">
-                            <br>
-                            <br>
-                            <a @click="addTask" class="btn btn-success btn-block">Add Task</a>
-                        </div>
-                    </div>
+                            <div class="col-sm-6">
+                              <div class="form-group">
+                                <label for="problem_remarks">Remarks</label>
+                                <textarea rows="6" type="text" name="problem_remarks" v-model="problem_remarks" class="form-control"></textarea>
+                              </div>
 
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="table-responsive">
-                                <table class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th>Operation</th>
-                                        <th>Action</th>
-                                        <th>Allocated To</th>
-                                        <th>Start Date</th>
-                                        <th>Start Time</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr v-for="task in card.tasks">
-                                        <td>{{ task.operation }}</td>
-                                        <td>{{ task.task_name }}</td>
-                                        <td>
-                                            <select v-model="task.employee_id" class="form-control input-sm">
-                                                <option v-for="employee in employees" :value="employee.id">{{ employee.first_name }} {{ employee.last_name }}</option>
-                                            </select>
-                                        </td>
-                                        <td>{{ task.start_date }}</td>
-                                        <td>{{ task.start_time }}</td>
-                                        <td>
-                                            <select v-model="task.status" class="form-control input-sm">
-                                                <option value="Not Started">Not Started</option>
-                                                <option value="In Progress">In Progress</option>
-                                                <option value="Completed">Completed</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <a v-if="status == 'Pending Approval' || status == null" @click="removeTask(task)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                              <div class="form-group">
+                                <button type="button" class="btn btn-primary btn-block" @click.prevent="addProblem">ADD PROBLEM</button>
+                              </div>
                             </div>
+
+                          </div>
+
+                          <div class="row">
+                            <div class="col-sm-12">
+                              <table class="table table-striped">
+                                  <thead>
+                                  <tr>
+                                      <th>#</th>
+                                      <th>Problem Area</th>
+                                      <th>Problem Cause</th>
+                                      <th>Action</th>
+                                      <th>Remarks</th>
+                                      <th v-if="breakdown.status == 'Approved'">Remove</th>
+                                  </tr>
+                                  </thead>
+                                  <tbody>
+                                  <tr v-for="(item, index) in breakdown.break_down_recovered">
+                                      <td>{{ index + 1}}</td>
+                                      <td>{{ item.problem_area }}</td>
+                                      <td>{{ item.problem_cause }}</td>
+                                      <td>{{ item.problem_action }}</td>
+                                      <td>{{ item.problem_remarks }}</td>
+                                      <td v-if="breakdown.status == 'Approved'">
+                                          <button @click.prevent="removeProblem(item)" type="button" name="button" class="btn btn-xs btn-danger">
+                                            <i class="fa fa-trash"></i>
+                                          </button>
+                                      </td>
+                                  </tr>
+                                  </tbody>
+                              </table>
+                            </div>
+                          </div>
+
+
+                          <div class="row">
+                            <div class="col-sm-12">
+                              <div class="form-group">
+                                <label for="narration">Narration</label>
+                                <textarea name="narration" rows="8" id="narration" v-model="breakdown.narration" class="form-control"></textarea>
+                              </div>
+                            </div>
+                          </div>
                         </div>
+                      </div>
+
                     </div>
 
-                    <div class="form-group">
-                        <!--<button v-if="status == null || status == 'Saved'" class="btn btn-success" @click.prevent="saveProcess">Save</button>-->
-                        <button class="btn btn-success">{{ editing ? 'Save' : 'Process' }}</button>
-                        <!-- <button v-if="status == 'Approved'" class="btn btn-warning" @click.prevent="closeCard">Close Job Card</button> -->
-                        <router-link to="/wsh/job-card" class="btn btn-danger">Back</router-link>
+
+
+
+                    <div class="panel panel-default" v-if="breakdown.status == 'Approved'">
+                      <div class="panel-heading" role="tab" id="headingThree">
+                        <h4 class="panel-title">
+                          <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            OIMS
+                          </a>
+                        </h4>
+                      </div>
+                      <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                        <div class="panel-body">
+
+                        </div>
+                      </div>
                     </div>
+                  </div>
+
+
+                  <div class="form-group">
+                      <!--<button v-if="status == null || status == 'Saved'" class="btn btn-success" @click.prevent="saveProcess">Save</button>-->
+                      <button class="btn btn-success">{{ editing ? 'Save' : 'Process' }}</button>
+                      <!-- <button v-if="status == 'Approved'" class="btn btn-warning" @click.prevent="closeCard">Close Job Card</button> -->
+                      <router-link to="/wsh/breakdown" class="btn btn-danger">Back</router-link>
+                  </div>
                 </form>
 
             </div>
@@ -226,199 +232,145 @@
 
 <script>
     export default {
-        data() {
-            return {
-                status: null,
-                editing: false,
-                vehicles: [],
-                job_types: [],
-                employees: [],
-                task: {
-                    operation_id: '',
-                    workshop_job_task_id: '',
-                    employee_id: '',
-                    start_date: '',
-                    start_time: '08:00',
-                    status: 'Not Started'
-                },
-                card: {
-                    service_type: 'Normal Job',
-                    vehicle_id: '',
-                    workshop_job_type_id: '',
-                    expected_completion: '',
-                    time_in: '08:00',
-                    job_description: '',
-                    current_km_reading: '',
-                    fuel_balance: '',
-                    has_trailer: '',
-                    inspections: [],
-                    mechanic_findings: '',
-                    tasks: [],
-                }
-            };
+      data() {
+        return {
+          vehicles: [],
+          drivers: [],
+          areas: [],
+          incedent: '',
+          problem_area: '',
+          problem_cause: '',
+          problem_action: '',
+          problem_remarks: '',
+
+          breakdown: {
+            vehicle_id: null,
+            breakdown_area_id: null,
+            location: null,
+            description: null,
+            incident_details: [],
+            vehicle_sent: null,
+            attended_by: null,
+            break_down_recovered: [],
+            narration: null,
+            breakdown_approved: null,
+            breakdown_approved_by: null,
+            oims: null,
+            status: null,
+            vehicle_id: null,
+            vehicle_id: null,
+            vehicle_id: null
+          },
+
+          editing: false,
+          status: null,
+        };
+      },
+
+      created() {
+        this.checkState();
+      },
+
+      methods: {
+        addIncedent() {
+          if (this.incedent.length < 2) return;
+          this.breakdown.incident_details.push(this.incedent);
+          this.incedent = '';
         },
 
-        computed: {
-            vehicle() {
-                let selected =  this.vehicles.filter((item) => (item.id == this.card.vehicle_id));
-                selected = selected.length ? selected[0]: { driver:{}, make: {}, model: {} };
-                selected.driver = selected.driver ? selected.driver : { name: 'No Driver' };
-
-                return selected;
-            },
-
-            jobTypes() {
-                let selected = this.job_types.filter((t) => (t.service_type == this.card.service_type));
-
-                return selected.length ? selected : [];
-            },
-
-            jobType() {
-                let selected =  this.job_types.filter((item) => item.id == this.card.workshop_job_type_id);
-                selected = selected.length ? selected[0]: { operations:[] };
-
-                return selected;
-            },
-
-            operation() {
-                let selected =  this.jobType.operations.filter((item) => item.id == this.task.operation_id);
-                selected = selected.length ? selected[0]: { tasks:[] };
-                selected.tasks = selected.tasks ? selected.tasks : [];
-
-                return selected;
-            },
-
-            filteredTasks() {
-                let selected = this.card.tasks.map(e => parseInt(e.workshop_job_task_id));
-                if (! this.operation.tasks) return [];
-
-                return this.operation.tasks.filter(e => selected.indexOf(parseInt(e.id)) === -1);
-            },
+        removeIncedent(incedent) {
+          this.breakdown.incident_details.splice(this.breakdown.incident_details.indexOf(incedent), 1);
         },
 
-        created() {
-            this.$root.isLoading = true;
-            http.get('/api/job-card/create').then((response) => {
-                this.vehicles = response.vehicles;
-                this.job_types = response.job_types;
-                this.employees = response.employees;
-                this.createCheckLists(response.checklist);
-                setTimeout(() => {
-                    let dateSettings = {
-                        format: 'yyyy-mm-dd',
-                        startDate: '+0d',
-                        autoclose: true,
-                        todayHighlight: true,
-                    };
+        addProblem() {
+          this.breakdown.break_down_recovered.push({
+            problem_area: this.problem_area,
+            problem_cause: this.problem_cause,
+            problem_action: this.problem_action,
+            problem_remarks: this.problem_remarks,
+          });
 
-                    $('#expected_completion').datepicker(dateSettings).on('change', (e) => {
-                        this.card.expected_completion = e.target.value;
-                    });
-
-                    $('#task_start_date').datepicker(dateSettings).on('change', (e) => {
-                        this.task.start_date = e.target.value;
-                    });
-                    $('#vehicle_id').select2().on('change', (e) => {
-                        this.card.vehicle_id = e.target.value;
-                    });
-                    this.$root.isLoading = false;
-                }, 500);
-
-                return response;
-            }).then(e => this.checkState());
+          this.problem_area = '';
+          this.problem_cause = '';
+          this.problem_action = '';
+          this.problem_remarks = '';
         },
 
-        methods: {
-            createCheckLists(lists) {
-                lists.forEach((item) => {
-                    this.card.inspections.push({
-                        workshop_inspection_check_list_id: item.id,
-                        inspection_name: item.name,
-                        employee_id: '',
-                        status: 'Not Started',
-                    });
-                });
-            },
+        removeProblem(item) {
+          this.breakdown.break_down_recovered.splice(this.breakdown.break_down_recovered.indexOf(item), 1);
+        },
 
-            addTask() {
-                if (! this.task.operation_id || this.task.operation_id.length == 0) return alert2(this.$root, ['Select the operation'], 'danger');
-                if (! this.task.employee_id || this.task.employee_id.length == 0) return alert2(this.$root, ['Select the employee'], 'danger');
-                if (! this.task.start_date || this.task.start_date.length == 0) return alert2(this.$root, ['Enter the start date'], 'danger');
-                if (! this.task.workshop_job_task_id || this.task.workshop_job_task_id.length == 0) return alert2(this.$root, ['Select the task'], 'danger');
+        checkState() {
+          this.$root.isLoading = true;
 
-                this.task.operation = this.operation.name;
-                this.task.task_name = this.operation.tasks.filter((e) => {
-                    return this.task.workshop_job_task_id == e.id;
-                })[0].name;
+          if (this.$route.params.id) {
+            this.editing = true;
 
-                this.card.tasks.push(this.task);
-                this.task = {
-                    operation_id: '',
-                    workshop_job_task_id: '',
-                    employee_id: '',
-                    start_date: '',
-                    start_time: '08:00',
-                    status: 'Not Started'
-                };
-            },
+            return http.get("/api/breakdown/" + this.$route.params.id).then(response => {
+              this.vehicles = response.vehicles;
+              this.areas = response.areas;
+              this.drivers = response.drivers;
+              this.breakdown = response.breakdown;
+              this.$root.isLoading = false;
+            });
+          }
 
-            removeTask(task) {
-                this.card.tasks.splice(this.card.tasks.indexOf(task), 1);
-            },
+          http
+            .get("/api/breakdown/create")
+            .then(response => {
+              this.vehicles = response.vehicles;
+              this.areas = response.areas;
+              this.drivers = response.drivers;
+              this.$root.isLoading = false;
 
-            checkState() {
-                if (this.$route.params.id) {
-                    this.editing = true;
-                    http.get('/api/job-card/' + this.$route.params.id).then((response) => {
-                        this.card = response.card.raw_data;
-                        this.status = response.card.status;
-                    });
-                }
-            },
+              return response;
+            });
+        },
 
-            store() {
-                let request = null;
-                this.card.vehicle_number = this.vehicle.plate_number;
+        store() {
+          let request = null;
 
-                if (this.$route.params.id) {
-                    request = http.put('/api/job-card/' + this.$route.params.id, this.card);
-                } else {
-                    request = http.post('/api/job-card', this.card);
-                }
+          if (this.$route.params.id) {
+            request = http.put("/api/breakdown/" + this.$route.params.id, this.breakdown);
+          } else {
+            request = http.post("/api/breakdown", this.breakdown);
+          }
 
-                request.then((response) => {
-                    alert2(this.$root, [response.message], 'success');
-                    window._router.push({ path: '/wsh/job-card' });
-                }).catch((error) => {
-                    alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
-                });
-            },
+          request
+            .then(response => {
+              alert2(this.$root, [response.message], "success");
+              window._router.push({ path: "/wsh/breakdown" });
+            })
+            .catch(error => {
+              alert2(
+                this.$root,
+                Object.values(JSON.parse(error.message)),
+                "danger"
+              );
+            });
+        },
 
-            saveProcess() {
-                let request = null;
-                this.card.vehicle_number = this.vehicle.plate_number;
-                request = http.put('/api/job-card/' + this.$route.params.id, this.card);
+        closeCard() {
+          let request = null;
 
-                request.then((response) => {
-                    alert2(this.$root, [response.message], 'success');
-                    window._router.push({ path: '/wsh/job-card' });
-                }).catch((error) => {
-                    alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
-                });
-            },
+          request = http.post(
+            "/api/job-card/" + this.$route.params.id + "/close",
+            this.card
+          );
 
-            closeCard() {
-                let request = null;
-                this.card.vehicle_number = this.vehicle.plate_number;
-                request = http.post('/api/job-card/' + this.$route.params.id + '/close', this.card);
-
-                request.then((response) => {
-                    alert2(this.$root, [response.message], 'success');
-                    window._router.push({ path: '/wsh/job-card' });
-                }).catch((error) => {
-                    alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
-                });
-            }
+          request
+            .then(response => {
+              alert2(this.$root, [response.message], "success");
+              window._router.push({ path: "/wsh/job-card" });
+            })
+            .catch(error => {
+              alert2(
+                this.$root,
+                Object.values(JSON.parse(error.message)),
+                "danger"
+              );
+            });
         }
-    }
+      }
+    };
 </script>

@@ -44,7 +44,7 @@
 
                             <div class="form-group input-group-sm">
                                 <label for="expected_completion">Expected Completion Date</label>
-                                <input :disabled="editing" required type="text" v-model="card.expected_completion" name="expected_completion" id="expected_completion" class="form-control datepicker">
+                                <input required type="text" v-model="card.expected_completion" name="expected_completion" id="expected_completion" class="form-control datepicker">
                             </div>
 
                             <div class="form-group input-group-sm">

@@ -5,17 +5,17 @@
             <div class="col-sm-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <strong>Job Cards Not Approved</strong>
-                        <router-link to="/wsh/job-card/closed" class="btn btn-danger btn-xs pull-right">
+                        <strong>Breakdowns Not Approved</strong>
+                        <router-link to="/wsh/breakdown/closed" class="btn btn-danger btn-xs pull-right">
                             <i class="fa fa-plus"></i> Closed
                         </router-link>
 
-                        <router-link to="/wsh/job-card/open" class="btn btn-primary btn-xs pull-right">
+                        <router-link to="/wsh/breakdown/open" class="btn btn-primary btn-xs pull-right">
                             <i class="fa fa-plus"></i> Open
                         </router-link>
 
-                        <router-link to="/wsh/job-card/create" class="btn btn-success btn-xs pull-right">
-                            <i class="fa fa-plus"></i> New Job Card
+                        <router-link to="/wsh/breakdown/create" class="btn btn-success btn-xs pull-right">
+                            <i class="fa fa-plus"></i> New Incident
                         </router-link>
                     </div>
                     <div class="panel-body">
@@ -24,42 +24,46 @@
                                 <thead>
                                 <tr>
                                     <th>No.</th>
-                                    <th>Card #</th>
+                                    <th>Incedent #</th>
                                     <th>Vehicle</th>
-                                    <th>Job Type</th>
-                                    <th>Description</th>
-                                    <th>Created On</th>
-                                    <th>Expected Completion</th>
+                                    <th>Driver</th>
+                                    <th>Area</th>
+                                    <th>Location</th>
+                                    <th>Logged On</th>
                                     <th></th>
                                 </tr>
                                 </thead>
 
                                 <tbody>
-                                <tr v-for="(card, index) in cards">
+                                <tr v-for="(breakdown, index) in breakdowns">
                                     <td>{{ index + 1 }}</td>
-                                    <td><a @click.prevent="viewCard(card.id)">JC-{{ card.id }}</a></td>
-                                    <td>{{ card.vehicle_number }}</td>
-                                    <td>{{ card.type.name }}</td>
-                                    <td>{{ card.job_description }}</td>
-                                    <td>{{ formatDate(card.created_at) }}</td>
-                                    <td>{{ formatDate(card.expected_completion) }}</td>
+                                    <td>
+                                      <router-link :to="'/wsh/breakdown/' + breakdown.id">BRK-{{ breakdown.id }}</router-link>
+                                    </td>
+                                    <td>{{ breakdown.plate_number }}</td>
+                                    <td>{{ breakdown.first_name }} {{ breakdown.last_name }}</td>
+                                    <td>{{ breakdown.name }}</td>
+                                    <td>{{ breakdown.location }}</td>
+                                    <td>{{ formatDate(breakdown.created_at) }}</td>
                                     <td class="text-center">
-                                        <span @click="editCard(card.id)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
-                                        <button data-toggle="popover" :data-item="card.id" class="btn btn-xs btn-danger btn-destroy"><i class="fa fa-trash"></i></button>
+                                      <router-link :to="'/wsh/breakdown/' + breakdown.id + '/edit'" class="btn btn-xs btn-info">
+                                        <i class="fa fa-pencil"></i>
+                                      </router-link>
+                                      <button data-toggle="popover" :data-item="breakdown.id" class="btn btn-xs btn-danger btn-destroy"><i class="fa fa-trash"></i></button>
                                     </td>
                                 </tr>
                                 </tbody>
 
                                 <tfoot>
                                 <tr>
-                                    <th>No.</th>
-                                    <th>Card #</th>
-                                    <th>Vehicle</th>
-                                    <th>Job Type</th>
-                                    <th>Description</th>
-                                    <th>Created On</th>
-                                    <th>Expected Completion</th>
-                                    <th></th>
+                                  <th>No.</th>
+                                  <th>Incedent #</th>
+                                  <th>Vehicle</th>
+                                  <th>Driver</th>
+                                  <th>Area</th>
+                                  <th>Location</th>
+                                  <th>Logged On</th>
+                                  <th></th>
                                 </tr>
                                 </tfoot>
                             </table>
@@ -74,9 +78,8 @@
 <script>
     export default {
         created() {
-            http.get('/api/job-card').then(response => {
-                this.cards = response.cards;
-                this.requisitions = response.requisitions;
+            http.get('/api/breakdown').then(response => {
+                this.breakdowns = response.breakdowns;
                 confirm2('.btn-destroy', (element) => {
                     this.destroy(element.dataset.item);
                 });
@@ -85,8 +88,7 @@
         },
         data() {
             return {
-                cards: [],
-                requisitions: [],
+                breakdowns: [],
             };
         },
 
@@ -99,14 +101,6 @@
                 let day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
 
                 return day + ' ' + month + ' ' + date.getFullYear();
-            },
-
-            editCard(record) {
-                window._router.push({path: '/wsh/job-card/' + record + '/edit'})
-            },
-
-            viewCard(record) {
-                window._router.push({ path: '/wsh/job-card/' + record })
             },
 
             destroy(id) {

@@ -16,6 +16,7 @@ Route::group(['prefix' => 'workshop', 'as' => 'workshop.'], function () {
     Route::resource('users', '\SmoDav\Controllers\UsersController');
     Route::resource('mileage', '\SmoDav\Controllers\API\MileageTypeController');
     Route::resource('checkpoint', 'CheckpointController');
+    Route::resource('area', 'BreakdownAreaController');
 });
 
 

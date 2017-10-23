@@ -22,12 +22,14 @@ class CreateBreakdownsTable extends Migration
             $table->unsignedInteger('driver_id')->index()->nullable();
             $table->text('incident_details');
             $table->string('vehicle_sent')->nullable();
-            $table->unsignedInteger('attended_by')->index();
-            $table->text('break_down_recovered');
-            $table->text('narration');
+            $table->unsignedInteger('attended_by')->index()->nullable();
+            $table->text('break_down_recovered')->nullable();
+            $table->text('narration')->nullable();
             $table->boolean('breakdown_approved')->default(false);
-            $table->integer('breakdown_approved_by');
-            $table->text('oims');
+            $table->integer('breakdown_approved_by')->nullable();
+            $table->text('oims')->nullable();
+            $table->string('status')->nullable();
+            $table->text('raw')->nullable();
             $table->timestamps();
 
             $table->foreign('vehicle_id')->references('id')->on('vehicles')->onDelete('cascade');

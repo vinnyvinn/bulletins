@@ -43,7 +43,7 @@ class JobCardController extends Controller
             })
             ->get([
                 'id', 'job_description', 'vehicle_number', 'created_at', 'expected_completion',
-                'workshop_job_type_id', 'status'
+                'workshop_job_type_id', 'status', 'breakdown_id'
             ]);
 
 
@@ -152,6 +152,11 @@ class JobCardController extends Controller
             ]);
 
             JobCardInspection::where('job_card_id', $jobCard->id)->delete();
+
+            foreach ($data['inspections'] as $inspection) {
+                $inspection['job_card_id'] = $jobCard->id;
+                JobCardInspection::create($inspection);
+            }
 
             JobCardTask::where('job_card_id', $jobCard->id)->delete();
             foreach ($data['tasks'] as $task) {
