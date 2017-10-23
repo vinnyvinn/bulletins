@@ -121,11 +121,11 @@
                 this.timer = setTimeout(this.logout, 300000);
             },
             idleTimer() {
-                window.onmousemove = this.resetTimer(); // catches mouse movements
-                window.onmousedown = this.resetTimer(); // catches mouse movements
-                window.onclick = this.resetTimer();     // catches mouse clicks
-                window.onscroll = this.resetTimer();    // catches scrolling
-                window.onkeypress = this.resetTimer();  //catches keyboard actions
+                window.onmousemove = this.resetTimer; // catches mouse movements
+                window.onmousedown = this.resetTimer; // catches mouse movements
+                window.onclick = this.resetTimer;     // catches mouse clicks
+                window.onscroll = this.resetTimer;    // catches scrolling
+                window.onkeypress = this.resetTimer;  //catches keyboard actions
             },
         }
     }
