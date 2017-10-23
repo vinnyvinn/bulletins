@@ -14,7 +14,7 @@ class AddFieldsToJobCardsTable extends Migration
     public function up()
     {
         Schema::table('job_cards', function (Blueprint $table) {
-            $table->unsignedInteger('breakdown_id');
+            $table->unsignedInteger('breakdown_id')->nullable();
         });
     }
 

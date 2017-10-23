@@ -16,13 +16,18 @@
                 <div class="caption">Home</div>
             </router-link>
 
+            <router-link to="/wsh/breakdown" class="nav-items">
+                <img src="/images/breakdown.png" alt="breakdown" class="img-responsive">
+                <div class="caption">Breakdown</div>
+            </router-link>
+
             <router-link to="/wsh/job-card" class="nav-items">
                 <img src="/images/inspection.png" alt="job-card" class="img-responsive">
                 <div class="caption">Job Cards</div>
             </router-link>
 
             <router-link to="/wsh/parts" class="nav-items">
-                <img src="/images/parts.png" alt="job-card" class="img-responsive">
+                <img src="/images/parts.png" alt="parts" class="img-responsive">
                 <div class="caption">Parts Requisition</div>
             </router-link>
 <!--
@@ -56,53 +61,53 @@
 
 <script>
     export default {
-        created() {
-            this.$root.user = JSON.parse(localStorage.getItem('fewuia32rfwe'));
-        },
-        data() {
-            return {
-                timer: null,
-            }
-        },
+      created() {
+        this.$root.user = JSON.parse(localStorage.getItem("fewuia32rfwe"));
+      },
+      data() {
+        return {
+          timer: null
+        };
+      },
 
-        props: {
-            app: {
-                required: true,
-                default: ''
-            }
-        },
-
-        computed: {
-            showSwitch() {
-                return this.$root.user.stations.length > 1;
-            }
-        },
-
-        mounted() {
-            this.idleTimer();
-        },
-
-        methods: {
-            logout() {
-                localStorage.removeItem('foeiwafwfuwe');
-                localStorage.removeItem('fewuia32rfwe');
-                http.post('/logout', {}).then(() => window.location = '/login');
-            },
-
-            can(permission) {
-                return window.can(permission)
-            },
-            resetTimer() {
-                clearTimeout(this.timer);
-                this.timer = setTimeout(this.logout, 300000);
-            },
-            idleTimer() {
-                window.onmousemove = this.resetTimer; // catches mouse movements
-                window.onmousedown = this.resetTimer; // catches mouse movements
-                window.onclick = this.resetTimer;     // catches mouse clicks
-                window.onscroll = this.resetTimer;    // catches scrolling
-                window.onkeypress = this.resetTimer;  //catches keyboard actions
-            },
+      props: {
+        app: {
+          required: true,
+          default: ""
         }
-    }
+      },
+
+      computed: {
+        showSwitch() {
+          return this.$root.user.stations.length > 1;
+        }
+      },
+
+      mounted() {
+        // this.idleTimer();
+      },
+
+      methods: {
+        logout() {
+          localStorage.removeItem("foeiwafwfuwe");
+          localStorage.removeItem("fewuia32rfwe");
+          http.post("/logout", {}).then(() => (window.location = "/login"));
+        },
+
+        can(permission) {
+          return window.can(permission);
+        },
+        resetTimer() {
+          clearTimeout(this.timer);
+          this.timer = setTimeout(this.logout, 300000);
+        },
+        idleTimer() {
+          window.onmousemove = this.resetTimer; // catches mouse movements
+          window.onmousedown = this.resetTimer; // catches mouse movements
+          window.onclick = this.resetTimer; // catches mouse clicks
+          window.onscroll = this.resetTimer; // catches scrolling
+          window.onkeypress = this.resetTimer; //catches keyboard actions
+        }
+      }
+    };
 </script>

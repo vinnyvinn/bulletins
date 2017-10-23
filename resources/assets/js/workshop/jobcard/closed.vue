@@ -5,7 +5,7 @@
             <div class="col-sm-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <strong>Job Cards Not Approved</strong>
+                        <strong>Closed Job Cards</strong>
                         <router-link to="/wsh/job-card/open" class="btn btn-danger btn-xs pull-right">
                             <i class="fa fa-plus"></i> Open
                         </router-link>
@@ -26,6 +26,7 @@
                                 <tr>
                                     <th>No.</th>
                                     <th>Card #</th>
+                                    <th>Type</th>
                                     <th>Vehicle</th>
                                     <th>Job Type</th>
                                     <th>Description</th>
@@ -39,6 +40,12 @@
                                 <tr v-for="(card, index) in cards">
                                     <td>{{ index + 1 }}</td>
                                     <td><a @click.prevent="viewCard(card.id)">JC-{{ card.id }}</a></td>
+                                    <td>
+                                      <router-link v-if="card.breakdown_id" :to="'/wsh/breakdown/' + card.breakdown_id">
+                                        <span class="label label-danger">BREAKDOWN</span>
+                                      </router-link>
+                                      <span v-else class="label label-success">STANDARD</span>
+                                    </td>
                                     <td>{{ card.vehicle_number }}</td>
                                     <td>{{ card.type.name }}</td>
                                     <td>{{ card.job_description }}</td>
@@ -55,6 +62,7 @@
                                 <tr>
                                     <th>No.</th>
                                     <th>Card #</th>
+                                    <th>Type</th>
                                     <th>Vehicle</th>
                                     <th>Job Type</th>
                                     <th>Description</th>

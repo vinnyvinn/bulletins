@@ -27,6 +27,7 @@
                                 <tr>
                                     <th>No.</th>
                                     <th>Card #</th>
+                                    <th>Type</th>
                                     <th>Vehicle</th>
                                     <th>Job Type</th>
                                     <th>Description</th>
@@ -40,6 +41,12 @@
                                 <tr v-for="(card, index) in cards">
                                     <td>{{ index + 1 }}</td>
                                     <td><a @click.prevent="viewCard(card.id)">JC-{{ card.id }}</a></td>
+                                    <td>
+                                      <router-link v-if="card.breakdown_id" :to="'/wsh/breakdown/' + card.breakdown_id">
+                                        <span class="label label-danger">BREAKDOWN</span>
+                                      </router-link>
+                                      <span v-else class="label label-success">STANDARD</span>
+                                    </td>
                                     <td>{{ card.vehicle_number }}</td>
                                     <td>{{ card.type.name }}</td>
                                     <td>{{ card.job_description }}</td>
@@ -56,6 +63,7 @@
                                 <tr>
                                     <th>No.</th>
                                     <th>Card #</th>
+                                    <th>Type</th>
                                     <th>Vehicle</th>
                                     <th>Job Type</th>
                                     <th>Description</th>

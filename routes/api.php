@@ -129,4 +129,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('ls-delivery', '\SmoDav\Controllers\API\LocalShunting\DeliveryController');
     Route::resource('checkpoints', 'CheckpointRouteController');
     Route::resource('route-card', 'RouteCardController', ['except' => 'show']);
+    Route::post('breakdown/{id}/job-card', 'BreakdownController@jobCard');
+    Route::post('breakdown/{id}/approve', 'BreakdownController@approve');
+    Route::post('breakdown/{id}/disapprove', 'BreakdownController@disapprove');
+    Route::post('breakdown/{id}/close', 'BreakdownController@close');
+    Route::resource('breakdown', 'BreakdownController');
 });
