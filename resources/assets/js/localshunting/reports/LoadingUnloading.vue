@@ -119,52 +119,55 @@
         lsdeliveries: [],
         contract: {
           client: {
-            Name: '',
+            Name: ""
           },
-          route: {
-
-          }
-        },
-      }
+          route: {}
+        }
+      };
     },
     created() {
       this.$root.isLoading = true;
-      http.get('/api/lsloadingunloading/' + this.$route.params.id).then((response) => {
-        this.lsdeliveries = response.lsdeliveries;
-        this.contract = response.contract;
-        prepareTable();
-        this.$root.isLoading = false;
-      })
+      http
+        .get("/api/lsloadingunloading/" + this.$route.params.id)
+        .then(response => {
+          this.lsdeliveries = response.lsdeliveries;
+          this.contract = response.contract;
+          prepareTable();
+          this.$root.isLoading = false;
+        });
     },
 
     methods: {
       humanDate(date) {
-        return moment(date).format('ll');
+        return moment(date).format("ll");
       },
 
       daysSince(startdate) {
-        return moment().diff(moment(startdate), 'days');
+        return moment().diff(moment(startdate), "days");
       },
 
       myarraySum(items, prop) {
         return items.reduce(function(a, b) {
           var b = parseInt(b[prop]);
+          b = isNaN(b) ? 0 : b;
+
           return a + b;
         }, 0);
       },
 
       progress() {
-        return parseFloat((this.myarraySum(this.lsdeliveries, 'offloading_net_weight') / this.contract.quantity) * 100)
-          .toLocaleString();
+        return parseFloat(
+          this.myarraySum(this.lsdeliveries, "offloading_net_weight") /
+            this.contract.quantity *
+            100
+        ).toLocaleString();
       },
 
       styleProgress() {
-        return 'width:' + this.progress() + '%';
+        return "width:" + this.progress() + "%";
       }
     }
-
-
-  }
+  };
 </script>
 
 <style lang="css">
