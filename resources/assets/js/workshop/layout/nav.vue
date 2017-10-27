@@ -30,12 +30,13 @@
                 <img src="/images/parts.png" alt="parts" class="img-responsive">
                 <div class="caption">Parts Requisition</div>
             </router-link>
-<!--
+            
             <router-link to="/wsh/gatepass" class="nav-items" v-if="$root.can('create-gatepass') || $root.can('view-gatepass') || $root.can('edit-gatepass') || $root.can('approve-gatepass') || $root.can('delete-gatepass')">
                 <img src="/images/gatepass.png" alt="fuel" class="img-responsive">
                 <div class="caption">Gate Pass</div>
             </router-link>
 
+          <!--
             <router-link to="/wsh/reports" class="nav-items" v-if="$root.can('reports')">
                 <img src="/images/report.png" alt="card" class="img-responsive">
                 <div class="caption">Reports</div>
