@@ -134,4 +134,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('breakdown/{id}/disapprove', 'BreakdownController@disapprove');
     Route::post('breakdown/{id}/close', 'BreakdownController@close');
     Route::resource('breakdown', 'BreakdownController');
+    Route::resource('job-card-progress', 'JobCardProgressController');
+    Route::post('qc/{id}/approve', 'JobCardQCController@approve');
+    Route::post('qc/{id}/disapprove', 'JobCardQCController@disapprove');
+    Route::post('qc/{id}/waiver', 'JobCardQCController@waiver');
+    Route::resource('qc', 'JobCardQCController');
 });

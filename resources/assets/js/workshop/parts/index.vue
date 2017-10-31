@@ -14,10 +14,6 @@
                             <i class="fa fa-plus"></i> Issued
                         </router-link>
 
-                        <router-link to="/wsh/parts/issue" class="btn btn-info btn-xs pull-right">
-                            <i class="fa fa-plus"></i> Pending Issue
-                        </router-link>
-
                         <router-link to="/wsh/parts/create" class="btn btn-success btn-xs pull-right">
                             <i class="fa fa-plus"></i> New
                         </router-link>

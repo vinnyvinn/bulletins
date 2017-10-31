@@ -10,10 +10,6 @@
                             <i class="fa fa-plus"></i> Issued
                         </router-link>
 
-                        <router-link to="/wsh/parts/issue" class="btn btn-info btn-xs pull-right">
-                            <i class="fa fa-plus"></i> Pending Issue
-                        </router-link>
-
                         <router-link to="/wsh/parts" class="btn btn-primary btn-xs pull-right">
                             <i class="fa fa-plus"></i> Pending Approval
                         </router-link>

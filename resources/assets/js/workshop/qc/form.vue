@@ -2,13 +2,13 @@
     <div class="container">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <strong>Job Card #JC-{{ card_number }}</strong>
+                <strong>QC for Job Card #JC-{{ card_number }}</strong>
 
                 <a :href="'/job-card/print/' + card_number" class="btn btn-xs btn-primary pull-right" target="_blank">PRINT</a>
             </div>
 
             <div class="panel-body">
-                <form action="#" role="form" v-if="! closing">
+                <form action="#" role="form" @submit.prevent="store">
 
                     <div class="row">
                         <div class="col-sm-4">
@@ -64,15 +64,15 @@
                             </div>
 
                             <div class="form-group input-group-sm">
-                                <label for="expected_completion">Expected Completion Date</label>
-                                <input disabled required type="text" v-model="card.expected_completion" name="expected_completion" id="expected_completion" class="form-control datepicker">
-                            </div>
-
-                            <div class="form-group input-group-sm">
                                 <label for="vehicle_id">Driver</label>
                                 <h5>
                                     <strong>{{ vehicle.driver.first_name }} {{ vehicle.driver.last_name }}, {{ vehicle.driver.mobile_phone }}</strong>
                                 </h5>
+                            </div>
+
+                            <div class="form-group input-group-sm">
+                                <label for="mechanic_findings">Mechanic's Findings</label>
+                                <textarea disabled v-model="card.mechanic_findings" name="mechanic_findings" id="mechanic_findings" cols="20" rows="5" class="form-control input-sm"></textarea>
                             </div>
                         </div>
 
@@ -102,61 +102,19 @@
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-sm-8">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Inspection</th>
-                                        <th>Done By</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="(item, index) in card.inspections">
-                                        <td>{{ index + 1}}</td>
-                                        <td>{{ item.inspection_name }}</td>
-                                        <td>
-                                            <select disabled v-model="item.employee_id" class="form-control input-sm">
-                                                <option v-for="employee in employees" :value="employee.id">{{ employee.first_name }} {{ employee.last_name }}</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <select disabled v-model="item.status" class="form-control input-sm">
-                                                <option value="Not Started">Not Started</option>
-                                                <option value="In Progress">In Progress</option>
-                                                <option value="Completed">Completed</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label for="mechanic_findings">Mechanic's Findings</label>
-                                <textarea disabled v-model="card.mechanic_findings" name="mechanic_findings" id="mechanic_findings" cols="20" rows="5" class="form-control input-sm"></textarea>
-                            </div>
-                        </div>
-                    </div>
 
                     <hr>
 
                     <div class="row">
                         <div class="col-sm-12">
+                          <h4><strong>Quality Check</strong></h4>
                             <div class="table-responsive">
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
                                             <th>Operation</th>
                                             <th>Action</th>
-                                            <th>Allocated To</th>
-                                            <th>Start Date</th>
-                                            <th>Start Time</th>
                                             <th>Status</th>
-                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -164,20 +122,12 @@
                                             <td>{{ task.operation }}</td>
                                             <td>{{ task.task_name }}</td>
                                             <td>
-                                                <select disabled v-model="task.employee_id" class="form-control input-sm">
-                                                    <option v-for="employee in employees" :value="employee.id">{{ employee.first_name }} {{ employee.last_name }}</option>
+                                                <select v-model="task.status" class="form-control input-sm">
+                                                    <option value="Accepted">Accepted</option>
+                                                    <option value="Rejected">Rejected</option>
+                                                    <option value="Waivered">Waivered</option>
                                                 </select>
                                             </td>
-                                            <td>{{ task.start_date }}</td>
-                                            <td>{{ task.start_time }}</td>
-                                            <td>
-                                                <select disabled v-model="task.status" class="form-control input-sm">
-                                                    <option value="Not Started">Not Started</option>
-                                                    <option value="In Progress">In Progress</option>
-                                                    <option value="Completed">Completed</option>
-                                                </select>
-                                            </td>
-                                            <td></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -185,30 +135,20 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <button v-if="status == 'Approved'" class="btn btn-warning" @click.prevent="initiateClose">Close Job Card</button>
-                        <span v-if="status == 'Pending Approval'">
-                            <button class="btn btn-success" @click.prevent="approve()">Approve Job Card</button>
-                            <button class="btn btn-danger" @click.prevent="disapprove()">Disapprove Job Card</button>
-                        </span>
-                        <router-link to="/wsh/job-card" class="btn btn-danger">Back</router-link>
-                    </div>
-                </form>
-
-                <div v-if="closing">
                     <div class="row">
                       <div class="col-sm-12">
                         <div class="form-group">
-                            <label for="closing_remarks">Closing Remarks</label>
-                            <textarea v-model="card.closing_remarks" name="closing_remarks" id="closing_remarks" cols="30" rows="10" class="form-control"></textarea>
-                        </div>
-
-                        <div class="form-group">
-                          <button class="btn btn-primary" @click.prevent="closeCard()">Close</button>
+                            <label for="closing_remarks">Remarks</label>
+                            <textarea v-model="qc.remarks" name="closing_remarks" id="closing_remarks" cols="30" rows="10" class="form-control"></textarea>
                         </div>
                       </div>
                     </div>
-                </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-warning" type="submit">Process Card</button>
+                        <router-link to="/wsh/qc" class="btn btn-danger">Back</router-link>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -218,7 +158,6 @@
     export default {
         data() {
             return {
-              closing: false,
                 status: '',
                 card_number: '',
                 user: {},
@@ -248,7 +187,13 @@
                     mechanic_findings: '',
                     tasks: [],
                     closing_remarks: '',
-                }
+                },
+                qc: {
+                  job_card_id: null,
+                  status: '',
+                  tasks: null,
+                  remarks: ''
+                },
             };
         },
 
@@ -304,77 +249,92 @@
             this.closing = true;
           },
 
-            formatDate(date) {
-                date = new Date(date);
-                let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+          formatDate(date) {
+              date = new Date(date);
+              let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-                let month = months[date.getMonth()];
-                let day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+              let month = months[date.getMonth()];
+              let day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
 
-                return day + ' ' + month + ' ' + date.getFullYear();
-            },
-            createCheckLists(lists) {
-                lists.forEach((item) => {
-                    this.card.inspections.push({
-                        workshop_inspection_check_list_id: item.id,
-                        inspection_name: item.name,
-                        employee_id: '',
-                        status: 'Not Started',
-                    });
-                });
-            },
+              return day + ' ' + month + ' ' + date.getFullYear();
+          },
+          createCheckLists(lists) {
+              lists.forEach((item) => {
+                  this.card.inspections.push({
+                      workshop_inspection_check_list_id: item.id,
+                      inspection_name: item.name,
+                      employee_id: '',
+                      status: 'Not Started',
+                  });
+              });
+          },
 
-            checkState() {
-                if (this.$route.params.id) {
-                    http.get('/api/job-card/' + this.$route.params.id).then((response) => {
-                        this.card = response.card.raw_data;
-                        this.card_number = response.card.id;
-                        this.user = response.card.user;
-                        this.requested_on = response.card.created_at;
-                        this.status = response.card.status;
-                    });
-                }
-            },
+          checkState() {
+              if (this.$route.params.id) {
+                  http.get('/api/job-card/' + this.$route.params.id).then((response) => {
+                      this.card = response.card.raw_data;
+                      this.card_number = response.card.id;
+                      this.user = response.card.user;
+                      this.requested_on = response.card.created_at;
+                      this.status = response.card.status;
+                  });
+              }
+          },
 
-            approve() {
-                this.$root.isLoading = true;
-                http.post('/api/job-card/' + this.$route.params.id + '/approve', {}).then((response) => {
-                    alert2(this.$root, [response.message], 'success');
-                    this.$root.isLoading = false;
-                    window._router.push({ path: '/wsh/job-card' });
-                }).catch((error) => {
-                    this.$root.isLoading = false;
-                    alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
-                });
-            },
-
-            disapprove() {
-                this.$root.isLoading = true;
-                http.post('/api/job-card/' + this.$route.params.id + '/disapprove', {}).then((response) => {
-                    alert2(this.$root, [response.message], 'success');
-                    this.$root.isLoading = false;
-                    window._router.push({ path: '/wsh/job-card' });
-                }).catch((error) => {
-                    this.$root.isLoading = false;
-                    alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
-                });
-            },
-
-            closeCard() {
+          store() {
               this.$root.isLoading = true;
-                let request = null;
-                this.card.vehicle_number = this.vehicle.plate_number;
-                request = http.post('/api/job-card/' + this.$route.params.id + '/close', this.card);
+              this.qc.job_card_id = this.card_number;
+              this.qc.tasks = this.card;
 
-                request.then((response) => {
-                    alert2(this.$root, [response.message], 'success');
-                    window._router.push({ path: '/wsh/job-card' });
-                    this.$root.isLoading = false;
-                }).catch((error) => {
-                    this.$root.isLoading = false;
-                    alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
-                });
-            },
+              http.post('/api/qc', this.qc).then((response) => {
+                  alert2(this.$root, [response.message], 'success');
+                  this.$root.isLoading = false;
+                  window._router.push({ path: '/wsh/qc' });
+              }).catch((error) => {
+                  this.$root.isLoading = false;
+                  alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
+              });
+          },
+
+          approve() {
+              this.$root.isLoading = true;
+              http.post('/api/job-card/' + this.$route.params.id + '/approve', {}).then((response) => {
+                  alert2(this.$root, [response.message], 'success');
+                  this.$root.isLoading = false;
+                  window._router.push({ path: '/wsh/qc' });
+              }).catch((error) => {
+                  this.$root.isLoading = false;
+                  alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
+              });
+          },
+
+          disapprove() {
+              this.$root.isLoading = true;
+              http.post('/api/job-card/' + this.$route.params.id + '/disapprove', {}).then((response) => {
+                  alert2(this.$root, [response.message], 'success');
+                  this.$root.isLoading = false;
+                  window._router.push({ path: '/wsh/qc' });
+              }).catch((error) => {
+                  this.$root.isLoading = false;
+                  alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
+              });
+          },
+
+          closeCard() {
+            this.$root.isLoading = true;
+              let request = null;
+              this.card.vehicle_number = this.vehicle.plate_number;
+              request = http.post('/api/job-card/' + this.$route.params.id + '/close', this.card);
+
+              request.then((response) => {
+                  alert2(this.$root, [response.message], 'success');
+                  window._router.push({ path: '/wsh/qc' });
+                  this.$root.isLoading = false;
+              }).catch((error) => {
+                  this.$root.isLoading = false;
+                  alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
+              });
+          },
         }
     }
 </script>

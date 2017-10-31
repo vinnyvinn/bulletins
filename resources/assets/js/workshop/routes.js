@@ -50,16 +50,35 @@ module.exports = [
     { path: '/wsh/job-card/open', component: require('./jobcard/open.vue'), beforeEnter: authMiddleware },
     { path: '/wsh/job-card/closed', component: require('./jobcard/closed.vue'), beforeEnter: authMiddleware },
     { path: '/wsh/job-card/:id', component: require('./jobcard/view.vue'), beforeEnter: authMiddleware },
+    { path: '/wsh/job-card/:id/progress', component: require('./jobcard/progress.vue'), beforeEnter: authMiddleware },
     { path: '/wsh/job-card/:id/edit', component: require('./jobcard/form.vue'), beforeEnter: authMiddleware },
 
     { path: '/wsh/parts/', component: require('./parts/index.vue'), beforeEnter: authMiddleware },
-    { path: '/wsh/parts/issue', component: require('./parts/issue.vue'), beforeEnter: authMiddleware },
     { path: '/wsh/parts/open', component: require('./parts/open.vue'), beforeEnter: authMiddleware },
     { path: '/wsh/parts/closed', component: require('./parts/closed.vue'), beforeEnter: authMiddleware },
     { path: '/wsh/parts/create', component: require('./parts/form.vue'), beforeEnter: authMiddleware },
     { path: '/wsh/parts/:id', component: require('./parts/view.vue'), beforeEnter: authMiddleware },
     { path: '/wsh/parts/:id/edit', component: require('./parts/form.vue'), beforeEnter: authMiddleware },
     { path: '/wsh/parts/:id/:issue', component: require('./parts/view.vue'), beforeEnter: authMiddleware },
+    { path: '/wsh/issuance', component: require('./parts/issue.vue'), beforeEnter: authMiddleware },
+
+
+    { path: '/wsh/qc', component: require('./qc/index.vue'), beforeEnter: authMiddleware },
+    { path: '/wsh/qc/approved', component: require('./qc/approved.vue'), beforeEnter: authMiddleware },
+    { path: '/wsh/qc/open', component: require('./qc/open.vue'), beforeEnter: authMiddleware },
+    { path: '/wsh/qc/disapproved', component: require('./qc/disapproved.vue'), beforeEnter: authMiddleware },
+    { path: '/wsh/qc/waivered', component: require('./qc/waivered.vue'), beforeEnter: authMiddleware },
+    { path: '/wsh/qc/:id', component: require('./qc/form.vue'), beforeEnter: authMiddleware },
+    { path: '/wsh/qc/:id/view', component: require('./qc/view.vue'), beforeEnter: authMiddleware },
+    { path: '/wsh/qc/:id/edit', component: require('./qc/form.vue'), beforeEnter: authMiddleware },
+
+
+
+
+
+
+
+
 
     { path: '/wsh/gatepass', component: require('./gatepass/awaiting.vue'), beforeEnter: authMiddleware },
     { path: '/wsh/gatepass/completed', component: require('./gatepass/index.vue'), beforeEnter: authMiddleware },

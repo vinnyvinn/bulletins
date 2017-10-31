@@ -209,10 +209,11 @@ class JobCardController extends Controller
         ]);
     }
 
-    public function closeCard($id)
+    public function closeCard(Request $request, $id)
     {
         JobCard::where('id', $id)->update([
-            'status' => Constants::STATUS_CLOSED
+            'status' => Constants::STATUS_CLOSED,
+            'closing_remarks' => $request->get('closing_remarks')
         ]);
 
         return Response::json([

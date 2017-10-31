@@ -110,7 +110,7 @@
                             <span v-if="status == 'Issued' && can('create-requisition')">
                                 <input type="submit" name="consumption" class="btn btn-success" @click.prevent="consume()" value="Update Card">
                             </span>
-                            <router-link to="/wsh/parts" class="btn btn-danger">Back</router-link>
+                            <a href="#" @click.prevent="back()" class="btn btn-danger">Back</a>
                         </div>
                     </form>
 
@@ -176,6 +176,10 @@
         },
 
         methods: {
+          back() {
+            window._router.go(-1);
+          },
+
             can(permission) {
                 return window.can(permission)
             },
@@ -249,7 +253,7 @@
                     }, 200);
                     setTimeout(() => {
                         alert2(this.$root, [response.message], 'success');
-                        window._router.push({ path: '/wsh/parts' });
+                        window._router.go(-1);
                     }, 1000);
                 }).catch((error) => {
                     this.$root.isLoading = false;

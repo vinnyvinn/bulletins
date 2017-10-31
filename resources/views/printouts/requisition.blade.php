@@ -51,7 +51,7 @@
                     @if($requisition->status == \SmoDav\Support\Constants::STATUS_PENDING)
                         <td class="text-right">{{ number_format($item->approved_quantity, 0) }}</td>
                     @else
-                        <td class="text-right">{{ number_format($item->issued_quantity, 0) }}</td>
+                        <td class="text-right">{{ number_format((int) $item->issued_quantity, 0) }}</td>
                     @endif
                     <td>{{ strtoupper($item->item_name) }}</td>
                 </tr>

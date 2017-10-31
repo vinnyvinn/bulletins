@@ -275,7 +275,11 @@
 
             jobType() {
                 let selected =  this.job_types.filter((item) => item.id == this.card.workshop_job_type_id);
-                selected = selected.length ? selected[0]: { operations:[] };
+                selected = selected.length ? selected[0]: { name: '', operations:[] };
+
+                if (selected.name.indexOf('Service') !== -1) {
+                  this.setupTasks(selected);
+                }
 
                 return selected;
             },
@@ -338,6 +342,27 @@
                         status: 'Not Started',
                     });
                 });
+            },
+
+            setupTasks(type) {
+              this.card.tasks = [];
+              let operation = type.operations[0];
+              let date = (new Date()).toLocaleDateString('en-GB');
+              date = date.split('/');
+              date = date[2] + '-' + date[1] + '-' + date[0];
+
+              operation.tasks.map(item => {
+                this.card.tasks.push({
+                    operation_id: operation.id,
+                    operation: operation.name,
+                    workshop_job_task_id: item.id,
+                    task_name: item.name,
+                    employee_id: '',
+                    start_date: date,
+                    start_time: '08:00',
+                    status: 'Not Started'
+                });
+              });
             },
 
             addTask() {
