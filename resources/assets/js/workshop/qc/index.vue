@@ -4,17 +4,17 @@
             <div class="col-sm-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <strong>Parts Requisitions Approved, Not Issued</strong>
+                        <strong>Pending Quality Checks</strong>
 
-                        <router-link to="/wsh/parts/closed" class="btn btn-danger btn-xs pull-right">
+                        <router-link to="/wsh/qc/closed" class="btn btn-danger btn-xs pull-right">
                             <i class="fa fa-plus"></i> Closed
                         </router-link>
 
-                        <router-link to="/wsh/parts/open" class="btn btn-warning btn-xs pull-right">
+                        <router-link to="/wsh/qc/open" class="btn btn-warning btn-xs pull-right">
                             <i class="fa fa-plus"></i> Issued
                         </router-link>
 
-                        <router-link to="/wsh/parts/create" class="btn btn-success btn-xs pull-right">
+                        <router-link to="/wsh/qc/create" class="btn btn-success btn-xs pull-right">
                             <i class="fa fa-plus"></i> New
                         </router-link>
 

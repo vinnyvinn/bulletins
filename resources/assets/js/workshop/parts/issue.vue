@@ -5,23 +5,6 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>Pending Issuance Parts Requisitions</strong>
-
-                        <router-link to="/wsh/parts/closed" class="btn btn-danger btn-xs pull-right">
-                            <i class="fa fa-plus"></i> Closed
-                        </router-link>
-
-                        <router-link to="/wsh/parts/open" class="btn btn-warning btn-xs pull-right">
-                            <i class="fa fa-plus"></i> Issued
-                        </router-link>
-
-                        <router-link to="/wsh/parts" class="btn btn-primary btn-xs pull-right">
-                            <i class="fa fa-plus"></i> Pending Approval
-                        </router-link>
-
-                        <router-link to="/wsh/parts/create" class="btn btn-success btn-xs pull-right">
-                            <i class="fa fa-plus"></i> New
-                        </router-link>
-
                     </div>
                     <div class="panel-body">
                         <div class="table-responsive">
@@ -42,7 +25,7 @@
                                     <tr v-for="(item, index) in requisitions">
                                         <td>{{ index + 1 }}</td>
                                         <td>
-                                            <a @click.prevent="viewRequisition(item.id)">PR-{{ item.id }}</a>
+                                            PR-{{ item.id }}
                                         </td>
                                         <td>
                                             <a @click.prevent="viewCard(item.job_card_id)">JC-{{ item.job_card_id }}</a>
@@ -57,6 +40,7 @@
                                         <td>{{ item.job_card.vehicle_number }}</td>
                                         <td>{{ formatDate(item.created_at) }}</td>
                                         <td class="text-center">
+                                          <a class="btn btn-success btn-xs" @click.prevent="viewRequisition(item.id)">ISSUE</a>
                                         </td>
                                     </tr>
                                 </tbody>

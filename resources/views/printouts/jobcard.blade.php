@@ -23,6 +23,12 @@
             'contract_id' => session('contract_id', 0)
         ]) !!};
     </script>
+
+    <style>
+        * {
+            font-size: 1.2em;
+        }
+    </style>
 </head>
 <body>
 
@@ -44,8 +50,6 @@
                 <h4 style="font-size: 20px !important;" class="text-right">{{ config('app.email') }}</h4>
                 <h4 style="font-size: 20px !important;" class="text-right">{{ config('app.location') }}</h4>
                 <h3 class="text-right"><strong style="color: red !important;">JC - {{ str_pad($card->id, 5, '0', STR_PAD_LEFT) }}</strong></h3>
-
-
             </div>
         </div>
 
@@ -55,12 +59,17 @@
             <div class="col-xs-3"><h4 class="text-right">{{ Carbon\Carbon::parse($card->time_in)->format('dS F Y, h:i A') }}</h4></div>
             <div class="col-xs-3"><h4 class="text-left"><strong>Department</strong></h4></div>
             <div class="col-xs-3"><h4 class="text-right">{{ $card->vehicle_number }}</h4></div>
+        </div>
 
+
+        <div class="row" style="border: 1px solid #e5e5e5;">
             <div class="col-xs-3"><h4 class="text-left"><strong>KM</strong></h4></div>
             <div class="col-xs-3"><h4 class="text-right">{{ number_format($card->raw_data->current_km_reading, 0) }}</h4></div>
             <div class="col-xs-3"><h4 class="text-left"><strong>Cost Center</strong></h4></div>
             <div class="col-xs-3"><h4 class="text-right">&nbsp;</h4></div>
         </div>
+
+
         <div class="row" style="border: 1px solid #e5e5e5;">
             <div class="col-xs-3">
                 <h4 class="text-left"><strong>Make</strong></h4>

@@ -5,7 +5,7 @@
             <div class="col-sm-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <strong>Job Cards Not Approved</strong>
+                        <strong>Open Job Cards</strong>
 
                         <router-link to="/wsh/job-card/closed" class="btn btn-danger btn-xs pull-right">
                             <i class="fa fa-plus"></i> Closed
@@ -53,7 +53,8 @@
                                     <td>{{ formatDate(card.created_at) }}</td>
                                     <td>{{ formatDate(card.expected_completion) }}</td>
                                     <td class="text-center">
-                                        <span @click="editCard(card.id)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
+                                      <router-link :to="'/wsh/job-card/' + card.id + '/progress'" @click="editCard(card.id)" class="btn btn-xs btn-success">PROGRESS</router-link>
+                                      <span @click="editCard(card.id)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
                                         <!-- <button data-toggle="popover" :data-item="card.id" class="btn btn-xs btn-danger btn-destroy"><i class="fa fa-trash"></i></button> -->
                                     </td>
                                 </tr>

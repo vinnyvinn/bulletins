@@ -4,14 +4,18 @@
             <div class="col-sm-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <strong>Parts Requisitions Approved, Not Issued</strong>
-
-                        <router-link to="/wsh/parts/closed" class="btn btn-danger btn-xs pull-right">
-                            <i class="fa fa-plus"></i> Closed
-                        </router-link>
+                        <strong>Closed Parts Requisitions</strong>
 
                         <router-link to="/wsh/parts/open" class="btn btn-warning btn-xs pull-right">
                             <i class="fa fa-plus"></i> Issued
+                        </router-link>
+
+                        <router-link to="/wsh/parts/issue" class="btn btn-info btn-xs pull-right">
+                            <i class="fa fa-plus"></i> Pending Issue
+                        </router-link>
+
+                        <router-link to="/wsh/parts" class="btn btn-primary btn-xs pull-right">
+                            <i class="fa fa-plus"></i> Pending Approval
                         </router-link>
 
                         <router-link to="/wsh/parts/create" class="btn btn-success btn-xs pull-right">
@@ -27,6 +31,7 @@
                                         <th>No.</th>
                                         <th>Requisition #</th>
                                         <th>Card #</th>
+                                        <th>Status</th>
                                         <th>Vehicle</th>
                                         <th>Requested On</th>
                                         <th></th>
@@ -42,12 +47,16 @@
                                         <td>
                                             <a @click.prevent="viewCard(item.job_card_id)">JC-{{ item.job_card_id }}</a>
                                         </td>
+                                        <td>
+                                            <span v-if="item.status == 'Pending Approval'" class="label label-warning">PENDING</span>
+                                            <span v-if="item.status == 'Approved'" class="label label-primary">APPROVED</span>
+                                            <span v-if="item.status == 'Declined'" class="label label-danger">DECLINED</span>
+                                            <span v-if="item.status == 'Issued'" class="label label-success">ISSUED</span>
+                                            <span v-if="item.status == 'Closed'" class="label label-default">CLOSED</span>
+                                        </td>
                                         <td>{{ item.job_card.vehicle_number }}</td>
                                         <td>{{ formatDate(item.created_at) }}</td>
                                         <td class="text-center">
-                                            <button v-if="item.status == 'Pending Approval'" class="btn btn-xs btn-primary" @click="editRequisition(item.id)">
-                                                <i class="fa fa-pencil"></i>
-                                            </button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -57,6 +66,7 @@
                                         <th>No.</th>
                                         <th>Requisition #</th>
                                         <th>Card #</th>
+                                        <th>Status</th>
                                         <th>Vehicle</th>
                                         <th>Requested On</th>
                                         <th></th>
@@ -74,7 +84,7 @@
 <script>
     export default {
         created() {
-            http.get('/api/parts').then(response => {
+            http.get('/api/parts?status=Closed').then(response => {
                 this.requisitions = response.requisitions;
                 confirm2('.btn-destroy', (element) => {
                     this.destroy(element.dataset.item);

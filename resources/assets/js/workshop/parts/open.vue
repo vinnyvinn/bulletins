@@ -11,10 +11,6 @@
                             <i class="fa fa-plus"></i> Closed
                         </router-link>
 
-                        <router-link to="/wsh/parts/issue" class="btn btn-warning btn-xs pull-right">
-                            <i class="fa fa-plus"></i> Pending Issue
-                        </router-link>
-
                         <router-link to="/wsh/parts" class="btn btn-primary btn-xs pull-right">
                             <i class="fa fa-plus"></i> Pending Approval
                         </router-link>

@@ -3,6 +3,7 @@
 namespace SmoDav\Models;
 
 use App\Breakdown;
+use App\JobCardProgress;
 use App\User;
 use Auth;
 use SmoDav\Support\Constants;
@@ -58,5 +59,10 @@ class JobCard extends SmoDavModel
     public function breakdown()
     {
         return $this->belongsTo(Breakdown::class);
+    }
+
+    public function progress()
+    {
+        return $this->hasMany(JobCardProgress::class);
     }
 }

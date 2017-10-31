@@ -12,7 +12,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="job_card_id">Job Card</label>
-                                <select required @change="mapFindings" v-model="requisition.job_card_id" name="job_card_id" id="job_card_id" class="form-control input-sm">
+                                <select @change="mapFindings" v-model="requisition.job_card_id" name="job_card_id" id="job_card_id" class="form-control input-sm">
                                     <option v-for="card in cards" :value="card.id">JC-{{ card.id }}</option>
                                 </select>
                             </div>
@@ -90,7 +90,7 @@
 
                     <div class="form-group">
                         <button class="btn btn-success">Save</button>
-                        <button click.prevent="back" to="/wsh/parts" class="btn btn-danger">Back</button>
+                        <router-link to="/wsh/parts" class="btn btn-danger">Back</router-link>
                     </div>
                 </form>
 
@@ -152,10 +152,6 @@
         },
 
         methods: {
-
-          back() {
-            window._router.go(-1);
-          },
             addToList() {
                 if (parseInt(this.item.requested_quantity) < 1) {
                     alert2(this.$root, ['Please enter a valid quantity'], 'danger');
@@ -214,7 +210,7 @@
 
                 request.then((response) => {
                     alert2(this.$root, [response.message], 'success');
-                    window._router.go(-1);
+                    window._router.push({ path: '/wsh/parts' });
                 }).catch((error) => {
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                 });
