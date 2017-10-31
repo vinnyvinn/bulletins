@@ -15,6 +15,7 @@ class AddFieldsToJobCardsTable extends Migration
     {
         Schema::table('job_cards', function (Blueprint $table) {
             $table->unsignedInteger('breakdown_id')->nullable();
+            $table->text('closing_remarks')->nullable();
         });
     }
 
@@ -27,6 +28,7 @@ class AddFieldsToJobCardsTable extends Migration
     {
         Schema::table('job_cards', function (Blueprint $table) {
             $table->dropColumn('breakdown_id');
+            $table->dropColumn('closing_remarks');
         });
     }
 }

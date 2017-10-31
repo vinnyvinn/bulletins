@@ -5,9 +5,9 @@
             <div class="col-sm-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <strong>Quality Checks Pending Review</strong>
+                        <strong>Waivered Quality Checks</strong>
 
-                        <router-link to="/wsh/qc" class="btn btn-warning btn-xs pull-right">
+                        <router-link to="/wsh/qc" class="btn btn-success btn-xs pull-right">
                             Pending QCs
                         </router-link>
 
@@ -19,46 +19,46 @@
                             Disapproved
                         </router-link>
 
-                        <router-link to="/wsh/qc/waivered" class="btn btn-success btn-xs pull-right">
-                            Waivered
+                        <router-link to="/wsh/qc/open" class="btn btn-warning btn-xs pull-right">
+                            Pending Review
                         </router-link>
                     </div>
                     <div class="panel-body">
                         <div class="table-responsive">
-                            <table class="table datatable nowrap">
-                                <thead>
-                                <tr>
-                                    <th>No.</th>
-                                    <th>QC #</th>
-                                    <th>Job Card #</th>
-                                    <th>Vehicle</th>
-                                    <th>Created On</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-
-                                <tbody>
-                                <tr v-for="(card, index) in cards">
-                                    <td>{{ index + 1 }}</td>
-                                    <td><router-link :to="'/wsh/qc/' + card.id + '/view'">QC-{{ card.id }}</router-link></td>
-                                    <td><router-link :to="'/wsh/job-card/' + card.job_card_id">JC-{{ card.job_card_id }}</router-link></td>
-                                    <td>{{ card.job_card.vehicle_number }}</td>
-                                    <td>{{ formatDate(card.created_at) }}</td>
-                                    <td></td>
-                                </tr>
-                                </tbody>
-
-                                <tfoot>
-                                <tr>
+                          <table class="table datatable nowrap">
+                              <thead>
+                              <tr>
                                   <th>No.</th>
                                   <th>QC #</th>
                                   <th>Job Card #</th>
                                   <th>Vehicle</th>
                                   <th>Created On</th>
                                   <th></th>
-                                </tr>
-                                </tfoot>
-                            </table>
+                              </tr>
+                              </thead>
+
+                              <tbody>
+                              <tr v-for="(card, index) in cards">
+                                  <td>{{ index + 1 }}</td>
+                                  <td><router-link :to="'/wsh/qc/' + card.id + '/view'">QC-{{ card.id }}</router-link></td>
+                                  <td><router-link :to="'/wsh/job-card/' + card.job_card_id">JC-{{ card.job_card_id }}</router-link></td>
+                                  <td>{{ card.job_card.vehicle_number }}</td>
+                                  <td>{{ formatDate(card.created_at) }}</td>
+                                  <td></td>
+                              </tr>
+                              </tbody>
+
+                              <tfoot>
+                              <tr>
+                                <th>No.</th>
+                                <th>QC #</th>
+                                <th>Job Card #</th>
+                                <th>Vehicle</th>
+                                <th>Created On</th>
+                                <th></th>
+                              </tr>
+                              </tfoot>
+                          </table>
                         </div>
                     </div>
                 </div>
@@ -70,7 +70,7 @@
 <script>
     export default {
         created() {
-            http.get('/api/qc?status=Pending Approval').then(response => {
+            http.get('/api/qc?status=Waivered').then(response => {
                 this.cards = response.cards;
                 confirm2('.btn-destroy', (element) => {
                     this.destroy(element.dataset.item);

@@ -64,11 +64,14 @@ module.exports = [
 
 
     { path: '/wsh/qc', component: require('./qc/index.vue'), beforeEnter: authMiddleware },
-    { path: '/wsh/qc/create', component: require('./qc/form.vue'), beforeEnter: authMiddleware },
+    { path: '/wsh/qc/approved', component: require('./qc/approved.vue'), beforeEnter: authMiddleware },
     { path: '/wsh/qc/open', component: require('./qc/open.vue'), beforeEnter: authMiddleware },
-    { path: '/wsh/qc/closed', component: require('./qc/closed.vue'), beforeEnter: authMiddleware },
-    { path: '/wsh/qc/:id', component: require('./qc/view.vue'), beforeEnter: authMiddleware },
+    { path: '/wsh/qc/disapproved', component: require('./qc/disapproved.vue'), beforeEnter: authMiddleware },
+    { path: '/wsh/qc/waivered', component: require('./qc/waivered.vue'), beforeEnter: authMiddleware },
+    { path: '/wsh/qc/:id', component: require('./qc/form.vue'), beforeEnter: authMiddleware },
+    { path: '/wsh/qc/:id/view', component: require('./qc/view.vue'), beforeEnter: authMiddleware },
     { path: '/wsh/qc/:id/edit', component: require('./qc/form.vue'), beforeEnter: authMiddleware },
+
 
 
 

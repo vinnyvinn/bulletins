@@ -4,6 +4,7 @@ namespace SmoDav\Models;
 
 use App\Breakdown;
 use App\JobCardProgress;
+use App\JobCardQC;
 use App\User;
 use Auth;
 use SmoDav\Support\Constants;
@@ -13,7 +14,7 @@ class JobCard extends SmoDavModel
     protected $fillable = [
         'service_type', 'vehicle_id', 'vehicle_type', 'vehicle_number', 'workshop_job_type_id', 'expected_completion',
         'time_in', 'job_description', 'current_km_reading', 'fuel_balance', 'has_trailer',
-        'status', 'mechanic_findings', 'user_id', 'raw_data', 'breakdown_id'
+        'status', 'mechanic_findings', 'user_id', 'raw_data', 'breakdown_id', 'closing_remarks'
     ];
 
     public function jobType()
@@ -56,6 +57,11 @@ class JobCard extends SmoDavModel
         return $builder->where('status', Constants::STATUS_APPROVED);
     }
 
+    public function scopeClosed($builder)
+    {
+        return $builder->where('status', Constants::STATUS_CLOSED);
+    }
+
     public function breakdown()
     {
         return $this->belongsTo(Breakdown::class);
@@ -64,5 +70,10 @@ class JobCard extends SmoDavModel
     public function progress()
     {
         return $this->hasMany(JobCardProgress::class);
+    }
+
+    public function qualityCheck()
+    {
+        return $this->hasOne(JobCardQC::class);
     }
 }

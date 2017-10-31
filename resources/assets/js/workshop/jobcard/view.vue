@@ -8,7 +8,7 @@
             </div>
 
             <div class="panel-body">
-                <form action="#" role="form">
+                <form action="#" role="form" v-if="! closing">
 
                     <div class="row">
                         <div class="col-sm-4">
@@ -186,7 +186,7 @@
                     </div>
 
                     <div class="form-group">
-                        <button v-if="status == 'Approved'" class="btn btn-warning" @click.prevent="closeCard">Close Job Card</button>
+                        <button v-if="status == 'Approved'" class="btn btn-warning" @click.prevent="initiateClose">Close Job Card</button>
                         <span v-if="status == 'Pending Approval'">
                             <button class="btn btn-success" @click.prevent="approve()">Approve Job Card</button>
                             <button class="btn btn-danger" @click.prevent="disapprove()">Disapprove Job Card</button>
@@ -195,6 +195,20 @@
                     </div>
                 </form>
 
+                <div v-if="closing">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="closing_remarks">Closing Remarks</label>
+                            <textarea v-model="card.closing_remarks" name="closing_remarks" id="closing_remarks" cols="30" rows="10" class="form-control"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                          <button class="btn btn-primary" @click.prevent="closeCard()">Close</button>
+                        </div>
+                      </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -204,6 +218,7 @@
     export default {
         data() {
             return {
+              closing: false,
                 status: '',
                 card_number: '',
                 user: {},
@@ -232,6 +247,7 @@
                     inspections: [],
                     mechanic_findings: '',
                     tasks: [],
+                    closing_remarks: '',
                 }
             };
         },
@@ -284,6 +300,10 @@
 
 
         methods: {
+          initiateClose() {
+            this.closing = true;
+          },
+
             formatDate(date) {
                 date = new Date(date);
                 let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -341,6 +361,7 @@
             },
 
             closeCard() {
+              this.$root.isLoading = true;
                 let request = null;
                 this.card.vehicle_number = this.vehicle.plate_number;
                 request = http.post('/api/job-card/' + this.$route.params.id + '/close', this.card);
@@ -348,7 +369,9 @@
                 request.then((response) => {
                     alert2(this.$root, [response.message], 'success');
                     window._router.push({ path: '/wsh/job-card' });
+                    this.$root.isLoading = false;
                 }).catch((error) => {
+                    this.$root.isLoading = false;
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                 });
             },

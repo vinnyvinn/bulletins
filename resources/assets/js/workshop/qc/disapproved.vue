@@ -5,9 +5,9 @@
             <div class="col-sm-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <strong>Quality Checks Pending Review</strong>
+                        <strong>Disapproved Quality Checks</strong>
 
-                        <router-link to="/wsh/qc" class="btn btn-warning btn-xs pull-right">
+                        <router-link to="/wsh/qc" class="btn btn-danger btn-xs pull-right">
                             Pending QCs
                         </router-link>
 
@@ -15,12 +15,12 @@
                             Approved
                         </router-link>
 
-                        <router-link to="/wsh/qc/disapproved" class="btn btn-danger btn-xs pull-right">
-                            Disapproved
-                        </router-link>
-
                         <router-link to="/wsh/qc/waivered" class="btn btn-success btn-xs pull-right">
                             Waivered
+                        </router-link>
+
+                        <router-link to="/wsh/qc/open" class="btn btn-warning btn-xs pull-right">
+                            Pending Review
                         </router-link>
                     </div>
                     <div class="panel-body">
@@ -70,7 +70,7 @@
 <script>
     export default {
         created() {
-            http.get('/api/qc?status=Pending Approval').then(response => {
+            http.get('/api/qc?status=Declined').then(response => {
                 this.cards = response.cards;
                 confirm2('.btn-destroy', (element) => {
                     this.destroy(element.dataset.item);
@@ -93,10 +93,6 @@
                 let day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
 
                 return day + ' ' + month + ' ' + date.getFullYear();
-            },
-
-            editCard(record) {
-                window._router.push({path: '/wsh/qc/' + record + '/edit'})
             },
 
             viewCard(record) {

@@ -35,12 +35,12 @@
                 <img src="/images/issue.png" alt="parts" class="img-responsive">
                 <div class="caption">Issue Parts</div>
             </router-link>
-<!-- 
+
             <router-link to="/wsh/qc" class="nav-items">
                 <img src="/images/qc.png" alt="parts" class="img-responsive">
                 <div class="caption">Quality Check</div>
             </router-link>
-
+<!-- 
             <router-link to="/wsh/gatepass" class="nav-items" v-if="$root.can('create-gatepass') || $root.can('view-gatepass') || $root.can('edit-gatepass') || $root.can('approve-gatepass') || $root.can('delete-gatepass')">
                 <img src="/images/gatepass.png" alt="fuel" class="img-responsive">
                 <div class="caption">Gate Pass</div>

@@ -1,4 +1,5 @@
 <template>
+
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
@@ -6,61 +7,70 @@
                     <div class="panel-heading">
                         <strong>Pending Quality Checks</strong>
 
-                        <router-link to="/wsh/qc/closed" class="btn btn-danger btn-xs pull-right">
-                            <i class="fa fa-plus"></i> Closed
+                        <router-link to="/wsh/qc/approved" class="btn btn-primary btn-xs pull-right">
+                            Approved
+                        </router-link>
+
+                        <router-link to="/wsh/qc/disapproved" class="btn btn-danger btn-xs pull-right">
+                            Disapproved
+                        </router-link>
+
+                        <router-link to="/wsh/qc/waivered" class="btn btn-success btn-xs pull-right">
+                            Waivered
                         </router-link>
 
                         <router-link to="/wsh/qc/open" class="btn btn-warning btn-xs pull-right">
-                            <i class="fa fa-plus"></i> Issued
+                            Pending Review
                         </router-link>
-
-                        <router-link to="/wsh/qc/create" class="btn btn-success btn-xs pull-right">
-                            <i class="fa fa-plus"></i> New
-                        </router-link>
-
                     </div>
                     <div class="panel-body">
                         <div class="table-responsive">
                             <table class="table datatable nowrap">
                                 <thead>
-                                    <tr>
-                                        <th>No.</th>
-                                        <th>Requisition #</th>
-                                        <th>Card #</th>
-                                        <th>Vehicle</th>
-                                        <th>Requested On</th>
-                                        <th></th>
-                                    </tr>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Card #</th>
+                                    <th>Type</th>
+                                    <th>Vehicle</th>
+                                    <th>Job Type</th>
+                                    <th>Description</th>
+                                    <th>Created On</th>
+                                    <th>Expected Completion</th>
+                                    <th></th>
+                                </tr>
                                 </thead>
 
                                 <tbody>
-                                    <tr v-for="(item, index) in requisitions">
-                                        <td>{{ index + 1 }}</td>
-                                        <td>
-                                            <a @click.prevent="viewRequisition(item.id)">PR-{{ item.id }}</a>
-                                        </td>
-                                        <td>
-                                            <a @click.prevent="viewCard(item.job_card_id)">JC-{{ item.job_card_id }}</a>
-                                        </td>
-                                        <td>{{ item.job_card.vehicle_number }}</td>
-                                        <td>{{ formatDate(item.created_at) }}</td>
-                                        <td class="text-center">
-                                            <button v-if="item.status == 'Pending Approval'" class="btn btn-xs btn-primary" @click="editRequisition(item.id)">
-                                                <i class="fa fa-pencil"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
+                                <tr v-for="(card, index) in cards">
+                                    <td>{{ index + 1 }}</td>
+                                    <td><router-link :to="'/wsh/job-card/' + card.id">JC-{{ card.id }}</router-link></td>
+                                    <td>
+                                      <router-link v-if="card.breakdown_id" :to="'/wsh/breakdown/' + card.breakdown_id">
+                                        <span class="label label-danger">BREAKDOWN</span>
+                                      </router-link>
+                                      <span v-else class="label label-success">STANDARD</span>
+                                    </td>
+                                    <td>{{ card.vehicle_number }}</td>
+                                    <td>{{ card.type.name }}</td>
+                                    <td>{{ card.job_description }}</td>
+                                    <td>{{ formatDate(card.created_at) }}</td>
+                                    <td>{{ formatDate(card.expected_completion) }}</td>
+                                    <td><a @click.prevent="viewCard(card.id)" class="btn btn-success btn-xs">PROCESS</a></td>
+                                </tr>
                                 </tbody>
 
                                 <tfoot>
-                                    <tr>
-                                        <th>No.</th>
-                                        <th>Requisition #</th>
-                                        <th>Card #</th>
-                                        <th>Vehicle</th>
-                                        <th>Requested On</th>
-                                        <th></th>
-                                    </tr>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Card #</th>
+                                    <th>Type</th>
+                                    <th>Vehicle</th>
+                                    <th>Job Type</th>
+                                    <th>Description</th>
+                                    <th>Created On</th>
+                                    <th>Expected Completion</th>
+                                    <th></th>
+                                </tr>
                                 </tfoot>
                             </table>
                         </div>
@@ -74,8 +84,8 @@
 <script>
     export default {
         created() {
-            http.get('/api/parts').then(response => {
-                this.requisitions = response.requisitions;
+            http.get('/api/qc').then(response => {
+                this.cards = response.cards;
                 confirm2('.btn-destroy', (element) => {
                     this.destroy(element.dataset.item);
                 });
@@ -84,7 +94,7 @@
         },
         data() {
             return {
-                requisitions: [],
+                cards: [],
             };
         },
 
@@ -99,12 +109,12 @@
                 return day + ' ' + month + ' ' + date.getFullYear();
             },
 
-            editRequisition(record) {
-                window._router.push({ path: '/wsh/parts/' + record + '/edit' })
+            editCard(record) {
+                window._router.push({path: '/wsh/qc/' + record + '/edit'})
             },
 
-            viewRequisition(record) {
-                window._router.push({ path: '/wsh/parts/' + record })
+            viewCard(record) {
+                window._router.push({ path: '/wsh/qc/' + record })
             },
 
             destroy(id) {
