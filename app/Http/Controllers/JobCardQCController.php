@@ -29,7 +29,7 @@ class JobCardQCController extends Controller
             ]);
         }
 
-        $jobCards = JobCard::closed()
+        $jobCards = JobCard::open()
             ->with(['type' => function ($builder) {
                 return $builder->select(['id', 'name']);
             }])

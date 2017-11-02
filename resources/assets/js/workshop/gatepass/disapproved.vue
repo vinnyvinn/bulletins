@@ -4,21 +4,19 @@
       <div class="col-md-12">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <div class="panel-heading">
-                <strong>Gatepasses awaiting approval</strong>
+            <strong>Processed Gate Passes</strong>
 
-                <router-link to="/wsh/gatepass/disapproved" class="btn btn-danger btn-xs pull-right">
-                    <i class="fa fa-plus"></i> Disapproved
-                </router-link>
+            <router-link to="/wsh/gatepass" class="btn btn-info btn-xs pull-right">
+                <i class="fa fa-plus"></i> Pending Approval
+            </router-link>
 
-                <router-link to="/wsh/gatepass/approved" class="btn btn-primary btn-xs pull-right">
-                    <i class="fa fa-plus"></i> Approved
-                </router-link>
+            <router-link to="/wsh/gatepass/approved" class="btn btn-primary btn-xs pull-right">
+                <i class="fa fa-plus"></i> Approved
+            </router-link>
 
-                <router-link to="/wsh/gatepass/create" class="btn btn-success btn-xs pull-right">
-                    <i class="fa fa-plus"></i> New Gatepass
-                </router-link>
-            </div>
+            <router-link to="/wsh/gatepass/create" class="btn btn-success btn-xs pull-right">
+                <i class="fa fa-plus"></i> New Gatepass
+            </router-link>
           </div>
           <div class="panel-body">
             <div class="table-responsive">
@@ -31,7 +29,6 @@
                     <th>Type</th>
                     <th>Date</th>
                     <th>Supplier</th>
-                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -46,12 +43,6 @@
                     <td>{{ gatepass.type }}</td>
                     <td>{{ date2(gatepass.created_at) }}</td>
                     <td>{{ gatepass.supplier_name }}</td>
-                    <td>
-                      <span @click="edit(gatepass)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
-                      <!-- <button data-toggle="popover" :data-item="gatepass.id" class="btn btn-xs btn-danger btn-destroy">
-                          <i class="fa fa-trash"></i>
-                      </button> -->
-                    </td>
                   </tr>
                 </tbody>
                 <tfoot>
@@ -62,7 +53,6 @@
                     <th>Vehicle</th>
                     <th>Date</th>
                     <th>Supplier</th>
-                    <th>Action</th>
                   </tr>
                 </tfoot>
               </table>
@@ -78,7 +68,7 @@
 <script>
   export default {
     created() {
-      http.get('/api/wsh-gatepass/?s=' + window.Laravel.station_id).then(response => {
+      http.get('/api/wsh-gatepass/?status=Declined').then(response => {
         this.gatepasses = response.gatepasses;
         this.setupConfirm();
         prepareTable(false, [], {

@@ -139,4 +139,12 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('qc/{id}/disapprove', 'JobCardQCController@disapprove');
     Route::post('qc/{id}/waiver', 'JobCardQCController@waiver');
     Route::resource('qc', 'JobCardQCController');
+    Route::post('wsh-gatepass/{id}/approve', 'WorkshopGatepassController@approve');
+    Route::post('wsh-gatepass/{id}/disapprove', 'WorkshopGatepassController@disapprove');
+    Route::get('wsh-gatepass/{id}/print', 'WorkshopGatepassController@printPass');
+    Route::resource('wsh-gatepass', 'WorkshopGatepassController');
+    Route::post('services/{id}/approve', 'ExternalServiceController@approve');
+    Route::post('services/{id}/disapprove', 'ExternalServiceController@disapprove');
+    Route::post('services/{id}/close', 'ExternalServiceController@close');
+    Route::resource('services', 'ExternalServiceController');
 });

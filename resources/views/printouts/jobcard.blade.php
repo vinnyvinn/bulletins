@@ -117,6 +117,8 @@
                     <?php
                     $employee = $employees->get($task->employee_id);
                     $employee = $employee ?: new stdClass();
+                    $employee->first_name = '';
+                    $employee->last_name = '';
                     ?>
                     <tr>
                         <td>{{ $task->task_name }}</td>

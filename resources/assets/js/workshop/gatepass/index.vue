@@ -4,7 +4,19 @@
       <div class="col-md-12">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <strong>Gate Passes</strong>
+            <strong>Processed Gate Passes</strong>
+
+            <router-link to="/wsh/gatepass" class="btn btn-info btn-xs pull-right">
+                <i class="fa fa-plus"></i> Pending Approval
+            </router-link>
+
+            <router-link to="/wsh/gatepass/disapproved" class="btn btn-danger btn-xs pull-right">
+                <i class="fa fa-plus"></i> Disapproved
+            </router-link>
+
+            <router-link to="/wsh/gatepass/create" class="btn btn-success btn-xs pull-right">
+                <i class="fa fa-plus"></i> New Gatepass
+            </router-link>
           </div>
           <div class="panel-body">
             <div class="table-responsive">
@@ -14,47 +26,38 @@
                     <th>#</th>
                     <th>Gatepass No.</th>
                     <th>Print</th>
-                    <th>Vehicle</th>
-                    <th>Journey</th>
+                    <th>External Service No.</th>
+                    <th>Type</th>
                     <th>Date</th>
-                    <th>Driver</th>
-                    <th>Source - Destination</th>
-                    <th>Journey Distance</th>
-                    <th>Action</th>
+                    <th>Supplier</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr v-for="gatepass in gatepasses">
                     <td>{{ gatepass.id }}</td>
-                    <td v-if="$root.can('view-gatepass')"><router-link :to="'/gatepass/' + gatepass.id">PASS-{{ gatepass.id }}</router-link></td>
-                    <td v-else>PASS-{{ gatepass.id }}</td>
-                    <td><button class="btn btn-success btn-xs" @click.prevent="printPass(gatepass.id)">PRINT</button></td>
-                    <td>{{ gatepass.journey.truck.plate_number }}</td>
-                    <td>JRNY-{{ gatepass.journey_id }}</td>
-                    <td>{{ gatepass.gatepass_date }}</td>
-                    <td>{{ gatepass.journey.driver.first_name }} {{ gatepass.journey.driver.last_name }}</td>
-                    <td>{{ gatepass.journey.route.source }} - {{ gatepass.journey.route.destination }}</td>
-                    <td>{{ gatepass.journey.route.distance }}</td>
                     <td>
-                      <span @click="edit(gatepass)" v-if="$root.can('edit-gatepass')" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
-                      <button v-if="$root.can('delete-gatepass')" data-toggle="popover" :data-item="gatepass.id" class="btn btn-xs btn-danger btn-destroy">
-                          <i class="fa fa-trash"></i>
-                      </button>
+                      <router-link :to="'/wsh/gatepass/' + gatepass.id">EXPASS-{{ gatepass.id }}</router-link>
                     </td>
+                    <td>
+                      <button class="btn btn-success btn-xs" @click.prevent="printPass(gatepass.id)">PRINT</button>
+                    </td>
+                    <td>
+                      <router-link :to="'/wsh/external/' + gatepass.external_service_id">ES-{{ gatepass.external_service_id }}</router-link>
+                    </td>
+                    <td>{{ gatepass.type }}</td>
+                    <td>{{ date2(gatepass.created_at) }}</td>
+                    <td>{{ gatepass.supplier_name }}</td>
                   </tr>
                 </tbody>
                 <tfoot>
                   <tr>
                     <th>#</th>
                     <th>Gatepass No.</th>
+                    <th>External Service No.</th>
                     <th>Print</th>
                     <th>Vehicle</th>
-                    <th>Journey</th>
                     <th>Date</th>
-                    <th>Driver</th>
-                    <th>Source - Destination</th>
-                    <th>Journey Distance</th>
-                    <th>Action</th>
+                    <th>Supplier</th>
                   </tr>
                 </tfoot>
               </table>
@@ -70,7 +73,7 @@
 <script>
   export default {
     created() {
-      http.get('/api/gatepass/?s=' + window.Laravel.station_id).then(response => {
+      http.get('/api/wsh-gatepass/?status=Approved').then(response => {
         this.gatepasses = response.gatepasses;
         this.setupConfirm();
         prepareTable(false, [], {
@@ -96,7 +99,7 @@
     methods: {
       printPass(id) {
         this.$root.isLoading = true;
-        http.get('/api/gatepass/print/' + id).then(response => {
+        http.get('/api/wsh-gatepass/' + id + '/print').then(response => {
           this.printout = response.printout;
           this.$root.isLoading = false;
           setTimeout(() => {
@@ -117,12 +120,12 @@
       },
 
       edit(gatepass) {
-        window._router.push({ path: '/gatepass/' + gatepass.id + '/edit' })
+        window._router.push({ path: '/wsh/gatepass/' + gatepass.id + '/edit' })
       },
       destroy(id) {
         this.$root.isLoading = true;
 
-        http.destroy('/api/gatepass/' + id + '/?s=' + window.Laravel.station_id).then(response => {
+        http.destroy('/api/wsh-gatepass/' + id + '/?s=' + window.Laravel.station_id).then(response => {
           if (response.status != 'success') {
             this.$root.isLoading = false;
             alert2(this.$root, [response.message], 'danger');
@@ -131,26 +134,6 @@
           $('table').dataTable().fnDestroy();
           this.gatepasses = response.gatepasses;
           prepareTable();
-          this.$root.isLoading = false;
-          alert2(this.$root, [response.message], 'success');
-        }).catch((error) => {
-          this.$root.isLoading = false;
-          alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
-        });
-      },
-      approveFuel(id) {
-        http.get('/api/approve/' + id).then(response => {
-          if (response.status != 'success') {
-            this.$root.isLoading = false;
-            alert2(this.$root, [response.message], 'danger');
-            return;
-          }
-
-          http.get('/api/fuel/?s=' + window.Laravel.station_id).then(response => {
-            this.fuels = response.fuel;
-            this.setupConfirm();
-          });
-
           this.$root.isLoading = false;
           alert2(this.$root, [response.message], 'success');
         }).catch((error) => {
