@@ -15,11 +15,23 @@ class WorkshopGatepassController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        //
+        $passes = WorkshopGatepass::when(! \request('status'), function ($builder) {
+            return $builder->where('status', Constants::STATUS_PENDING);
+        })
+            ->when(\request('status'), function ($builder) {
+                return $builder->where('status', \request('status'));
+            })
+            ->get([
+                'id', 'job_card_id', 'type', 'supplier_name', 'external_service_id', 'created_at'
+            ]);
+
+        return Response::json([
+            'gatepasses' => $passes
+        ]);
     }
 
     /**
@@ -30,7 +42,9 @@ class WorkshopGatepassController extends Controller
     public function create()
     {
         $jobCards = JobCard::open()
-            ->has('externalServices')
+            ->whereHas('externalServices', function ($builder) {
+                return $builder->where('status', Constants::STATUS_APPROVED);
+            })
             ->with([
                 'vehicle' => function ($builder) {
                     return $builder->select(['id', 'make_id', 'model_id', 'plate_number']);
@@ -41,11 +55,27 @@ class WorkshopGatepassController extends Controller
                 'vehicle.model' => function ($builder) {
                     return $builder->select(['id', 'name']);
                 },
+                'externalServices' => function ($builder) {
+                    return $builder->where('status', Constants::STATUS_APPROVED)
+                        ->select(['job_card_id', 'id', 'type', 'raw']);
+                }
             ])
             ->whereDoesntHave('gatepass', function ($builder) {
                 return $builder->where('status', Constants::STATUS_OPEN);
             })
             ->get();
+
+        $jobCards = $jobCards->map(function ($card) {
+            $external = $card->externalServices->map(function ($service) {
+                $service->raw = json_decode($service->raw);
+
+                return $service;
+            });
+            unset($card->externalServices);
+            $card->externalServices = $external;
+
+            return $card;
+        });
 
 
         return Response::json([
@@ -59,22 +89,83 @@ class WorkshopGatepassController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $data['parts'] = json_encode($data['parts']);
+        if (! $data['remarks']) {
+            $data['remarks'] = '';
+        }
+        if (! $data['fuel_reading']) {
+            $data['fuel_reading'] = 0;
+        }
+        if (! $data['km_reading']) {
+            $data['km_reading'] = 0;
+        }
+
+        $data['status'] = Constants::STATUS_PENDING;
+
+        WorkshopGatepass::create($data);
+
+        return Response::json([
+            'status' => 'success',
+            'message' => 'Successfully processed external gatepass'
+        ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\WorkshopGatepass  $workshopGatepass
-     * @return \Illuminate\Http\Response
+     * @param $passId
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show(WorkshopGatepass $workshopGatepass)
+    public function show($passId)
     {
-        //
+        $pass = WorkshopGatepass::findOrFail($passId);
+
+        $jobCards = JobCard::open()
+            ->with([
+                'vehicle' => function ($builder) {
+                    return $builder->select(['id', 'make_id', 'model_id', 'plate_number']);
+                },
+                'vehicle.make' => function ($builder) {
+                    return $builder->select(['id', 'name']);
+                },
+                'vehicle.model' => function ($builder) {
+                    return $builder->select(['id', 'name']);
+                },
+                'externalServices' => function ($builder) {
+                    return $builder->where('status', Constants::STATUS_APPROVED)
+                        ->select(['job_card_id', 'id', 'type', 'raw']);
+                }
+            ])
+            ->whereDoesntHave('gatepass', function ($builder) {
+                return $builder->where('status', Constants::STATUS_OPEN);
+            })
+            ->where('id', $pass->job_card_id)
+            ->get();
+
+        $jobCards = $jobCards->map(function ($card) {
+            $external = $card->externalServices->map(function ($service) {
+                $service->raw = json_decode($service->raw);
+
+                return $service;
+            });
+            unset($card->externalServices);
+            $card->externalServices = $external;
+
+            return $card;
+        });
+
+
+        return Response::json([
+            'job_cards' => $jobCards,
+            'drivers' => Driver::all(['id', 'first_name', 'last_name']),
+            'suppliers' => Vendor::all(['DCLink', 'Account', 'Name']),
+            'gatepass' => $pass,
+        ]);
     }
 
     /**
@@ -109,5 +200,29 @@ class WorkshopGatepassController extends Controller
     public function destroy(WorkshopGatepass $workshopGatepass)
     {
         //
+    }
+
+    public function approve($passId)
+    {
+        WorkshopGatepass::where('id', $passId)->update([
+            'status' => Constants::STATUS_APPROVED
+        ]);
+
+        return \Response::json([
+            'status' => 'success',
+            'message' => 'Successfully approved gate pass'
+        ]);
+    }
+
+    public function disapprove($passId)
+    {
+        WorkshopGatepass::where('id', $passId)->update([
+            'status' => Constants::STATUS_DECLINED
+        ]);
+
+        return \Response::json([
+            'status' => 'success',
+            'message' => 'Successfully disapproved gate pass'
+        ]);
     }
 }

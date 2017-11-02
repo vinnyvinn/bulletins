@@ -74,8 +74,9 @@ module.exports = [
 
     { path: '/wsh/gatepass', component: require('./gatepass/awaiting.vue'), beforeEnter: authMiddleware },
     { path: '/wsh/gatepass/closed', component: require('./gatepass/index.vue'), beforeEnter: authMiddleware },
-    { path: '/wsh/gatepass/open', component: require('./gatepass/index.vue'), beforeEnter: authMiddleware },
     { path: '/wsh/gatepass/create', component: require('./gatepass/form.vue'), beforeEnter: authMiddleware },
+    { path: '/wsh/gatepass/approved', component: require('./gatepass/index.vue'), beforeEnter: authMiddleware },
+    { path: '/wsh/gatepass/disapproved', component: require('./gatepass/disapproved.vue'), beforeEnter: authMiddleware },
     { path: '/wsh/gatepass/:id', component: require('./gatepass/view.vue'), beforeEnter: authMiddleware },
     { path: '/wsh/gatepass/:id/edit', component: require('./gatepass/form.vue'), beforeEnter: authMiddleware },
 

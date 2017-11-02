@@ -16,53 +16,92 @@
                                   <option v-for="card in jobCards" :value="card.id">JC-{{ card.id }}</option>
                                 </select>
                             </div>
-
                             <div class="form-group">
-                                <label for="driver_id">Driver</label>
-                                <select name="driver_id" v-model="gatepass.driver_id" class="form-control input-sm select2" required>
-                                  <option v-for="driver in drivers" :value="driver.id">{{ driver.first_name }} {{ driver.last_name }}</option>
+                                <label for="plate_number">Plate Number</label>
+                                <input type="text" disabled v-model="jobCard.vehicle.plate_number" class="form-control input-sm">
+                            </div>
+                            <div class="form-group">
+                                <label for="km_reading">KM Reading</label>
+                                <input type="number" step="0.01" v-model="gatepass.km_reading" class="form-control input-sm">
+                            </div>
+
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="external_service_id">External Service Number</label>
+                                <select name="external_service_id" v-model="gatepass.external_service_id" class="form-control input-sm select2" required>
+                                  <option v-for="card in jobCard.externalServices" :value="card.id">ES-{{ card.id }}</option>
                                 </select>
                             </div>
+                            <div class="form-group">
+                                <label for="plate_number">Vehicle Make</label>
+                                <input type="text" disabled v-model="jobCard.vehicle.make.name" class="form-control input-sm">
+                            </div>
+                            <div class="form-group">
+                                <label for="fuel_reading">Fuel Reading</label>
+                                <input type="number" step="0.1" v-model="gatepass.fuel_reading" class="form-control input-sm">
+                            </div>
+
                         </div>
+
                         <div class="col-sm-3">
                           <div class="form-group">
-                              <label for="plate_number">Plate Number</label>
-                              <input type="text" disabled v-model="jobCard.vehicle.plate_number" class="form-control input-sm">
+                              <label for="driver_id">Driver</label>
+                              <select name="driver_id" v-model="gatepass.driver_id" class="form-control input-sm select2" required>
+                                <option v-for="driver in drivers" :value="driver.id">{{ driver.first_name }} {{ driver.last_name }}</option>
+                              </select>
                           </div>
 
+                          <div class="form-group">
+                              <label for="plate_number">Vehicle Model</label>
+                              <input type="text" disabled v-model="jobCard.vehicle.model.name" class="form-control input-sm">
+                          </div>
+                        </div>
+
+                        <div class="col-sm-3">
                           <div class="form-group">
                               <label for="supplier_id">Supplier</label>
                               <select name="supplier_id" id="supplier_id" v-model="gatepass.supplier_id" class="form-control input-sm select2" required>
                                 <option v-for="supplier in suppliers" :value="supplier.DCLink">{{ supplier.Name }} ({{ supplier.Account }})</option>
                               </select>
                           </div>
+                          <div class="form-group">
+                              <label for="plate_number">External Service Type</label>
+                              <input type="text" disabled v-model="service.type" class="form-control input-sm">
+                          </div>
+
                         </div>
 
-                        <div class="col-sm-3">
-                          <div class="form-group">
-                              <label for="plate_number">Make</label>
-                              <input type="text" disabled v-model="jobCard.vehicle.make.name" class="form-control input-sm">
-                          </div>
-
-                          <div class="form-group">
-                              <label for="fuel_reading">Fuel Reading</label>
-                              <input type="number" step="0.1" v-model="gatepass.fuel_reading" class="form-control input-sm">
-                          </div>
-                        </div>
-
-                        <div class="col-sm-3">
-                          <div class="form-group">
-                              <label for="plate_number">Model</label>
-                              <input type="text" disabled v-model="jobCard.vehicle.model.name" class="form-control input-sm">
-                          </div>
-
-                          <div class="form-group">
-                              <label for="km_reading">KM Reading</label>
-                              <input type="number" step="0.01" v-model="gatepass.km_reading" class="form-control input-sm">
-                          </div>
-                        </div>
                     </div>
                     <hr>
+
+
+                    <div class="row" v-if="service.type == 'Parts'">
+                        <div class="col-sm-12">
+                          <h4><strong>Parts sent for service.</strong></h4>
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Item</th>
+                                    <th class="text-right">Quantity</th>
+                                    <th>Make</th>
+                                    <th>Model</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="(item, index) in service.raw.lines">
+                                    <td>{{ index + 1}}</td>
+                                    <td>{{ item.item_name }}</td>
+                                    <td class="text-right">{{ item.quantity }}</td>
+                                    <td>{{ item.make }}</td>
+                                    <td>{{ item.model }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
 
                     <div class="row">
 
@@ -134,6 +173,7 @@
                 gatepass: {
                     station_id: window.Laravel.station_id,
                     job_card_id: '',
+                    external_service_id: '',
                     driver_id: '',
                     type: '',
                     supplier_name: '',
@@ -152,7 +192,8 @@
               vehicle: {
                 model: {},
                 make: {}
-              }
+              },
+              externalServices: [],
             };
             if (this.gatepass.job_card_id.length < 1) return card;
 
@@ -163,18 +204,29 @@
 
             return cards[0];
           },
+
+          service() {
+            let service = {
+              raw: {
+                lines: [],
+              },
+            };
+
+            let selectedService = this.jobCard.externalServices.filter(e => e.id == this.gatepass.external_service_id);
+
+            if (! selectedService.length) return service;
+
+            return selectedService[0];
+          },
         },
 
         methods: {
-            getSource() {
-                if (this.journey.driver.avatar) {
-                    return '/images/' + this.journey.driver.avatar;
-                }
-                return '/images/default_avatar.png';
-            },
             store() {
                 this.$root.isLoading = true;
                 let request = null;
+                this.gatepass.supplier_name = this.suppliers.filter(e => e.DCLink == this.gatepass.supplier_id)[0]['Name'];
+                this.gatepass.parts = this.service.raw.lines;
+                this.gatepass.type = this.service.type;
 
                 let body = Object.assign({}, this.gatepass);
 
@@ -187,7 +239,7 @@
                 request.then((response) => {
                     this.$root.isLoading = false;
                     alert2(this.$root, [response.data.message], 'success');
-                    window._router.push({path: '/gatepass'});
+                    window._router.push({path: '/wsh/gatepass'});
                 }).catch((error) => {
                     this.$root.isLoading = false;
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');

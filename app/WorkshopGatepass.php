@@ -14,7 +14,7 @@ class WorkshopGatepass extends Model
 
     protected $fillable = [
         'job_card_id', 'driver_id', 'type', 'supplier_name', 'fuel_reading', 'km_reading', 'remarks', 'parts',
-        'status', 'supplier_id', 'external_service_id'
+        'status', 'supplier_id', 'external_service_id',
     ];
 
     public function jobCard()

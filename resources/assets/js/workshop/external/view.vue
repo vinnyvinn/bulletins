@@ -71,7 +71,7 @@
                   <button @click.prevent="approve" class="btn btn-success" v-if="service.status == 'Pending Approval'">Approve</button>
                   <button @click.prevent="disapprove" class="btn btn-warning" v-if="service.status == 'Pending Approval'">Disapprove</button>
                   <button @click.prevent="close" class="btn btn-danger" v-if="service.status == 'Approved'">Close External Service</button>
-                  <button click.prevent="back" to="/wsh/external" class="btn btn-danger">Back</button>
+                  <button @click.prevent="back" to="/wsh/external" class="btn btn-danger">Back</button>
                 </div>
 
             </div>
