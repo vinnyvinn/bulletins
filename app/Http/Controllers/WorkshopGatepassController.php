@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Driver;
+use App\Vendor;
 use App\WorkshopGatepass;
 use Illuminate\Http\Request;
+use Response;
+use SmoDav\Models\JobCard;
+use SmoDav\Support\Constants;
 
 class WorkshopGatepassController extends Controller
 {
@@ -20,11 +25,34 @@ class WorkshopGatepassController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function create()
     {
-        //
+        $jobCards = JobCard::open()
+            ->has('externalServices')
+            ->with([
+                'vehicle' => function ($builder) {
+                    return $builder->select(['id', 'make_id', 'model_id', 'plate_number']);
+                },
+                'vehicle.make' => function ($builder) {
+                    return $builder->select(['id', 'name']);
+                },
+                'vehicle.model' => function ($builder) {
+                    return $builder->select(['id', 'name']);
+                },
+            ])
+            ->whereDoesntHave('gatepass', function ($builder) {
+                return $builder->where('status', Constants::STATUS_OPEN);
+            })
+            ->get();
+
+
+        return Response::json([
+            'job_cards' => $jobCards,
+            'drivers' => Driver::all(['id', 'first_name', 'last_name']),
+            'suppliers' => Vendor::all(['DCLink', 'Account', 'Name'])
+        ]);
     }
 
     /**

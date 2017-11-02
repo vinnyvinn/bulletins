@@ -72,20 +72,22 @@ module.exports = [
     { path: '/wsh/qc/:id/view', component: require('./qc/view.vue'), beforeEnter: authMiddleware },
     { path: '/wsh/qc/:id/edit', component: require('./qc/form.vue'), beforeEnter: authMiddleware },
 
-
-
-
-
-
-
-
-
     { path: '/wsh/gatepass', component: require('./gatepass/awaiting.vue'), beforeEnter: authMiddleware },
-    { path: '/wsh/gatepass/completed', component: require('./gatepass/index.vue'), beforeEnter: authMiddleware },
-    { path: '/wsh/gatepass/create/:new', component: require('./gatepass/form.vue'), beforeEnter: authMiddleware },
+    { path: '/wsh/gatepass/closed', component: require('./gatepass/index.vue'), beforeEnter: authMiddleware },
+    { path: '/wsh/gatepass/open', component: require('./gatepass/index.vue'), beforeEnter: authMiddleware },
+    { path: '/wsh/gatepass/create', component: require('./gatepass/form.vue'), beforeEnter: authMiddleware },
     { path: '/wsh/gatepass/:id', component: require('./gatepass/view.vue'), beforeEnter: authMiddleware },
     { path: '/wsh/gatepass/:id/edit', component: require('./gatepass/form.vue'), beforeEnter: authMiddleware },
 
+
+    { path: '/wsh/external/', component: require('./external/index.vue'), beforeEnter: authMiddleware },
+    { path: '/wsh/external/open', component: require('./external/open.vue'), beforeEnter: authMiddleware },
+    { path: '/wsh/external/closed', component: require('./external/closed.vue'), beforeEnter: authMiddleware },
+    { path: '/wsh/external/create', component: require('./external/form.vue'), beforeEnter: authMiddleware },
+    { path: '/wsh/external/disapproved', component: require('./external/disapproved.vue'), beforeEnter: authMiddleware },
+    { path: '/wsh/external/:id', component: require('./external/view.vue'), beforeEnter: authMiddleware },
+    { path: '/wsh/external/:id/edit', component: require('./external/form.vue'), beforeEnter: authMiddleware },
+    { path: '/wsh/external/:id/:issue', component: require('./external/view.vue'), beforeEnter: authMiddleware },
 
 
 

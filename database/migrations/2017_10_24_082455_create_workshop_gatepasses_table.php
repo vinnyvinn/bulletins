@@ -16,10 +16,12 @@ class CreateWorkshopGatepassesTable extends Migration
     {
         Schema::create('workshop_gatepasses', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('external_service_id')->index()->nullable();
             $table->unsignedBigInteger('job_card_id')->nullable();
             $table->unsignedInteger('driver_id')->nullable();
-            $table->string('type');
+            $table->unsignedInteger('supplier_id')->nullable();
             $table->string('supplier_name');
+            $table->string('type');
             $table->double('fuel_reading')->nullable();
             $table->double('km_reading')->nullable();
             $table->text('remarks');

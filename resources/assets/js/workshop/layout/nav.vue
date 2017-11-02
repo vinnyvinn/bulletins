@@ -26,6 +26,11 @@
                 <div class="caption">Job Cards</div>
             </router-link>
 
+            <router-link to="/wsh/external" class="nav-items">
+                <img src="/images/external.png" alt="job-card" class="img-responsive">
+                <div class="caption">External Services</div>
+            </router-link>
+
             <router-link to="/wsh/parts" class="nav-items">
                 <img src="/images/parts.png" alt="parts" class="img-responsive">
                 <div class="caption">Parts Requisition</div>
@@ -40,11 +45,11 @@
                 <img src="/images/qc.png" alt="parts" class="img-responsive">
                 <div class="caption">Quality Check</div>
             </router-link>
-<!-- 
+
             <router-link to="/wsh/gatepass" class="nav-items" v-if="$root.can('create-gatepass') || $root.can('view-gatepass') || $root.can('edit-gatepass') || $root.can('approve-gatepass') || $root.can('delete-gatepass')">
                 <img src="/images/gatepass.png" alt="fuel" class="img-responsive">
                 <div class="caption">Gate Pass</div>
-            </router-link> -->
+            </router-link>
 
           <!--
             <router-link to="/wsh/reports" class="nav-items" v-if="$root.can('reports')">

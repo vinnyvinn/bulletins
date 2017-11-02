@@ -3,9 +3,11 @@
 namespace SmoDav\Models;
 
 use App\Breakdown;
+use App\ExternalService;
 use App\JobCardProgress;
 use App\JobCardQC;
 use App\User;
+use App\WorkshopGatepass;
 use Auth;
 use SmoDav\Support\Constants;
 
@@ -75,5 +77,15 @@ class JobCard extends SmoDavModel
     public function qualityCheck()
     {
         return $this->hasOne(JobCardQC::class);
+    }
+
+    public function gatePass()
+    {
+        return $this->hasMany(WorkshopGatepass::class);
+    }
+
+    public function externalServices()
+    {
+        return $this->hasMany(ExternalService::class);
     }
 }
