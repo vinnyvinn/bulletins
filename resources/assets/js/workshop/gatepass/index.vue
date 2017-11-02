@@ -99,7 +99,7 @@
     methods: {
       printPass(id) {
         this.$root.isLoading = true;
-        http.get('/api/wsh-gatepass/print/' + id).then(response => {
+        http.get('/api/wsh-gatepass/' + id + '/print').then(response => {
           this.printout = response.printout;
           this.$root.isLoading = false;
           setTimeout(() => {

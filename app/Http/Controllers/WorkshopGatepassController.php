@@ -225,4 +225,24 @@ class WorkshopGatepassController extends Controller
             'message' => 'Successfully disapproved gate pass'
         ]);
     }
+
+    public function printPass($passId)
+    {
+        $pass = WorkshopGatepass::with(['service.jobCard', 'driver'])->findOrFail($passId);
+        $pass->parts = json_decode($pass->parts);
+        $pass->total = 1;
+        if ($pass->type == 'Parts') {
+            $pass->total = array_reduce($pass->parts, function ($prev, $curr) {
+                return $prev + $curr->quantity;
+            }, 0);
+        }
+
+        $printout = view('printouts.workshop-gatepass')->with('pass', $pass)->render();
+
+        return Response::json([
+            'message' => 'Successfully completed loading.',
+            'shouldPrint' => true,
+            'printout' => $printout
+        ]);
+    }
 }

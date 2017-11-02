@@ -26,4 +26,9 @@ class WorkshopGatepass extends Model
     {
         return $this->belongsTo(Driver::class);
     }
+
+    public function service()
+    {
+        return $this->belongsTo(ExternalService::class, 'external_service_id');
+    }
 }
