@@ -30,7 +30,7 @@
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label for="external_service_id">External Service Number</label>
-                                <select name="external_service_id" v-model="gatepass.external_service_id" class="form-control input-sm select2" required>
+                                <select @change="updateCard" name="external_service_id" v-model="gatepass.external_service_id" class="form-control input-sm select2" required>
                                   <option v-for="card in jobCard.externalServices" :value="card.id">ES-{{ card.id }}</option>
                                 </select>
                             </div>
@@ -57,12 +57,17 @@
                               <label for="plate_number">Vehicle Model</label>
                               <input type="text" disabled v-model="jobCard.vehicle.model.name" class="form-control input-sm">
                           </div>
+
+                          <div class="form-group">
+                            <label for="fuel_reading">Approximate Cost</label>
+                            <input disabled type="number" step="0.01" v-model="service.approximate_cost" class="form-control input-sm">
+                          </div>
                         </div>
 
                         <div class="col-sm-3">
                           <div class="form-group">
                               <label for="supplier_id">Supplier</label>
-                              <select name="supplier_id" id="supplier_id" v-model="gatepass.supplier_id" class="form-control input-sm select2" required>
+                              <select disabled name="supplier_id" id="supplier_id" v-model="gatepass.supplier_id" class="form-control input-sm select2" required>
                                 <option v-for="supplier in suppliers" :value="supplier.DCLink">{{ supplier.Name }} ({{ supplier.Account }})</option>
                               </select>
                           </div>
@@ -129,122 +134,141 @@
 
 <script>
     export default {
-        created() {
-            this.$root.isLoading = true;
+      created() {
+        this.$root.isLoading = true;
 
-            if (this.$route.params.id) {
-                return http.get('/api/wsh-gatepass/' + this.$route.params.id).then((response) => {
-                  this.jobCards = response.job_cards;
-                  this.drivers = response.drivers;
-                  this.gatepass = response.gatepass;
-                  this.suppliers = response.suppliers;
+        if (this.$route.params.id) {
+          return http
+            .get("/api/wsh-gatepass/" + this.$route.params.id)
+            .then(response => {
+              this.jobCards = response.job_cards;
+              this.drivers = response.drivers;
+              this.gatepass = response.gatepass;
+              this.suppliers = response.suppliers;
 
-                  this.$root.isLoading = false;
-                });
-            }
-
-            http.get('/api/wsh-gatepass/create/?s=' + window.Laravel.station_id).then((response) => {
-                this.jobCards = response.job_cards;
-                this.drivers = response.drivers;
-                this.suppliers = response.suppliers;
-                this.$root.isLoading = false;
+              this.$root.isLoading = false;
             });
-        },
-
-        mounted() {
-            $('input[type="number"]').on('focus', function () {
-                this.select();
-            });
-            $('#gatepass_date').datepicker({
-                format: 'yyyy-mm-dd',
-                startDate: '0d',
-                autoclose: true,
-            }).on('change', (e) => {
-                this.gatepass.gatepass_date = e.target.value;
-            });
-        },
-
-        data() {
-            return {
-                jobCards: [],
-                drivers: [],
-                suppliers: [],
-
-                gatepass: {
-                    station_id: window.Laravel.station_id,
-                    job_card_id: '',
-                    external_service_id: '',
-                    driver_id: '',
-                    type: '',
-                    supplier_name: '',
-                    supplier_id: '',
-                    fuel_reading: '',
-                    km_reading: '',
-                    remarks: '',
-                    parts: '',
-                },
-            };
-        },
-
-        computed: {
-          jobCard() {
-            let card = {
-              vehicle: {
-                model: {},
-                make: {}
-              },
-              externalServices: [],
-            };
-            if (this.gatepass.job_card_id.length < 1) return card;
-
-            let id = parseInt(this.gatepass.job_card_id);
-            let cards = this.jobCards.filter(e => e.id == id);
-
-            if (! cards.length) return card;
-
-            return cards[0];
-          },
-
-          service() {
-            let service = {
-              raw: {
-                lines: [],
-              },
-            };
-
-            let selectedService = this.jobCard.externalServices.filter(e => e.id == this.gatepass.external_service_id);
-
-            if (! selectedService.length) return service;
-
-            return selectedService[0];
-          },
-        },
-
-        methods: {
-            store() {
-                this.$root.isLoading = true;
-                let request = null;
-                this.gatepass.supplier_name = this.suppliers.filter(e => e.DCLink == this.gatepass.supplier_id)[0]['Name'];
-                this.gatepass.parts = this.service.raw.lines;
-                this.gatepass.type = this.service.type;
-
-                let body = Object.assign({}, this.gatepass);
-
-                if (this.$route.params.id) {
-                    request = axios.put('/api/wsh-gatepass/' + this.$route.params.id, body)
-                } else {
-                    request = axios.post('/api/wsh-gatepass', body)
-                }
-
-                request.then((response) => {
-                    this.$root.isLoading = false;
-                    alert2(this.$root, [response.data.message], 'success');
-                    window._router.push({path: '/wsh/gatepass'});
-                }).catch((error) => {
-                    this.$root.isLoading = false;
-                    alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
-                });
-            }
         }
-    }
+
+        http
+          .get("/api/wsh-gatepass/create/?s=" + window.Laravel.station_id)
+          .then(response => {
+            this.jobCards = response.job_cards;
+            this.drivers = response.drivers;
+            this.suppliers = response.suppliers;
+            this.$root.isLoading = false;
+          });
+      },
+
+      mounted() {
+        $('input[type="number"]').on("focus", function() {
+          this.select();
+        });
+        $("#gatepass_date")
+          .datepicker({
+            format: "yyyy-mm-dd",
+            startDate: "0d",
+            autoclose: true
+          })
+          .on("change", e => {
+            this.gatepass.gatepass_date = e.target.value;
+          });
+      },
+
+      data() {
+        return {
+          jobCards: [],
+          drivers: [],
+          suppliers: [],
+
+          gatepass: {
+            station_id: window.Laravel.station_id,
+            job_card_id: "",
+            external_service_id: "",
+            driver_id: "",
+            type: "",
+            supplier_name: "",
+            supplier_id: "",
+            fuel_reading: "",
+            km_reading: "",
+            remarks: "",
+            parts: ""
+          }
+        };
+      },
+
+      computed: {
+        jobCard() {
+          let card = {
+            vehicle: {
+              model: {},
+              make: {}
+            },
+            externalServices: []
+          };
+          if (this.gatepass.job_card_id.length < 1) return card;
+
+          let id = parseInt(this.gatepass.job_card_id);
+          let cards = this.jobCards.filter(e => e.id == id);
+
+          if (!cards.length) return card;
+
+          return cards[0];
+        },
+
+        service() {
+          let service = {
+            raw: {
+              lines: []
+            }
+          };
+
+          let selectedService = this.jobCard.externalServices.filter(
+            e => e.id == this.gatepass.external_service_id
+          );
+
+          if (!selectedService.length) return service;
+
+          return selectedService[0];
+        }
+      },
+
+      methods: {
+        updateCard() {
+          this.gatepass.supplier_id = this.service.vendor_id;
+        },
+        store() {
+          this.$root.isLoading = true;
+          let request = null;
+          this.gatepass.supplier_name = this.suppliers.filter(
+            e => e.DCLink == this.gatepass.supplier_id
+          )[0]["Name"];
+          this.gatepass.parts = this.service.raw.lines;
+          this.gatepass.type = this.service.type;
+
+          let body = Object.assign({}, this.gatepass);
+
+          if (this.$route.params.id) {
+            request = axios.put("/api/wsh-gatepass/" + this.$route.params.id, body);
+          } else {
+            request = axios.post("/api/wsh-gatepass", body);
+          }
+
+          request
+            .then(response => {
+              this.$root.isLoading = false;
+              alert2(this.$root, [response.data.message], "success");
+              window._router.push({ path: "/wsh/gatepass" });
+            })
+            .catch(error => {
+              this.$root.isLoading = false;
+              alert2(
+                this.$root,
+                Object.values(JSON.parse(error.message)),
+                "danger"
+              );
+            });
+        }
+      }
+    };
 </script>

@@ -57,7 +57,7 @@ class WorkshopGatepassController extends Controller
                 },
                 'externalServices' => function ($builder) {
                     return $builder->where('status', Constants::STATUS_APPROVED)
-                        ->select(['job_card_id', 'id', 'type', 'raw']);
+                        ->select(['job_card_id', 'id', 'type', 'raw', 'vendor_id', 'approximate_cost']);
                 }
             ])
             ->whereDoesntHave('gatepass', function ($builder) {
@@ -138,7 +138,7 @@ class WorkshopGatepassController extends Controller
                 },
                 'externalServices' => function ($builder) {
                     return $builder->where('status', Constants::STATUS_APPROVED)
-                        ->select(['job_card_id', 'id', 'type', 'raw']);
+                        ->select(['job_card_id', 'id', 'type', 'raw', 'approximate_cost']);
                 }
             ])
             ->whereDoesntHave('gatepass', function ($builder) {

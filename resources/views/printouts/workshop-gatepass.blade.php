@@ -49,6 +49,11 @@
                             <h6>{{ $pass->total }}</h6>
                         </div>
 
+                        <div class="col-xs-6">
+                            <h5><strong>Approximate Cost</strong></h5>
+                            <h6>KES {{ number_format($pass->service->approximate_cost, 2) }}</h6>
+                        </div>
+
                         @if($pass->type == 'Parts')
                             <div class="col-xs-12">
                                 <table class="table table-striped">
