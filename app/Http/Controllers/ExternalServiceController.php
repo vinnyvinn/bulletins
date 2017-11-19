@@ -4,11 +4,15 @@ namespace App\Http\Controllers;
 
 use App\ExternalService;
 use App\ExternalServiceParts;
+use App\Http\Helpers\Helpers;
+use App\Option;
+use App\SAGEUDF;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
 use Response;
 use SmoDav\Models\JobCard;
+use SmoDav\Models\Make;
 use SmoDav\Support\Constants;
 
 class ExternalServiceController extends Controller
@@ -45,7 +49,48 @@ class ExternalServiceController extends Controller
      */
     public function create()
     {
+        $modelColumn = DB::select('SELECT cFieldName FROM _rtblUserDict WHERE idUserDict = ' .
+            "(SELECT option_value FROM options WHERE option_key = '" . SAGEUDF::MODEL_UDF . "')");
 
+        $makeColumn = DB::select('SELECT cFieldName FROM _rtblUserDict WHERE idUserDict = ' .
+            "(SELECT option_value FROM options WHERE option_key = '" . Make::UDF . "')");
+
+        if (\count($modelColumn)) {
+            $modelColumn = $modelColumn[0]->cFieldName;
+        }
+
+        if (\count($makeColumn)) {
+            $makeColumn = $makeColumn[0]->cFieldName;
+        }
+
+        $products = DB::table('StkItem')->where('ItemGroup', Helpers::get_option(Option::OPTION_ITEM_GROUP))
+            ->select([
+                'StockLink', 'Description_1', "{$modelColumn} as product_model", "{$makeColumn} as product_make"
+            ])
+            ->get();
+
+        $jobCards = JobCard::select(['id', 'vehicle_id'])
+            ->with([
+                'vehicle' => function ($builder) {
+                    return $builder->select(['id', 'make_id', 'model_id', 'plate_number']);
+                },
+                'vehicle.make' => function ($builder) {
+                    return $builder->select(['id', 'name']);
+                },
+                'vehicle.model' => function ($builder) {
+                    return $builder->select(['id', 'name']);
+                },
+            ])
+            ->open()
+            ->get();
+
+        $vendors = DB::table('vendor')->get(['DCLink', 'Account', 'Name']);
+
+        return Response::json([
+            'parts' => $products,
+            'cards' => $jobCards,
+            'vendors' => $vendors,
+        ]);
     }
 
     /**

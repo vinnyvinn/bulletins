@@ -11,7 +11,7 @@ class ExternalService extends Model
     const TYPE_PARTS = 'Parts';
 
     protected $fillable = [
-        'job_card_id', 'user_id', 'status', 'type', 'mechanic_findings', 'raw'
+        'job_card_id', 'user_id', 'status', 'type', 'mechanic_findings', 'raw', 'vendor_id', 'approximate_cost',
     ];
 
     public function jobCard()
