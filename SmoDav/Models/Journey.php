@@ -25,7 +25,12 @@ class Journey extends SmoDavModel
         parent::boot();
 
         self::deleted(function ($model) {
-            $model->delivery->delete();
+            $model->delivery()->delete();
+            $model->mileages()->delete();
+            $model->fuel()->delete();
+            $model->inspection()->delete();
+            $model->gatepass()->delete();
+            $model->routeCard()->delete();
         });
     }
 

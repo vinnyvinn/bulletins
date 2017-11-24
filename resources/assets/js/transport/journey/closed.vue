@@ -4,12 +4,12 @@
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <strong>Journey Creation</strong>
+                        <strong>Closed Journeys</strong>
                         <router-link v-if="$root.can('create-journey')" to="/journey/create" class="btn btn-primary btn-xs pull-right">
                             <i class="fa fa-plus"></i> Add New
                         </router-link>
-                        <router-link to="/journey/closed" class="btn btn-danger btn-xs pull-right">
-                            <i class="fa fa-plus"></i> Closed Journeys
+                        <router-link to="/journey" class="btn btn-danger btn-xs pull-right">
+                            <i class="fa fa-plus"></i> Open Journeys
                         </router-link>
                     </div>
                     <div class="panel-body">
@@ -24,11 +24,10 @@
                                         <th>Contract</th>
                                         <th>Job Date</th>
                                         <th>Driver</th>
-                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="journey in journeys.filter(j => j.status !== 'Closed')">
+                                    <tr v-for="journey in journeys">
                                         <td>{{ journey.id }}</td>
                                         <td>
                                             <router-link v-if="$root.can('view-journey')" :to="'/journey/' + journey.id">JRNY-{{ journey.id }}</router-link>
@@ -38,20 +37,11 @@
                                             <span class="label label-info" v-if="journey.status == 'Pending Approval'">Pending Approval</span>
                                             <span class="label label-success" v-if="journey.status == 'Approved'">Approved</span>
                                             <span class="label label-default" v-if="journey.status == 'Closed'">Closed</span>
-
                                         </td>
                                         <td>{{ journey.truck.plate_number }}</td>
                                         <td>{{ journey.contract.name }} {{ journey.contract.client.Name }}</td>
                                         <td>{{ date2(journey.job_date) }}</td>
                                         <td>{{ journey.driver ? journey.driver.first_name : 'No' }} {{ journey.driver ? journey.driver.last_name : 'Driver' }}</td>
-                                        <td class="text-center">
-                                            <span v-if="(journey.status != 'Closed') && $root.can('edit-journey')" @click="edit(journey)" class="btn btn-xs btn-info">
-                                                <i class="fa fa-pencil"></i>
-                                            </span>
-                                            <button data-toggle="popover" v-if="$root.can('delete-journey')" :data-item="journey.id" class="btn btn-xs btn-danger btn-destroy">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </td>
                                     </tr>
                                 </tbody>
 
@@ -80,7 +70,7 @@
     export default {
         created() {
             this.$root.isLoading = true;
-            http.get('/api/journey?s=' + window.Laravel.station_id).then(response => {
+            http.get('/api/journey?status=Closed&s=' + window.Laravel.station_id).then(response => {
                 this.journeys = response.journeys;
                 this.setupConfirm();
                 prepareTable(false, [], {

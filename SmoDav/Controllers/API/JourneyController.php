@@ -40,7 +40,13 @@ class JourneyController extends Controller
                 'driver',
                 'contract.client',
             ])
-            ->where('status', '<>', 'Closed')
+            ->when(!\request('status'), function ($builder) {
+                return $builder->where('status', '<>', 'Closed');
+            })
+            ->when(\request('status'), function ($builder) {
+                return $builder->where('status', \request('status'))->take(50);
+            })
+
             ->get([
                 'id', 'driver_id', 'is_contract_related', 'truck_id', 'contract_id', 'journey_type', 'job_date',
                 'ref_no', 'status',
