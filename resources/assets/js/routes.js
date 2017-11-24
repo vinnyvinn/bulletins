@@ -103,6 +103,7 @@ module.exports = [
     { path: '/contract-templates/:id/edit', component: require('./transport/contracts-templates/form.vue'), beforeEnter: authMiddleware },
 
     { path: '/journey', component: require('./transport/journey/index.vue'), beforeEnter: authMiddleware },
+    { path: '/journey/closed', component: require('./transport/journey/closed.vue'), beforeEnter: authMiddleware },
     { path: '/journey/create', component: require('./transport/journey/form.vue'), beforeEnter: authMiddleware },
     { path: '/journey/:id', component: require('./transport/journey/view.vue'), beforeEnter: authMiddleware },
     { path: '/journey/:id/edit', component: require('./transport/journey/form.vue'), beforeEnter: authMiddleware },
