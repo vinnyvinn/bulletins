@@ -44,7 +44,9 @@ class JourneyController extends Controller
                 return $builder->where('status', '<>', 'Closed');
             })
             ->when(\request('status'), function ($builder) {
-                return $builder->where('status', \request('status'))->take(50);
+                return $builder->where('status', \request('status'))
+                    ->orderBy('id', 'desc')
+                    ->take(50);
             })
 
             ->get([

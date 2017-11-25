@@ -18,11 +18,29 @@ class RouteCardController extends Controller
      */
     public function index()
     {
+        $journeys = Journey::when(request('s'), function ($builder) {
+            return $builder->where('station_id', request('s'));
+        })
+            ->where('status', Constants::STATUS_CLOSED)
+            ->orderBy('id', 'desc')
+            ->take(50)
+            ->get(['id'])
+            ->map(function ($item) {
+                return $item->id;
+            })
+            ->toArray();
+
         $cards = RouteCard::with(['user' => function ($builder) {
             return $builder->select('first_name', 'last_name', 'id');
         }])
-            ->whereHas('journey', function ($builder) {
-                return $builder->where('status', Constants::STATUS_APPROVED);
+            ->whereHas('journey', function ($builder) use ($journeys) {
+                return $builder->where(function ($builder) use ($journeys) {
+                    return $builder->where('status', Constants::STATUS_APPROVED)
+                        ->orWhere(function ($builder) use ($journeys) {
+                            return $builder->where('status', Constants::STATUS_CLOSED)
+                                ->whereIn('id', $journeys);
+                        });
+                });
             })
             ->when(\request('s'), function ($builder) {
                 return $builder->where('station_id', \request('s'));
