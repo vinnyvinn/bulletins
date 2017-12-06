@@ -94,7 +94,12 @@ class WorkshopGatepassController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $data['parts'] = json_encode($data['parts']);
+        $parts = json_encode([])
+        if (isset($data['parts'])) {
+            $parts = json_encode($data['parts']);
+        }
+        $data['parts'] = $parts;
+
         if (! $data['remarks']) {
             $data['remarks'] = '';
         }
