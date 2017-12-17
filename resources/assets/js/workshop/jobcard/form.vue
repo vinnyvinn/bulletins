@@ -119,6 +119,7 @@
                         </div>
                     </div>
 
+
                     <hr>
 
                     <div class="row" v-if="status == 'Pending Approval' || status == null">
@@ -139,10 +140,15 @@
                         </div>
                         <div class="col-sm-5">
                             <div class="form-group input-group-sm">
-                                <label for="workshop_job_task_id">Task</label>
-                                <select v-model="task.workshop_job_task_id" name="workshop_job_task_id" id="workshop_job_task_id" class="form-control">
-                                    <option v-for="task in filteredTasks" :value="task.id">{{ task.name }}</option>
-                                </select>
+                                <label for="workshop_job_task_id">Tasks</label>
+                                <input type="text" name="workshop_job_task_id" v-model="workshop_job_type_text" class="form-control" />
+                                <!--<select v-model="task.workshop_job_task_id"
+                                        name="workshop_job_task_id"
+                                        id="workshop_job_task_id"
+                                        class="form-control">
+                                    <option v-for="task in filteredTasks"
+                                            :value="task.id">{{ task.name }}</option>
+                                </select>-->
                             </div>
 
                             <div class="row">
@@ -233,6 +239,7 @@
                 vehicles: [],
                 job_types: [],
                 employees: [],
+                workshop_job_type_text: '',
                 task: {
                     operation_id: '',
                     workshop_job_task_id: '',
@@ -369,14 +376,28 @@
                 if (! this.task.operation_id || this.task.operation_id.length == 0) return alert2(this.$root, ['Select the operation'], 'danger');
                 if (! this.task.employee_id || this.task.employee_id.length == 0) return alert2(this.$root, ['Select the employee'], 'danger');
                 if (! this.task.start_date || this.task.start_date.length == 0) return alert2(this.$root, ['Enter the start date'], 'danger');
-                if (! this.task.workshop_job_task_id || this.task.workshop_job_task_id.length == 0) return alert2(this.$root, ['Select the task'], 'danger');
+               // if (! this.task.workshop_job_task_id || this.task.workshop_job_task_id.length == 0) return alert2(this.$root, ['Select the task'], 'danger');
+                if (! this.workshop_job_type_text) return alert2(this.$root, ['Task should not be empty'], 'danger');
 
                 this.task.operation = this.operation.name;
+                this.task.task_name = this.workshop_job_type_text;
+/*
                 this.task.task_name = this.operation.tasks.filter((e) => {
                     return this.task.workshop_job_task_id == e.id;
                 })[0].name;
 
+*/
+
+
+  /*              this.task.task_name = this.operation.tasks.filter((e) => {
+                    return this.task.workshop_job_task_id == e.id;
+                })[0].name;
+*/
+
+
                 this.card.tasks.push(this.task);
+
+
                 this.task = {
                     operation_id: '',
                     workshop_job_task_id: '',
@@ -417,6 +438,9 @@
                 }).catch((error) => {
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                 });
+
+
+
             },
 
             saveProcess() {
