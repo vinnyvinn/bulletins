@@ -25,7 +25,7 @@ class CreateWorkshopGatepassesTable extends Migration
             $table->double('fuel_reading')->nullable();
             $table->double('km_reading')->nullable();
             $table->text('remarks');
-            $table->text('parts')->default('[]');
+            $table->text('parts');
             $table->string('status');
             $table->timestamps();
         });

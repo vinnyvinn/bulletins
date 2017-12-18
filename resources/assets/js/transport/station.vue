@@ -3,7 +3,7 @@
         <div class="col-sm-4 col-sm-offset-4">
             <div class="panel panel-default">
                 <div class="panel-heading text-center">
-                    <strong>Station Selection</strong>
+                    <strong>Station Selections news</strong>
                 </div>
 
                 <div class="panel-body">
