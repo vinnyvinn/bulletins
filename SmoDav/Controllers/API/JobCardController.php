@@ -85,6 +85,7 @@ class JobCardController extends Controller
             $data['time_in'] = Carbon::now()->setTimeFromTimeString($data['time_in']);
             $data['has_trailer'] = false;
             $data['status'] = Constants::STATUS_PENDING;
+
             $jobCard = JobCard::create($data);
 
             foreach ($data['inspections'] as $inspection) {

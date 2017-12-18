@@ -18,7 +18,6 @@
                                     </select>
                                 </div>
                             </div>
-
                         <br>
 
                         <div class="col-sm-12">
@@ -36,6 +35,9 @@
 
 <script>
     export default {
+        data:()=>({
+           stations:[{id:1, najme:'test'}]
+        }),
         created() {
             http.get('/api/user');
         }

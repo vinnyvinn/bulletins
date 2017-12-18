@@ -243,6 +243,7 @@
                 task: {
                     operation_id: '',
                     workshop_job_task_id: '',
+                    workshop_job_task_name: '',
                     employee_id: '',
                     start_date: '',
                     start_time: '08:00',
@@ -380,7 +381,16 @@
                 if (! this.workshop_job_type_text) return alert2(this.$root, ['Task should not be empty'], 'danger');
 
                 this.task.operation = this.operation.name;
+
+                //no longer pulling data from a dropdownlist
+                this.task.workshop_job_task_id = 1;
+
                 this.task.task_name = this.workshop_job_type_text;
+                this.task.workshop_job_task_name = this.workshop_job_type_text; //save to db an id after save
+
+                //get the task name from db
+                //this.task.workshop_job_task_id == e.id
+
 /*
                 this.task.task_name = this.operation.tasks.filter((e) => {
                     return this.task.workshop_job_task_id == e.id;
@@ -389,9 +399,7 @@
 */
 
 
-  /*              this.task.task_name = this.operation.tasks.filter((e) => {
-                    return this.task.workshop_job_task_id == e.id;
-                })[0].name;
+  /*
 */
 
 
