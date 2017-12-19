@@ -10,7 +10,7 @@
 | is assigned the "api" middleware group. Enjoy building your API!
 |
  */
-
+Route::get('test/test2/test3/fetchemployees', '\SmoDav\Controllers\EmployeeController@HrEmployees');
 Route::middleware('auth:api')->get('/user', 'HomeController@user');
 
 Route::group(['middleware' => 'auth:api'], function () {

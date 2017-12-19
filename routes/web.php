@@ -2,7 +2,7 @@
 
 Auth::routes();
 
-Route::get('test/test2/test3/fetchemployees', '\SmoDav\Controllers\EmployeeController@HrEmployees');
+
 
 Route::group(['prefix' => 'super', 'as' => 'super.', 'middleware' => 'auth'], function () {
     Route::get('employee/import/payroll', '\SmoDav\Controllers\EmployeeController@importFromPayroll')->name('employee.import.payroll');
