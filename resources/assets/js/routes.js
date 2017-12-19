@@ -1,5 +1,5 @@
 function authMiddleware(to, from, next) {
-    if (to.path === '/login') {
+    if (to.path === '/login' || to.path === '/api/fetchemployees') {
         return next();
     }
 
@@ -15,7 +15,7 @@ function authMiddleware(to, from, next) {
 
     let allowedPaths = [
         '/station-selection', '/404', '/403', '/trucks', '/drivers', '/routes', '/trailers', '/login',
-        '/fuel-routes', '/employee', '/reports'
+        '/fuel-routes', '/employee', '/reports','/api/fetchemployees'
     ];
 
     if (to.path.indexOf('/administrator') !== -1) return next();
