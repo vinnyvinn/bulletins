@@ -3,6 +3,8 @@
 namespace SmoDav\Controllers;
 
 use App\Driver;
+use App\Employee;
+use App\HrEmployeesModel;
 use App\Http\Controllers\Controller;
 use App\Option;
 use Carbon\Carbon;
@@ -21,7 +23,9 @@ class EmployeeController extends Controller
      */
     public function index()
     {
+
         if (request()->ajax()) {
+
             return $this->getTableData();
         }
 
@@ -61,7 +65,7 @@ class EmployeeController extends Controller
     public function show($id)
     {
 
-      // return view('masters.employees.show', ['driver', Driver::findOrFail($id)]);
+        // return view('masters.employees.show', ['driver', Driver::findOrFail($id)]);
         switch ($id) {
             case 'drivers':
                 return $this->getTableData(Constants::DRIVER);
@@ -146,10 +150,10 @@ class EmployeeController extends Controller
         return Datatables::of($results)
             ->addColumn('actions', function ($result) {
                 return
-                '<a href="' . route('super.employee.show', $result->id) .
+                    '<a href="' . route('super.employee.show', $result->id) .
                     '" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
                     <a href="' . route('super.employee.edit', $result->id) .
-                        '" class="btn btn-xs btn-success"><i class="fa fa-pencil"></i></a>
+                    '" class="btn btn-xs btn-success"><i class="fa fa-pencil"></i></a>
                             ';
             })
             ->editColumn('created_at', function ($result) {
@@ -189,7 +193,7 @@ class EmployeeController extends Controller
             $employees = collect($employees)->groupBy('department_id');
             foreach ($employees as $key => $value) {
                 foreach ($value as $employee) {
-                    $employee = (array) $employee;
+                    $employee = (array)$employee;
 
                     if (\in_array($employee['identification_number'], $currentEmployees)) {
                         continue;
@@ -219,4 +223,79 @@ class EmployeeController extends Controller
             return redirect()->back()->with('error', 'Please confirm the Payroll Integration is set up.');
         }
     }
+
+    function HrEmployees()
+    {
+        //get the total no of employees in current table
+        $totalemp = Employee::all()->count();
+        $hremployees = HrEmployeesModel::all()->count();
+     /*   if ($totalemp != $hremployees) {
+            //fetch employees
+            $this->fetchFromHr();
+        }*/
+
+        $hremployees = HrEmployeesModel::all()->count();
+        var_dump($hremployees);
+        die();
+    }
+
+    function fetchFromHr()
+    {
+        try {
+            $hremployees = HrEmployeesModel::all();
+            $currentemployees_email = [];
+
+            $currentemployees = Employee::all();
+            foreach ($currentemployees as $currentemployee) {
+                array_push($currentemployees_email, $currentemployee->email);
+            }
+            $hremployeesemail = [];
+
+            $deleteemailarrays = array_diff($currentemployees_email, $hremployeesemail);
+
+            foreach ($hremployees as $key => $hremployee) {
+                foreach ($currentemployees as $key => $currentemployee) {
+                    if ($hremployee->email === $currentemployee->email) {
+                        $this->UpdateUserAcccount($currentemployee->email, $hremployee);
+                    }
+                }
+            }
+            $this->deleteDeletedHrAcconts($deleteemailarrays);
+
+            return true;
+
+        } catch (\Exception $ex) {
+            return false;
+        }
+    }
+
+    function UpdateUserAcccount($email, $details)
+    {
+        $user = Employee::where('email', '=', $details->email)->get();
+        if ($user) {
+            //update user details but dont delete
+            $employee = new Employee();
+            $employee->payroll_number = "PAYROLL NU";
+            $employee->identification_number = "PAYROLL NU";
+            $employee->identification_type = "PAYROLL NU";
+            $employee->identification_type = "National ID";
+            $employee->first_name = "National ID";
+            $employee->last_name = "Last Name";
+            $employee->email = "Last Name";
+            $employee->mobile_phone = "Last Name";
+            $employee->category = "Last Name";
+            $employee->contract_id = "Last Name";
+            $employee->Save();
+        }
+    }
+
+    function deleteDeletedHrAcconts($emails)
+    {
+        $deleted = true;
+        foreach ($emails as $email) {
+            $user = HrEmployeesModel::where('email', $email)->delete();
+        }
+        return $deleted;
+    }
+
 }

@@ -43,5 +43,19 @@
 
 <!-- Scripts -->
 <script src="{{ asset(mix('js/app.js')) }}"></script>
+<!-- Fetch data from employees whenever a page refresh happens -->
+<script>
+    //fetch employees from hr if the total no is not equal
+    $("#document").ready(function () {
+        $.getJSON('/fetchemployees')
+            .then(function(){
+                console.log("fetched employees already");
+            },function (err) {
+                console.log(err.message);
+            })
+    })
+</script>
+
+
 </body>
 </html>

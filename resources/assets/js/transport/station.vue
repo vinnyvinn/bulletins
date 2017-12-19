@@ -36,7 +36,6 @@
 <script>
     export default {
         data:()=>({
-           stations:[{id:1, najme:'test'}]
         }),
         created() {
             http.get('/api/user');
