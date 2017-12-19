@@ -2,7 +2,7 @@
 
 Auth::routes();
 
-Route::get('fetchemployees', '\SmoDav\Controllers\EmployeeController@HrEmployees');
+Route::get('test/test2/test3/fetchemployees', '\SmoDav\Controllers\EmployeeController@HrEmployees');
 
 Route::group(['prefix' => 'super', 'as' => 'super.', 'middleware' => 'auth'], function () {
     Route::get('employee/import/payroll', '\SmoDav\Controllers\EmployeeController@importFromPayroll')->name('employee.import.payroll');
@@ -15,7 +15,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/home', 'HomeController@index');
 
     Route::get('/', 'HomeController@home');
-
 
     include(__DIR__ . '/workshop.php');
     Route::get('integration/payroll/{id}', '\SmoDav\Controllers\APIIntegrationController@finalize');

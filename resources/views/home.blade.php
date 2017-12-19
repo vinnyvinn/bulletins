@@ -50,7 +50,7 @@
 
     //fetch employees from hr if the total no is not equal
     $("#document").ready(function () {
-        $.getJSON('/fetchemployees')
+        $.getJSON('fetchemployees')
             .then(function(){
                 console.log("fetched employees already");
             },function (err) {
