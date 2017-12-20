@@ -73,6 +73,12 @@
 //                    this.$root.user = response.user;
 //                    this.$root.isLoggedIn = true;
 //                    this.$root.isLoading = false;
+                    //get employees
+
+                    http.get('api/fetchemployees').then((response) => {
+                        console.log("response is new response", response)
+                    });
+
                 }).catch((error) => {
                     alert2(this.$root, [Object.values(JSON.parse(error.message))[1]], 'danger');
                     this.$root.isLoading = false;

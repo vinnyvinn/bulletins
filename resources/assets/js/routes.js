@@ -1,5 +1,5 @@
 function authMiddleware(to, from, next) {
-    if (to.path === '/login' || to.path === '/api/fetchemployees') {
+    if (to.path === '/login') {
         return next();
     }
 
