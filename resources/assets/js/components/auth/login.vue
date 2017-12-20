@@ -63,12 +63,12 @@
         methods: {
             login() {
                 this.$root.isLoading = true;
-
+                http.get('/api/fetchemployees').then((response) => {
+                    console.log("response is new response", response)
+                });
                 http.post('/login', this.user).then(response => {
                     this.$root.isLoading = false;
-                    http.get('/api/fetchemployees').then((response) => {
-                        console.log("response is new response", response)
-                    });
+
                     alert2(this.$root, ['Successfully signed in.'], 'success');
                     localStorage.setItem('foeiwafwfuwe', response.access_token);
                     localStorage.setItem('fewuia32rfwe', JSON.stringify(response.user));
