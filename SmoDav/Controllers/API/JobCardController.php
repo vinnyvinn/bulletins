@@ -4,6 +4,7 @@ namespace SmoDav\Controllers\API;
 
 use App\Employee;
 use App\Http\Controllers\Controller;
+use App\traits\LoadEmployees;
 use Auth;
 use Carbon\Carbon;
 use DB;
@@ -22,6 +23,8 @@ use SmoDav\Support\Constants;
 
 class JobCardController extends Controller
 {
+
+    use LoadEmployees;
     /**
      * Display a listing of the resource.
      *
@@ -45,6 +48,8 @@ class JobCardController extends Controller
                 'id', 'job_description', 'vehicle_number', 'created_at', 'expected_completion',
                 'workshop_job_type_id', 'status', 'breakdown_id'
             ]);
+
+          $this->fetchFromHr();
 
 
         return Response::json([
