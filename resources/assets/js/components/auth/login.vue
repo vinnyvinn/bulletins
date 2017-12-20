@@ -44,9 +44,7 @@
 
 <script>
     export default {
-//        mounted() {
-//            http.post('/logout', this.user);
-//        },
+
         data() {
             return {
                 user: {
@@ -71,13 +69,6 @@
                     localStorage.setItem('fewuia32rfwe', JSON.stringify(response.user));
 
                    setTimeout(() => window.location = '/', 1000);
-//                    this.$root.user = response.user;
-//                    this.$root.isLoggedIn = true;
-//                    this.$root.isLoading = false;
-                    //get employees
-
-
-
                 }).catch((error) => {
                     alert2(this.$root, [Object.values(JSON.parse(error.message))[1]], 'danger');
                     this.$root.isLoading = false;

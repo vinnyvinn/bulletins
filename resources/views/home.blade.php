@@ -37,7 +37,6 @@
         >
             <router-view></router-view>
         </transition>
-        <init></init>
     </div>
 
 </div>

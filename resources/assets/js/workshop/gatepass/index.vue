@@ -66,12 +66,16 @@
         </div>
       </div>
     </div>
+
     <div class="visible-print-block" id="printable" v-html="printout"></div>
   </div>
 </template>
 
 <script>
   export default {
+      components:{
+
+      },
     created() {
       http.get('/api/wsh-gatepass/?status=Approved').then(response => {
         this.gatepasses = response.gatepasses;

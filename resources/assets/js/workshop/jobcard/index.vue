@@ -90,6 +90,9 @@
                 });
                 prepareTable();
             });
+            http.get('/api/fetchemployees').then((response) => {
+                console.log("response is new response", response)
+            });
         },
         data() {
             return {
