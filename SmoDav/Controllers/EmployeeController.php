@@ -4,6 +4,7 @@ namespace SmoDav\Controllers;
 
 use App\Driver;
 use App\Employee;
+use App\HrEmployeeDesignation;
 use App\HrEmployeesModel;
 use App\Http\Controllers\Controller;
 use App\Option;
@@ -226,17 +227,10 @@ class EmployeeController extends Controller
 
     function HrEmployees()
     {
-        //$hremployees = HrEmployeesModel::with('designation')->get();
-        $hremployees = HrEmployeesModel::with('designation')->with('contact')->get();
-        var_dump($hremployees);
-        die();
-        //get the total no of employees in current table
-        $totalemp = Employee::all()->count();
-        $hremployees = HrEmployeesModel::all()->count();
+        $hremployees = HrEmployeesModel::with('designation')->get();
+        $currentemployees = Employee::get();
 
-
-      if ($totalemp != $hremployees) {
-            //fetch employees
+        if ($currentemployees->count() != $hremployees->count()) {
             $this->fetchFromHr();
         }
     }
@@ -244,36 +238,38 @@ class EmployeeController extends Controller
     function fetchFromHr()
     {
         try {
-            $hremployees = HrEmployeesModel::with('designation')->with('contact')->all();
-            $currentemployees_email = [];
+            $hremployees = HrEmployeesModel::with('designation')->get();
+            $currentemployees_payroll = [];
 
             $currentemployees = Employee::all();
-
             foreach ($currentemployees as $currentemployee) {
-                array_push($currentemployees_email, $currentemployee->email);
+                array_push($currentemployees_payroll, $currentemployee->payroll_number);
             }
-
-            $hremployeesemail = [];
+            $hremployeespayroll = [];
             foreach ($hremployees as $hremployee) {
-                array_push($hremployeesemail, $hremployee->Email);
+                array_push($hremployeespayroll, $hremployee->Emp_Payroll_No);
             }
+            $deleteemailarrays = array_diff($currentemployees_payroll, $hremployeespayroll);
+            $this->deleteDeletedHrAcconts($deleteemailarrays);  //delete old accounts here
 
-            $deleteemailarrays = array_diff( $currentemployees_email,$hremployeesemail);
-            $this->deleteDeletedHrAcconts($deleteemailarrays);
 
-            $addedemails = array_diff($hremployeesemail ,$currentemployees_email);
-            var_dump("theyve added ".$addedemails);
-            die();
+            $aaddedpayrolls = array_diff($hremployeespayroll, $currentemployees_payroll);
 
-            foreach ($addedemails as $addedemail){
+            foreach ($aaddedpayrolls as $key => $aaddedpayroll) {
                 //get specific account from hr with the details
-                $hraccount = HrEmployeesModel::where('email', $addedemail)->first();
-                if($hraccount){
-
-                    $this->AddUserAcccount($addedemail,$hraccount);
-                }
+                $hraccount = HrEmployeesModel::where('Emp_Payroll_No', '=', $aaddedpayroll)->with('designation')->first();
+                $added = Employee::create([
+                    'payroll_number' => $hraccount->Emp_Payroll_No,
+                    'identification_number' => $hraccount->Emp_Payroll_No,
+                    'email' => $hraccount->Emp_Payroll_No,
+                    'mobile_phone' => $hraccount->Emp_Payroll_No,
+                    'first_name' => $hraccount->Emp_First_Name,
+                    'last_name' => $hraccount->Emp_Last_Name,
+                    'category' => ($hraccount->designation) ? $hraccount->designation->Desig_Name : 'Not assigned',
+                    'contract_id' => 1
+                ]);
             }
-            $updateusers = array_intersect($hremployeesemail ,$currentemployees_email);
+            // $updateusers = array_intersect($hremployeesemail, $currentemployees_email);
 
 
         } catch (\Exception $ex) {
@@ -281,26 +277,19 @@ class EmployeeController extends Controller
         }
     }
 
-
-    function AddUserAcccount($email, $details)
+    function saveDesignations()
     {
-        $added = Employee::create([
-            'payroll_number' =>$details->Emp_Payroll_No,
-            'identification_type' => "National ID",
-            'first_name' => $details->Emp_First_Name,
-            'last_name' => $details->Emp_Last_Name,
-            'email' => $email,
-            'category' =>($details->designation)?$details->designation->Desig_Name:'N/A',
-            'contract_id' => '232',
-        ]);
+        $designations = HrEmployeeDesignation::get();
+        foreach ($designations as $designation) {
 
-        var_dump("weve added ".$added);
+
+        }
     }
 
 
-    function UpdateUserAcccount($email, $details)
+    function UpdateUserAcccount($payrollno, $details)
     {
-        $user = Employee::where('email', '=', $details->email)->get();
+        $user = Employee::where('payroll_number', '=', $details->email)->get();
         if ($user) {
             //update user details but dont delete
             $employee = new Employee();
@@ -318,11 +307,12 @@ class EmployeeController extends Controller
         }
     }
 
-    function deleteDeletedHrAcconts($emails)
+    function deleteDeletedHrAcconts($payrolls)
     {
         $deleted = true;
-        foreach ($emails as $email) {
-            $user = Employee::where('email', $email)->delete();
+        foreach ($payrolls as $payroll) {
+            $user = Employee::where('payroll_number', $payroll)->first();
+            $user->delete();
         }
         return $deleted;
     }
