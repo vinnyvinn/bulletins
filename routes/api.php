@@ -10,10 +10,11 @@
 | is assigned the "api" middleware group. Enjoy building your API!
 |
  */
-Route::get('fetchemployees', '\SmoDav\Controllers\EmployeeController@HrEmployees');
+
 Route::middleware('auth:api')->get('/user', 'HomeController@user');
 
 Route::group(['middleware' => 'auth:api'], function () {
+    Route::get('fetchemployees', '\SmoDav\Controllers\EmployeeController@HrEmployees');
     Route::post('driver/import', 'DriverController@importDrivers')->name('driver.import');
     Route::resource('driver', 'DriverController');
     Route::resource('truck', '\SmoDav\Controllers\API\VehicleController');
