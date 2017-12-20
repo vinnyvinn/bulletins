@@ -69,15 +69,19 @@
                     alert2(this.$root, ['Successfully signed in.'], 'success');
                     localStorage.setItem('foeiwafwfuwe', response.access_token);
                     localStorage.setItem('fewuia32rfwe', JSON.stringify(response.user));
-                    setTimeout(() => window.location = '/', 1000);
+
+                    setTimeout(()=>{
+                        http.get('api/fetchemployees').then((response) => {
+                            console.log("response is new response", response)
+                        });
+                    }, 3000);
+                    //setTimeout(() => window.location = '/', 1000);
 //                    this.$root.user = response.user;
 //                    this.$root.isLoggedIn = true;
 //                    this.$root.isLoading = false;
                     //get employees
 
-                    http.get('api/fetchemployees').then((response) => {
-                        console.log("response is new response", response)
-                    });
+
 
                 }).catch((error) => {
                     alert2(this.$root, [Object.values(JSON.parse(error.message))[1]], 'danger');
