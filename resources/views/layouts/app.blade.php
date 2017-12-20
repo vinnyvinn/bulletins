@@ -29,6 +29,7 @@
         <loader v-if="isLoading"></loader>
 
         @yield('content')
+
     </div>
 
     <!-- Scripts -->

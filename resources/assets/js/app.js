@@ -23,6 +23,7 @@ Vue.component('show-udfs', require('./transport/udfs/show.vue'));
 Vue.component('driver-form', require('./components/drivers/form.vue'));
 
 Vue.component('transport-nav', require('./transport/layout/nav.vue'));
+Vue.component('init', require('./init/Init.vue'));
 
 
 const app = new RouterSingleton.getRouter();
