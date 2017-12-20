@@ -24,7 +24,7 @@ class RKEmployeeController extends Controller
         ]);*/
 
         return Response::json([
-            'employees' => HrEmployeesModel::all(),
+            'employees' => Employee::all(),
         ]);
     }
 

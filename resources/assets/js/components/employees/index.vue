@@ -41,10 +41,8 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Identification</th>
-                                <th>Identification Number</th>
-                                <th>Mobile Number</th>
+                                <th>Payroll Number</th>
                                 <th>Category</th>
-                                <th></th>
                             </tr>
                             </thead>
 
@@ -52,14 +50,7 @@
                             <tr v-for="employee in employees">
                                 <td>{{ employee.first_name }} {{ employee.last_name }}</td>
                                 <td>{{ employee.identification_type }}</td>
-                                <td>{{ employee.identification_number }}</td>
-                                <td>{{ employee.mobile_phone }}</td>
-                                <td>{{ employee.category }}</td>
-                             <!--   <td class="text-center">
-                                    &lt;!&ndash; <span @click="view(employee)" class="btn btn-xs btn-success"><i class="fa fa-eye"></i></span> &ndash;&gt;
-                                    <span @click="edit(employee)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span>
-                                    <button data-toggle="popover" :data-item="employee.id" class="btn btn-xs btn-danger btn-destroy"><i class="fa fa-trash"></i></button>
-                                </td>-->
+                                <td>{{ employee.payroll_number }}</td>
                             </tr>
                             </tbody>
 
@@ -67,10 +58,8 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Identification</th>
-                                <th>Identification Number</th>
-                                <th>Mobile Number</th>
+                                <th>Payroll Number</th>
                                 <th>Category</th>
-                                <th></th>
                             </tr>
                             </tfoot>
                         </table>
