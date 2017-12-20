@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\traits\LoadEmployees;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
+    use LoadEmployees;
+
     /*
     |--------------------------------------------------------------------------
     | Login Controller
@@ -38,6 +41,7 @@ class LoginController extends Controller
 
     public function showLoginForm()
     {
+        $this->HrEmployees();
         return view('home');
     }
 
