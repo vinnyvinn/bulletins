@@ -39,8 +39,8 @@
                         <table class="table datatable">
                             <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Identification</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
                                 <th>Payroll Number</th>
                                 <th>Category</th>
                             </tr>
@@ -48,18 +48,19 @@
 
                             <tbody>
                             <tr v-for="employee in employees">
-                                <td>{{ employee.first_name }} {{ employee.last_name }}</td>
-                                <td>{{ employee.identification_type }}</td>
-                                <td>{{ employee.payroll_number }}</td>
+                                <td>{{ employee.Emp_First_Name }} </td>
+                                <td>{{ employee.Emp_Last_Name }} </td>
+                                <td>{{ employee.Emp_Payroll_No }}</td>
+                                <td>{{ employee.designation.Desig_Name }}</td>
                             </tr>
                             </tbody>
 
                             <tfoot>
                             <tr>
-                                <th>Name</th>
-                                <th>Identification</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
                                 <th>Payroll Number</th>
-                                <th>Category s</th>
+                                <th>Category</th>
                             </tr>
                             </tfoot>
                         </table>

@@ -42,7 +42,6 @@ $.fn.select2.defaults.set("theme", "bootstrap");
  * using reactive data binding and reusable components. Vue's API is clean
  * and simple, leaving you to focus on building your next great project.
  */
-
 let vue = require('vue');
 vue.use(VueRouter);
 vue.use(VueResource);

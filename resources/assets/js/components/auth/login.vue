@@ -70,8 +70,9 @@
 
                    setTimeout(() => window.location = '/', 1000);
                 }).catch((error) => {
-                    alert2(this.$root, [Object.values(JSON.parse(error.message))[1]], 'danger');
                     this.$root.isLoading = false;
+                    alert2(this.$root, [Object.values(JSON.parse(error.message))[1]], 'danger');
+
                 });
 
 
