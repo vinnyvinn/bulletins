@@ -59,7 +59,7 @@
                                 <th>Name</th>
                                 <th>Identification</th>
                                 <th>Payroll Number</th>
-                                <th>Category</th>
+                                <th>Category s</th>
                             </tr>
                             </tfoot>
                         </table>
