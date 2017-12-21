@@ -12,7 +12,7 @@
  */
 
 Route::middleware('auth:api')->get('/user', 'HomeController@user');
-Route::get('fetchemployees', '\SmoDav\Controllers\EmployeeController@HrEmployees');
+Route::get('/fetchemployees', '\SmoDav\Controllers\EmployeeController@HrEmployees');
 
 Route::group(['middleware' => 'auth:api'], function () {
     Route::post('driver/import', 'DriverController@importDrivers')->name('driver.import');

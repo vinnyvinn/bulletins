@@ -14,7 +14,7 @@ function authMiddleware(to, from, next) {
     if (window.Laravel.station_id) return next();
 
     let allowedPaths = [
-        '/station-selection', '/404', '/403', '/reports','/api/fetchemployees'
+        '/station-selection', '/404', '/403', '/reports'
     ];
 
     if (to.path.indexOf('/administrator') !== -1) return next();

@@ -15,7 +15,7 @@ function authMiddleware(to, from, next) {
 
     let allowedPaths = [
         '/station-selection', '/404', '/403', '/trucks', '/drivers', '/routes', '/trailers', '/login',
-        '/fuel-routes', '/employee', '/reports','/api/fetchemployees'
+        '/fuel-routes', '/employee', '/reports'
     ];
 
     if (to.path.indexOf('/administrator') !== -1) return next();
