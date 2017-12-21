@@ -1,5 +1,6 @@
 import 'whatwg-fetch'
 import VueRouter from 'vue-router'
+import VueResource from 'vue-resource';
 import { http, showAlert, prepareTable, formatDate, confirmPopup, hasPermission, mapToFormData } from './core';
 window.http = http;
 window.alert2 = showAlert;
@@ -44,6 +45,7 @@ $.fn.select2.defaults.set("theme", "bootstrap");
 
 let vue = require('vue');
 vue.use(VueRouter);
+vue.use(VueResource);
 
 window.Vue = vue;
 window.VueRouter = VueRouter;
