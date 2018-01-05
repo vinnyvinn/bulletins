@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
 use Response;
+use SmoDav\Factory\VehicleFactory;
 use SmoDav\Models\JobCard;
 use SmoDav\Models\Make;
 use SmoDav\Models\Requisition;
@@ -83,6 +84,7 @@ class PartsController extends Controller
         return Response::json([
             'parts' => $products,
             'cards' => $jobCards,
+            'trucks'=>VehicleFactory::all()
         ]);
     }
 

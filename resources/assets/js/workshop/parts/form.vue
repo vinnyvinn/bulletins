@@ -39,7 +39,7 @@
                                 <label for="item_id">Spare</label>
                                 <select name="item_id" id="item_id" class="form-control input-sm">
                                     <option value="null" disabled selected>Select Spare</option>
-                                    <option v-for="item in parts" :value="item.StockLink">{{ item.Description_1 }} ({{ item.product_make }} {{ item.product_model }})</option>
+                                    <option v-for="item in selectparts" :value="item.StockLink">{{ item.Description_1 }} ({{ item.product_make }} {{ item.product_model }})</option>
                                 </select>
                             </div>
                         </div>
@@ -117,7 +117,10 @@
                     mechanic_findings: '',
                     lines: [],
                     status: 'Pending Approval'
-                }
+                },
+                trucks:[],
+                selectparts:[],
+                truckmania:[]
             };
         },
 
@@ -134,6 +137,7 @@
             http.get('/api/parts/create').then((response) => {
                 this.parts = response.parts;
                 this.cards = response.cards;
+                this.trucks = response.trucks
                 setTimeout(() => {
                     $('#item_id').select2({
                         placeholder: 'Select an option'
@@ -188,15 +192,17 @@
                 };
             },
 
-            mapFindings(e) {
-            //  console.log("value is", val.target.value);
-              http.get('/api/job-card/'+e.target.value)
-                  .then((res)=>{
-                      console.log("res is", res);
-                  });
+            mapFindings: function (e) {
 
-              console.log("parts are", this.parts);
+                //filter a specific
+                const truck = this.trucks.filter(truck => truck.plate_number === this.card.vehicle_number);
+                this.truckmania = truck;
 
+                if(truck.length){
+                    this.selectparts = this.parts.filter((item)=> {
+                        return (item.product_make === truck[0].make.name || item.product_model === truck[0].model.name);
+                    });
+                }
 
                 setTimeout(() => this.requisition.mechanic_findings = this.card.mechanic_findings, 500);
             },

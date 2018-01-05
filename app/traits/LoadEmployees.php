@@ -18,7 +18,7 @@ trait LoadEmployees{
         $currentemployees = Employee::get();
 
         if ($currentemployees->count() != $hremployees->count()) {
-            $this->fetchFromHr();
+           // $this->fetchFromHr();
         }
     }
 

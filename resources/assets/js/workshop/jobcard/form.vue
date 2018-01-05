@@ -261,6 +261,7 @@
         computed: {
             vehicle() {
                 let selected =  this.vehicles.filter((item) => (item.id == this.card.vehicle_id));
+
                 selected = selected.length ? selected[0]: { driver:{}, make: {}, model: {} };
                 selected.driver = selected.driver ? selected.driver : { name: 'No Driver' };
 

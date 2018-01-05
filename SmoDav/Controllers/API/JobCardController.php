@@ -4,7 +4,7 @@ namespace SmoDav\Controllers\API;
 
 use App\Employee;
 use App\Http\Controllers\Controller;
-use App\traits\LoadEmployees;
+use App\Truck;
 use Auth;
 use Carbon\Carbon;
 use DB;
@@ -24,7 +24,6 @@ use SmoDav\Support\Constants;
 class JobCardController extends Controller
 {
 
-    use LoadEmployees;
     /**
      * Display a listing of the resource.
      *
@@ -48,8 +47,6 @@ class JobCardController extends Controller
                 'id', 'job_description', 'vehicle_number', 'created_at', 'expected_completion',
                 'workshop_job_type_id', 'status', 'breakdown_id'
             ]);
-
-          $this->fetchFromHr();
 
 
         return Response::json([
@@ -225,6 +222,21 @@ class JobCardController extends Controller
         return Response::json([
             'success' => 'true',
             'message' => 'Successfully closed job card.'
+        ]);
+    }
+
+    public function qcCheck(Request $request, $id){
+        $card = JobCard::with('qualityCheck')->where('id', $id)->first();
+        return Response::json([
+            'status' => ($card->quality_check)?true:false
+        ]);
+    }
+
+    public function truckDetails(Request $request, $reg_no){
+
+        $make = Truck::get();
+        return Response::json([
+            'truck' => $make
         ]);
     }
 

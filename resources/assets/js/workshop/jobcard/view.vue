@@ -482,8 +482,25 @@
                     alert2(this.$root, ['Closing remarks are mandatory'], 'danger');
                     return;
                 }
-                this.$root.isLoading = true;
+                //check if quality check is done
                 let request = null;
+
+                http.post('/api/job-card/'+ this.$route.params.id +'/qccheck',this.card)
+                    .then((res)=>{
+                     if(!res.status){
+                         alert2(this.$root, ['You cant close a jobcard without quality check'], 'danger');
+                         return;
+                     }
+                     console.log("response is ", res);
+                     //this.closeCardCompletely();
+
+                    });
+
+            },
+
+            closeCardCompletely(){
+
+                this.$root.isLoading = true;
                 this.card.vehicle_number = this.vehicle.plate_number;
                 request = http.post('/api/job-card/' + this.$route.params.id + '/close', this.card);
 
@@ -495,7 +512,7 @@
                     this.$root.isLoading = false;
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                 });
-            },
+            }
         }
     }
 </script>
