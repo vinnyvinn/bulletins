@@ -38,7 +38,9 @@
             <router-view></router-view>
         </transition>
     </div>
+{{--
    <init v-if="isLoggedIn"></init>
+--}}
 </div>
 
 <!-- Scripts -->

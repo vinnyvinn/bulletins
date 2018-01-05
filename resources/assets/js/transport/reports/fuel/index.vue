@@ -97,6 +97,7 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
+                                            <th class="text-right">Delivery number</th>
                                             <th v-if="!is_grouped">Contract</th>
                                             <th v-if="!is_summary">Plate Number</th>
                                             <th :class="is_summary ? 'text-right' : ''">{{ is_summary ? 'Fuel Vouchers' : 'Fueling Date' }}</th>
@@ -140,6 +141,7 @@
                                     <tbody v-else>
                                         <tr v-for="delivery in deliveries">
                                             <td>{{ delivery.index }}</td>
+                                            <td class="text-right">RKS-{{ delivery.journey_id}}</td>
                                             <td>{{ delivery.name }}</td>
                                             <td v-if="!is_summary">{{ delivery.plate_number }}</td>
                                             <td :class="is_summary ? 'text-right' : ''">{{ is_summary ? delivery.total : formatDateTime(delivery.date) }}</td>
@@ -150,6 +152,7 @@
                                             <td class="text-right">{{ formatNumber(delivery.fuel_issued) }}</td>
                                             <td class="text-right">{{ formatNumber(delivery.fuel_total) }}</td>
                                             <td class="text-right">{{ delivery.station_name }}</td>
+
                                         </tr>
                                         <tr v-if="deliveries.length">
                                             <th :colspan="is_summary ? 3 : 4">

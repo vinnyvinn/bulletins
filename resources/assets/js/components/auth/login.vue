@@ -71,7 +71,8 @@
                    setTimeout(() => window.location = '/', 1000);
                 }).catch((error) => {
                     this.$root.isLoading = false;
-                    alert2(this.$root, [Object.values(JSON.parse(error.message))[1]], 'danger');
+                //    alert2(this.$root, [Object.values(JSON.parse(error.message))[1]], 'danger');
+                    alert2(this.$root, ['Login Failed'], 'danger');
 
                 });
 
