@@ -38,7 +38,7 @@
             <router-view></router-view>
         </transition>
     </div>
-<init></init>
+   <init v-if="isLoggedIn"></init>
 </div>
 
 <!-- Scripts -->

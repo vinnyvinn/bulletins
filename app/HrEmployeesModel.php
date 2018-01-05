@@ -11,11 +11,7 @@ class HrEmployeesModel extends Model
 
     public function designation()
     {
-        return $this->belongsTo('App\HrEmployeeDesignation', 'Emp_Desig_Id', 'Cmp_Id');
-    }
-
-    public function contact(){
-        return $this->belongsTo('App\HrEmployeeContact', 'Emp_Desig_Id', 'Cmp_Id');
+        return $this->belongsTo('App\HrEmployeeDesignation', 'Emp_Desig_Id', 'Desig_Id');
     }
 
 }

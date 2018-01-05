@@ -23,19 +23,21 @@ class RKEmployeeController extends Controller
             'employees' => Employee::all(),
         ]);*/
 
-        $hremployees = HrEmployeesModel::with('designation')->get();
+        /*$hremployees = HrEmployeesModel::with('designation')->get();
 
         return Response::json([
             'employees' => $hremployees,
-        ]);
+        ]);*/
 
        /* var_dump($hremployees);
         die();
 
-
         return Response::json([
             'employees' => Employee::all(),
         ]);*/
+        return Response::json([
+            'employees' => Employee::all(),
+        ]);
     }
 
     /**

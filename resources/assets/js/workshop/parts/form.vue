@@ -143,6 +143,7 @@
 
                         this.item.item_name = selectedItem.Description_1 + '(' + selectedItem.product_make +
                             ' ' + selectedItem.product_model + ')'
+
                     });
                     this.$root.isLoading = false;
                 }, 1000);
@@ -159,6 +160,11 @@
             addToList() {
                 if (parseInt(this.item.requested_quantity) < 1) {
                     alert2(this.$root, ['Please enter a valid quantity'], 'danger');
+                    return;
+                }
+
+                if (this.requisition.lines.length == 0) {
+                    alert2(this.$root, ['Please add spare to requisition'], 'danger');
                     return;
                 }
 
@@ -186,7 +192,16 @@
                 };
             },
 
-            mapFindings() {
+            mapFindings(e) {
+            //  console.log("value is", val.target.value);
+              http.get('/api/job-card/'+e.target.value)
+                  .then((res)=>{
+                      console.log("res is", res);
+                  });
+
+              console.log("parts are", this.parts);
+
+
                 setTimeout(() => this.requisition.mechanic_findings = this.card.mechanic_findings, 500);
             },
 

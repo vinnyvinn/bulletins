@@ -48,10 +48,10 @@
 
                             <tbody>
                             <tr v-for="employee in employees">
-                                <td>{{ employee.Emp_First_Name }} </td>
-                                <td>{{ employee.Emp_Last_Name }} </td>
-                                <td>{{ employee.Emp_Payroll_No }}</td>
-                                <td>{{ employee.designation.Desig_Name }}</td>
+                                <td>{{ employee.first_name }} </td>
+                                <td>{{ employee.last_name }} </td>
+                                <td>{{ employee.payroll_number }}</td>
+                                <td>{{ employee.category}}</td>
                             </tr>
                             </tbody>
 
@@ -82,11 +82,12 @@
         },
         created() {
           this.$root.isLoading = true;
-            http.get('/api/employee').then(response => {
+            http.get('/api/employee').then((response) => {
                 this.employees = response.employees;
+                this.$root.isLoading = false;
                 prepareTable();
                 this.setupConfirm();
-                this.$root.isLoading = false;
+
             });
 
         },

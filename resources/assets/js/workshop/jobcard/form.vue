@@ -114,15 +114,14 @@
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label for="mechanic_findings">Mechanic's Findings</label>
-                                <textarea :disabled="status != 'Pending Approval' && status != null" v-model="card.mechanic_findings" name="mechanic_findings" id="mechanic_findings" cols="20" rows="5" class="form-control input-sm"></textarea>
+                                <textarea required :disabled="status != 'Pending Approval' && status != null" v-model="card.mechanic_findings" name="mechanic_findings" id="mechanic_findings" cols="20" rows="5" class="form-control input-sm"></textarea>
                             </div>
                         </div>
                     </div>
-
-
                     <hr>
-
-                    <div class="row" v-if="status == 'Pending Approval' || status == null">
+                    {{status}}<!--
+                    v-if="status == 'Pending Approval' || status == null"-->
+                    <div class="row" >
                         <div class="col-sm-5">
                             <div class="form-group input-group-sm">
                                 <label for="operation_id">Operation Name</label>
@@ -142,13 +141,6 @@
                             <div class="form-group input-group-sm">
                                 <label for="workshop_job_task_id">Tasks</label>
                                 <input type="text" name="workshop_job_task_id" v-model="workshop_job_type_text" class="form-control" />
-                                <!--<select v-model="task.workshop_job_task_id"
-                                        name="workshop_job_task_id"
-                                        id="workshop_job_task_id"
-                                        class="form-control">
-                                    <option v-for="task in filteredTasks"
-                                            :value="task.id">{{ task.name }}</option>
-                                </select>-->
                             </div>
 
                             <div class="row">
@@ -311,6 +303,7 @@
         created() {
             this.$root.isLoading = true;
             http.get('/api/job-card/create').then((response) => {
+                console.log("response is", response);
                 this.vehicles = response.vehicles;
                 this.job_types = response.job_types;
                 this.employees = response.employees;
@@ -379,6 +372,8 @@
                 if (! this.task.start_date || this.task.start_date.length == 0) return alert2(this.$root, ['Enter the start date'], 'danger');
                // if (! this.task.workshop_job_task_id || this.task.workshop_job_task_id.length == 0) return alert2(this.$root, ['Select the task'], 'danger');
                 if (! this.workshop_job_type_text) return alert2(this.$root, ['Task should not be empty'], 'danger');
+
+
 
                 this.task.operation = this.operation.name;
 
