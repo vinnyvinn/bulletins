@@ -215,7 +215,7 @@
 
             store() {
                 if (this.requisition.lines.length == 0) {
-                    alert2(this.$root, ['Please an item to requisition'], 'danger');
+                    alert2(this.$root, ['Please an item/s to requisition'], 'danger');
                     return;
                 }
 
