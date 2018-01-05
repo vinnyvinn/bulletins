@@ -163,10 +163,6 @@
                     return;
                 }
 
-                if (this.requisition.lines.length == 0) {
-                    alert2(this.$root, ['Please add spare to requisition'], 'danger');
-                    return;
-                }
 
                 let shouldAdd = true;
 
@@ -218,6 +214,11 @@
             },
 
             store() {
+                if (this.requisition.lines.length == 0) {
+                    alert2(this.$root, ['Please an item to requisition'], 'danger');
+                    return;
+                }
+
                 let request = null;
                 this.requisition.vehicle_number = this.card.vehicle_number;
 
