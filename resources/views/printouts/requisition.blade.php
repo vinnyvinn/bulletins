@@ -90,7 +90,7 @@
             </div>
             <div class="row">
                 <div class="col-xs-2"><h6 class="text-left">Approved By:</h6></div>
-                <div class="col-xs-4"><h6 class="text-left"> Mwangi Kiunjuri&nbsp;</h6></div>
+                <div class="col-xs-4"><h6 class="text-left" style="border-bottom: 1px solid #e5e5e5"> &nbsp;</h6></div>
 
                 <div class="col-xs-2"><h6 class="text-left">Signature:</h6></div>
                 <div class="col-xs-4"><h6 class="text-left" style="border-bottom: 1px solid #e5e5e5">&nbsp;</h6></div>
