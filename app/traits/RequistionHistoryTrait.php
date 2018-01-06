@@ -47,6 +47,7 @@ trait RequistionHistoryTrait{
         $reqhist->status = $status;
         $reqhist->requistion_id = $req_id;
         $reqhist->save();
+        
      }
 
 
