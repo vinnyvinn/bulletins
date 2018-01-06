@@ -7,7 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Helpers\Helpers;
 use App\IssueLine;
 use App\Option;
+use App\RequisitionHistory;
 use App\SAGEUDF;
+use App\traits\RequistionHistoryTrait;
 use Auth;
 use Carbon\Carbon;
 use DB;
@@ -22,6 +24,7 @@ use SmoDav\Support\Constants;
 
 class PartsController extends Controller
 {
+    use RequistionHistoryTrait;
     /**
      * Display a listing of the resource.
      *
@@ -87,6 +90,7 @@ class PartsController extends Controller
             'trucks'=>VehicleFactory::all()
         ]);
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -215,6 +219,9 @@ class PartsController extends Controller
 
     public function approve(Request $request, $id)
     {
+        $req = Requisition::with(['lines'])->where('id', $id)->first();
+
+
         $requisition = DB::transaction(function () use ($request, $id) {
             $lines = collect($request->get('lines'))->keyBy('item_id');
             $requisition = Requisition::with(['lines'])->where('id', $id)->first();
@@ -273,6 +280,9 @@ class PartsController extends Controller
 
             return $requisition;
         });
+
+        //save to history
+        $this->approveReqHistory($id);
 
         $requisition = Requisition::with(['jobCard'])->orderBy('id', 'desc')->find($requisition->id);
         $requisition->raw_data = json_decode($requisition->raw_data);
@@ -355,6 +365,8 @@ class PartsController extends Controller
         Requisition::where('id', $id)->update([
             'status' => Constants::STATUS_DECLINED
         ]);
+
+        $this->rejectReqHistory($id);
 
         return Response::json([
             'success' => 'true',

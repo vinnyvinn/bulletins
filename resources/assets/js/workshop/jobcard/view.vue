@@ -482,10 +482,9 @@
                     alert2(this.$root, ['Closing remarks are mandatory'], 'danger');
                     return;
                 }
-                //check if quality check is done
                 let request = null;
 
-                http.post('/api/job-card/'+ this.$route.params.id +'/qccheck',this.card)
+                request = http.post('/api/job-card/'+ this.$route.params.id +'/qccheck',this.card)
                     .then((res)=>{
                      if(!res.status){
                          alert2(this.$root, ['You cant close a jobcard without quality check'], 'danger');

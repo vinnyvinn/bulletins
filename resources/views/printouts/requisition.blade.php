@@ -20,20 +20,22 @@
     </div>
 
 
+
+
     <div class="row" style="border: 1px solid #e5e5e5;">
         <div class="col-xs-2"><h4 class="text-left"><strong>Job Card #</strong></h4></div>
-        <div class="col-xs-4"><h4 class="text-right">JC-{{ $requisition->job_card_id }}</h4></div>
-        <div class="col-xs-2"><h4 class="text-left"><strong>Date</strong></h4></div>
-        <div class="col-xs-4"><h4 class="text-right">{{ Carbon\Carbon::parse($requisition->time_in)->format('dS F Y, h:i A') }}</h4></div>
+        <div class="col-xs-4"><h4 class="text-right" style="text-align: left">JC-{{ $requisition->job_card_id }}</h4></div>
+        <div class="col-xs-2"><h4 class="text-left" style="text-align: right"><strong>Date</strong></h4></div>
+        <div class="col-xs-4"><h4 class="text-right" >{{ Carbon\Carbon::parse($requisition->time_in)->format('dS F Y, h:i A') }}</h4></div>
 
         <div class="col-xs-2"><h4 class="text-left"><strong>KM</strong></h4></div>
-        <div class="col-xs-4"><h4 class="text-right">{{ number_format($requisition->jobCard->current_km_reading, 0) }}</h4></div>
+        <div class="col-xs-4"><h4 class="text-right" style="text-align: left">{{ number_format($requisition->jobCard->current_km_reading, 0) }}</h4></div>
         <div class="col-xs-2"><h4>&nbsp;</h4></div>
         <div class="col-xs-4"><h4>&nbsp;</h4></div>
 
         <div class="col-xs-2"><h4 class="text-left"><strong>Time</strong></h4></div>
         <div class="col-xs-4"><h4 class="text-right">{{ $requisition->vehicle_number }}</h4></div>
-        <div class="col-xs-2"><h4 class="text-left"><strong>Vehicle</strong></h4></div>
+        <div class="col-xs-2"><h4 class="text-left" style="text-align: right"><strong>Vehicle</strong></h4></div>
         <div class="col-xs-4"><h4 class="text-right">{{ $requisition->raw_data->vehicle_number }}</h4></div>
     </div>
 
@@ -59,21 +61,53 @@
             </tbody>
         </table>
     </div>
-
     <div class="row">
         <div class="col-xs-12">
             I acknowledge the receipt of the items listed above.
         </div>
-        <div class="col-xs-2"><h4 class="text-left">Authorized Sign</h4></div>
-        <div class="col-xs-4"><h4 class="text-left" style="border-bottom: 1px solid #e5e5e5">&nbsp;</h4></div>
-        <div class="col-xs-2"><h4 class="text-left">Time</h4></div>
-        <div class="col-xs-4"><h4 class="text-left" style="border-bottom: 1px solid #e5e5e5">&nbsp;</h4></div>
-        <div class="col-xs-2"><h4 class="text-left">Issued To</h4></div>
-        <div class="col-xs-4"><h4 class="text-left" style="border-bottom: 1px solid #e5e5e5">&nbsp;</h4></div>
-        <div class="col-xs-2"><h4 class="text-left">Sign</h4></div>
-        <div class="col-xs-4"><h4 class="text-left" style="border-bottom: 1px solid #e5e5e5">&nbsp;</h4></div>
+
+        <div class="row">
+            <div class="col-xs-2"><h6 class="text-left">Authorized Sign</h6></div>
+            <div class="col-xs-4"><h6 class="text-left" style="border-bottom: 1px solid #e5e5e5">&nbsp;</h6></div>
+            <div class="col-xs-2"><h6 class="text-left">Time</h6></div>
+            <div class="col-xs-4"><h6 class="text-left" style="border-bottom: 1px solid #e5e5e5">&nbsp;</h6></div>
+        </div>
+        @if($requisition->status == \SmoDav\Support\Constants::STATUS_PENDING)
+
+            <div class="row">
+                <div class="col-xs-2"><h6 class="text-left">Issued by:</h6></div>
+                <div class="col-xs-4"><h6 class="text-left" style="text-align: left">&nbsp;</h6></div>
+                <div class="col-xs-2"><h6 class="text-left">Signature:</h6></div>
+                <div class="col-xs-4"><h6 class="text-left" style="border-bottom: 1px solid #e5e5e5">&nbsp;</h6></div>
+            </div>
+        @else
+            <div class="row">
+                <div class="col-xs-2"><h6 class="text-left">Requested By:</h6></div>
+                <div class="col-xs-4"><h6 class="text-left" style="text-align: left">&nbsp;</h6></div>
+
+                <div class="col-xs-2"><h6 class="text-left">Signature:</h6></div>
+                <div class="col-xs-4"><h6 class="text-left" style="border-bottom: 1px solid #e5e5e5">&nbsp;</h6></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2"><h6 class="text-left">Approved By:</h6></div>
+                <div class="col-xs-4"><h6 class="text-left"> Mwangi Kiunjuri&nbsp;</h6></div>
+
+                <div class="col-xs-2"><h6 class="text-left">Signature:</h6></div>
+                <div class="col-xs-4"><h6 class="text-left" style="border-bottom: 1px solid #e5e5e5">&nbsp;</h6></div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-2"><h6 class="text-left">Issued To</h6></div>
+                <div class="col-xs-4"><h6 class="text-left" style="border-bottom: 1px solid #e5e5e5">&nbsp;</h6></div>
+                <div class="col-xs-2"><h6 class="text-left">Sign</h6></div>
+                <div class="col-xs-4"><h6 class="text-left" style="border-bottom: 1px solid #e5e5e5">&nbsp;</h6></div>
+            </div>
+
+        @endif
+
         <div class="col-xs-12">
             Unless authorized signature with proper date & time appears on this form no goods will be released from the stores.
         </div>
     </div>
+
 </div>
