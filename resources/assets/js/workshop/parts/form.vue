@@ -39,7 +39,7 @@
                                 <label for="item_id">Spare</label>
                                 <select name="item_id" id="item_id" class="form-control input-sm">
                                     <option value="null" disabled selected>Select Spare</option>
-                                    <option v-for="item in selectparts" :value="item.StockLink">{{ item.Description_1 }} ({{ item.product_make }} {{ item.product_model }})</option>
+                                    <option v-for="item in parts" :value="item.StockLink">{{ item.Description_1 }} ({{ item.product_make }} {{ item.product_model }})</option>
                                 </select>
                             </div>
                         </div>
