@@ -67,7 +67,7 @@ class JobCardController extends Controller
             'vehicles' => $trucks,
             'job_types' => WorkshopJobType::with(['operations.tasks'])->get(['id', 'name', 'service_type']),
             'checklist' => WorkshopInspectionCheckList::all(['name', 'id']),
-            'employees' => Employee::where('category', '=','Mechanics')->get(['id', 'first_name', 'last_name'])
+            'employees' => Employee::where('category', '=','Mechanics')->get(['id', 'first_name', 'last_name']),
         ]);
     }
 
