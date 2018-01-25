@@ -38,7 +38,7 @@
                                 </thead>
 
                                 <tbody>
-                                <tr v-for="(card, index) in cards">
+                                <tr v-for="(card, index) in cards" v-if="card.job_card">
                                     <td>{{ index + 1 }}</td>
                                     <td><router-link :to="'/wsh/qc/' + card.id + '/view'">QC-{{ card.id }}</router-link></td>
                                     <td><router-link :to="'/wsh/job-card/' + card.job_card_id">JC-{{ card.job_card_id }}</router-link></td>

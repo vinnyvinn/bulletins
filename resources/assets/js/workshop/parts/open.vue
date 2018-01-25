@@ -36,7 +36,7 @@
                                 </thead>
 
                                 <tbody>
-                                    <tr v-for="(item, index) in requisitions">
+                                    <tr v-for="(item, index) in requisitions" v-if="item.job_card">
                                         <td>{{ index + 1 }}</td>
                                         <td>
                                             <a @click.prevent="viewRequisition(item.id)">PR-{{ item.id }}</a>
@@ -83,15 +83,7 @@
         created() {
             http.get('/api/parts?status=Issued&station='+window.Laravel.station_id).then(response => {
 
-                const resjobcards = response.requisitions;
-
-                response.requisitions.forEach((req)=>{
-                    if(!req.job_card){
-                        resjobcards.splice(resjobcards.indexOf(req),1);
-                    }
-                });
-
-                this.requisitions = resjobcards;
+                this.requisitions = response.requisitions
                 confirm2('.btn-destroy', (element) => {
                     this.destroy(element.dataset.item);
                 });
