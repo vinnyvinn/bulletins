@@ -82,7 +82,7 @@
 <script>
     export default {
         created() {
-            http.get('/api/job-card').then(response => {
+            http.get('/api/job-card?station='+window.Laravel.station_id).then(response => {
                 this.cards = response.cards;
                 this.requisitions = response.requisitions;
                 confirm2('.btn-destroy', (element) => {
@@ -90,9 +90,7 @@
                 });
                 prepareTable();
             });
-            http.get('/api/fetchemployees').then((response) => {
-                console.log("response is new response", response)
-            });
+
         },
         data() {
             return {

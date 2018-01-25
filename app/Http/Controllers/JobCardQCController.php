@@ -15,12 +15,12 @@ class JobCardQCController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
         if (\request('status')) {
             $cards = JobCardQC::where('status', \request('status'))
                 ->with(['jobCard' => function ($builder) {
-                    return $builder->select('id', 'vehicle_number');
+                    return $builder->select('id', 'vehicle_number')->where('station_id', \request('station'));
                 }])
                 ->get(['id', 'job_card_id', 'status', 'created_at']);
 
@@ -30,6 +30,7 @@ class JobCardQCController extends Controller
         }
 
         $jobCards = JobCard::open()
+            ->where('station_id', $request->station)
             ->with(['type' => function ($builder) {
                 return $builder->select(['id', 'name']);
             }])
@@ -135,6 +136,7 @@ class JobCardQCController extends Controller
         JobCardQC::where('id', $jobCardQc)->update([
             'status' => Constants::STATUS_APPROVED
         ]);
+
 
         return Response::json([
             'status' => 'success',

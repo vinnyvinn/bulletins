@@ -5,6 +5,7 @@ namespace SmoDav\Controllers;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Datatables;
+use DB;
 use SmoDav\Models\Station;
 use Illuminate\Http\Request;
 
@@ -18,8 +19,11 @@ class StationController extends Controller
     public function index()
     {
         if (request()->ajax()) {
+            //return Station::with('whstransferbatch','consumptionbatch','whsemast')->get();
+
             return $this->getTableData();
         }
+
 
         return view('workshop.stations.index');
     }
@@ -31,7 +35,28 @@ class StationController extends Controller
      */
     public function create()
     {
-        return view('workshop.stations.create');
+        $warehouseTransferBatches = DB::table('_etblWhseTransferBatches')
+            ->select([
+                'idWhseTransferBatch', 'cBatchNo', 'cBatchDescription'
+            ])
+            ->get();
+
+        $journalBatches = DB::table('_etblInvJrBatches')
+            ->select([
+                'IDInvJrBatches', 'cInvJrNumber', 'cInvJrDescription'
+            ])
+            ->get();
+
+        $warehouses = DB::table('WhseMst')
+            ->where('WhseLink', '<>', 1)
+            ->select([
+                'WhseLink', 'Code', 'Name'
+            ])
+            ->get();
+        return view('workshop.stations.create')
+            ->with('journalBatches', $journalBatches)
+            ->with('warehouseBatches', $warehouseTransferBatches)
+            ->with('warehouses', $warehouses);
     }
 
     /**
@@ -75,14 +100,36 @@ class StationController extends Controller
      */
     public function edit(Station $station)
     {
-        return view('workshop.stations.create')->with('station', $station);
+        $warehouseTransferBatches = DB::table('_etblWhseTransferBatches')
+            ->select([
+                'idWhseTransferBatch', 'cBatchNo', 'cBatchDescription'
+            ])
+            ->get();
+
+        $journalBatches = DB::table('_etblInvJrBatches')
+            ->select([
+                'IDInvJrBatches', 'cInvJrNumber', 'cInvJrDescription'
+            ])
+            ->get();
+
+        $warehouses = DB::table('WhseMst')
+            ->where('WhseLink', '<>', 1)
+            ->select([
+                'WhseLink', 'Code', 'Name'
+            ])
+            ->get();
+
+        return view('workshop.stations.create')->with('station', $station)
+            ->with('journalBatches', $journalBatches)
+            ->with('warehouseBatches', $warehouseTransferBatches)
+            ->with('warehouses', $warehouses);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\Station             $station
+     * @param \App\Station $station
      *
      * @return \Illuminate\Http\Response
      */
@@ -115,13 +162,18 @@ class StationController extends Controller
 
     private function getTableData()
     {
-        $records = Station::select(['id', 'name', 'location', 'created_at']);
+        $records = Station::with('whstransferbatch', 'consumptionbatch', 'whsemast')->get();
+        foreach ($records as $record) {
+            $record->warehouse_name = ($record->whsemast) ? $record->whsemast['Name'] : 'Not Set';
+            $record->warehouse_tranfer_batch_name = $record->whstransferbatch['cBatchNo'];
+            $record->consumptionbatch_name = ($record->consumptionbatch) ? $record->consumptionbatch['cInvJrNumber'] : 'Not Set';
+        }
 
         return Datatables::of($records)
             ->addColumn('actions', function ($record) {
                 return '
                 <a href="' . route('workshop.stations.edit', $record->id) .
-                '" class="btn btn-xs btn-success"><i class="fa fa-pencil"></i></a>
+                    '" class="btn btn-xs btn-success"><i class="fa fa-pencil"></i></a>
                 ';
             })
             ->editColumn('created_at', function ($record) {

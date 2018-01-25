@@ -41,7 +41,7 @@ class LoginController extends Controller
 
     public function showLoginForm()
     {
-        $this->HrEmployees();
+
         return view('home');
     }
 

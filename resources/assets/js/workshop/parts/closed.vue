@@ -41,7 +41,9 @@
                                             <a @click.prevent="viewRequisition(item.id)">PR-{{ item.id }}</a>
                                         </td>
                                         <td>
-                                            <a @click.prevent="viewCard(item.job_card_id)">JC-{{ item.job_card_id }}</a>
+                                            <!--<a @click.prevent="viewCard(item.job_card_id)">JC-{{ item.job_card_id }}</a>
+                                            -->
+                                            JC-{{ item.job_card_id }}
                                         </td>
                                         <td>
                                             <span v-if="item.status == 'Pending Approval'" class="label label-warning">PENDING</span>
@@ -80,8 +82,16 @@
 <script>
     export default {
         created() {
-            http.get('/api/parts?status=Closed').then(response => {
-                this.requisitions = response.requisitions;
+            http.get('/api/parts?status=Closed&station='+window.Laravel.station_id).then(response => {
+                const resjobcards = response.requisitions;
+
+                response.requisitions.forEach((req)=>{
+                    if(!req.job_card){
+                        resjobcards.splice(resjobcards.indexOf(req),1);
+                    }
+                });
+
+                this.requisitions = resjobcards;
                 confirm2('.btn-destroy', (element) => {
                     this.destroy(element.dataset.item);
                 });

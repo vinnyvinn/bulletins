@@ -70,7 +70,7 @@
 <script>
     export default {
         created() {
-            http.get('/api/qc?status=Waivered').then(response => {
+            http.get('/api/qc?status=Waivered&station='+window.Laravel.station_id).then(response => {
                 this.cards = response.cards;
                 confirm2('.btn-destroy', (element) => {
                     this.destroy(element.dataset.item);

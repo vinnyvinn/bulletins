@@ -254,6 +254,7 @@
                     inspections: [],
                     mechanic_findings: '',
                     tasks: [],
+                    station_id:window.Laravel.station_id
                 }
             };
         },
@@ -429,6 +430,7 @@
             store() {
                 let request = null;
                 this.card.vehicle_number = this.vehicle.plate_number;
+                const station = 1;
 
                 if (this.$route.params.id) {
                     request = http.put('/api/job-card/' + this.$route.params.id, this.card);

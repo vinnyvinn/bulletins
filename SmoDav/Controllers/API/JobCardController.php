@@ -4,6 +4,7 @@ namespace SmoDav\Controllers\API;
 
 use App\Employee;
 use App\Http\Controllers\Controller;
+use App\JobCardQC;
 use App\Truck;
 use Auth;
 use Carbon\Carbon;
@@ -29,9 +30,9 @@ class JobCardController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        $jobCards = JobCard::with(['type' => function ($builder) {
+        $jobCards = JobCard::where('station_id',$request->station)->with(['type' => function ($builder) {
             return $builder->select(['id', 'name']);
         }])
             ->when(! \Auth::user()->has('approve-job-card'), function ($builder) {
@@ -67,7 +68,8 @@ class JobCardController extends Controller
             'vehicles' => $trucks,
             'job_types' => WorkshopJobType::with(['operations.tasks'])->get(['id', 'name', 'service_type']),
             'checklist' => WorkshopInspectionCheckList::all(['name', 'id']),
-            'employees' => Employee::where('category', '=','Mechanics')->get(['id', 'first_name', 'last_name']),
+            //'employees' => Employee::where('category', '=','Mechanics')->get(['id', 'first_name', 'last_name']),
+            'employees' => Employee::orderBy('first_name', 'ASC')->get(['id', 'first_name', 'last_name']),
         ]);
     }
 
@@ -80,13 +82,17 @@ class JobCardController extends Controller
      */
     public function store(Request $request)
     {
+
+
         DB::transaction(function () use ($request) {
             $data = $request->all();
+
             $data['raw_data'] = \json_encode($data);
             $data['user_id'] = Auth::id();
             $data['time_in'] = Carbon::now()->setTimeFromTimeString($data['time_in']);
             $data['has_trailer'] = false;
             $data['status'] = Constants::STATUS_PENDING;
+            $data['station_id'] = (int)$request->input('station_id');
 
             $jobCard = JobCard::create($data);
 
@@ -95,12 +101,15 @@ class JobCardController extends Controller
                 JobCardInspection::create($inspection);
             }
 
-           /* foreach ($data['tasks'] as $task) {
+            foreach ($data['tasks'] as $task) {
                 $task['job_card_id'] = $jobCard->id;
+                $task['task_name']=$task["task_name"];
                 $task['start_time'] = Carbon::parse($task['start_date'] . ' ' . $task['start_time']);
 
                 JobCardTask::create($task);
-            }*/
+            }
+
+
         });
 
         return Response::json([
@@ -226,9 +235,17 @@ class JobCardController extends Controller
     }
 
     public function qcCheck(Request $request, $id){
-        $card = JobCard::with('qualityCheck')->where('id', $id)->first();
+
+        $card = JobCardQC::where('job_card_id',$id)
+            ->where(function($q) {
+                $q->where('status', Constants::STATUS_APPROVED)
+                    ->orWhere('status', Constants::STATUS_DECLINED)
+                    ->orWhere('status', Constants::STATUS_WAIVERED);
+            })
+            ->first();
+
         return Response::json([
-            'status' => ($card->quality_check)?true:false
+            'status' => ($card)?true:false,
         ]);
     }
 

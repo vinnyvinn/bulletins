@@ -134,7 +134,7 @@
 
         created() {
             this.$root.isLoading = true;
-            http.get('/api/parts/create').then((response) => {
+            http.get('/api/parts/create?station='+window.Laravel.station_id).then((response) => {
                 this.parts = response.parts;
                 this.cards = response.cards;
                 this.trucks = response.trucks

@@ -249,7 +249,7 @@
                         </div>
 
                         <div class="form-group">
-                          <button class="btn btn-primary" @click.prevent="closeCard()">Close</button>
+                          <button class="btn btn-primary" @click.prevent="closeCard()">{{closingtry?'Please wait ...':'Close'}}</button>
                         </div>
                       </div>
                     </div>
@@ -294,7 +294,8 @@
                     mechanic_findings: '',
                     tasks: [],
                     closing_remarks: '',
-                }
+                },
+                closingtry:false
             };
         },
 
@@ -476,22 +477,25 @@
                 });
             },
 
-            closeCard() {
-              //check if closing remarks
-                if(!this.card.closing_remarks){
+            closeCard: function () {
+                //check if closing remarks
+                if (!this.card.closing_remarks) {
                     alert2(this.$root, ['Closing remarks are mandatory'], 'danger');
                     return;
                 }
-                let request = null;
 
-                request = http.post('/api/job-card/'+ this.$route.params.id +'/qccheck',this.card)
-                    .then((res)=>{
-                     if(!res.status){
-                         alert2(this.$root, ['You cant close a jobcard without quality check'], 'danger');
-                         return;
-                     }
-                     console.log("response is ", res);
-                     //this.closeCardCompletely();
+
+                this.closingtry = true;
+                let request = null;
+                request = http.post('/api/job-card/' + this.$route.params.id + '/qccheck', this.card)
+                    .then((res) => {
+
+                        if (!res.status) {
+                            alert2(this.$root, ['You cant close a jobcard without quality check'], 'danger');
+                            this.closingtry = false;
+                            return;
+                        }
+                        this.closeCardCompletely();
 
                     });
 
@@ -499,6 +503,7 @@
 
             closeCardCompletely(){
 
+                let request = null;
                 this.$root.isLoading = true;
                 this.card.vehicle_number = this.vehicle.plate_number;
                 request = http.post('/api/job-card/' + this.$route.params.id + '/close', this.card);

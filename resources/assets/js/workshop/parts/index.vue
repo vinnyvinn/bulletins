@@ -40,7 +40,10 @@
                                             <a @click.prevent="viewRequisition(item.id)">PR-{{ item.id }}</a>
                                         </td>
                                         <td>
-                                            <a @click.prevent="viewCard(item.job_card_id)">JC-{{ item.job_card_id }}</a>
+                                            <!--<a @click.prevent="viewCard(item.job_card_id)">
+                                                JC-{{ item.job_card_id }}
+                                            </a>-->
+                                            JC-{{ item.job_card_id }}
                                         </td>
                                         <td>{{ item.job_card.vehicle_number }}</td>
                                         <td>{{ formatDate(item.created_at) }}</td>
@@ -74,8 +77,18 @@
 <script>
     export default {
         created() {
-            http.get('/api/parts').then(response => {
-                this.requisitions = response.requisitions;
+            http.get('/api/parts?station='+window.Laravel.station_id).then(response => {
+                const resjobcards = response.requisitions;
+
+               response.requisitions.forEach((req)=>{
+                    if(!req.job_card){
+                        resjobcards.splice(resjobcards.indexOf(req),1);
+                    }
+                });
+
+                this.requisitions = resjobcards;
+
+                //= response.requisitions;
                 confirm2('.btn-destroy', (element) => {
                     this.destroy(element.dataset.item);
                 });

@@ -36,6 +36,7 @@ class JobCardProgressController extends Controller
             return $update;
         });
 
+
         return \Response::json([
             'employees' => Employee::where('category', 'Mechanics')->get(['id', 'first_name', 'last_name']),
             'updates' => $updates

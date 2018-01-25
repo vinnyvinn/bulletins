@@ -36,7 +36,7 @@ class PartsController extends Controller
             return $builder->own();
         })
             ->with(['jobCard' => function ($builder) {
-                return $builder->select(['id', 'vehicle_number']);
+                return $builder->select(['id', 'vehicle_number'])->where('station_id', \request('station'));
             }])
             ->when(! \request('status'), function ($builder) {
                 return $builder->where('status', Constants::STATUS_PENDING);
@@ -58,7 +58,7 @@ class PartsController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function create()
+    public function create(Request $request)
     {
         $modelColumn = DB::select('SELECT cFieldName FROM _rtblUserDict WHERE idUserDict = ' .
             "(SELECT option_value FROM options WHERE option_key = '" . SAGEUDF::MODEL_UDF . "')");
@@ -80,7 +80,7 @@ class PartsController extends Controller
             ])
             ->get();
 
-        $jobCards = JobCard::select(['id', 'raw_data', 'vehicle_number'])
+        $jobCards = JobCard::where('station_id', $request->station)->select(['id', 'raw_data', 'vehicle_number'])
             ->open()
             ->get();
 
@@ -275,7 +275,7 @@ class PartsController extends Controller
             ]);
 
             if ($requisition->status == Constants::STATUS_ISSUED) {
-                $requisition->transferToSite();
+                $requisition->transferToSite($request->station);
             }
 
             return $requisition;
@@ -346,7 +346,7 @@ class PartsController extends Controller
                 ConsumptionLine::insert($toInsert);
             }
 
-            $requisition->makeJournal($consumed);
+            $requisition->makeJournal($consumed, $request->station);
 
             $requisition->update([
                 'status' => $fullyConsumed ? Constants::STATUS_CLOSED : Constants::STATUS_ISSUED,
