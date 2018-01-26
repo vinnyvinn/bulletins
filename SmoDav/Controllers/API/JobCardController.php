@@ -32,6 +32,7 @@ class JobCardController extends Controller
      */
     public function index(Request $request)
     {
+        
         $jobCards = JobCard::where('station_id',$request->station)->with(['type' => function ($builder) {
             return $builder->select(['id', 'name']);
         }])
