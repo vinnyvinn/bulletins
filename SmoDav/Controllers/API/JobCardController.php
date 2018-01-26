@@ -92,12 +92,12 @@ class JobCardController extends Controller
                 JobCardInspection::create($inspection);
             }
 
-            foreach ($data['tasks'] as $task) {
+/*            foreach ($data['tasks'] as $task) {
                 $task['job_card_id'] = $jobCard->id;
                 $task['start_time'] = Carbon::parse($task['start_date'] . ' ' . $task['start_time']);
 
                 JobCardTask::create($task);
-            }
+            } */
         });
 
         return Response::json([
