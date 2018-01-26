@@ -20,6 +20,7 @@
             'csrfToken' => csrf_token(),
         ]) !!};
     </script>
+
 </head>
 <body>
 
@@ -28,6 +29,7 @@
         <loader v-if="isLoading"></loader>
 
         @yield('content')
+
     </div>
 
     <!-- Scripts -->

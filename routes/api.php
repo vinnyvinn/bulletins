@@ -12,6 +12,7 @@
  */
 
 Route::middleware('auth:api')->get('/user', 'HomeController@user');
+Route::get('/fetchemployees', '\SmoDav\Controllers\EmployeeController@HrEmployees');
 
 Route::group(['middleware' => 'auth:api'], function () {
     Route::post('driver/import', 'DriverController@importDrivers')->name('driver.import');
@@ -39,9 +40,12 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('download-doc/{file}', 'UDFController@download')->name('download');
 
     Route::resource('job-card', '\SmoDav\Controllers\API\JobCardController');
+    Route::resource('hr-employees', 'HrEmployeesController');
     Route::post('job-card/{id}/approve', '\SmoDav\Controllers\API\JobCardController@approveJobCard');
     Route::post('job-card/{id}/disapprove', '\SmoDav\Controllers\API\JobCardController@disapproveJobCard');
     Route::post('job-card/{id}/close', '\SmoDav\Controllers\API\JobCardController@closeCard');
+    Route::post('job-card/{id}/qccheck', '\SmoDav\Controllers\API\JobCardController@qcCheck');
+    Route::get('job-card/{reg_no}/truckdetails', '\SmoDav\Controllers\API\JobCardController@truckDetails');
     Route::resource('parts', '\SmoDav\Controllers\API\PartsController');
     Route::post('parts/{id}/approve', '\SmoDav\Controllers\API\PartsController@approve');
     Route::post('parts/{id}/consume', '\SmoDav\Controllers\API\PartsController@consume');

@@ -228,7 +228,7 @@ class ReportController extends Controller
             'date', 'fuels.current_fuel', 'fuel_requested', 'fuel_issued', 'fuel_total', 'tank',
             'pump', 'top_up', 'top_up_reason', 'top_up_quantity', 'stations.name as station_name',
             'contracts.name', 'vehicles.plate_number', 'drivers.first_name', 'drivers.last_name',
-            'Client.Name as client_name',
+            'Client.Name as client_name','journeys.id as journey_id'
         ];
 
         $deliveries = Fuel::where('date', '>=', $start)
@@ -349,6 +349,7 @@ class ReportController extends Controller
             'standard_amount', 'top_up_amount', 'contracts.name', 'vehicles.plate_number',
             'mileages.created_at as date', 'stations.name as station_name',
             'drivers.first_name', 'drivers.last_name', 'Client.Name as client_name',
+            'journeys.id as journey_id'
         ];
 
         $deliveries = Mileage::join('journeys', 'journeys.id', '=', 'mileages.journey_id')

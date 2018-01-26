@@ -30,4 +30,6 @@ const app = new Vue({
         user: JSON.parse(localStorage.getItem('fewuia32rfwe')),
         isLoggedIn: !! localStorage.getItem('foeiwafwfuwe')
     },
+
+
 }).$mount('#app');

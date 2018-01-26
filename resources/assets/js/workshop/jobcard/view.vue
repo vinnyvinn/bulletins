@@ -142,7 +142,52 @@
                         </div>
                     </div>
 
+                    <div class="row" v-if="status != 'Closed'">
+                        <div class="col-sm-5">
+                            <div class="form-group input-group-sm">
+                                <label for="operation_id">Operation Name</label>
+                                <select v-model="task.operation_id" name="operation_id" id="operation_id" class="form-control">
+                                    <option v-for="operation in jobType.operations" :value="operation.id">{{ operation.name }}</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group input-group-sm">
+                                <label for="employee_id">Assigned To</label>
+                                <select v-model="task.employee_id" name="employee_id" id="employee_id" class="form-control">
+                                    <option v-for="employee in employees" :value="employee.id">{{ employee.first_name }} {{ employee.last_name }}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <div class="form-group input-group-sm">
+                                <label for="workshop_job_task_id">Tasks</label>
+                                <input type="text" name="workshop_job_task_id" v-model="workshop_job_type_text" class="form-control" />
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group input-group-sm">
+                                        <label for="task_start_date">Start Date</label>
+                                        <input type="text" v-model="task.start_date" name="task_start_date" id="task_start_date" class="form-control datepicker">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group input-group-sm">
+                                        <label for="task_start_time">Time In</label>
+                                        <input type="time" v-model="task.start_time" name="task_start_time" id="task_start_time" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-sm-2">
+                            <br>
+                            <br>
+                            <a @click="addTask" class="btn btn-success btn-block">Add Task</a>
+                        </div>
+                    </div>
                     <hr>
+
 
                     <div class="row">
                         <div class="col-sm-12">
@@ -200,11 +245,11 @@
                       <div class="col-sm-12">
                         <div class="form-group">
                             <label for="closing_remarks">Closing Remarks</label>
-                            <textarea v-model="card.closing_remarks" name="closing_remarks" id="closing_remarks" cols="30" rows="10" class="form-control"></textarea>
+                            <textarea required v-model="card.closing_remarks" name="closing_remarks" id="closing_remarks" cols="30" rows="10" class="form-control"></textarea>
                         </div>
 
                         <div class="form-group">
-                          <button class="btn btn-primary" @click.prevent="closeCard()">Close</button>
+                          <button class="btn btn-primary" @click.prevent="closeCard()">{{closingtry?'Please wait ...':'Close'}}</button>
                         </div>
                       </div>
                     </div>
@@ -226,6 +271,7 @@
                 vehicles: [],
                 job_types: [],
                 employees: [],
+                workshop_job_type_text: '',
                 task: {
                     operation_id: '',
                     workshop_job_task_id: '',
@@ -248,7 +294,8 @@
                     mechanic_findings: '',
                     tasks: [],
                     closing_remarks: '',
-                }
+                },
+                closingtry:false
             };
         },
 
@@ -291,8 +338,28 @@
                 this.employees = response.employees;
                 this.createCheckLists(response.checklist);
                 setTimeout(() => {
+                    let dateSettings = {
+                        format: 'yyyy-mm-dd',
+                        startDate: '+0d',
+                        autoclose: true,
+                        todayHighlight: true,
+                    };
+
+                    $('#expected_completion').datepicker(dateSettings).on('change', (e) => {
+                        this.card.expected_completion = e.target.value;
+                    });
+
+                    $('#task_start_date').datepicker(dateSettings).on('change', (e) => {
+                        this.task.start_date = e.target.value;
+                    });
+                    $('#vehicle_id').select2().on('change', (e) => {
+                        this.card.vehicle_id = e.target.value;
+                    });
                     this.$root.isLoading = false;
                 }, 500);
+
+
+
 
                 return response;
             }).then(() => this.checkState());
@@ -300,7 +367,57 @@
 
 
         methods: {
-          initiateClose() {
+            addTask() {
+                if (! this.task.operation_id || this.task.operation_id.length == 0) return alert2(this.$root, ['Select the operation'], 'danger');
+                if (! this.task.employee_id || this.task.employee_id.length == 0) return alert2(this.$root, ['Select the employee'], 'danger');
+                if (! this.task.start_date || this.task.start_date.length == 0) return alert2(this.$root, ['Enter the start date'], 'danger');
+                // if (! this.task.workshop_job_task_id || this.task.workshop_job_task_id.length == 0) return alert2(this.$root, ['Select the task'], 'danger');
+                if (! this.workshop_job_type_text) return alert2(this.$root, ['Task should not be empty'], 'danger');
+
+
+
+                this.task.operation = this.operation.name;
+
+                //no longer pulling data from a dropdownlist
+                this.task.workshop_job_task_id = 1;
+
+                this.task.task_name = this.workshop_job_type_text;
+                this.task.workshop_job_task_name = this.workshop_job_type_text; //save to db an id after save
+
+                //get the task name from db
+                //this.task.workshop_job_task_id == e.id
+
+                /*
+                                this.task.task_name = this.operation.tasks.filter((e) => {
+                                    return this.task.workshop_job_task_id == e.id;
+                                })[0].name;
+
+                */
+
+
+                /*
+              */
+
+
+                this.card.tasks.push(this.task);
+
+
+                this.task = {
+                    operation_id: '',
+                    workshop_job_task_id: '',
+                    employee_id: '',
+                    start_date: '',
+                    start_time: '08:00',
+                    status: 'Not Started'
+                };
+            },
+
+            removeTask(task) {
+                this.card.tasks.splice(this.card.tasks.indexOf(task), 1);
+            },
+
+
+            initiateClose() {
             this.closing = true;
           },
 
@@ -360,9 +477,34 @@
                 });
             },
 
-            closeCard() {
-              this.$root.isLoading = true;
+            closeCard: function () {
+                //check if closing remarks
+                if (!this.card.closing_remarks) {
+                    alert2(this.$root, ['Closing remarks are mandatory'], 'danger');
+                    return;
+                }
+
+
+                this.closingtry = true;
                 let request = null;
+                request = http.post('/api/job-card/' + this.$route.params.id + '/qccheck', this.card)
+                    .then((res) => {
+
+                        if (!res.status) {
+                            alert2(this.$root, ['You cant close a jobcard without quality check'], 'danger');
+                            this.closingtry = false;
+                            return;
+                        }
+                        this.closeCardCompletely();
+
+                    });
+
+            },
+
+            closeCardCompletely(){
+
+                let request = null;
+                this.$root.isLoading = true;
                 this.card.vehicle_number = this.vehicle.plate_number;
                 request = http.post('/api/job-card/' + this.$route.params.id + '/close', this.card);
 
@@ -374,7 +516,7 @@
                     this.$root.isLoading = false;
                     alert2(this.$root, Object.values(JSON.parse(error.message)), 'danger');
                 });
-            },
+            }
         }
     }
 </script>

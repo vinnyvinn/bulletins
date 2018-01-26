@@ -22,13 +22,15 @@
                                 </thead>
 
                                 <tbody>
-                                    <tr v-for="(item, index) in requisitions">
+                                <!--Ensure that item has a jobcard-->
+                                    <tr v-for="(item, index) in requisitions" v-if="item.job_card">
                                         <td>{{ index + 1 }}</td>
                                         <td>
                                             PR-{{ item.id }}
                                         </td>
                                         <td>
-                                            <a @click.prevent="viewCard(item.job_card_id)">JC-{{ item.job_card_id }}</a>
+                                        <!--    <a @click.prevent="viewCard(item.job_card_id)">JC-{{ item.job_card_id }}</a>-->
+                                            JC-{{ item.job_card_id }}
                                         </td>
                                         <td>
                                             <span v-if="item.status == 'Pending Approval'" class="label label-warning">PENDING</span>
@@ -37,7 +39,7 @@
                                             <span v-if="item.status == 'Issued'" class="label label-success">ISSUED</span>
                                             <span v-if="item.status == 'Closed'" class="label label-default">CLOSED</span>
                                         </td>
-                                        <td>{{ item.job_card.vehicle_number }}</td>
+                                        <td>{{ (item.job_card)?item.job_card.vehicle_number:''}}</td>
                                         <td>{{ formatDate(item.created_at) }}</td>
                                         <td class="text-center">
                                           <a class="btn btn-success btn-xs" @click.prevent="viewRequisition(item.id)">ISSUE</a>
@@ -68,8 +70,20 @@
 <script>
     export default {
         created() {
-            http.get('/api/parts?status=Approved').then(response => {
-                this.requisitions = response.requisitions;
+            http.get('/api/parts?status=Approved&station='+window.Laravel.station_id).then(response => {
+               // this.requisitions = response.requisitions;
+                var resjobcards = response.requisitions;
+
+                response.requisitions.forEach((req)=>{
+                    if(req.job_card === null){
+                        console.log("bad is", resjobcards.indexOf(req));
+                        resjobcards.splice(resjobcards.indexOf(req),1);
+                    }
+                });
+
+                console.log("final is", resjobcards);
+
+                this.requisitions = resjobcards;
                 confirm2('.btn-destroy', (element) => {
                     this.destroy(element.dataset.item);
                 });

@@ -3,10 +3,14 @@
 namespace SmoDav\Controllers;
 
 use App\Driver;
+use App\Employee;
+use App\HrEmployeeDesignation;
+use App\HrEmployeesModel;
 use App\Http\Controllers\Controller;
 use App\Option;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Response;
 use SmoDav\Engine\PassportRepository;
 use SmoDav\Models\WorkshopEmployee;
 use SmoDav\Support\Constants;
@@ -21,7 +25,9 @@ class EmployeeController extends Controller
      */
     public function index()
     {
+
         if (request()->ajax()) {
+
             return $this->getTableData();
         }
 
@@ -61,7 +67,7 @@ class EmployeeController extends Controller
     public function show($id)
     {
 
-      // return view('masters.employees.show', ['driver', Driver::findOrFail($id)]);
+        // return view('masters.employees.show', ['driver', Driver::findOrFail($id)]);
         switch ($id) {
             case 'drivers':
                 return $this->getTableData(Constants::DRIVER);
@@ -146,10 +152,10 @@ class EmployeeController extends Controller
         return Datatables::of($results)
             ->addColumn('actions', function ($result) {
                 return
-                '<a href="' . route('super.employee.show', $result->id) .
+                    '<a href="' . route('super.employee.show', $result->id) .
                     '" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
                     <a href="' . route('super.employee.edit', $result->id) .
-                        '" class="btn btn-xs btn-success"><i class="fa fa-pencil"></i></a>
+                    '" class="btn btn-xs btn-success"><i class="fa fa-pencil"></i></a>
                             ';
             })
             ->editColumn('created_at', function ($result) {
@@ -189,7 +195,7 @@ class EmployeeController extends Controller
             $employees = collect($employees)->groupBy('department_id');
             foreach ($employees as $key => $value) {
                 foreach ($value as $employee) {
-                    $employee = (array) $employee;
+                    $employee = (array)$employee;
 
                     if (\in_array($employee['identification_number'], $currentEmployees)) {
                         continue;
@@ -219,4 +225,104 @@ class EmployeeController extends Controller
             return redirect()->back()->with('error', 'Please confirm the Payroll Integration is set up.');
         }
     }
+
+    function HrEmployees()
+    {
+        $hremployees = HrEmployeesModel::with('designation')->get();
+        $currentemployees = Employee::get();
+
+        $fetched = false;
+
+        if ($currentemployees->count() != $hremployees->count()) {
+          $fetched =   $this->fetchFromHr();
+        }
+
+        return Response::json(["status"=>$fetched]);
+    }
+
+    function fetchFromHr()
+    {
+        try {
+            $hremployees = HrEmployeesModel::with('designation')->get();
+            $currentemployees_payroll = [];
+
+            $currentemployees = Employee::all();
+            foreach ($currentemployees as $currentemployee) {
+                array_push($currentemployees_payroll, $currentemployee->payroll_number);
+            }
+            $hremployeespayroll = [];
+            foreach ($hremployees as $hremployee) {
+                array_push($hremployeespayroll, $hremployee->Emp_Payroll_No);
+            }
+            $deleteemailarrays = array_diff($currentemployees_payroll, $hremployeespayroll);
+            $this->deleteDeletedHrAcconts($deleteemailarrays);  //delete old accounts here
+
+
+            $aaddedpayrolls = array_diff($hremployeespayroll, $currentemployees_payroll);
+
+            foreach ($aaddedpayrolls as $key => $aaddedpayroll) {
+                //get specific account from hr with the details
+                $hraccount = HrEmployeesModel::where('Emp_Payroll_No', '=', $aaddedpayroll)->with('designation')->first();
+                $added = Employee::create([
+                    'payroll_number' => $hraccount->Emp_Payroll_No,
+                    'identification_number' => $hraccount->Emp_Payroll_No,
+                    'email' => $hraccount->Emp_Payroll_No,
+                    'mobile_phone' => $hraccount->Emp_Payroll_No,
+                    'first_name' => $hraccount->Emp_First_Name,
+                    'last_name' => $hraccount->Emp_Last_Name,
+                    'category' => ($hraccount->designation) ? $hraccount->designation->Desig_Name : 'Not assigned',
+                    'contract_id' => 1
+                ]);
+            }
+            // $updateusers = array_intersect($hremployeesemail, $currentemployees_email);
+
+            return true;
+
+
+        } catch (\Exception $ex) {
+            return false;
+        }
+    }
+
+    function saveDesignations()
+    {
+        $designations = HrEmployeeDesignation::get();
+        foreach ($designations as $designation) {
+
+
+        }
+    }
+
+
+    function UpdateUserAcccount($payrollno, $details)
+    {
+        $user = Employee::where('payroll_number', '=', $details->email)->get();
+        if ($user) {
+            //update user details but dont delete
+            $employee = new Employee();
+            $employee->payroll_number = "PAYROLL NU";
+            $employee->identification_number = "PAYROLL NU";
+            $employee->identification_type = "PAYROLL NU";
+            $employee->identification_type = "National ID";
+            $employee->first_name = "National ID";
+            $employee->last_name = "Last Name";
+            $employee->email = "Last Name";
+            $employee->mobile_phone = "Last Name";
+            $employee->category = "Last Name";
+            $employee->contract_id = "Last Name";
+            $employee->Save();
+        }
+    }
+
+    function deleteDeletedHrAcconts($payrolls)
+    {
+        $deleted = true;
+        foreach ($payrolls as $payroll) {
+            $user = Employee::where('payroll_number', '=',$payroll)->first();
+            $user->delete();
+        }
+        return $deleted;
+    }
+
+
 }

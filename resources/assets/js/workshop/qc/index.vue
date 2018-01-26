@@ -84,7 +84,7 @@
 <script>
     export default {
         created() {
-            http.get('/api/qc').then(response => {
+            http.get('/api/qc?station='+window.Laravel.station_id).then(response => {
                 this.cards = response.cards;
                 confirm2('.btn-destroy', (element) => {
                     this.destroy(element.dataset.item);

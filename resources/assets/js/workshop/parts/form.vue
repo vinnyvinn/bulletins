@@ -117,7 +117,10 @@
                     mechanic_findings: '',
                     lines: [],
                     status: 'Pending Approval'
-                }
+                },
+                trucks:[],
+                selectparts:[],
+                truckmania:[]
             };
         },
 
@@ -131,9 +134,10 @@
 
         created() {
             this.$root.isLoading = true;
-            http.get('/api/parts/create').then((response) => {
+            http.get('/api/parts/create?station='+window.Laravel.station_id).then((response) => {
                 this.parts = response.parts;
                 this.cards = response.cards;
+                this.trucks = response.trucks
                 setTimeout(() => {
                     $('#item_id').select2({
                         placeholder: 'Select an option'
@@ -143,6 +147,7 @@
 
                         this.item.item_name = selectedItem.Description_1 + '(' + selectedItem.product_make +
                             ' ' + selectedItem.product_model + ')'
+
                     });
                     this.$root.isLoading = false;
                 }, 1000);
@@ -161,6 +166,7 @@
                     alert2(this.$root, ['Please enter a valid quantity'], 'danger');
                     return;
                 }
+
 
                 let shouldAdd = true;
 
@@ -186,7 +192,18 @@
                 };
             },
 
-            mapFindings() {
+            mapFindings: function (e) {
+
+                //filter a specific
+                const truck = this.trucks.filter(truck => truck.plate_number === this.card.vehicle_number);
+                this.truckmania = truck;
+
+                if(truck.length){
+                    this.selectparts = this.parts.filter((item)=> {
+                        return (item.product_make === truck[0].make.name || item.product_model === truck[0].model.name);
+                    });
+                }
+
                 setTimeout(() => this.requisition.mechanic_findings = this.card.mechanic_findings, 500);
             },
 
@@ -203,6 +220,11 @@
             },
 
             store() {
+                if (this.requisition.lines.length == 0) {
+                    alert2(this.$root, ['Please an item/s to requisition'], 'danger');
+                    return;
+                }
+
                 let request = null;
                 this.requisition.vehicle_number = this.card.vehicle_number;
 

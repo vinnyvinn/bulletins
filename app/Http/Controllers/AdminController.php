@@ -30,7 +30,8 @@ class AdminController extends Controller
 
         $year = \date('Y');
         $sales_data = Invoice::whereRaw('YEAR(created_at) =' . $year)
-            ->selectRaw('DATEPART(MM, created_at) as month, sum(total_price) as amount')
+            //->selectRaw('DATEPART(MM, created_at) as month, sum(total_price) as amount')
+            ->selectRaw('created_at as month, sum(total_price) as amount')
             ->groupBy('created_at')
             ->orderBy('created_at')
             ->get();

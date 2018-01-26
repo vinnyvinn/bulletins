@@ -38,10 +38,16 @@
             <router-view></router-view>
         </transition>
     </div>
-
+{{--
+   <init v-if="isLoggedIn"></init>
+   s
+--}}
 </div>
 
 <!-- Scripts -->
 <script src="{{ asset(mix('js/app.js')) }}"></script>
+
+
 </body>
 </html>
+

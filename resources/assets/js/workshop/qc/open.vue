@@ -38,7 +38,7 @@
                                 </thead>
 
                                 <tbody>
-                                <tr v-for="(card, index) in cards">
+                                <tr v-for="(card, index) in cards" v-if="card.job_card">
                                     <td>{{ index + 1 }}</td>
                                     <td><router-link :to="'/wsh/qc/' + card.id + '/view'">QC-{{ card.id }}</router-link></td>
                                     <td><router-link :to="'/wsh/job-card/' + card.job_card_id">JC-{{ card.job_card_id }}</router-link></td>
@@ -70,7 +70,7 @@
 <script>
     export default {
         created() {
-            http.get('/api/qc?status=Pending Approval').then(response => {
+            http.get('/api/qc?status=Pending Approval&station='+window.Laravel.station_id).then(response => {
                 this.cards = response.cards;
                 confirm2('.btn-destroy', (element) => {
                     this.destroy(element.dataset.item);

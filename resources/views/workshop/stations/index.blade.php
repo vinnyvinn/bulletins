@@ -37,6 +37,9 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Location</th>
+                                <th>Item Consumption Journal Batch</th>
+                                <th>Warehouse Transfer Batch</th>
+                                <th>Warehouse to Transfer to</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -64,6 +67,9 @@
             columns: [
                 { data: 'name', name: 'name' },
                 { data: 'location', name: 'location' },
+                { data: 'consumptionbatch_name', name: 'location' },
+                { data: 'warehouse_tranfer_batch_name', name: 'location' },
+                { data: 'warehouse_name', name: 'location' },
                 { data: 'actions', name: 'actions', searchable: false },
             ]
         });

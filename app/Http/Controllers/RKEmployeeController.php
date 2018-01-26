@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\HrEmployeesModel;
 use Illuminate\Http\Request;
 use App\Employee;
 use Response;
@@ -16,6 +17,24 @@ class RKEmployeeController extends Controller
      */
     public function index()
     {
+     /*   var_dump("employees are ",HrEmployeesModel::all());
+        die();
+     */  /* return Response::json([
+            'employees' => Employee::all(),
+        ]);*/
+
+        /*$hremployees = HrEmployeesModel::with('designation')->get();
+
+        return Response::json([
+            'employees' => $hremployees,
+        ]);*/
+
+       /* var_dump($hremployees);
+        die();
+
+        return Response::json([
+            'employees' => Employee::all(),
+        ]);*/
         return Response::json([
             'employees' => Employee::all(),
         ]);

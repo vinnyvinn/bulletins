@@ -5,7 +5,6 @@
                 <div class="panel-heading text-center">
                     <strong>Station Selections news</strong>
                 </div>
-
                 <div class="panel-body">
                     <h4 class="text-center">Please select a station</h4>
                     <form action="/station-selection" method="post" role="form">
@@ -18,7 +17,6 @@
                                     </select>
                                 </div>
                             </div>
-
                         <br>
 
                         <div class="col-sm-12">
@@ -36,8 +34,15 @@
 
 <script>
     export default {
+        data:()=>({
+        }),
         created() {
-            http.get('/api/user');
+            this.$root.isLoading = true;
+            http.get('/api/user')
+                .then((res)=>{
+                    this.$root.isLoading = false;
+                })
+            ;
         }
     }
 </script>

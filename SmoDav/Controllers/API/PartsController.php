@@ -7,12 +7,15 @@ use App\Http\Controllers\Controller;
 use App\Http\Helpers\Helpers;
 use App\IssueLine;
 use App\Option;
+use App\RequisitionHistory;
 use App\SAGEUDF;
+use App\traits\RequistionHistoryTrait;
 use Auth;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
 use Response;
+use SmoDav\Factory\VehicleFactory;
 use SmoDav\Models\JobCard;
 use SmoDav\Models\Make;
 use SmoDav\Models\Requisition;
@@ -21,6 +24,7 @@ use SmoDav\Support\Constants;
 
 class PartsController extends Controller
 {
+    use RequistionHistoryTrait;
     /**
      * Display a listing of the resource.
      *
@@ -32,7 +36,7 @@ class PartsController extends Controller
             return $builder->own();
         })
             ->with(['jobCard' => function ($builder) {
-                return $builder->select(['id', 'vehicle_number']);
+                return $builder->select(['id', 'vehicle_number'])->where('station_id', \request('station'));
             }])
             ->when(! \request('status'), function ($builder) {
                 return $builder->where('status', Constants::STATUS_PENDING);
@@ -54,7 +58,7 @@ class PartsController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function create()
+    public function create(Request $request)
     {
         $modelColumn = DB::select('SELECT cFieldName FROM _rtblUserDict WHERE idUserDict = ' .
             "(SELECT option_value FROM options WHERE option_key = '" . SAGEUDF::MODEL_UDF . "')");
@@ -76,15 +80,17 @@ class PartsController extends Controller
             ])
             ->get();
 
-        $jobCards = JobCard::select(['id', 'raw_data', 'vehicle_number'])
+        $jobCards = JobCard::where('station_id', $request->station)->select(['id', 'raw_data', 'vehicle_number'])
             ->open()
             ->get();
 
         return Response::json([
             'parts' => $products,
             'cards' => $jobCards,
+            'trucks'=>VehicleFactory::all()
         ]);
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -213,6 +219,9 @@ class PartsController extends Controller
 
     public function approve(Request $request, $id)
     {
+        $req = Requisition::with(['lines'])->where('id', $id)->first();
+
+
         $requisition = DB::transaction(function () use ($request, $id) {
             $lines = collect($request->get('lines'))->keyBy('item_id');
             $requisition = Requisition::with(['lines'])->where('id', $id)->first();
@@ -266,11 +275,14 @@ class PartsController extends Controller
             ]);
 
             if ($requisition->status == Constants::STATUS_ISSUED) {
-                $requisition->transferToSite();
+                $requisition->transferToSite($request->station);
             }
 
             return $requisition;
         });
+
+        //save to history
+        $this->approveReqHistory($id);
 
         $requisition = Requisition::with(['jobCard'])->orderBy('id', 'desc')->find($requisition->id);
         $requisition->raw_data = json_decode($requisition->raw_data);
@@ -334,7 +346,7 @@ class PartsController extends Controller
                 ConsumptionLine::insert($toInsert);
             }
 
-            $requisition->makeJournal($consumed);
+            $requisition->makeJournal($consumed, $request->station);
 
             $requisition->update([
                 'status' => $fullyConsumed ? Constants::STATUS_CLOSED : Constants::STATUS_ISSUED,
@@ -353,6 +365,8 @@ class PartsController extends Controller
         Requisition::where('id', $id)->update([
             'status' => Constants::STATUS_DECLINED
         ]);
+
+        $this->rejectReqHistory($id);
 
         return Response::json([
             'success' => 'true',

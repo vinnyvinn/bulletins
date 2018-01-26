@@ -43,19 +43,28 @@ class Requisition extends SmoDavModel
         return $builder->where('status', Constants::STATUS_APPROVED);
     }
 
-    public function transferToSite()
+    public function transferToSite($station_id=1)
     {
-        $settings = Option::whereIn('option_key', [
+        /*$settings = Option::whereIn('option_key', [
             Option::WAREHOUSE_TO_TRANSFER,
             Option::WAREHOUSE_TRANSFER_BATCH
-        ])->get();
+        ])->get();*/
 
-        $batchId = $settings->where('option_key', Option::WAREHOUSE_TRANSFER_BATCH)->first();
+        /*$batchId = $settings->where('option_key', Option::WAREHOUSE_TRANSFER_BATCH)->first();
         $warehouseId = $settings->where('option_key', Option::WAREHOUSE_TO_TRANSFER)->first();
 
         $batchId = $batchId ? $batchId->option_value : null;
-        $warehouseId = $warehouseId ? $warehouseId->option_value : null;
+        $warehouseId = $warehouseId ? $warehouseId->option_value : null;*/
 
+        /*if (! $batchId || ! $warehouseId) {
+            return false;
+        }*/
+
+        $transferstation = Station::where('id', $station_id)->first();
+
+
+        $batchId = $transferstation ? $transferstation->warehouse_transfer_batch : null;
+        $warehouseId = $transferstation ? $transferstation->warehouse_to_transfer : null;
         if (! $batchId || ! $warehouseId) {
             return false;
         }
@@ -83,8 +92,18 @@ class Requisition extends SmoDavModel
         return DB::table('_etblWhseTransferBatchLines')->insert($toInsert);
     }
 
-    public function makeJournal($items)
+    public function makeJournal($items, $station_id)
     {
+        $transferstation = Station::where('id', $station_id)->first();
+
+
+        $journalbatchid = $transferstation ? $transferstation->consumption_journal_batch : null;
+        $warehouseId = $transferstation ? $transferstation->warehouse_to_transfer : null;
+        if (! $journalbatchid || ! $warehouseId) {
+            return false;
+        }
+
+
         $result = StockItem::select(['StockLink', 'AveUCst', 'iUOMStockingUnitID'])
             ->whereIn('StockLink', \array_keys($items))
             ->get()
@@ -99,9 +118,9 @@ class Requisition extends SmoDavModel
 
             DB::table('_etblInvJrBatchLines')->insert(
                 [
-                    'iInvJrBatchID' => Helpers::get_option(Option::CONSUMPTION_JOURNAL_BATCH),
+                    'iInvJrBatchID' => $journalbatchid,//Helpers::get_option(Option::CONSUMPTION_JOURNAL_BATCH),
                     'iStockID' => $itemId,
-                    'iWarehouseID' => Helpers::get_option(Option::WAREHOUSE_TO_TRANSFER),
+                    'iWarehouseID' => $warehouseId,//Helpers::get_option(Option::WAREHOUSE_TO_TRANSFER),
                     'dTrDate' => Carbon::now(),
                     'iTrCodeID' => 37,
                     'iGLContraID' => 5,

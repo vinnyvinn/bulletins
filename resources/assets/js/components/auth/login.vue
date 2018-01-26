@@ -44,9 +44,7 @@
 
 <script>
     export default {
-//        mounted() {
-//            http.post('/logout', this.user);
-//        },
+
         data() {
             return {
                 user: {
@@ -63,19 +61,19 @@
         methods: {
             login() {
                 this.$root.isLoading = true;
-
                 http.post('/login', this.user).then(response => {
                     this.$root.isLoading = false;
+
                     alert2(this.$root, ['Successfully signed in.'], 'success');
                     localStorage.setItem('foeiwafwfuwe', response.access_token);
                     localStorage.setItem('fewuia32rfwe', JSON.stringify(response.user));
-                    setTimeout(() => window.location = '/', 1000);
-//                    this.$root.user = response.user;
-//                    this.$root.isLoggedIn = true;
-//                    this.$root.isLoading = false;
+
+                   setTimeout(() => window.location = '/', 1000);
                 }).catch((error) => {
-                    alert2(this.$root, [Object.values(JSON.parse(error.message))[1]], 'danger');
                     this.$root.isLoading = false;
+                //    alert2(this.$root, [Object.values(JSON.parse(error.message))[1]], 'danger');
+                    alert2(this.$root, ['Login Failed'], 'danger');
+
                 });
 
 

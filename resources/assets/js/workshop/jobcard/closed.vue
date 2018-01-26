@@ -83,7 +83,7 @@
 <script>
     export default {
         created() {
-            http.get('/api/job-card?status=Closed').then(response => {
+            http.get('/api/job-card?status=Closed&station='+window.Laravel.station_id).then(response => {
                 this.cards = response.cards;
                 this.requisitions = response.requisitions;
                 confirm2('.btn-destroy', (element) => {

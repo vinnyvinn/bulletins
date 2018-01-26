@@ -1,5 +1,6 @@
 import 'whatwg-fetch'
 import VueRouter from 'vue-router'
+import VueResource from 'vue-resource';
 import { http, showAlert, prepareTable, formatDate, confirmPopup, hasPermission, mapToFormData } from './core';
 window.http = http;
 window.alert2 = showAlert;
@@ -41,9 +42,9 @@ $.fn.select2.defaults.set("theme", "bootstrap");
  * using reactive data binding and reusable components. Vue's API is clean
  * and simple, leaving you to focus on building your next great project.
  */
-
 let vue = require('vue');
 vue.use(VueRouter);
+vue.use(VueResource);
 
 window.Vue = vue;
 window.VueRouter = VueRouter;

@@ -98,11 +98,10 @@
                                 </table>
                             </div>
                         </div>
-
                         <div class="form-group">
                             <span v-if="(status == 'Pending Approval' && can('approve-requisition'))">
-                                <input type="submit" name="approve" class="btn btn-success" @click.prevent="approve()" value="Approve Job Card">
-                                <input type="submit" name="disapprove" class="btn btn-danger" @click.prevent="disapprove()" value="Disapprove Job Card">
+                                <input type="submit" name="approve" class="btn btn-success" @click.prevent="approve()" value="Approve Requisition">
+                                <input type="submit" name="disapprove" class="btn btn-danger" @click.prevent="disapprove()" value="Disapprove Requisition">
                             </span>
                             <span v-if="(status == 'Approved' && can('issue-requisition'))">
                                 <input type="submit" name="issue" class="btn btn-success" @click.prevent="approve()" value="Issue Parts">
@@ -245,7 +244,7 @@
                     this.requisition.is_issue = true;
                 }
 
-                http.post('/api/parts/' + this.$route.params.id + '/approve', this.requisition).then((response) => {
+                http.post('/api/parts/' + this.$route.params.id + '/approve?station='+window.Laravel.station_id, this.requisition).then((response) => {
                     this.printout = response.printout;
                     this.$root.isLoading = false;
                     setTimeout(() => {
@@ -265,7 +264,7 @@
             consume() {
                 this.$root.isLoading = true;
                 this.requisition.type = 'consumption';
-                http.post('/api/parts/' + this.$route.params.id + '/consume', this.requisition).then((response) => {
+                http.post('/api/parts/' + this.$route.params.id + '/consume?station='+window.Laravel.station_id, this.requisition).then((response) => {
                     alert2(this.$root, [response.message], 'success');
                     this.$root.isLoading = false;
                     window._router.push({ path: '/wsh/parts' });

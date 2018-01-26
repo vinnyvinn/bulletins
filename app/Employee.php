@@ -7,14 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class Employee extends Model
 {
     protected $fillable = [
-      'payroll_number',
-      'identification_number',
-      'identification_type',
-      'first_name',
-      'last_name',
-      'email',
-      'mobile_phone',
-      'category',
-      'contract_id'
+        'id',
+        'payroll_number',
+        'identification_number',
+        'identification_type',
+        'first_name',
+        'last_name',
+        'email',
+        'mobile_phone',
+        'category',
+        'contract_id'
     ];
 }

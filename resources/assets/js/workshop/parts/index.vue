@@ -34,13 +34,16 @@
                                 </thead>
 
                                 <tbody>
-                                    <tr v-for="(item, index) in requisitions">
+                                    <tr v-for="(item, index) in requisitions" v-if="item.job_card">
                                         <td>{{ index + 1 }}</td>
                                         <td>
                                             <a @click.prevent="viewRequisition(item.id)">PR-{{ item.id }}</a>
                                         </td>
                                         <td>
-                                            <a @click.prevent="viewCard(item.job_card_id)">JC-{{ item.job_card_id }}</a>
+                                            <!--<a @click.prevent="viewCard(item.job_card_id)">
+                                                JC-{{ item.job_card_id }}
+                                            </a>-->
+                                            JC-{{ item.job_card_id }}
                                         </td>
                                         <td>{{ item.job_card.vehicle_number }}</td>
                                         <td>{{ formatDate(item.created_at) }}</td>
@@ -74,8 +77,11 @@
 <script>
     export default {
         created() {
-            http.get('/api/parts').then(response => {
+            http.get('/api/parts?station='+window.Laravel.station_id).then(response => {
+
                 this.requisitions = response.requisitions;
+
+                //= response.requisitions;
                 confirm2('.btn-destroy', (element) => {
                     this.destroy(element.dataset.item);
                 });

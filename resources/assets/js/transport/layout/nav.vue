@@ -67,6 +67,12 @@
                 <div class="caption">Local Shunting</div>
             </a>
 
+            <a href="/wsh" class="nav-items">
+                <img src="/images/workshop.png" alt="logout" class="img-responsive">
+                <div class="caption">Workshop</div>
+            </a>
+
+
             <div @click.prevent="logout" class="nav-items">
                 <img src="/images/logout.png" alt="logout" class="img-responsive">
                 <div class="caption">Logout</div>
