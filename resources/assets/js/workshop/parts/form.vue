@@ -135,7 +135,17 @@
         created() {
             this.$root.isLoading = true;
             http.get('/api/parts/create?station='+window.Laravel.station_id).then((response) => {
-                this.parts = response.parts;
+
+                const byName = response.parts.slice(0);
+                this.parts =  byName.sort(function(a,b) {
+                    const x = a.Description_1.toLowerCase();
+                    const y = b.Description_1.toLowerCase();
+                    return x < y ? -1 : x > y ? 1 : 0;
+                });
+               /* this.parts = response.parts;
+                console.log('by name:');
+                console.log(byName);
+*/
                 this.cards = response.cards;
                 this.trucks = response.trucks
                 setTimeout(() => {
