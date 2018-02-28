@@ -51,12 +51,12 @@ class JobCardController extends Controller
                 'workshop_job_type_id', 'status', 'breakdown_id'
             ]);
 
-        foreach ($jobCards as $card){
+        foreach ($jobCards as $key=>$card){
             //get driver details and contact if there is
             $driver_name = '';
             $driver_contact = '';
             $decoded = json_decode($card['raw_data']);
-            if($decoded->driver_id){
+            if(property_exists($decoded ,"driver_id")){
                 //find the driver
                 $driver = Driver::where('id', $decoded->driver_id)->first();
                 if($driver){
