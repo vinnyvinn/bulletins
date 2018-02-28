@@ -102,6 +102,11 @@ class ExternalServiceController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
+
+        return $data;
+
+
+
         $data['user_id'] = \Auth::id();
         if (! $data['mechanic_findings']) {
             $data['mechanic_findings'] = '';

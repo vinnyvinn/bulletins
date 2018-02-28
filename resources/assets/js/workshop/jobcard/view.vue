@@ -477,7 +477,7 @@
                 });
             },
 
-            closeCard: function () {
+            closeCard2() {
                 //check if closing remarks
                 if (!this.card.closing_remarks) {
                     alert2(this.$root, ['Closing remarks are mandatory'], 'danger');
@@ -496,12 +496,11 @@
                             return;
                         }
                         this.closeCardCompletely();
-
                     });
 
             },
 
-            closeCardCompletely(){
+            closeCard(){
 
                 let request = null;
                 this.$root.isLoading = true;
@@ -509,8 +508,16 @@
                 request = http.post('/api/job-card/' + this.$route.params.id + '/close', this.card);
 
                 request.then((response) => {
-                    alert2(this.$root, [response.message], 'success');
-                    window._router.push({ path: '/wsh/job-card' });
+                    console.log("response is ", response);
+                    if(!response.success){
+                        alert2(this.$root, [response.message], 'danger');
+                        window._router.push({ path: '/wsh/job-card/open' });
+
+                    }else{
+                        alert2(this.$root, [response.message], 'success');
+                        window._router.push({ path: '/wsh/job-card' });
+                    }
+
                     this.$root.isLoading = false;
                 }).catch((error) => {
                     this.$root.isLoading = false;

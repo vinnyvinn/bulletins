@@ -224,14 +224,25 @@ class JobCardController extends Controller
 
     public function closeCard(Request $request, $id)
     {
-        JobCard::where('id', $id)->update([
-            'status' => Constants::STATUS_CLOSED,
-            'closing_remarks' => $request->get('closing_remarks')
-        ]);
+        $closed = false;
+        $card = JobCardQC::where('job_card_id',$id)
+            ->where(function($q) {
+                $q->where('status', Constants::STATUS_APPROVED)
+                    ->orWhere('status', Constants::STATUS_DECLINED)
+                    ->orWhere('status', Constants::STATUS_WAIVERED);
+            })
+            ->first();
+        if($card){
+            JobCard::where('id', $id)->update([
+                'status' => Constants::STATUS_CLOSED,
+                'closing_remarks' => $request->get('closing_remarks')
+            ]);
+            $closed = true;
+        }
 
         return Response::json([
-            'success' => 'true',
-            'message' => 'Successfully closed job card.'
+            'success' => $closed,
+            'message' => ($closed)?'Successfully closed job card.':'JobCard requires quality check before closing'
         ]);
     }
 

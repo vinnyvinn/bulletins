@@ -308,11 +308,11 @@
 
           if (this.$route.params.id) {
             request = http.put(
-              "/api/services/" + this.$route.params.id,
+              "/api/services/" + this.$route.params.id+'?station='+window.Laravel.station_id,
               this.requisition
             );
           } else {
-            request = http.post("/api/services", this.requisition);
+            request = http.post("/api/services?station="+window.Laravel.station_id, this.requisition);
           }
 
           request
