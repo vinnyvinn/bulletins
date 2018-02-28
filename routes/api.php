@@ -44,7 +44,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('job-card/{id}/approve', '\SmoDav\Controllers\API\JobCardController@approveJobCard');
     Route::post('job-card/{id}/disapprove', '\SmoDav\Controllers\API\JobCardController@disapproveJobCard');
     Route::post('job-card/{id}/close', '\SmoDav\Controllers\API\JobCardController@closeCard');
-    Route::post('job-card/{id}/qccheck', '\SmoDav\Controllers\API\JobCardController@qcCheck');
     Route::post('job-card/{id}/qccheckconfirm', '\SmoDav\Controllers\API\JobCardController@qcCheck');
     Route::get('job-card/{reg_no}/truckdetails', '\SmoDav\Controllers\API\JobCardController@truckDetails');
     Route::resource('parts', '\SmoDav\Controllers\API\PartsController');

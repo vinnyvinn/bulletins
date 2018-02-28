@@ -487,7 +487,7 @@
 
                 this.closingtry = true;
                 let request = null;
-                request = http.post('/api/job-card/' + this.$route.params.id + '/qccheck', this.card)
+                request = http.post('/api/job-card/' + this.$route.params.id + '/qccheckconfirm', this.card)
                     .then((res) => {
 
                         if (!res.status) {
