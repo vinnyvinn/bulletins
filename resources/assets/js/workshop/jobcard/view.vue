@@ -477,32 +477,9 @@
                 });
             },
 
-            closeCard2() {
-                //check if closing remarks
-                if (!this.card.closing_remarks) {
-                    alert2(this.$root, ['Closing remarks are mandatory'], 'danger');
-                    return;
-                }
-
-
-                this.closingtry = true;
-                let request = null;
-                request = http.post('/api/job-card/' + this.$route.params.id + '/qccheckconfirm', this.card)
-                    .then((res) => {
-
-                        if (!res.status) {
-                            alert2(this.$root, ['You cant close a jobcard without quality check'], 'danger');
-                            this.closingtry = false;
-                            return;
-                        }
-                        this.closeCardCompletely();
-                    });
-
-            },
-
             closeCard(){
 
-                if(this.card.closing_remarks === ''){
+                if(!this.card.closing_remarks || this.card.closing_remarks === ''){
                     alert2(this.$root, ['Closing remarks are mandatory'], 'danger');
                     return;
                 }

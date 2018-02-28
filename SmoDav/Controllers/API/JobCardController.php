@@ -2,6 +2,7 @@
 
 namespace SmoDav\Controllers\API;
 
+use App\Driver;
 use App\Employee;
 use App\Http\Controllers\Controller;
 use App\JobCardQC;
@@ -46,10 +47,30 @@ class JobCardController extends Controller
                 return $builder->where('status', \request('status'));
             })
             ->get([
-                'id', 'job_description', 'vehicle_number', 'created_at', 'expected_completion',
+                'id', 'job_description', 'vehicle_number','raw_data', 'created_at', 'expected_completion',
                 'workshop_job_type_id', 'status', 'breakdown_id'
             ]);
 
+        foreach ($jobCards as $card){
+            //get driver details and contact if there is
+            $driver_name = '';
+            $driver_contact = '';
+            $decoded = json_decode($card['raw_data']);
+            if($decoded->driver_id){
+                //find the driver
+                $driver = Driver::where('id', $decoded->driver_id)->first();
+                if($driver){
+                    $driver_name = $driver->first_name. " ".$driver->last_name;
+                    $driver_contact = $driver->mobile_phone;
+                }
+
+            }
+           $card->driver_name = $driver_name;
+           $card->driver_contact = $driver_contact;
+
+           //remove rawdata
+           unset($card->raw_data, $card);
+        }
 
         return Response::json([
             'cards' => $jobCards,
@@ -83,8 +104,6 @@ class JobCardController extends Controller
      */
     public function store(Request $request)
     {
-
-
         DB::transaction(function () use ($request) {
             $data = $request->all();
 
@@ -272,7 +291,13 @@ class JobCardController extends Controller
     public function printCard($id)
     {
         $card = JobCard::with(['vehicle.make', 'vehicle.model', 'jobType'])->findOrFail($id);
+
+
         $card->raw_data = json_decode($card->raw_data);
+        if($card->raw_data->driver_id){
+            //if driver is assigned
+            $card->driver = Driver::where('id', $card->raw_data->driver_id)->first();
+        }
         $employeeIds = [];
 
         foreach ($card->raw_data->tasks as $task) {

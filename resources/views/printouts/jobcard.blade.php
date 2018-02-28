@@ -69,7 +69,6 @@
             <div class="col-xs-3"><h4 class="text-right">&nbsp;</h4></div>
         </div>
 
-
         <div class="row" style="border: 1px solid #e5e5e5;">
             <div class="col-xs-3">
                 <h4 class="text-left"><strong>Make</strong></h4>
@@ -89,6 +88,13 @@
                 <h4 class="text-right">{{ $card->vehicle->model->name }}</h4>
             </div>
 
+        </div>
+
+        <div class="row" style="border: 1px solid #e5e5e5;">
+            <div class="col-xs-3"><h4 class="text-left"><strong>Driver Name</strong></h4></div>
+            <div class="col-xs-3"><h4 class="text-right">{{ ($card->driver)?$card->driver->first_name . " ". $card->driver->last_name:''}}</h4></div>
+            <div class="col-xs-3"><h4 class="text-left"><strong>Driver Number</strong></h4></div>
+            <div class="col-xs-3"><h4 class="text-right">&nbsp;{{ ($card->driver)?$card->driver->mobile_phone:''}}</h4></div>
         </div>
 
         <div class="row" style="border: 1px solid #e5e5e5;">

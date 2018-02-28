@@ -37,7 +37,8 @@
                             <div class="form-group input-group-sm">
                                 <label for="vehicle_id">Vehicle/Chassis Number</label>
                                 <h4 v-if="editing"><strong>{{ card.vehicle_number }}</strong></h4>
-                                <select v-else :disabled="editing" required v-model="card.vehicle_id" name="vehicle_id" id="vehicle_id" class="form-control select2">
+                                <select v-else :disabled="editing" required v-model="card.vehicle_id"
+                                        name="vehicle_id" id="vehicle_id" class="form-control select2">
                                     <option v-for="vehicle in vehicles" :value="vehicle.id">{{ vehicle.plate_number }}</option>
                                 </select>
                             </div>
@@ -111,12 +112,18 @@
                             </table>
                         </div>
 
-                        <div class="col-sm-4">
+                        <!--<div class="col-sm-4">
                             <div class="form-group">
                                 <label for="mechanic_findings">Mechanic's Findings</label>
-                                <textarea required :disabled="status != 'Pending Approval' && status != null" v-model="card.mechanic_findings" name="mechanic_findings" id="mechanic_findings" cols="20" rows="5" class="form-control input-sm"></textarea>
+                                <textarea required disabled v-model="card.mechanic_findings" name="mechanic_findings" id="mechanic_findings"
+                                          cols="20" rows="5" class="form-control input-sm">
+                                       &lt;!&ndash;   :disabled="status != 'Pending Approval' && status != null" &ndash;&gt;
+
+
+
+                                </textarea>
                             </div>
-                        </div>
+                        </div>-->
                     </div>
                     <hr>
                     {{status}}<!--
@@ -243,6 +250,7 @@
                 },
                 card: {
                     service_type: 'Normal Job',
+                    driver_id:null,
                     vehicle_id: '',
                     workshop_job_type_id: '',
                     expected_completion: '',
@@ -257,6 +265,13 @@
                     station_id:window.Laravel.station_id
                 }
             };
+        },
+        watch:{
+          vehicle(data){
+              if(data.driver){
+                  this.card.driver_id = data.driver.id;
+              }
+          }
         },
 
         computed: {
@@ -301,7 +316,6 @@
                 return this.operation.tasks.filter(e => selected.indexOf(parseInt(e.id)) === -1);
             },
         },
-
         created() {
             this.$root.isLoading = true;
             http.get('/api/job-card/create').then((response) => {
@@ -430,7 +444,7 @@
             store() {
                 let request = null;
                 this.card.vehicle_number = this.vehicle.plate_number;
-                const station = 1;
+                const station = window.Laravel.station_id;
 
                 if (this.$route.params.id) {
                     request = http.put('/api/job-card/' + this.$route.params.id, this.card);

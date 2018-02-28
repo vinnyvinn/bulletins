@@ -3,6 +3,7 @@
 namespace SmoDav\Controllers\API;
 
 use App\ConsumptionLine;
+use App\Employee;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\Helpers;
 use App\IssueLine;
@@ -137,6 +138,7 @@ class PartsController extends Controller
     {
         $requisition = Requisition::with(['user'])->findOrFail($id);
         $requisition->raw_data = \json_decode($requisition->raw_data);
+        $requisition->mechanics = Employee::get();
 
         return Response::json([
             'requisition' => $requisition,
@@ -222,6 +224,8 @@ class PartsController extends Controller
 
     public function approve(Request $request, $id)
     {
+
+        $employee = Employee::where('id', $request->get('selected_mechanic'))->first();
         $req = Requisition::with(['lines'])->where('id', $id)->first();
         $requisition = DB::transaction(function () use ($request, $id) {
             $lines = collect($request->get('lines'))->keyBy('item_id');
@@ -308,6 +312,7 @@ class PartsController extends Controller
         $requisition->approved_by_user = ($approvedby)? $this->getUserDetails($approvedby->user_id):'';
         $requisition->approved_by_time = ($approvedby)? $approvedby->created_at:'';
         $requisition->issuedby_user = ($issuedby)?$this->getUserDetails($issuedby->user_id):'';
+        $requisition->issued_to = ($employee)?$employee->first_name." ".$employee->last_name:'';
         $requisition->issuedby_time = ($issuedby)?$issuedby->created_at:'';
 
         $printout = view('printouts.requisition')

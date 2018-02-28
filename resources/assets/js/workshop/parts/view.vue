@@ -53,6 +53,19 @@
                             </div>
                         </div>
 
+                        <div class="row" v-if="(status == 'Approved' && can('issue-requisition'))">
+                            <div class="col-md-6">
+                                <strong>Issued to</strong>
+                                <br>
+                                <select id="item_id" class="form-control input-sm">
+                                    <option value="null" disabled selected>Select ...</option>
+                                    <option v-for="mechanic in mechanics" :value="mechanic.id">{{ mechanic.first_name }} {{ mechanic.last_name }}</option>
+                                </select>
+
+
+                            </div>
+                        </div>
+
                         <hr>
 
                         <div class="row">
@@ -130,8 +143,11 @@
                 requested_on: '',
                 parts: [],
                 cards: [],
+                mechanics: [],
+
                 requisition: {
                     job_card_id: null,
+                    selected_mechanic:null,
                     mechanic_findings: '',
                     lines: [],
                     status: 'Pending Approval'
@@ -203,6 +219,7 @@
                         this.user = response.requisition.user;
                         this.requested_on = response.requisition.created_at;
                         this.status = response.requisition.status;
+                        this.mechanics = response.requisition.mechanics;
 
                         this.requisition.lines.map(item => {
                             item.approved_quantity = parseInt(item.approved_quantity);
@@ -233,17 +250,38 @@
                             return item;
                         });
 
+                        setTimeout(() => {
+                            $('#item_id').select2({
+                                placeholder: 'Select issued to...'
+                            }).on('change', (e) => {
+                                this.requisition.selected_mechanic = e.target.value;
+                                console.log("changed", e.target.value);
+                            });
+                            this.$root.isLoading = false;
+                        }, 1000);
+
                         this.$root.isLoading = false;
                     });
                 }
             },
 
             approve() {
-                this.$root.isLoading = true;
+
+
                 if (this.$route.params.issue) {
+
                     this.requisition.is_issue = true;
                 }
 
+                if(this.status === 'Approved'){
+                    if(!this.requisition.selected_mechanic){
+                        alert2(this.$root, ['Select issued to option'], 'danger');
+                        return;
+                    }
+                    //console.log("its not issue time");
+                }
+
+                this.$root.isLoading = true;
                 http.post('/api/parts/' + this.$route.params.id + '/approve?station='+window.Laravel.station_id, this.requisition).then((response) => {
                     this.printout = response.printout;
                     this.$root.isLoading = false;

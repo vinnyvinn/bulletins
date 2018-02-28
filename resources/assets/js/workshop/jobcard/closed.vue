@@ -28,6 +28,9 @@
                                     <th>Card #</th>
                                     <th>Type</th>
                                     <th>Vehicle</th>
+                                    <th>Trailer No</th>
+                                    <th>Driver Name</th>
+                                    <th>Driver No</th>
                                     <th>Job Type</th>
                                     <th>Description</th>
                                     <th>Created On</th>
@@ -47,10 +50,14 @@
                                       <span v-else class="label label-success">STANDARD</span>
                                     </td>
                                     <td>{{ card.vehicle_number }}</td>
+                                    <td>.</td>
+                                    <td>{{ card.driver_name }}</td>
+                                    <td>{{ card.driver_contact }}</td>
                                     <td>{{ card.type.name }}</td>
                                     <td>{{ card.job_description }}</td>
                                     <td>{{ formatDate(card.created_at) }}</td>
                                     <td>{{ formatDate(card.expected_completion) }}</td>
+
                                     <td class="text-center">
                                         <!-- <span @click="editCard(card.id)" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></span> -->
                                         <!-- <button data-toggle="popover" :data-item="card.id" class="btn btn-xs btn-danger btn-destroy"><i class="fa fa-trash"></i></button> -->

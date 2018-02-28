@@ -83,6 +83,12 @@
                 <div class="col-xs-2"><h6 class="text-left">Signature:</h6></div>
                 <div class="col-xs-4"><h6 class="text-left" style="border-bottom: 1px solid #e5e5e5">&nbsp;</h6></div>
             </div>
+            <div class="row">
+                <div class="col-xs-2"><h6 class="text-left">Issued To</h6></div>
+                <div class="col-xs-4"><h6 class="text-left" style="border-bottom: 1px solid #e5e5e5">{{$requisition->issued_to}}</h6></div>
+                <div class="col-xs-2"><h6 class="text-left">Sign</h6></div>
+                <div class="col-xs-4"><h6 class="text-left" style="border-bottom: 1px solid #e5e5e5">&nbsp;</h6></div>
+            </div>
         @else
             <div class="row">
                 <div class="col-xs-2"><h6 class="text-left">Requested By:</h6></div>
@@ -98,14 +104,6 @@
                 <div class="col-xs-2"><h6 class="text-left">Signature:</h6></div>
                 <div class="col-xs-4"><h6 class="text-left" style="border-bottom: 1px solid #e5e5e5">&nbsp;</h6></div>
             </div>
-
-            <div class="row">
-                <div class="col-xs-2"><h6 class="text-left">Issued To</h6></div>
-                <div class="col-xs-4"><h6 class="text-left" style="border-bottom: 1px solid #e5e5e5">&nbsp;</h6></div>
-                <div class="col-xs-2"><h6 class="text-left">Sign</h6></div>
-                <div class="col-xs-4"><h6 class="text-left" style="border-bottom: 1px solid #e5e5e5">&nbsp;</h6></div>
-            </div>
-
         @endif
 
         <div class="col-xs-12">
