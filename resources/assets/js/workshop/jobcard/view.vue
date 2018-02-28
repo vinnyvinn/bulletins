@@ -502,6 +502,11 @@
 
             closeCard(){
 
+                if(this.card.closing_remarks === ''){
+                    alert2(this.$root, ['Closing remarks are mandatory'], 'danger');
+                    return;
+                }
+
                 let request = null;
                 this.$root.isLoading = true;
                 this.card.vehicle_number = this.vehicle.plate_number;

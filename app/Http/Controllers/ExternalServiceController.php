@@ -42,11 +42,7 @@ class ExternalServiceController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
-     */
+
     public function create()
     {
         $modelColumn = DB::select('SELECT cFieldName FROM _rtblUserDict WHERE idUserDict = ' .
@@ -93,19 +89,10 @@ class ExternalServiceController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+
     public function store(Request $request)
     {
         $data = $request->all();
-
-        return $data;
-
-
 
         $data['user_id'] = \Auth::id();
         if (! $data['mechanic_findings']) {
@@ -180,13 +167,6 @@ class ExternalServiceController extends Controller
 
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param $externalServiceId
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function update(Request $request, $externalServiceId)
     {
         $service = ExternalService::findOrFail($externalServiceId);
@@ -252,12 +232,22 @@ class ExternalServiceController extends Controller
 
     public function approve($serviceId)
     {
+
+        $externalService = ExternalService::where('id', $serviceId)->first();
+        $externalService->raw_data = json_decode($externalService->raw);
+        $externalService->vendor = DB::table('vendor')->where('DCLink','=',$externalService->vendor_id)->first();
+
+         $printout = view('printouts.externalservices')
+            ->with('service', $externalService)
+           ->render();
+
         ExternalService::where('id', $serviceId)->update([
             'status' => Constants::STATUS_APPROVED
         ]);
 
         return \Response::json([
             'status' => 'success',
+            'printout'=>$printout,
             'message' => 'Successfully approved external service'
         ]);
     }
