@@ -294,7 +294,8 @@ class JobCardController extends Controller
 
 
         $card->raw_data = json_decode($card->raw_data);
-        if($card->raw_data->driver_id){
+
+        if(property_exists($card->raw_data ,"driver_id")){
             //if driver is assigned
             $card->driver = Driver::where('id', $card->raw_data->driver_id)->first();
         }
