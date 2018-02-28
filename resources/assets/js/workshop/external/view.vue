@@ -224,13 +224,13 @@
                     .then(response => {
                         //show printout
                         this.printout = response.printout;
-                       /* setTimeout(() => {
+                        setTimeout(() => {
                             window.print();
                         }, 200);
                         setTimeout(() => {
                             alert2(this.$root, [response.message], 'success');
                             window._router.go(-1);
-                        }, 1000);*/
+                        }, 1000);
                     })
                     .catch(error => {
                         alert2(
