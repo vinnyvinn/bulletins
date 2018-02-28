@@ -10,6 +10,7 @@ use App\Option;
 use App\RequisitionHistory;
 use App\SAGEUDF;
 use App\traits\RequistionHistoryTrait;
+use App\User;
 use Auth;
 use Carbon\Carbon;
 use DB;
@@ -108,6 +109,8 @@ class PartsController extends Controller
 
         DB::transaction(function () use ($data) {
             $requisition = Requisition::create($data);
+            //save to history
+            $this->requestReqHistory($requisition->id);
 
             foreach ($data['lines'] as $line) {
                 $line['requisition_id'] = $requisition->id;
@@ -220,8 +223,6 @@ class PartsController extends Controller
     public function approve(Request $request, $id)
     {
         $req = Requisition::with(['lines'])->where('id', $id)->first();
-
-
         $requisition = DB::transaction(function () use ($request, $id) {
             $lines = collect($request->get('lines'))->keyBy('item_id');
             $requisition = Requisition::with(['lines'])->where('id', $id)->first();
@@ -281,11 +282,33 @@ class PartsController extends Controller
             return $requisition;
         });
 
-        //save to history
-        $this->approveReqHistory($id);
+        if ($requisition->status == Constants::STATUS_ISSUED) {
+            $this->issueReqHistory($requisition->id);
+        }
+
+        if ($requisition->status == Constants::STATUS_APPROVED) {
+            $this->approveReqHistory($requisition->id);
+        }
 
         $requisition = Requisition::with(['jobCard'])->orderBy('id', 'desc')->find($requisition->id);
         $requisition->raw_data = json_decode($requisition->raw_data);
+
+        $requestedby = DB::table('requisition_histories')->where('requistion_id','=',$requisition->id)
+            ->where('status','=', 1)->first();
+
+        $approvedby = DB::table('requisition_histories')->where('requistion_id','=',$requisition->id)
+            ->where('status','=', 2)->first();
+
+
+        $issuedby = DB::table('requisition_histories')->where('requistion_id','=',$requisition->id)
+            ->where('status','=', 3)->first();
+
+        $requisition->requested_by_user =($requestedby)? $this->getUserDetails($requestedby->user_id):'';
+        $requisition->requested_by_time =($requestedby)? $requestedby->created_at:'';
+        $requisition->approved_by_user = ($approvedby)? $this->getUserDetails($approvedby->user_id):'';
+        $requisition->approved_by_time = ($approvedby)? $approvedby->created_at:'';
+        $requisition->issuedby_user = ($issuedby)?$this->getUserDetails($issuedby->user_id):'';
+        $requisition->issuedby_time = ($issuedby)?$issuedby->created_at:'';
 
         $printout = view('printouts.requisition')
             ->with('requisition', $requisition)
@@ -296,6 +319,15 @@ class PartsController extends Controller
             'message' => 'Successfully updated requisition.',
             'printout' => $printout
         ]);
+    }
+
+    public function getUserDetails($id){
+       $user = User::where('id', $id)->first();
+       if($user){
+           return $user->first_name ." ".$user->last_name;
+       }else{
+           return "";
+       }
     }
 
     public function consume(Request $request, $id)

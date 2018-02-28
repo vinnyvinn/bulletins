@@ -72,25 +72,28 @@
             <div class="col-xs-2"><h6 class="text-left">Time</h6></div>
             <div class="col-xs-4"><h6 class="text-left" style="border-bottom: 1px solid #e5e5e5">&nbsp;</h6></div>
         </div>
-        @if($requisition->status == \SmoDav\Support\Constants::STATUS_PENDING)
+
+        {{$requisition->status}}
+
+        @if($requisition->status == \SmoDav\Support\Constants::STATUS_ISSUED)
 
             <div class="row">
                 <div class="col-xs-2"><h6 class="text-left">Issued by:</h6></div>
-                <div class="col-xs-4"><h6 class="text-left" style="text-align: left">&nbsp;</h6></div>
+                <div class="col-xs-4"><h6 class="text-left" style="text-align: left"> {{$requisition->issuedby_user}}</h6></div>
                 <div class="col-xs-2"><h6 class="text-left">Signature:</h6></div>
                 <div class="col-xs-4"><h6 class="text-left" style="border-bottom: 1px solid #e5e5e5">&nbsp;</h6></div>
             </div>
         @else
             <div class="row">
                 <div class="col-xs-2"><h6 class="text-left">Requested By:</h6></div>
-                <div class="col-xs-4"><h6 class="text-left" style="text-align: left">&nbsp;</h6></div>
+                <div class="col-xs-4"><h6 class="text-left" style="text-align: left"> {{$requisition->requested_by_user}}&nbsp;</h6></div>
 
                 <div class="col-xs-2"><h6 class="text-left">Signature:</h6></div>
                 <div class="col-xs-4"><h6 class="text-left" style="border-bottom: 1px solid #e5e5e5">&nbsp;</h6></div>
             </div>
             <div class="row">
                 <div class="col-xs-2"><h6 class="text-left">Approved By:</h6></div>
-                <div class="col-xs-4"><h6 class="text-left" style="border-bottom: 1px solid #e5e5e5"> &nbsp;</h6></div>
+                <div class="col-xs-4"><h6 class="text-left" style="border-bottom: 1px solid #e5e5e5">{{$requisition->approved_by_user}} &nbsp;</h6></div>
 
                 <div class="col-xs-2"><h6 class="text-left">Signature:</h6></div>
                 <div class="col-xs-4"><h6 class="text-left" style="border-bottom: 1px solid #e5e5e5">&nbsp;</h6></div>
