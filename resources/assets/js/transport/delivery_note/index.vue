@@ -29,7 +29,7 @@
                                     <tr v-for="delivery in deliveries">
                                         <td>{{ delivery.id }}</td>
                                         <td>
-                                            <router-link v-if="$root.can('view-delivery')" :to="'/delivery/' + delivery.id">KBS-{{ delivery.id }}</router-link>
+                                            <router-link v-if="$root.can('view-delivery')" :to="'/delivery/' + delivery.id">RKS-{{ delivery.id }}</router-link>
                                             <span v-else>RKS-{{ delivery.id }}</span>
                                         </td>
                                         <td>
