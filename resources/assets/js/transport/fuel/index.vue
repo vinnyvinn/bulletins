@@ -41,7 +41,7 @@
                     </td>
                     <td>JRNY-{{ fuel.journey_id }}</td>
                     <td>{{ fuel.date }}</td>
-                    <td><span v-if="fuel.journey">{{ fuel.journey.driver.first_name }} {{ fuel.journey.driver.last_name }}</span></td>
+                    <td><span v-if="fuel.journey">{{ (fuel.journey.driver)?fuel.journey.driver.first_name:'' }} {{(fuel.journey.driver)?fuel.journey.driver.last_name:'' }}</span></td>
                     <td><span v-if="fuel.journey">{{ fuel.journey.route.source }} - {{ fuel.journey.route.destination }}</span></td>
                     <td><span v-if="fuel.journey">{{ fuel.journey.route.distance }}</span></td>
                     <td>{{ fuel.current_fuel }}</td>
@@ -89,11 +89,15 @@ export default {
   created() {
     this.$root.isLoading = true;
     http.get('/api/fuel/?s=' + window.Laravel.station_id).then( (response) => {
+
+
         this.fuels = response.fuel.sort(function(a,b){
             var c = new Date(a.created_at);
             var d = new Date(b.created_at);
             return d-c;
-        }).slice(0, 100);
+        });
+
+        console.log("fuel is ", this.fuel);
         //TODO later add pagination to display paginated records
         //geoffrey advice
 
