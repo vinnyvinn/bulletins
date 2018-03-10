@@ -113,7 +113,7 @@
                                     <tbody v-if="is_grouped">
                                         <template v-for="(group, index) in deliveries">
                                             <tr class="rowHead">
-                                                <td :colspan="is_summary ? 8 : 3">
+                                                <td :colspan="is_summary ? 9 : 4">
                                                     <strong>{{ index }} Totals</strong>
                                                 </td>
                                                 <td v-if="! is_summary" class="text-right">{{ getSum(group, 'current_fuel') }}</td>
@@ -141,7 +141,7 @@
                                     <tbody v-else>
                                         <tr v-for="delivery in deliveries">
                                             <td>{{ delivery.index }}</td>
-                                            <td class="text-right">RKS-{{ delivery.journey_id}}</td>
+                                            <td class="text-right">{{ delivery.dnote_no}}</td>
                                             <td>{{ delivery.name }}</td>
                                             <td v-if="!is_summary">{{ delivery.plate_number }}</td>
                                             <td :class="is_summary ? 'text-right' : ''">{{ is_summary ? delivery.total : formatDateTime(delivery.date) }}</td>
@@ -155,7 +155,7 @@
 
                                         </tr>
                                         <tr v-if="deliveries.length">
-                                            <th :colspan="is_summary ? 3 : 4">
+                                            <th :colspan="is_summary ? 4 : 5">
                                                 <strong>Totals</strong>
                                             </th>
                                             <th class="text-right">{{ getSum(deliveries, 'current_fuel') }}</th>

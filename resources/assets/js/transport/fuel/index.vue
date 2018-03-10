@@ -89,7 +89,16 @@ export default {
   created() {
     this.$root.isLoading = true;
     http.get('/api/fuel/?s=' + window.Laravel.station_id).then( (response) => {
-        this.fuels = response.fuel;
+        this.fuels = response.fuel.sort(function(a,b){
+            var c = new Date(a.created_at);
+            var d = new Date(b.created_at);
+            return d-c;
+        }).slice(0, 100);
+        //TODO later add pagination to display paginated records
+        //geoffrey advice
+
+
+        // response.fuel;
         this.setupConfirm();
         prepareTable();
         this.$root.isLoading = false;

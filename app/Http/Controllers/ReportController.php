@@ -278,6 +278,11 @@ class ReportController extends Controller
             $deliveries = $deliveries->groupBy('name');
         }
 
+        foreach ($deliveries as $delivery){
+            //append a prefix for dnote no
+            $delivery->dnote_no = config()['app']['delivery_prefix'].' - '.$delivery->journey_id;
+        }
+
         return \Response::json([
             'status' => 'success',
             'deliveries' => $deliveries
@@ -398,6 +403,11 @@ class ReportController extends Controller
 
         if ($request->get('group_contract') == 1) {
             $deliveries = $deliveries->groupBy('name');
+        }
+
+        foreach ($deliveries as $delivery){
+            //append a prefix for dnote no
+            $delivery->dnote_no = config()['app']['delivery_prefix'].' - '.$delivery->journey_id;
         }
 
         return \Response::json([
