@@ -315,6 +315,12 @@ class PartsController extends Controller
         $requisition->issued_to = ($employee)?$employee->first_name." ".$employee->last_name:'';
         $requisition->issuedby_time = ($issuedby)?$issuedby->created_at:'';
 
+        foreach ($requisition["raw_data"]->lines as $line){
+            if(property_exists($line,"issued_to")) {
+                $line->issued_to = $this->getEmployeeDetails($line->issued_to);
+            }
+        }
+
         $printout = view('printouts.requisition')
             ->with('requisition', $requisition)
             ->render();
@@ -324,6 +330,15 @@ class PartsController extends Controller
             'message' => 'Successfully updated requisition.',
             'printout' => $printout
         ]);
+    }
+
+    public function getEmployeeDetails($id){
+        $user = Employee::where('id', $id)->first();
+        if($user){
+            return $user->first_name ." ".$user->last_name;
+        }else{
+            return "";
+        }
     }
 
     public function getUserDetails($id){
