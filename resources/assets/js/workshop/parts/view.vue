@@ -57,10 +57,7 @@
                             <div class="col-md-6">
                                 <strong>Issued to</strong>
                                 <br>
-                                <select id="item_id" class="form-control input-sm">
-                                    <option value="null" disabled selected>Select ...</option>
-                                    <option v-for="mechanic in mechanics" :value="mechanic.id">{{ mechanic.first_name }} {{ mechanic.last_name }}</option>
-                                </select>
+
 
 
                             </div>
@@ -81,7 +78,8 @@
                                             <th>{{ status == 'Approved' ? 'To Issue' : 'Issued' }}</th>
                                             <th>Previous Consumption</th>
                                             <th>Consumed</th>
-                                            <th></th>
+                                            <th v-if="status == 'Approved'">Issued to</th>
+                                            <th> </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -97,12 +95,22 @@
                                                 {{ item.old_issued }}
                                             </td>
                                             <td class="text-right">
-                                                <input v-if="status == 'Approved' && can('issue-requisition') && (item.actual_old_issued < item.approved_quantity)" type="number" v-model="item.issued_quantity" class="form-control input-sm" min="0" :max="item.approved_quantity - item.actual_old_issued" number>
+                                                <input v-if="status == 'Approved' && can('issue-requisition') &&
+                                                (item.actual_old_issued < item.approved_quantity)" type="number"
+                                                       v-model="item.issued_quantity" class="form-control input-sm"
+                                                       min="0" :max="item.approved_quantity - item.actual_old_issued" number>
                                                 <span class="text-right" v-else>{{ item.issued_quantity }}</span>
                                             </td>
                                             <td class="text-right">{{ isNaN(parseInt(item.old_consumed_quantity)) ? 0 : item.old_consumed_quantity }}</td>
                                             <td>
                                                 <input v-if="status == 'Issued' && can('create-requisition') && parseInt(item.issued_quantity) > parseInt(item.old_consumed_quantity)" type="number" onfocus="this.select()" :max="parseInt(item.issued_quantity) - parseInt(item.old_consumed_quantity)" min="0" v-model="item.consumed_quantity" class="form-control input-sm" number>
+                                            </td>
+                                            <td v-if="status == 'Approved'">
+                                                <select id="item_id" @input="$set(requisition.lines[index], 'issued_to', +$event.target.value);"  class="form-control input-sm">
+                                                    <option value="null" disabled selected>Select ...</option>
+                                                    <option v-for="mechanic in mechanics"
+                                                            :value="mechanic.id">{{ mechanic.first_name }} {{ mechanic.last_name }}</option>
+                                                </select>
                                             </td>
                                             <td>
                                             </td>
@@ -194,7 +202,13 @@
           back() {
             window._router.go(-1);
           },
+            getnames(mechanic){
+                return mechanic.first_name +" "+mechanic.last_name;
+            },
 
+            changedIssuedTo(index , val){
+              console.log("the value has changed now ...", val);
+            },
             can(permission) {
                 return window.can(permission)
             },
@@ -251,12 +265,13 @@
                         });
 
                         setTimeout(() => {
-                            $('#item_id').select2({
+                           /* $('#item_id').select2({
                                 placeholder: 'Select issued to...'
                             }).on('change', (e) => {
+                                //test here
                                 this.requisition.selected_mechanic = e.target.value;
-                                console.log("changed", e.target.value);
-                            });
+                                console.log("changed select2 to ", e.target.value);
+                            });*/
                             this.$root.isLoading = false;
                         }, 1000);
 
@@ -274,11 +289,16 @@
                 }
 
                 if(this.status === 'Approved'){
-                    if(!this.requisition.selected_mechanic){
-                        alert2(this.$root, ['Select issued to option'], 'danger');
+                    var itemdone = true;
+                    this.requisition.lines.forEach(item=>{
+                        if(!item.issued_to){
+                            itemdone = false;
+                        }
+                    });
+                    if(!itemdone){
+                        alert2(this.$root, ['You havent selected all mechanics to be issued items to'], 'danger');
                         return;
                     }
-                    //console.log("its not issue time");
                 }
 
                 this.$root.isLoading = true;

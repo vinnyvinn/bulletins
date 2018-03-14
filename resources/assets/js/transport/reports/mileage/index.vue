@@ -138,7 +138,7 @@
                                     <tbody v-else>
                                         <tr v-for="delivery in deliveries">
                                             <td>{{ delivery.index }}</td>
-                                            <td class="text-right">RKS-{{ delivery.journey_id}}</td>
+                                            <td class="text-right">{{ delivery.dnote_no}}</td>
                                             <td>{{ delivery.name }}</td>
                                             <td v-if="!is_summary">{{ delivery.plate_number }}</td>
                                             <td :class="is_summary ? 'text-right' : ''">{{ is_summary ? delivery.total : formatDateTime(delivery.date) }}</td>
@@ -150,7 +150,7 @@
                                             <td class="text-right">{{ delivery.station_name }}</td>
                                         </tr>
                                         <tr v-if="deliveries.length">
-                                            <th :colspan="is_summary ? 4 : 5">
+                                            <th :colspan="is_summary ? 5 : 6">
                                                 <strong>Totals</strong>
                                             </th>
                                             <th class="text-right">{{ getSum(deliveries, 'standard_amount') }}</th>
