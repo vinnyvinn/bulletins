@@ -250,8 +250,8 @@
                 });
             },
             store() {
-                if (parseInt(this.deliveryNote.loading_net_weight) > 32000 || parseInt(this.deliveryNote.offloading_net_weight) > 32000) {
-                    alert2(this.$root, ['Please check the weights. You cannot have a net weight of more than 32,000KGs'], 'danger');
+                if (parseInt(this.deliveryNote.loading_net_weight) > 33000 || parseInt(this.deliveryNote.offloading_net_weight) > 33000) {
+                    alert2(this.$root, ['Please check the weights. You cannot have a net weight of more than 33,000KGs'], 'danger');
                     return;
                 }
                 this.$root.isLoading = true;
