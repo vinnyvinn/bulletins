@@ -17,29 +17,17 @@ class RKEmployeeController extends Controller
      */
     public function index()
     {
-     /*   var_dump("employees are ",HrEmployeesModel::all());
-        die();
-     */  /* return Response::json([
-            'employees' => Employee::all(),
-        ]);*/
 
-        /*$hremployees = HrEmployeesModel::with('designation')->get();
-
-        return Response::json([
-            'employees' => $hremployees,
-        ]);*/
-
-       /* var_dump($hremployees);
-        die();
-
-        return Response::json([
-            'employees' => Employee::all(),
-        ]);*/
         return Response::json([
             'employees' => Employee::all(),
         ]);
     }
 
+
+    public function hremployees(){
+        $employees = HrEmployeesModel::get();
+        return response()->json($employees);
+    }
     /**
      * Show the form for creating a new resource.
      *

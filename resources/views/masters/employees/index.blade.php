@@ -54,7 +54,6 @@
         </div>
         <!-- /.row -->
     </section><!-- /.content -->
-
 @endsection
 
 

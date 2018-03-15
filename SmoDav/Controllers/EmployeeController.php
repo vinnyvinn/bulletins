@@ -42,6 +42,9 @@ class EmployeeController extends Controller
      */
     public function create()
     {
+        $hremployees = HrEmployeesModel::with('designation')->get();
+
+        return view('masters.employees.create')->with($hremployees);
         //
     }
 
