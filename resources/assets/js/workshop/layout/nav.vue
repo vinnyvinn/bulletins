@@ -36,7 +36,7 @@
                 <div class="caption">Parts Requisition</div>
             </router-link>
 
-            <router-link to="/wsh/issuance" class="nav-items">
+            <router-link to="/wsh/issuance" class="nav-items" v-if="can('issue-parts')">
                 <img src="/images/issue.png" alt="parts" class="img-responsive">
                 <div class="caption">Issue Parts</div>
             </router-link>

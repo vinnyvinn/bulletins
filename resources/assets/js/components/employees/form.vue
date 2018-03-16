@@ -106,9 +106,9 @@
          //   this.$root.isLoading = false;
           });
 
-            http.get('/api/hremployees'). then((response) => {
+            http.get('/api/fetchemployees'). then((response) => {
                 console.log("hr employees are ", response);
-                this.hremployees = response;
+                this.hremployees = response[0];
                 this.$root.isLoading = false;
                 $('#hr_employee').select2().on('change', (e) => {
                     var employee = this.hremployees.filter(employee=>employee.Emp_Payroll_No === e.target.value);
