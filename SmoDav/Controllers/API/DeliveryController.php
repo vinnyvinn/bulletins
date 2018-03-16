@@ -30,7 +30,7 @@ class DeliveryController extends Controller
         })
             ->where('status', Constants::STATUS_CLOSED)
             ->orderBy('id', 'desc')
-            //->take(50)
+            ->take(50)
             ->get(['id'])
             ->map(function ($item) {
                 return $item->id;
