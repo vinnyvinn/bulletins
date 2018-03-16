@@ -29,7 +29,7 @@
                 <h4 style="font-size: 20px !important;" class="text-right">{{ config('app.telephone') }}</h4>
                 <h4 style="font-size: 20px !important;" class="text-right">{{ config('app.email') }}</h4>
                 <h4 style="font-size: 20px !important;" class="text-right">{{ config('app.location') }}</h4>
-                <h3 class="text-right"><strong style="color: red !important;">{{config('delivery_prefix')}} - {{ str_pad($trip->id, 5, '0', STR_PAD_LEFT) }}</strong></h3>
+                <h3 class="text-right"><strong style="color: red !important;">{{ config('delivery_prefix') }} - {{ str_pad($trip->id, 5, '0', STR_PAD_LEFT) }}</strong></h3>
 
 
                 <div class="pull-right">
