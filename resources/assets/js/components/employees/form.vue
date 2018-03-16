@@ -103,29 +103,22 @@
           this.$root.isLoading = true;
           http.get('/api/employee_category'). then((response) => {
             this.employee_categories = response.employee_categories;
-         //   this.$root.isLoading = false;
+              this.hremployees = response.hremployees;
+              $('#hr_employee').select2().on('change', (e) => {
+                  var employee = this.hremployees.filter(employee=>employee.Emp_Payroll_No === e.target.value);
+                  if(employee.length >0){
+                      const emp = employee[0];
+                      this.employee.payroll_number = emp.Emp_Payroll_No;
+                      this.employee.identification_number = emp.ICardNo;
+                      this.employee.payroll_number = emp.Emp_Payroll_No;
+                      this.employee.last_name = emp.Emp_Last_Name;
+                      this.employee.first_name = emp.Emp_First_Name;
+                      this.employee.identification_type='National ID';
+                  }
+                  console.log("value is ", employee[0]);
+              });
+         this.$root.isLoading = false;
           });
-
-            http.get('/api/fetchemployees'). then((response) => {
-                console.log("hr employees are ", response);
-                this.hremployees = response[0];
-                this.$root.isLoading = false;
-                $('#hr_employee').select2().on('change', (e) => {
-                    var employee = this.hremployees.filter(employee=>employee.Emp_Payroll_No === e.target.value);
-                    if(employee.length >0){
-                        const emp = employee[0];
-                        this.employee.payroll_number = emp.Emp_Payroll_No;
-                        this.employee.identification_number = emp.ICardNo;
-                        this.employee.payroll_number = emp.Emp_Payroll_No;
-                        this.employee.last_name = emp.Emp_Last_Name;
-                        this.employee.first_name = emp.Emp_First_Name;
-                        this.employee.identification_type='National ID';
-                    }
-                    console.log("value is ", employee[0]);
-                });
-            });
-
-          //load hr employees
 
           if(this.$route.params.id) {
             this.$root.isLoading = true;

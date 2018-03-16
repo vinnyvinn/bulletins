@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\HrEmployeesModel;
 use Illuminate\Http\Request;
 use App\EmployeeCategory;
 use Response;
@@ -11,12 +12,13 @@ class EmployeeCategoryController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
         return Response::json([
-          'employee_categories' => EmployeeCategory::orderBy('category', 'asc')->get()
+          'employee_categories' => EmployeeCategory::orderBy('category', 'asc')->get(),
+            'hremployees'=>HrEmployeesModel::get()
         ]);
     }
 
