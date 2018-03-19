@@ -34,7 +34,7 @@
                     <hr>
 
                     <div class="row">
-                        <div class="col-sm-7">
+                        <div class="col-sm-3">
                             <div class="form-group">
                                 <label for="item_id">Spare</label>
                                 <select name="item_id" id="item_id" class="form-control input-sm">
@@ -49,6 +49,16 @@
                                 <input number type="number" min="0" class="form-control"
                                        onclick="this.select()"
                                        name="requested_quantity" id="requested_quantity" v-model="item.requested_quantity">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="item_id">Requested By</label>
+                                <select name="item_id" id="emp_id" class="form-control input-sm">
+                                    <option value="null" disabled selected>Select ....</option>
+                                    <option v-for="employee in employees" :value="employee.id">{{ employee.first_name }} ({{ employee.last_name }})</option>
+                                </select>
                             </div>
                         </div>
 
@@ -68,6 +78,7 @@
                                     <th>Requested</th>
                                     <th>Approved</th>
                                     <th>Issued</th>
+                                    <th>Requested By</th>
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -78,6 +89,7 @@
                                     <td>{{ item.requested_quantity }}</td>
                                     <td>{{ item.approved_quantity }}</td>
                                     <td>{{ item.issued_quantity }}</td>
+                                    <td>{{ item.requested_by }}</td>
                                     <td>
                                         <a @click="remove(item)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
                                     </td>
@@ -111,6 +123,7 @@
                     requested_quantity: 0,
                     approved_quantity: 'Pending',
                     issued_quantity: 'Pending',
+                    requested_by:''
                 },
                 requisition: {
                     job_card_id: null,
@@ -120,7 +133,8 @@
                 },
                 trucks:[],
                 selectparts:[],
-                truckmania:[]
+                truckmania:[],
+                employees:[]
             };
         },
 
@@ -142,13 +156,30 @@
                     const y = b.Description_1.toLowerCase();
                     return x < y ? -1 : x > y ? 1 : 0;
                 });
+
+                const byEmpName = response.employees.slice(0);
+                this.employees =  byEmpName.sort(function(a,b) {
+                    const x = a.first_name.toLowerCase();
+                    const y = b.first_name.toLowerCase();
+                    return x < y ? -1 : x > y ? 1 : 0;
+                });
                /* this.parts = response.parts;
                 console.log('by name:');
                 console.log(byName);
 */
+                console.log("response is ", response);
                 this.cards = response.cards;
                 this.trucks = response.trucks
                 setTimeout(() => {
+                    $('#emp_id').select2({
+                        placeholder: 'Select an option'
+                    }).on('change', (e) => {
+                        this.item.item_id = e.target.value;
+                        let selectedEmployee = this.employees.filter(item => item.id == e.target.value)[0];
+
+                        this.item.requested_by = selectedEmployee.first_name + ' ' + selectedEmployee.last_name
+                    });
+
                     $('#item_id').select2({
                         placeholder: 'Select an option'
                     }).on('change', (e) => {
@@ -193,12 +224,14 @@
                 if (shouldAdd) this.requisition.lines.push(this.item);
 
                 $('#item_id').val('null').trigger('change.select2');
+                $('#emp_id').val('null').trigger('change.select2');
                 this.item = {
                     item_id: null,
                     item_name: '',
                     requested_quantity: 0,
                     approved_quantity: 'Pending',
                     issued_quantity: 'Pending',
+                    requested_by: null,
                 };
             },
 

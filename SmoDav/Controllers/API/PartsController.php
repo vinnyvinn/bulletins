@@ -89,7 +89,8 @@ class PartsController extends Controller
         return Response::json([
             'parts' => $products,
             'cards' => $jobCards,
-            'trucks'=>VehicleFactory::all()
+            'trucks'=>VehicleFactory::all(),
+            'employees'=>Employee::get()
         ]);
     }
 

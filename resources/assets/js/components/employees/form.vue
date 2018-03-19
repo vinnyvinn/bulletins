@@ -103,7 +103,16 @@
           this.$root.isLoading = true;
           http.get('/api/employee_category'). then((response) => {
             this.employee_categories = response.employee_categories;
-              this.hremployees = response.hremployees;
+            //order response of hr employees
+
+              const byName = response.hremployees.slice(0);
+              this.hremployees =  byName.sort(function(a,b) {
+                  const x = a.Emp_First_Name.toLowerCase();
+                  const y = b.Emp_First_Name.toLowerCase();
+                  return x < y ? -1 : x > y ? 1 : 0;
+              });
+
+              //this.hremployees = response.hremployees;
               $('#hr_employee').select2().on('change', (e) => {
                   var employee = this.hremployees.filter(employee=>employee.Emp_Payroll_No === e.target.value);
                   if(employee.length >0){

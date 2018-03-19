@@ -10,6 +10,14 @@
                     <div class="panel-body">
                         <form action="#" id="form" role="form" @submit.prevent="store" enctype="multipart/form-data">
 
+                            <div>
+                                <label for="first_name">Select from HR to autofill</label>
+                                <select id="hr_employee" class="form-control select2">
+                                    <option value-="null">Select ....</option>
+                                    <option v-for="employee in hremployees" :value="employee.Emp_Payroll_No">{{ employee.Emp_First_Name }} {{ employee.Emp_Last_Name }}</option>
+                                </select>
+                            </div>
+
                             <div class="form-group">
                                 <label for="first_name">First Name</label>
                                 <input v-model="driver.first_name" type="text" class="form-control" id="first_name" name="first_name" required>
@@ -67,6 +75,7 @@
             return {
                 sharedState: window._mainState,
                 uploads: [],
+                hremployees:[],
                 driver: {
                     _token: window.Laravel.csrfToken,
                     _method: 'POST',
@@ -83,6 +92,32 @@
                 level: 'danger',
                 showError: false
             };
+        },
+        created() {
+            this.$root.isLoading = true;
+            http.get('/api/employee_category'). then((response) => {
+                const byName = response.hremployees.slice(0);
+                this.hremployees =  byName.sort(function(a,b) {
+                    const x = a.Emp_First_Name.toLowerCase();
+                    const y = b.Emp_First_Name.toLowerCase();
+                    return x < y ? -1 : x > y ? 1 : 0;
+                });
+
+                $('#hr_employee').select2().on('change', (e) => {
+                    var employee = this.hremployees.filter(employee=>employee.Emp_Payroll_No === e.target.value);
+                    if(employee.length >0){
+                        const emp = employee[0];
+                        this.driver.payroll_number = emp.Emp_Payroll_No;
+                        this.driver.identification_number = emp.ICardNo;
+                        this.driver.payroll_number = emp.Emp_Payroll_No;
+                        this.driver.last_name = emp.Emp_Last_Name;
+                        this.driver.first_name = emp.Emp_First_Name;
+                        this.driver.identification_type='National ID';
+                    }
+                    console.log("value is ", employee[0]);
+                });
+                this.$root.isLoading = false;
+            });
         },
 
         methods: {

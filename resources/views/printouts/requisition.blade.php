@@ -52,6 +52,9 @@
             <tr>
                 <th class="text-center">QTY</th>
                 <th class="text-center">Item Description</th>
+                @if($requisition->status == \SmoDav\Support\Constants::STATUS_APPROVED)
+                    <th class="text-center">Requested By</th>
+                @endif
                 @if($requisition->status == \SmoDav\Support\Constants::STATUS_ISSUED)
                     <th class="text-center">Issued To</th>
                 @endif
@@ -59,14 +62,21 @@
             @foreach($requisition->raw_data->lines as $item)
                 <tr>
                     @if($requisition->status == \SmoDav\Support\Constants::STATUS_PENDING)
-                        <td class="text-right">{{ number_format($item->approved_quantity, 0) }}</td>
-                    @else
+                        <td class="text-right">{{ number_format($item->requested_quantity, 0) }}</td>
+
+                    @elseif($requisition->status == \SmoDav\Support\Constants::STATUS_APPROVED)
+                        <td class="text-right">{{ number_format((int) $item->requested_quantity, 0) }}</td>
+
+                    @elseif($requisition->status == \SmoDav\Support\Constants::STATUS_ISSUED)
                         <td class="text-right">{{ number_format((int) $item->issued_quantity, 0) }}</td>
                     @endif
                     <td>{{ strtoupper($item->item_name) }}</td>
                     @if($requisition->status == \SmoDav\Support\Constants::STATUS_ISSUED)
                         <td>{{ strtoupper($item->issued_to) }}</td>
                     @endif
+                        @if($requisition->status == \SmoDav\Support\Constants::STATUS_APPROVED)
+                            <td>{{ strtoupper($item->requested_by) }}</td>
+                        @endif
                 </tr>
             @endforeach
             </tbody>
@@ -96,14 +106,6 @@
                 <div class="col-xs-4"><h6 class="text-left" style="border-bottom: 1px solid #e5e5e5">&nbsp;</h6></div>
             </div>
         @else
-            <div class="row">
-                <div class="col-xs-2"><h6 class="text-left">Requested By:</h6></div>
-                <div class="col-xs-4"><h6 class="text-left"
-                                          style="text-align: left"> {{$requisition->requested_by_user}}&nbsp;</h6></div>
-
-                <div class="col-xs-2"><h6 class="text-left">Signature:</h6></div>
-                <div class="col-xs-4"><h6 class="text-left" style="border-bottom: 1px solid #e5e5e5">&nbsp;</h6></div>
-            </div>
             <div class="row">
                 <div class="col-xs-2"><h6 class="text-left">Approved By:</h6></div>
                 <div class="col-xs-4"><h6 class="text-left"
