@@ -178,6 +178,29 @@ l <template>
                 </div>
 
                 <hr>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="loading_point_id">Unloading Point</label>
+                            <select @change="changedUnloadingPoint" v-if="unloadingpoints.length > 0" v-model="journey.unloading_point"
+                                    name="unloading_point" id="unloading_point"
+                                    class="form-control input-sm select2" required>
+                                <option v-for="point in unloadingpoints"
+                                        :value="point.name">{{ point.name }}</option>
+                            </select>
+                            <br>
+                            <input class="form-control"
+                                   v-if="unloadingpoints.length === 0"
+                                   type="text"
+                                   placeholder="Enter Unloading Point"
+                                   v-model="journey.unloading_point"
+                                   :required="unloadingpoints.length >0"
+                            />
+                        </div>
+                    </div>
+
+                </div>
+                <hr>
 
                 <div class="row" v-if="journey.is_contract_related == '0'">
                     <div class="col-sm-12">
@@ -327,11 +350,13 @@ l <template>
                     sub_address_2: '',
                     sub_address_3: '',
                     sub_address_4: '',
+                    unloading_point:''
                 },
                 last_journey_id: {
                   id: 0
                 },
                 trucks_already_allocated: '',
+                unloadingpoints:[]
             };
         },
 
@@ -389,6 +414,9 @@ l <template>
         },
 
         methods: {
+            changedUnloadingPoint(event){
+                this.journey.unloading_point = event.target.value;
+            },
             addTruck() {
               setTimeout(() => {
                 this.journey.trucks.push({'id': this.journey.truck_id});
@@ -432,17 +460,21 @@ l <template>
             updateFields() {
                 this.$root.isLoading = true;
                 $('#route_id').select2('destroy');
+                this.journey.unloading_point = '';
 
                 setTimeout(() => {
                     http.get('/api/trucks_already_allocated/' + this.journey.contract_id).then((response) => {
                         this.trucks_already_allocated = response.trucks_already_allocated;
+                        this.unloadingpoints = JSON.parse(response.unloading_points);
                     });
                     this.journey.route_id = this.contract.route_id;
                     this.journey.job_description = this.contract.job_description;
                     this.journey.enquiry_from = this.contract.enquiry_from == 'null' ? '' : this.contract.enquiry_from;
                     this.journey.route_id = this.contract.route_id;
                     this.$root.isLoading = false;
-                    setTimeout(() => $('#route_id').select2().on('change', e => this.journey.route_id = e.target.value), 500);
+                    setTimeout(() => $('#route_id').select2().on('change', e =>{
+                        this.journey.route_id = e.target.value
+                    }), 500);
                 }, 500);
 
             },
@@ -507,6 +539,12 @@ l <template>
             },
 
             store() {
+                //check if journey unloading point is set
+                if(this.journey.unloading_point === ''){
+                    alert2(this.$root, ["Please Enter/Select unloading point"], 'danger');
+                    return;
+                }
+
                 this.$root.isLoading = true;
                 let request = null;
 

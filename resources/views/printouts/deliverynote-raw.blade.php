@@ -19,6 +19,7 @@
                 <h4 style="font-size: 20px !important;" class="text-left"><strong>Client Contact: </strong> {{ $trip->contract->client->Telephone }}</h4>
                 <h4 style="font-size: 20px !important;" class="text-left"><strong>LPO No: </strong> </h4>
                 <h4 style="font-size: 20px !important;" class="text-left"><strong>Route: </strong> {{ $trip->route->source }} <strong>TO</strong> {{ $trip->route->destination }}</h4>
+                <h4 style="font-size: 20px !important;" class="text-left"><strong>Delivery To: </strong> {{ $trip->unloadingpoint}}</h4>
             </div>
             <div class="col-xs-4 text-center">
                 <img style='display:block; margin: 0 auto;' src="{{ asset('/images/logo.jpg') }}" alt="Sanghani">
@@ -142,7 +143,7 @@
 
             <div class="col-xs-12">
                 <p>
-                    We, <strong>{{ $trip->contract->client->Name }}</strong>, hereby acknowledge the full receipt n full goods as per above details
+                    We, <strong>{{ $trip->unloadingpoint }}</strong>, hereby acknowledge the full receipt n full goods as per above details
                     and certify that the goods have arrived in good order and condition.
                 </p>
                 <br>

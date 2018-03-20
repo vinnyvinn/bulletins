@@ -376,6 +376,7 @@ class JourneyController extends Controller
     {
         return Response::json([
             'trucks_already_allocated' => Journey::open()->where('contract_id', $contract_id)->count(),
+            'unloading_points'=> (new \App\Contract)->where('id', $contract_id)->pluck('unloading_points')->first()
         ]);
     }
 }

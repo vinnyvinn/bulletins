@@ -37,10 +37,9 @@ class DeliveryController extends Controller
             })
             ->toArray();
 
-        return Response::json([
-            'deliveries' => Delivery::when(request('s'), function ($builder) {
-                return $builder->where('station_id', request('s'));
-            })
+        $deliveries = Delivery::when(request('s'), function ($builder) {
+            return $builder->where('station_id', request('s'));
+        })
             ->whereHas('journey', function ($builder) use ($journeys) {
                 return $builder->where(function ($builder) use ($journeys) {
                     return $builder->where('status', Constants::STATUS_APPROVED)
@@ -50,8 +49,15 @@ class DeliveryController extends Controller
                         });
                 });
             })
-            ->with(['journey','journey.truck'])
-            ->get()
+            ->with(['journey', 'journey.truck'])
+            ->get();
+
+        foreach ($deliveries as $delivery){
+            $delivery->id_val = config('app.delivery_prefix').'-'.$delivery->id;
+        }
+
+        return Response::json([
+            'deliveries' =>$deliveries
         ]);
     }
 
@@ -136,7 +142,7 @@ class DeliveryController extends Controller
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param Delivery                 $delivery
+     * @param Delivery $delivery
      *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
@@ -186,14 +192,20 @@ class DeliveryController extends Controller
         $note = Delivery::with([
             'journey.contract.cargoType', 'journey.route', 'journey.driver', 'journey.truck.trailer'
         ])->findOrFail($id);
+
         $note->contract = $note->journey->contract;
         $note->route = $note->journey->route;
         $note->driver = $note->journey->driver;
         $note->truck = $note->journey->truck;
-        if (! $note->journey->is_contract_related) {
+        if (!$note->journey->is_contract_related) {
             $note->contract = new \stdClass();
             $note->contract->client = new \stdClass();
         }
+        $rawfied = \GuzzleHttp\json_decode($note->journey->raw);
+        $note->unloadingpoint = property_exists($rawfied, 'unloading_point')
+            ? $rawfied->unloading_point
+            : $note->contract->client->Name;
+
         unset($note->journey->contract, $note->journey->route, $note->journey->driver, $note->journey->truck);
 
         $printout = view('printouts.deliverynote')->with('trip', $note)->render();
