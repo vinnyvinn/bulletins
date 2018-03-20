@@ -42,6 +42,8 @@
                                 <th>First Name</th>
                                 <th>Last Name</th>
                                 <th>Payroll Number</th>
+                                <th>Id Number</th>
+                                <th>Mobile Number</th>
                                 <th>Category</th>
                             </tr>
                             </thead>
@@ -51,6 +53,8 @@
                                 <td>{{ employee.first_name }} </td>
                                 <td>{{ employee.last_name }} </td>
                                 <td>{{ employee.payroll_number }}</td>
+                                <td>{{ employee.identification_number }}</td>
+                                <td>{{ employee.mobile_phone }}</td>
                                 <td>{{ employee.category}}</td>
                             </tr>
                             </tbody>
@@ -60,6 +64,8 @@
                                 <th>First Name</th>
                                 <th>Last Name</th>
                                 <th>Payroll Number</th>
+                                <th>Id Number</th>
+                                <th>Mobile Number</th>
                                 <th>Category</th>
                             </tr>
                             </tfoot>

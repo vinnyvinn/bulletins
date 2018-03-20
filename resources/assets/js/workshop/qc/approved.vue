@@ -42,7 +42,7 @@
                                     <td>{{ index + 1 }}</td>
                                     <td><router-link :to="'/wsh/qc/' + card.id + '/view'">QC-{{ card.id }}</router-link></td>
                                     <td><router-link :to="'/wsh/job-card/' + card.job_card_id">JC-{{ card.job_card_id }}</router-link></td>
-                                    <td>{{ card.job_card.vehicle_number }}</td>
+                                    <td>{{ (card.job_card)?card.job_card.vehicle_number:'' }}</td>
                                     <td>{{ formatDate(card.created_at) }}</td>
                                     <td></td>
                                 </tr>

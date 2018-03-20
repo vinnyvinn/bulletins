@@ -46,8 +46,7 @@
                                     <option :value="category.category" v-for="category in employee_categories">{{ category.category }}</option>
                                 </select>
                             </div>
-
-                           <!-- <div class="form-group">
+                            <div class="form-group">
                                 <label for="identification_number">National ID</label>
                                 <input v-model="employee.identification_number" type="text" class="form-control" id="identification_number" name="identification_number" required>
                             </div>
@@ -55,7 +54,7 @@
                             <div class="form-group">
                                 <label for="mobile_phone">Mobile Number</label>
                                 <input v-model="employee.mobile_phone" type="text" class="form-control" id="mobile_phone" name="mobile_phone">
-                            </div>-->
+                            </div>
 
                             <div class="form-group">
                                 <button class="btn btn-success">Save</button>

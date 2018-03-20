@@ -26,12 +26,12 @@
                 <div class="caption">Job Cards</div>
             </router-link>
 
-            <router-link to="/wsh/external" class="nav-items">
+            <router-link to="/wsh/external" class="nav-items" v-if="can('view-external-services')" >
                 <img src="/images/external.png" alt="job-card" class="img-responsive">
                 <div class="caption">External Services</div>
             </router-link>
 
-            <router-link to="/wsh/parts" class="nav-items">
+            <router-link to="/wsh/parts" class="nav-items" v-if="can('view-parts-requisition')">
                 <img src="/images/parts.png" alt="parts" class="img-responsive">
                 <div class="caption">Parts Requisition</div>
             </router-link>
@@ -41,7 +41,7 @@
                 <div class="caption">Issue Parts</div>
             </router-link>
 
-            <router-link to="/wsh/qc" class="nav-items">
+            <router-link to="/wsh/qc" class="nav-items" v-if="can('view-quality-checks')">
                 <img src="/images/qc.png" alt="parts" class="img-responsive">
                 <div class="caption">Quality Check</div>
             </router-link>
