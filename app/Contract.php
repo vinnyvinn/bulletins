@@ -124,3 +124,4 @@ class Contract extends Model
         return $this->hasMany(LSMileage::class);
     }
 }
+ 
